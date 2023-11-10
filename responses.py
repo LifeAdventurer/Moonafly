@@ -20,6 +20,7 @@ def get_response(message) -> str:
 
     if msg[:4] == 'math':
       msg = msg[5:]
+      return '此功能暫時關閉'
       if username == 'life_adventurer':
         return eval(msg)
       elif username == 'tobiichi3227':
