@@ -50,7 +50,10 @@ def get_response(message) -> str:
     
     elif msg[:6] == 'search':
       msg = msg[7:]
-      if msg[:6] == 'github':
+      if msg[:4] == 'help':
+        return 
+
+      elif msg[:6] == 'github':
         msg = user_message[15:]
         github_url = "https://github.com/" + msg
         response = requests.get(github_url)
