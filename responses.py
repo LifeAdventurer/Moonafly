@@ -17,7 +17,7 @@ def get_response(message) -> str:
   if msg[0] == '!':
     msg = msg[1:]
     if msg[:4] == 'help':
-      return "!math\n!gen\n!search\n!dict"
+      return "!math\n!gen\n!search\n!dict\nweather\n"
 
     if msg[:4] == 'math':
       msg = msg[5:]
@@ -29,7 +29,7 @@ def get_response(message) -> str:
         return "vocabulary or (vocab) instead\nfortune"
 
       elif 'vocabulary' in msg or 'vocab' in msg:
-
+        return "still developing"
         return list[random.randint(0, len(list))]
 
       elif msg[:7] == 'fortune':
@@ -68,6 +68,9 @@ def get_response(message) -> str:
         # TO-DO
         # elif msg == 'setup':
 
+      elif msg[:7] == 'weather':
+        return 'still developing'
+
       else:
         return 'no such command'
 
@@ -90,8 +93,13 @@ def get_response(message) -> str:
   if '危險' in msg:
     return '發生危險了嗎 需要幫您撥打119嗎'
 
-  if '好' in msg and '不好' not in msg and '不要' not in msg:
-    return '那麼好'
+  if '好' in msg:
+    words = ['不好', '好痛', '好難', '好苦', '', '',]
+    for word in words:
+      if word in msg:
+        return;    
+    if username == 'tobiichi3227':
+      return '那麼好'
   
   if msg == '笑死' or '哈哈' in msg:
     ha_str = '哈' * random.randint(1, 10)
