@@ -4,6 +4,7 @@ import random
 import requests
 from search_dict import search_dict
 import os
+import re
 
 vocab_file = open('vocabulary_items.json')
 list = json.load(vocab_file)['vocabularies']
@@ -11,13 +12,12 @@ vocab_file.close()
 
 def get_response(message) -> str:
   username = str(message.author)
-  user_message = str(message.content)
-  msg = user_message.lower()
+  msg = str(message.content)
 
   if msg[0] == '!':
     msg = msg[1:]
     if msg[:4] == 'help':
-      return "!math\n!gen\n!search\n!dict\nweather\n"
+      return "!math\n!gen\n!search\n!dict\n!weather\n"
 
     if msg[:4] == 'math':
       msg = msg[5:]
@@ -46,7 +46,7 @@ def get_response(message) -> str:
       
 
       elif msg[:6] == 'github':
-        msg = user_message[15:]
+        msg = msg[15:]
         github_url = "https://github.com/" + msg
         response = requests.get(github_url)
         if response.status_code == 404:
@@ -76,7 +76,14 @@ def get_response(message) -> str:
 
     elif msg[:4] == 'dict':
       msg = msg[5:]
-      return search_dict(msg)
+
+      match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
+      if match:
+        return search_dict(match.group(1), int(match.group(2)))
+      elif 'LIMIT' in msg:
+        return 'please type a number after the command LIMIT'
+      else:
+        return search_dict(msg, 100)
 
     else:
       return 'no such command' 

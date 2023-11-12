@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_cambridge_dictionary_info(word):
+def get_cambridge_dictionary_info(word, limit_example_count):
   url = f'https://dictionary.cambridge.org/dictionary/english/{word}'
     
   headers = {
@@ -14,7 +14,6 @@ def get_cambridge_dictionary_info(word):
   example_list = []
 
   try:
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
     response = requests.get(url, headers=headers)
     response.raise_for_status()  # Raise an HTTPError for bad responses
       
@@ -29,6 +28,8 @@ def get_cambridge_dictionary_info(word):
     for example in examples:
       example_sentence = example.text.strip() if example else 'No example sentence found'
       example_list.append(example_sentence)
+      if len(example_list) == limit_example_count:
+        break
     
     return definition_text, example_list
 
@@ -36,8 +37,8 @@ def get_cambridge_dictionary_info(word):
     print(f"Error: {e}")
     return None
 
-def search_dict(word):
-  result = get_cambridge_dictionary_info(word)
+def search_dict(word, limit):
+  result = get_cambridge_dictionary_info(word, limit)
 
   if result:
     definition, example_list = result
