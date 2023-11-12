@@ -87,7 +87,7 @@ def get_response(message) -> str:
       elif 'LIMIT' in msg:
         return 'please type a number after the command LIMIT'
       else:
-        return search_dict(msg, 100)
+        return search_dict(msg, 15)
 
     else:
       return 'no such command' 
