@@ -41,17 +41,20 @@ def get_response(message) -> str:
     elif msg[:6] == 'search':
       msg = msg[7:]
       if msg[:4] == 'help':
-        return "git\ngithub"
+        return "git\ngithub\ngoogle"
 
-      
+      elif msg[:6] == 'google':
+        return "https://www.google.com/search?q=" + msg[7:]
 
       elif msg[:6] == 'github':
-        msg = msg[15:]
+        msg = msg[7:]
         github_url = "https://github.com/" + msg
         response = requests.get(github_url)
         if response.status_code == 404:
           return f"The url {github_url} is not found (404 Not Found)."
         else:
+          if msg == 'torvalds':
+            github_url += " 膜拜慢的都準備燒雞"
           return github_url
           
       elif msg[:3] == 'git':
@@ -68,11 +71,12 @@ def get_response(message) -> str:
         # TO-DO
         # elif msg == 'setup':
 
-      elif msg[:7] == 'weather':
-        return 'still developing'
-
       else:
         return 'no such command'
+    
+    elif msg[:7] == 'weather':
+      return 'still developing'
+
 
     elif msg[:4] == 'dict':
       msg = msg[5:]
