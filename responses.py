@@ -17,7 +17,7 @@ def get_response(message) -> str:
   if msg[0] == '!':
     msg = msg[1:]
     if msg[:4] == 'help':
-      return "!math\n!gen\n!search\n!dict\n!weather\n"
+      return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n"
 
     if msg[:4] == 'math':
       msg = msg[5:]
@@ -77,6 +77,13 @@ def get_response(message) -> str:
     elif msg[:7] == 'weather':
       return 'sorry, still developing'
 
+    elif msg[:4] == 'roll':
+      msg = msg[5:]
+      number = int(msg)
+      if number < 0:
+         return 'please enter a positive number'
+      else:
+        return random.randint(1, number)
 
     elif msg[:4] == 'dict':
       msg = msg[5:]
