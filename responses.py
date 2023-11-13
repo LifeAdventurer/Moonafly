@@ -79,9 +79,8 @@ def get_response(message) -> str:
 
     elif msg[:4] == 'roll':
       msg = msg[5:]
-      number = int(msg)
-      if number < 0:
-         return 'please enter a positive number'
+      if not all(char.isdigit() for char in msg):
+        return 'please enter a valid number'
       else:
         return random.randint(1, number)
 
