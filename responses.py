@@ -21,7 +21,7 @@ def get_response(message) -> str:
 
     if msg[:4] == 'math':
       msg = msg[5:]
-      return '此功能暫時關閉'
+      return 'sorry, this command is now closed'
 
     elif msg[:3] == 'gen':
       msg = msg[4:]
@@ -29,7 +29,7 @@ def get_response(message) -> str:
         return "vocabulary or (vocab) instead\nfortune"
 
       elif 'vocabulary' in msg or 'vocab' in msg:
-        return "still developing"
+        return "sorry, still developing"
         return list[random.randint(0, len(list))]
 
       elif msg[:7] == 'fortune':
@@ -75,7 +75,7 @@ def get_response(message) -> str:
         return 'no such command'
     
     elif msg[:7] == 'weather':
-      return 'still developing'
+      return 'sorry, still developing'
 
 
     elif msg[:4] == 'dict':
@@ -91,28 +91,11 @@ def get_response(message) -> str:
 
     else:
       return 'no such command' 
-  
-  if '睡覺' in msg:
-    return f"{username} 晚安 祝好夢"
-
-  if '晚安' in msg:
-    return msg
 
   if '機率' in msg:
     return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
-
-  if '危險' in msg:
-    return '發生危險了嗎 需要幫您撥打119嗎'
-
-  if '好' in msg:
-    words = ['不好', '好痛', '好難', '好苦', '', '',]
-    for word in words:
-      if word in msg:
-        return;    
-    if username == 'tobiichi3227':
-      return '那麼好'
   
-  if msg == '笑死' or '哈哈' in msg:
+  if msg == '笑' or '哈哈' in msg:
     ha_str = '哈' * random.randint(1, 10)
     return f"{ha_str} :rofl:"
 
