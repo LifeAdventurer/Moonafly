@@ -46,7 +46,7 @@ def get_response(message) -> str:
       elif msg[:2] == 'oj':
         msg = msg[3:]
         if msg[:4] == 'help':
-          return 'codeforces -1\n'
+          return 'codeforces -1\natcoder -2\ncodechef -3\ntopcoder -4\nleetcode -5\ncsacademy -6\n'
         
         pattern = r'-(\d+)\s+(\w+)'
         match = re.search(pattern, msg)
@@ -60,6 +60,49 @@ def get_response(message) -> str:
               return f"The handle {handle} is not found"
             else:
               return url
+          
+          elif number == 2:
+            url = "https://atcoder.jp/users/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+
+          elif number == 3:
+            url = "https://www.codechef.com/users/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+
+          elif number == 4:
+            url = "https://profiles.topcoder.com/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+
+          elif number == 5:
+            url = "https://leetcode.com/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+
+          elif number == 6:
+            url = "https://csacademy.com/user/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+          
+          else:
+            return 'please enter a valid number'
         
         else:
           return 'please type the right command format, using help to see what are the available options'
