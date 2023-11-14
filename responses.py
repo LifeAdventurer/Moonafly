@@ -46,7 +46,7 @@ def get_response(message) -> str:
       elif msg[:2] == 'oj':
         msg = msg[3:]
         if msg[:4] == 'help':
-          return 'codeforces -1\natcoder -2\ncodechef -3\ntopcoder -4\nleetcode -5\ncsacademy -6\n'
+          return 'codeforces -1\natcoder -2\ncodechef -3\ntopcoder -4\nleetcode -5\ncsacademy -6\ndmoj -7\n'
         
         pattern = r'-(\d+)\s+(\w+)'
         match = re.search(pattern, msg)
@@ -66,6 +66,8 @@ def get_response(message) -> str:
             url = "https://leetcode.com/"
           elif number == 6:
             url = "https://csacademy.com/user/"
+          elif number == 7:
+            url = "https://dmoj.ca/user/"
           else:
             return 'please enter a valid number'
 
