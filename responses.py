@@ -41,7 +41,29 @@ def get_response(message) -> str:
     elif msg[:6] == 'search':
       msg = msg[7:]
       if msg[:4] == 'help':
-        return "git\ngithub\ngoogle"
+        return "git\ngithub\ngoogle\noj"
+
+      elif msg[:2] == 'oj':
+        msg = msg[3:]
+        if msg[:4] == 'help':
+          return 'codeforces -1\n'
+        
+        pattern = r'-(\d+)\s+(\w+)'
+        match = re.search(pattern, msg)
+        if match:
+          number = int(match.group(1))
+          handle = match.group(2)
+          if number == 1:
+            url = "https://codeforces.com/profile/" + handle
+            response = requests.get(url)
+            if response.status_code == 404:
+              return f"The handle {handle} is not found"
+            else:
+              return url
+        
+        else:
+          return 'please type the right command format, using help to see what are the available options'
+
 
       elif msg[:6] == 'google':
         return "https://www.google.com/search?q=" + msg[7:]
@@ -67,7 +89,7 @@ def get_response(message) -> str:
           return 'no such command'
 
         else:
-          return 'sorry this function is still developing'
+          return 'sorry, this function is still developing'
         # TO-DO
         # elif msg == 'setup':
 
