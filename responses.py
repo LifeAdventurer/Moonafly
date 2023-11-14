@@ -53,56 +53,28 @@ def get_response(message) -> str:
         if match:
           number = int(match.group(1))
           handle = match.group(2)
+          url = ""
           if number == 1:
-            url = "https://codeforces.com/profile/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-          
+            url = "https://codeforces.com/profile/"
           elif number == 2:
-            url = "https://atcoder.jp/users/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-
+            url = "https://atcoder.jp/users/"
           elif number == 3:
-            url = "https://www.codechef.com/users/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-
+            url = "https://www.codechef.com/users/"
           elif number == 4:
-            url = "https://profiles.topcoder.com/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-
+            url = "https://profiles.topcoder.com/"
           elif number == 5:
-            url = "https://leetcode.com/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-
+            url = "https://leetcode.com/"
           elif number == 6:
-            url = "https://csacademy.com/user/" + handle
-            response = requests.get(url)
-            if response.status_code == 404:
-              return f"The handle {handle} is not found"
-            else:
-              return url
-          
+            url = "https://csacademy.com/user/"
           else:
             return 'please enter a valid number'
+
+          url += handle
+          response = requests.get(url)
+          if response.status_code == 404:
+            return f"The handle {handle} is not found"
+          else:
+            return url
         
         else:
           return 'please type the right command format, using help to see what are the available options'
