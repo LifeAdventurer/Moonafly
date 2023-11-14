@@ -121,7 +121,7 @@ def get_response(message) -> str:
       if not all(char.isdigit() for char in msg):
         return 'please enter a valid number'
       else:
-        return random.randint(1, number)
+        return random.randint(1, int(msg))
 
     elif msg[:4] == 'dict':
       msg = msg[5:]
