@@ -5,6 +5,7 @@ import requests
 from search_dict import search_dict
 import os
 import re
+import textwrap
 
 vocab_file = open('vocabulary_items.json')
 list = json.load(vocab_file)['vocabularies']
@@ -16,9 +17,13 @@ def get_response_in_terminal_mode(message) -> str:
   username = str(message.author)
   msg = str(message.content)
 
-  print(path_stack)
   if msg[:2] == 'ls':
-    return "math  gen      search\ndict  weather  roll\n"
+    return textwrap.dedent("""\
+      ```
+      math  gen      search
+      dict  weather  roll
+      ```
+    """)
 
   if msg[:3] == 'gen':
     msg = msg[4:]

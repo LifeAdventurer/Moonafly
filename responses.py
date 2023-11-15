@@ -9,17 +9,16 @@ def get_response(message) -> str:
 
   global is_public_mode
 
-  if not is_public_mode and msg == 'moonafly -p':
+  if not is_public_mode and (msg == 'moonafly -p' or msg == 'Moonafly -p'):
     is_public_mode = True
-    print("swap to public mode")
-    return
-  elif msg == 'moonafly -t':
+    print('swap to public mode')
+    return 'Successfully swap to public mode!'
+  elif msg == 'moonafly -t' or msg == 'Moonafly -t':
     is_public_mode = False
-    # global path_stack
-    # path_stack.append("~")
-    print("swap to terminal mode")
-    print("Moonafly:~$")
-    return 'Moonafly:~$'
+    response_terminal.path_stack.append("~")
+    print('swap to terminal mode')
+    print('Moonafly:~$')
+    return '```Moonafly:~$```'
 
   else:
     if msg == 'exit' and not is_public_mode:
