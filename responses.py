@@ -6,11 +6,14 @@ from search_dict import search_dict
 import os
 import re
 
+is_Moonafly = False
+
 vocab_file = open('vocabulary_items.json')
 list = json.load(vocab_file)['vocabularies']
 vocab_file.close()
 
 def get_response(message) -> str:
+  global is_Moonafly
   username = str(message.author)
   msg = str(message.content)
 
@@ -19,14 +22,21 @@ def get_response(message) -> str:
     if msg[:4] == 'help':
       return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n"
 
-    if msg[:4] == 'math':
-      msg = msg[5:]
-      return 'sorry, this command is now closed'
+    if msg[:8] == 'moonafly':
+      is_Moonafly = True
+      print("Moonafly:~$")
+      return 'Moonafly:~$'
+    
+  if msg == 'exit':
+    print("exit")
+    is_Moonafly = False
+    return
 
-    elif msg[:3] == 'gen':
+  if is_Moonafly:
+    if msg[:3] == 'gen':
       msg = msg[4:]
-      if msg[:4] == 'help':
-        return "vocabulary or (vocab) instead\nfortune"
+      if msg[:2] == 'ls':
+        return "vocabulary   vocab   fortune"
 
       elif 'vocabulary' in msg or 'vocab' in msg:
         return "sorry, still developing"
@@ -40,13 +50,13 @@ def get_response(message) -> str:
     
     elif msg[:6] == 'search':
       msg = msg[7:]
-      if msg[:4] == 'help':
-        return "git\ngithub\ngoogle\noj"
+      if msg[:2] == 'ls':
+        return "git   github   google   oj"
 
       elif msg[:2] == 'oj':
         msg = msg[3:]
-        if msg[:4] == 'help':
-          return 'codeforces -1\natcoder -2\ncodechef -3\ntopcoder -4\nleetcode -5\ncsacademy -6\ndmoj -7\n'
+        if msg[:2] == 'ls':
+          return 'codeforces -1   atcoder -2      codechef -3\ntopcoder -4      leetcode -5    csacademy -6\ndmoj -7\n'
         
         pattern = r'-(\d+)\s+(\w+)'
         match = re.search(pattern, msg)
@@ -98,8 +108,8 @@ def get_response(message) -> str:
           
       elif msg[:3] == 'git':
         msg = msg[4:]
-        if msg[:4] == 'help':
-          return "setup -1\ninit -2\nstage & snapshot -3\nbranch & merge -4\ninspect & compare -5\nshare & update -6\n"
+        if msg[:2] == 'ls':
+          return "setup -1        init -2       stage & snapshot -3\nbranch & merge -4    inspect & compare -5    share & update -6\n"
         
         msg = msg[1:]
         if msg > '6' or msg < '1':
