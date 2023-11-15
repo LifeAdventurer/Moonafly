@@ -10,9 +10,22 @@ vocab_file = open('vocabulary_items.json')
 list = json.load(vocab_file)['vocabularies']
 vocab_file.close()
 
+chinese_pattern = re.compile('[\u4e00-\u9fff]')
+
 def get_response_in_public_mode(message) -> str:
   username = str(message.author)
   msg = str(message.content)
+
+  if '機率' in msg:
+    return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
+  
+  if msg == '笑' or '哈哈' in msg:
+    ha_str = '哈' * random.randint(1, 10)
+    return f"{ha_str} :rofl:"
+
+  match = chinese_pattern.search(msg)
+  if match:
+    return
 
   if msg[0] == '!':
     msg = msg[1:]
@@ -92,8 +105,6 @@ def get_response_in_public_mode(message) -> str:
         if response.status_code == 404:
           return f"The url {github_url} is not found (404 Not Found)."
         else:
-          if msg == 'torvalds':
-            github_url += " 膜拜慢的都準備燒雞"
           return github_url
           
       elif msg[:3] == 'git':
@@ -137,12 +148,7 @@ def get_response_in_public_mode(message) -> str:
     else:
       return 'no such command' 
 
-  if '機率' in msg:
-    return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
   
-  if msg == '笑' or '哈哈' in msg:
-    ha_str = '哈' * random.randint(1, 10)
-    return f"{ha_str} :rofl:"
 
   if 'wtf' in msg:
     return f"{username} stop saying wtf :rage:"
