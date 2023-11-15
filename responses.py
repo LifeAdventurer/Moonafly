@@ -15,8 +15,11 @@ def get_response(message) -> str:
     return
   elif msg == 'moonafly -t':
     is_public_mode = False
+    # global path_stack
+    # path_stack.append("~")
     print("swap to terminal mode")
-    return
+    print("Moonafly:~$")
+    return 'Moonafly:~$'
 
   else:
     if msg == 'exit' and not is_public_mode:
