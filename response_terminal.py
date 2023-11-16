@@ -17,8 +17,10 @@ def current_directory() -> str:
   global path_stack
   path = "Moonafly:"
   for folder in path_stack:
-    if folder != '~':
-      path += '\\'
+    if not folder:
+      continue
+    if folder != '~' and folder != '/':
+      path += '/'
     path += f"{folder}"
   return path + "$"
 
@@ -43,7 +45,8 @@ def get_response_in_terminal_mode(message) -> str:
       if folder == '.':
         continue
       elif folder == '..':
-        path_stack.pop()
+        if len(path_stack) > 1:
+          path_stack.pop()
       else:
         path_stack.append(folder)
     return f"```{current_directory()}```"
