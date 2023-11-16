@@ -33,9 +33,18 @@ def get_response_in_terminal_mode(message) -> str:
     if not path_to_directory:
       path_stack = ['~']
       return f"```{current_directory()}```"
-    path_to_directory = path_to_directory.replace('\\', '')
-    folders = path_to_directory.split('/')
-    path_stack += folders
+    
+    elif path_to_directory == '.':
+      return f"```{current_directory()}```"
+
+    path_to_directory = path_to_directory.replace('\\', '').split('/')
+    for folder in path_to_directory:
+      if folder == '.':
+        continue
+      elif folder == '..':
+        path_stack.pop()
+      else:
+        path_stack.append(folder)
     return f"```{current_directory()}```"
 
   if msg[:2] == 'ls':

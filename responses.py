@@ -23,6 +23,7 @@ def get_response(message) -> str:
   else:
     if msg == 'exit' and not is_public_mode:
       is_public_mode = True
+      response_terminal.path_stack.clear()
       return
     elif msg == 'status':
       if is_public_mode:
