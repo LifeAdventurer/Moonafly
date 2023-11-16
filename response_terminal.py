@@ -34,7 +34,8 @@ def get_response_in_terminal_mode(message) -> str:
       path_stack = ['~']
       return f"```{current_directory()}```"
     
-    elif path_to_directory == '.':
+    elif path_to_directory == '/':
+      path_stack = ['/']
       return f"```{current_directory()}```"
 
     path_to_directory = path_to_directory.replace('\\', '').split('/')
@@ -52,7 +53,7 @@ def get_response_in_terminal_mode(message) -> str:
       ```
       dict  gen     math
       roll  search  weather
-      {current_directory}
+      {current_directory()}
       ```
     """)
 
@@ -62,7 +63,7 @@ def get_response_in_terminal_mode(message) -> str:
       return textwrap.dedent(f"""\
         ```
         fortune vocab
-        {current_directory}
+        {current_directory()}
         ```
       """)
     elif 'vocabulary' in msg or 'vocab' in msg:
@@ -79,7 +80,7 @@ def get_response_in_terminal_mode(message) -> str:
       return textwrap.dedent(f"""\
         ```
         git github google oj
-        {current_directory}
+        {current_directory()}
         ```
       """)
       return "git   github   google   oj"
@@ -96,7 +97,7 @@ def get_response_in_terminal_mode(message) -> str:
           dmoj        -5
           leetcode    -6
           topcoder    -7
-          {current_directory}
+          {current_directory()}
           ```
         """)
       
@@ -156,7 +157,7 @@ def get_response_in_terminal_mode(message) -> str:
           branch & merge     -4
           inspect & compare  -5
           share & update     -6
-          {current_directory}
+          {current_directory()}
           ```
         """)
       
