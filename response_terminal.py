@@ -20,15 +20,19 @@ def get_response_in_terminal_mode(message) -> str:
   if msg[:2] == 'ls':
     return textwrap.dedent("""\
       ```
-      math  gen      search
-      dict  weather  roll
+      dict  gen     math
+      roll  search  weather
       ```
     """)
 
   if msg[:3] == 'gen':
     msg = msg[4:]
     if msg[:2] == 'ls':
-      return "vocabulary   vocab   fortune"
+      return textwrap.dedent("""\
+        ```
+        fortune vocab
+        ```
+      """)
     elif 'vocabulary' in msg or 'vocab' in msg:
       return "sorry, still developing"
       return list[random.randint(0, len(list))]
@@ -40,12 +44,27 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:6] == 'search':
     msg = msg[7:]
     if msg[:2] == 'ls':
+      return textwrap.dedent("""\
+        ```
+        git github google oj
+        ```
+      """)
       return "git   github   google   oj"
 
     elif msg[:2] == 'oj':
       msg = msg[3:]
       if msg[:2] == 'ls':
-        return 'codeforces -1   atcoder -2      codechef -3\ntopcoder -4      leetcode -5    csacademy -6\ndmoj -7\n'
+        return textwrap.dedent("""\
+          ```
+          atcoder     -1
+          codechef    -2
+          codeforces  -3  
+          csacademy   -4
+          dmoj        -5
+          leetcode    -6
+          topcoder    -7
+          ```
+        """)
       
       pattern = r'-(\d+)\s+(\w+)'
       match = re.search(pattern, msg)
@@ -54,19 +73,19 @@ def get_response_in_terminal_mode(message) -> str:
         handle = match.group(2)
         url = ""
         if number == 1:
-          url = "https://codeforces.com/profile/"
-        elif number == 2:
           url = "https://atcoder.jp/users/"
-        elif number == 3:
+        elif number == 2:
           url = "https://www.codechef.com/users/"
+        elif number == 3:
+          url = "https://codeforces.com/profile/"
         elif number == 4:
-          url = "https://profiles.topcoder.com/"
-        elif number == 5:
-          url = "https://leetcode.com/"
-        elif number == 6:
           url = "https://csacademy.com/user/"
-        elif number == 7:
+        elif number == 5:
           url = "https://dmoj.ca/user/"
+        elif number == 6:
+          url = "https://leetcode.com/"
+        elif number == 7:
+          url = "https://profiles.topcoder.com/"
         else:
           return 'please enter a valid number'
 
@@ -90,15 +109,28 @@ def get_response_in_terminal_mode(message) -> str:
       if response.status_code == 404:
         return f"The url {github_url} is not found (404 Not Found)."
       else:
-        if msg == 'torvalds':
-          github_url += " 膜拜慢的都準備燒雞"
         return github_url
         
     elif msg[:3] == 'git':
       msg = msg[4:]
       if msg[:2] == 'ls':
-        return "setup -1        init -2       stage & snapshot -3\nbranch & merge -4    inspect & compare -5    share & update -6\n"
+        return textwrap.dedent("""\
+          ```
+          setup              -1
+          init               -2
+          stage & snapshot   -3  
+          branch & merge     -4
+          inspect & compare  -5
+          share & update     -6
+          ```
+        """)
       
+      # pattern = r'-(\d+)\s+(\w+)'
+      # match = re.search(pattern, msg)
+      # if match:
+      #   number = int(match.group(1))
+      #   command = match.group(2)
+
       msg = msg[1:]
       if msg > '6' or msg < '1':
         return 'no such command'
@@ -131,13 +163,3 @@ def get_response_in_terminal_mode(message) -> str:
 
   else:
     return 'no such command'
-
-  if '機率' in msg:
-    return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
-  
-  if msg == '笑' or '哈哈' in msg:
-    ha_str = '哈' * random.randint(1, 10)
-    return f"{ha_str} :rofl:"
-
-  if 'wtf' in msg:
-    return f"{username} stop saying wtf :rage:"
