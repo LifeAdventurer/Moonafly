@@ -35,10 +35,12 @@ def get_response_in_terminal_mode(message) -> str:
     if not path_to_directory:
       path_stack = ['~']
       return f"```{current_directory()}```"
+      print(f"```{current_directory()}```")
     
     elif path_to_directory == '/':
       path_stack = ['/']
       return f"```{current_directory()}```"
+      print(f"```{current_directory()}```")
 
     path_to_directory = path_to_directory.replace('\\', '').split('/')
     for folder in path_to_directory:
@@ -50,6 +52,7 @@ def get_response_in_terminal_mode(message) -> str:
       else:
         path_stack.append(folder)
     return f"```{current_directory()}```"
+    print(f"```{current_directory()}```")
 
   if msg[:2] == 'ls':
     return textwrap.dedent(f"""\
@@ -69,11 +72,15 @@ def get_response_in_terminal_mode(message) -> str:
         {current_directory()}
         ```
       """)
+      print(f"```{current_directory()}```")
+
     elif 'vocabulary' in msg or 'vocab' in msg:
       return "sorry, still developing"
       return list[random.randint(0, len(list))]
+
     elif msg[:7] == 'fortune':
       return 'https://lifeadventurer.github.io/generators/fortune_generator/index.html' 
+      
     else:
       return 'no such command' 
   
@@ -86,7 +93,7 @@ def get_response_in_terminal_mode(message) -> str:
         {current_directory()}
         ```
       """)
-      return "git   github   google   oj"
+      print(f"```{current_directory()}```")
 
     elif msg[:2] == 'oj':
       msg = msg[3:]
@@ -103,6 +110,7 @@ def get_response_in_terminal_mode(message) -> str:
           {current_directory()}
           ```
         """)
+        print(f"```{current_directory()}```")
       
       pattern = r'-(\d+)\s+(\w+)'
       match = re.search(pattern, msg)
@@ -163,6 +171,7 @@ def get_response_in_terminal_mode(message) -> str:
           {current_directory()}
           ```
         """)
+        print(f"```{current_directory()}```")
       
       # pattern = r'-(\d+)\s+(\w+)'
       # match = re.search(pattern, msg)
