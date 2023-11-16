@@ -13,13 +13,17 @@ vocab_file.close()
 
 path_stack = []
 
+# generating the current working directory
 def current_directory() -> str:
   global path_stack
   path = "Moonafly:"
   for folder in path_stack:
-    if not folder:
-      continue
-    elif folder != '~' and folder != '/':
+    # don't need this right now because checked before appending to path_stack
+    # if not folder:
+    #   continue
+
+    # ~ and / don't need a prefix '/'
+    if folder != '~' and folder != '/':
       path += '/'
     path += f"{folder}"
   return path + "$"
@@ -31,17 +35,22 @@ def get_response_in_terminal_mode(message) -> str:
   global path_stack
 
   if msg[:2] == 'cd':
-    path_to_directory = msg[2:].lstrip()
-    if not path_to_directory or path_to_directory == '~':
+    # 
+    path = msg[2:].lstrip()
+    
+    # blank or ~ should go directly to ~
+    if not path or path == '~':
       path_stack = ['~']
       print(f"{current_directory()}")
       return f"```{current_directory()}```"
-
-    elif path_to_directory == '/':
+    
+    # go to the root directory
+    elif path == '/':
       path_stack = ['/']
       print(f"{current_directory()}")
       return f"```{current_directory()}```"
 
+    # if at root directory 
     elif path_stack == ['/']:
       print(textwrap.dedent(f"""\
         permission denied
@@ -54,12 +63,15 @@ def get_response_in_terminal_mode(message) -> str:
         ```
       """)
 
-    path_to_directory = path_to_directory.replace('\\', '').split('/')
-    for folder in path_to_directory:
-      if not folder:
+    # skip all the '\' and split the path 
+    path = path.replace('\\', '').split('/')
+    
+    for folder in path:
+      # if the folder is empty or . then nothing happens with the 
+      if folder == '' or folder == '.':
         continue
-      elif folder == '.':
-        continue
+
+      # move up one directory 
       elif folder == '..':
         if len(path_stack) > 1:
           path_stack.pop()
@@ -67,6 +79,8 @@ def get_response_in_terminal_mode(message) -> str:
           path_stack[0] = 'home'
         elif path_stack[0] == 'home':
           path_stack[0] = '/'
+      
+      # make sure the path /home/Moonafly/ is right 
       elif folder == 'home':
         path_stack = ['home']
       elif folder == 'Moonafly':
@@ -103,9 +117,13 @@ def get_response_in_terminal_mode(message) -> str:
       ```
     """)
 
+  # return the full pathname of the current working directory
   elif msg[:3] == 'pwd':
+    # delete the prefix 'Moonafly:' and the suffix '$'
     path = current_directory()[9:-1]
+    # delete the prefix no matter it is '~' or '/' path_stack still has the data
     path = path[1:]
+    
     if path_stack[0] == '~':
       path = 'home/Moonafly' + path 
     print(textwrap.dedent(f"""\
@@ -138,6 +156,7 @@ def get_response_in_terminal_mode(message) -> str:
       return "sorry, still developing"
       return list[random.randint(0, len(list))]
 
+    # my generators repo on github.io
     elif msg[:7] == 'fortune':
       return 'https://lifeadventurer.github.io/generators/fortune_generator/index.html' 
 
@@ -158,6 +177,7 @@ def get_response_in_terminal_mode(message) -> str:
         ```
       """)
 
+    # search for a handle in different online judges
     elif msg[:2] == 'oj':
       msg = msg[3:]
       if msg[:2] == 'ls':
@@ -190,6 +210,7 @@ def get_response_in_terminal_mode(message) -> str:
         number = int(match.group(1))
         handle = match.group(2)
         url = ""
+        # TODO: make this as a file or at least a list
         if number == 1:
           url = "https://atcoder.jp/users/"
         elif number == 2:
@@ -217,9 +238,11 @@ def get_response_in_terminal_mode(message) -> str:
       else:
         return 'please type the right command format, using help to see what are the available options'
 
+    # just a google search -> must improve this more
     elif msg[:6] == 'google':
       return "https://www.google.com/search?q=" + msg[7:]
 
+    # search for github repos or profiles -> because url
     elif msg[:6] == 'github':
       msg = msg[7:]
       github_url = "https://github.com/" + msg
@@ -228,7 +251,8 @@ def get_response_in_terminal_mode(message) -> str:
         return f"The url {github_url} is not found (404 Not Found)."
       else:
         return github_url
-        
+    
+    # search for git commands
     elif msg[:3] == 'git':
       msg = msg[4:]
       if msg[:2] == 'ls':
@@ -272,6 +296,7 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:7] == 'weather':
     return 'sorry, still developing'
 
+  # roll a random number
   elif msg[:4] == 'roll':
     msg = msg[5:]
     if not all(char.isdigit() for char in msg):
@@ -279,6 +304,7 @@ def get_response_in_terminal_mode(message) -> str:
     else:
       return random.randint(1, int(msg))
 
+  # return the definition and example of the enter word from a dictionary
   elif msg[:4] == 'dict':
     msg = msg[5:]
     match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
