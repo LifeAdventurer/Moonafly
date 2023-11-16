@@ -147,8 +147,3 @@ def get_response_in_public_mode(message) -> str:
 
     else:
       return 'no such command' 
-
-  
-
-  if 'wtf' in msg:
-    return f"{username} stop saying wtf :rage:"
