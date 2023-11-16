@@ -13,24 +13,47 @@ vocab_file.close()
 
 path_stack = []
 
+def current_directory() -> str:
+  global path_stack
+  path = "Moonafly:"
+  for folder in path_stack:
+    if folder != '~':
+      path += '\\'
+    path += f"{folder}"
+  return path + "$"
+
 def get_response_in_terminal_mode(message) -> str:
   username = str(message.author)
   msg = str(message.content)
 
+  global path_stack
+
+  if msg[:2] == 'cd':
+    path_to_directory = msg[2:].lstrip()
+    if not path_to_directory:
+      path_stack = ['~']
+      return f"```{current_directory()}```"
+    path_to_directory = path_to_directory.replace('\\', '')
+    folders = path_to_directory.split('/')
+    path_stack += folders
+    return f"```{current_directory()}```"
+
   if msg[:2] == 'ls':
-    return textwrap.dedent("""\
+    return textwrap.dedent(f"""\
       ```
       dict  gen     math
       roll  search  weather
+      {current_directory}
       ```
     """)
 
   if msg[:3] == 'gen':
     msg = msg[4:]
     if msg[:2] == 'ls':
-      return textwrap.dedent("""\
+      return textwrap.dedent(f"""\
         ```
         fortune vocab
+        {current_directory}
         ```
       """)
     elif 'vocabulary' in msg or 'vocab' in msg:
@@ -44,9 +67,10 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:6] == 'search':
     msg = msg[7:]
     if msg[:2] == 'ls':
-      return textwrap.dedent("""\
+      return textwrap.dedent(f"""\
         ```
         git github google oj
+        {current_directory}
         ```
       """)
       return "git   github   google   oj"
@@ -54,7 +78,7 @@ def get_response_in_terminal_mode(message) -> str:
     elif msg[:2] == 'oj':
       msg = msg[3:]
       if msg[:2] == 'ls':
-        return textwrap.dedent("""\
+        return textwrap.dedent(f"""\
           ```
           atcoder     -1
           codechef    -2
@@ -63,6 +87,7 @@ def get_response_in_terminal_mode(message) -> str:
           dmoj        -5
           leetcode    -6
           topcoder    -7
+          {current_directory}
           ```
         """)
       
@@ -114,7 +139,7 @@ def get_response_in_terminal_mode(message) -> str:
     elif msg[:3] == 'git':
       msg = msg[4:]
       if msg[:2] == 'ls':
-        return textwrap.dedent("""\
+        return textwrap.dedent(f"""\
           ```
           setup              -1
           init               -2
@@ -122,6 +147,7 @@ def get_response_in_terminal_mode(message) -> str:
           branch & merge     -4
           inspect & compare  -5
           share & update     -6
+          {current_directory}
           ```
         """)
       
