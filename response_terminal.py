@@ -32,7 +32,7 @@ def get_response_in_terminal_mode(message) -> str:
 
   if msg[:2] == 'cd':
     path_to_directory = msg[2:].lstrip()
-    if not path_to_directory:
+    if not path_to_directory or path_to_directory == '~':
       path_stack = ['~']
       print(f"{current_directory()}")
       return f"```{current_directory()}```"
@@ -65,9 +65,27 @@ def get_response_in_terminal_mode(message) -> str:
           path_stack[0] = 'home'
         elif path_stack[0] == 'home':
           path_stack[0] = '/'
+      elif folder == 'home':
+        path_stack = ['home']
+      elif folder == 'Moonafly':
+        if path_stack == ['home']:
+          path_stack = ['~']
+        else:
+          print(textwrap.dedent(f"""\
+            ```
+            bash: cd: {msg[2:].lstrip()}: No such file or directory
+            {current_directory()}
+            ```
+          """))
+          return textwrap.dedent(f"""\
+            ```
+            bash: cd: {msg[2:].lstrip()}: No such file or directory
+            {current_directory()}
+            ```
+          """)
       else:
         path_stack.append(folder)
-    print(f"```{current_directory()}```")
+    print(f"{current_directory()}")
     return f"```{current_directory()}```"
 
   elif msg[:2] == 'ls':
