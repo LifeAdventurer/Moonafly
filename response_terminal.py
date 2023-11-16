@@ -19,7 +19,7 @@ def current_directory() -> str:
   for folder in path_stack:
     if not folder:
       continue
-    if folder != '~' and folder != '/':
+    elif folder != '~' and folder != '/':
       path += '/'
     path += f"{folder}"
   return path + "$"
@@ -54,7 +54,7 @@ def get_response_in_terminal_mode(message) -> str:
     return f"```{current_directory()}```"
     print(f"```{current_directory()}```")
 
-  if msg[:2] == 'ls':
+  elif msg[:2] == 'ls':
     return textwrap.dedent(f"""\
       ```
       dict  gen     math
@@ -63,7 +63,26 @@ def get_response_in_terminal_mode(message) -> str:
       ```
     """)
 
-  if msg[:3] == 'gen':
+  elif msg[:3] == 'pwd':
+    path = current_directory()[9:-1]
+    path = path[1:]
+    if path_stack[0] == '~':
+      path = 'home/Moonafly' + path 
+    print(textwrap.dedent(f"""\
+      ```
+      /{path}
+      {current_directory()}
+      ```
+    """))
+    return textwrap.dedent(f"""\
+      ```
+      /{path}
+      {current_directory()}
+      ```
+    """)
+    
+
+  elif msg[:3] == 'gen':
     msg = msg[4:]
     if msg[:2] == 'ls':
       return textwrap.dedent(f"""\
@@ -80,7 +99,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     elif msg[:7] == 'fortune':
       return 'https://lifeadventurer.github.io/generators/fortune_generator/index.html' 
-      
+
     else:
       return 'no such command' 
   
