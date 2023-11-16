@@ -56,7 +56,9 @@ def get_response_in_terminal_mode(message) -> str:
 
     path_to_directory = path_to_directory.replace('\\', '').split('/')
     for folder in path_to_directory:
-      if folder == '.':
+      if not folder:
+        continue
+      elif folder == '.':
         continue
       elif folder == '..':
         if len(path_stack) > 1:
@@ -71,11 +73,10 @@ def get_response_in_terminal_mode(message) -> str:
         if path_stack == ['home']:
           path_stack = ['~']
         else:
+          print(folder)
           print(textwrap.dedent(f"""\
-            ```
             bash: cd: {msg[2:].lstrip()}: No such file or directory
             {current_directory()}
-            ```
           """))
           return textwrap.dedent(f"""\
             ```
