@@ -34,13 +34,25 @@ def get_response_in_terminal_mode(message) -> str:
     path_to_directory = msg[2:].lstrip()
     if not path_to_directory:
       path_stack = ['~']
+      print(f"{current_directory()}")
       return f"```{current_directory()}```"
-      print(f"```{current_directory()}```")
-    
+
     elif path_to_directory == '/':
       path_stack = ['/']
+      print(f"{current_directory()}")
       return f"```{current_directory()}```"
-      print(f"```{current_directory()}```")
+
+    elif path_stack == ['/']:
+      print(textwrap.dedent(f"""\
+        permission denied
+        {current_directory()}
+      """))
+      return textwrap.dedent(f"""\
+        ```
+        permission denied
+        {current_directory()}
+        ```
+      """)
 
     path_to_directory = path_to_directory.replace('\\', '').split('/')
     for folder in path_to_directory:
@@ -49,12 +61,21 @@ def get_response_in_terminal_mode(message) -> str:
       elif folder == '..':
         if len(path_stack) > 1:
           path_stack.pop()
+        elif path_stack[0] == '~':
+          path_stack[0] = 'home'
+        elif path_stack[0] == 'home':
+          path_stack[0] = '/'
       else:
         path_stack.append(folder)
-    return f"```{current_directory()}```"
     print(f"```{current_directory()}```")
+    return f"```{current_directory()}```"
 
   elif msg[:2] == 'ls':
+    print(textwrap.dedent(f"""\
+      dict  gen     math
+      roll  search  weather
+      {current_directory()}
+    """))
     return textwrap.dedent(f"""\
       ```
       dict  gen     math
@@ -69,10 +90,8 @@ def get_response_in_terminal_mode(message) -> str:
     if path_stack[0] == '~':
       path = 'home/Moonafly' + path 
     print(textwrap.dedent(f"""\
-      ```
       /{path}
       {current_directory()}
-      ```
     """))
     return textwrap.dedent(f"""\
       ```
@@ -85,13 +104,16 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:3] == 'gen':
     msg = msg[4:]
     if msg[:2] == 'ls':
+      print(textwrap.dedent(f"""\
+        fortune vocab
+        {current_directory()}
+      """))
       return textwrap.dedent(f"""\
         ```
         fortune vocab
         {current_directory()}
         ```
       """)
-      print(f"```{current_directory()}```")
 
     elif 'vocabulary' in msg or 'vocab' in msg:
       return "sorry, still developing"
@@ -106,17 +128,30 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:6] == 'search':
     msg = msg[7:]
     if msg[:2] == 'ls':
+      print(textwrap.dedent(f"""\
+        git  github  google  oj
+        {current_directory()}
+      """))
       return textwrap.dedent(f"""\
         ```
-        git github google oj
+        git  github  google  oj
         {current_directory()}
         ```
       """)
-      print(f"```{current_directory()}```")
 
     elif msg[:2] == 'oj':
       msg = msg[3:]
       if msg[:2] == 'ls':
+        print(textwrap.dedent(f"""\
+          atcoder     -1
+          codechef    -2
+          codeforces  -3  
+          csacademy   -4
+          dmoj        -5
+          leetcode    -6
+          topcoder    -7
+          {current_directory()}
+        """))
         return textwrap.dedent(f"""\
           ```
           atcoder     -1
@@ -129,7 +164,6 @@ def get_response_in_terminal_mode(message) -> str:
           {current_directory()}
           ```
         """)
-        print(f"```{current_directory()}```")
       
       pattern = r'-(\d+)\s+(\w+)'
       match = re.search(pattern, msg)
@@ -179,6 +213,15 @@ def get_response_in_terminal_mode(message) -> str:
     elif msg[:3] == 'git':
       msg = msg[4:]
       if msg[:2] == 'ls':
+        print(textwrap.dedent(f"""\
+          setup              -1
+          init               -2
+          stage & snapshot   -3  
+          branch & merge     -4
+          inspect & compare  -5
+          share & update     -6
+          {current_directory()}
+        """))
         return textwrap.dedent(f"""\
           ```
           setup              -1
@@ -190,7 +233,6 @@ def get_response_in_terminal_mode(message) -> str:
           {current_directory()}
           ```
         """)
-        print(f"```{current_directory()}```")
       
       # pattern = r'-(\d+)\s+(\w+)'
       # match = re.search(pattern, msg)
