@@ -54,7 +54,7 @@ def get_response_in_public_mode(message) -> str:
     elif msg[:6] == 'search':
       msg = msg[7:]
       if msg[:4] == 'help':
-        return "git\ngithub\ngoogle\noj"
+        return "git\ngithub\ngoogle\noj\nyoutube"
 
       elif msg[:2] == 'oj':
         msg = msg[3:]
@@ -97,6 +97,9 @@ def get_response_in_public_mode(message) -> str:
 
       elif msg[:6] == 'google':
         return "https://www.google.com/search?q=" + msg[7:]
+
+      elif msg[:7] == 'youtube':
+        return "https://www.youtube.com/results?search_query=" + msg[8:]
 
       elif msg[:6] == 'github':
         msg = msg[7:]

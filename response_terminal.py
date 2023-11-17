@@ -242,6 +242,10 @@ def get_response_in_terminal_mode(message) -> str:
     elif msg[:6] == 'google':
       return "https://www.google.com/search?q=" + msg[7:]
 
+    # same as above -> need improvement
+    elif msg[:7] == 'youtube':
+        return "https://www.youtube.com/results?search_query=" + msg[8:]
+
     # search for github repos or profiles -> because url
     elif msg[:6] == 'github':
       msg = msg[7:]
