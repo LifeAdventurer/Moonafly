@@ -29,7 +29,7 @@ def get_response(message) -> str:
       if is_public_mode:
         return 'public mode v1.0.0'
       else:
-        return 'terminal mode v1.0.3'
+        return f'terminal mode v1.0.3\n```{response_terminal.get_current_directory()}```'
     if is_public_mode:
       return response_public.get_response_in_public_mode(message)
     else:
