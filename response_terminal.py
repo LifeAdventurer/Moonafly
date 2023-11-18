@@ -3,6 +3,7 @@ import json
 import random
 import requests
 import search_dict
+import search_weather
 import os
 import re
 import textwrap
@@ -298,7 +299,7 @@ def get_response_in_terminal_mode(message) -> str:
       return 'no such command'
   
   elif msg[:7] == 'weather':
-    return 'sorry, still developing'
+    return search_weather.get_weather_info() + f"\n```{current_directory()}```";
 
   # roll a random number
   elif msg[:4] == 'roll':
