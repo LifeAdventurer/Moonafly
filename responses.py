@@ -2,9 +2,6 @@ import response_public
 import response_terminal
 import json
 
-is_public_mode = True
-entering_password = False
-incorrect_count = 0
 password = ""
 
 def load_password_for_terminal():
@@ -13,13 +10,26 @@ def load_password_for_terminal():
   password = json.load(passwords_file)['terminal_password']
   passwords_file.close()
 
+special_guests = []
+
+def special_guest_list():
+  global special_guests
+  special_guest_file = open('special_guests.json')
+  special_guests = json.load(special_guest_file)['guests']
+  special_guest_file.close()
+
+special_guest_using_terminal = False
+entering_password = False
+incorrect_count = 0
+is_public_mode = True
+
 def get_response(message) -> str:
   username = str(message.author)
   msg = str(message.content)
 
-  global is_public_mode, entering_password, incorrect_count, password
+  global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal
 
-  if entering_password and incorrect_count < 3 and username != 'life_adventurer':
+  if entering_password and incorrect_count < 3 and username not in special_guests:
     if msg == password:
       password = password[::-1]
       incorrect_count = 0
@@ -37,16 +47,20 @@ def get_response(message) -> str:
         is_public_mode = True
         return '```the maximum number of entries has been reached\nauto exited```'
       return '```incorrect, please enter again```'
+  
+  if special_guest_using_terminal and username not in special_guests:
+    return
 
   if not is_public_mode and (msg == 'moonafly -p' or msg == 'Moonafly -p'):
     is_public_mode = True
     print('swap to public mode')
     return 'Successfully swap to public mode!'
   elif msg == 'moonafly -t' or msg == 'Moonafly -t':
-    if username != 'life_adventurer':
+    if username not in special_guests:
       entering_password = True
-      load_password_for_terminal()
       return '```please enter password```'
+    else:
+      special_guest_using_terminal = True
     is_public_mode = False
     response_terminal.path_stack.append("~")
     print('swap to terminal mode')
@@ -55,6 +69,8 @@ def get_response(message) -> str:
 
   else:
     if msg == 'exit' and not is_public_mode:
+      if username in special_guests:
+        special_guest_using_terminal = False
       is_public_mode = True
       incorrect_count = 0
       response_terminal.path_stack.clear()
