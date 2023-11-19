@@ -6,17 +6,15 @@ import json
 password = ""
 def load_password_for_terminal():
   global password
-  passwords_file = open('passwords.json')
-  password = json.load(passwords_file)['terminal_password']
-  passwords_file.close()
+  with open('passwords.json') as passwords_file:
+    password = json.load(passwords_file)['terminal_password']
 
 # special guest
 special_guests = []
 def special_guest_list():
   global special_guests
-  special_guest_file = open('special_guests.json')
-  special_guests = json.load(special_guest_file)['guests']
-  special_guest_file.close()
+  with open('special_guests.json') as special_guest_file:
+    special_guests = json.load(special_guest_file)['guests']
 
 special_guest_using_terminal = False
 entering_password = False
