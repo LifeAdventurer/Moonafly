@@ -2,16 +2,16 @@ import response_public
 import response_terminal
 import json
 
+# password
 password = ""
-
 def load_password_for_terminal():
   global password
   passwords_file = open('passwords.json')
   password = json.load(passwords_file)['terminal_password']
   passwords_file.close()
 
+# special guest
 special_guests = []
-
 def special_guest_list():
   global special_guests
   special_guest_file = open('special_guests.json')

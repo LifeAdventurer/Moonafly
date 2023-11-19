@@ -19,9 +19,13 @@ async def send_message(message, user_message):
   except Exception as e:
     print(e)
 
-def run_discord_bot():
+def init_files():
   load_token()
-  
+  responses.special_guest_list()
+  responses.load_password_for_terminal()
+
+def run_discord_bot():
+  init_files()
   intents = discord.Intents.default()
   intents.message_content = True
   client = discord.Client(intents=intents)
