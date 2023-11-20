@@ -299,7 +299,12 @@ def get_response_in_terminal_mode(message) -> str:
       return 'no such command'
   
   elif msg[:7] == 'weather':
-    return search_weather.get_weather_info() + f"\n```{current_directory()}```";
+    return textwrap.dedent(f"""\
+      ```
+      {search_weather.get_weather_info()}
+      {current_directory()}
+      ```
+    """)
 
   # roll a random number
   elif msg[:4] == 'roll':
@@ -318,7 +323,12 @@ def get_response_in_terminal_mode(message) -> str:
     elif 'LIMIT' in msg:
       return 'please type a number after the command LIMIT'
     else:
-      return search_dict.search_dict(msg, 3)
+      return textwrap.dedent(f"""
+        ```
+        {search_dict.search_dict(msg, 3)}
+        {current_directory()}
+        ```
+      """)
 
   else:
     return 'no such command'
