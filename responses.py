@@ -13,7 +13,7 @@ def load_password_for_terminal():
 special_guests = []
 def special_guest_list():
   global special_guests
-  with open('special_guests.json') as special_guest_file:
+  with open('./json/special_guests.json') as special_guest_file:
     special_guests = json.load(special_guest_file)['guests']
 
 special_guest_using_terminal = False
