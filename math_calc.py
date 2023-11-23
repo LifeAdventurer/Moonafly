@@ -5,7 +5,7 @@ import math
 allowed_names = {}
 def load_allowed_names():
   global allowed_names
-  with open('./allowed_names.json') as allowed_names_file:
+  with open('./json/allowed_names.json') as allowed_names_file:
     allowed_names = json.load(allowed_names_file)['allowed_names']
 
 def safe_eval(msg) -> str:

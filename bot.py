@@ -7,7 +7,7 @@ token = ""
 # open token JSON file
 def load_token():
   global token
-  with open('config.json') as token_file:
+  with open('./json/config.json') as token_file:
     token = json.load(token_file)['token']
 
 async def send_message(message, user_message):

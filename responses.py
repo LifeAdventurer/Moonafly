@@ -6,7 +6,7 @@ import json
 password = ""
 def load_password_for_terminal():
   global password
-  with open('passwords.json') as passwords_file:
+  with open('./json/passwords.json') as passwords_file:
     password = json.load(passwords_file)['terminal_password']
 
 # special guest

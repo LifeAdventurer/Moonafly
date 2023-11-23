@@ -8,9 +8,9 @@ import math_calc
 import os
 import re
 
-vocab_file = open('vocabulary_items.json')
-list = json.load(vocab_file)['vocabularies']
-vocab_file.close()
+# vocab_file = open('./json/vocabulary_items.json')
+# vocab_list = json.load(vocab_file)['vocabularies']
+# vocab_file.close()
 
 chinese_pattern = re.compile('[\u4e00-\u9fff]')
 

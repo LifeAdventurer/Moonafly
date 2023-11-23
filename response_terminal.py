@@ -10,9 +10,9 @@ import os
 import re
 import textwrap
 
-vocab_file = open('vocabulary_items.json')
-list = json.load(vocab_file)['vocabularies']
-vocab_file.close()
+# vocab_file = open('./json/vocabulary_items.json')
+# vocab_list = json.load(vocab_file)['vocabularies']
+# vocab_file.close()
 
 path_stack = []
 
