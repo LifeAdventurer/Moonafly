@@ -1,2 +1,4 @@
-*.json
+config.json
+passwords.json
+special_guests.json
 *__pycache__
