@@ -4,6 +4,7 @@ import random
 import requests
 import search_dict
 import search_weather
+import math_calc
 import os
 import re
 
@@ -35,7 +36,9 @@ def get_response_in_public_mode(message) -> str:
 
     if msg[:4] == 'math':
       msg = msg[5:]
-      return 'sorry, this command is now closed'
+      # if username != 'life_adventurer':
+      #   return 'permission denied'
+      return math_calc.safe_eval(msg)
 
     elif msg[:3] == 'gen':
       msg = msg[4:]

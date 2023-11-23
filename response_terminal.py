@@ -4,6 +4,8 @@ import random
 import requests
 import search_dict
 import search_weather
+import math_calc
+import responses
 import os
 import re
 import textwrap
@@ -137,7 +139,12 @@ def get_response_in_terminal_mode(message) -> str:
       {current_directory()}
       ```
     """)
-    
+  
+  elif msg[:4] == 'math':
+    msg = msg[5:]
+    # if username not in responses.special_guests:
+    #   return 'permission denied'
+    return math_calc.safe_eval(msg)
 
   elif msg[:3] == 'gen':
     msg = msg[4:]
