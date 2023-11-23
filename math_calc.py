@@ -2,9 +2,14 @@ import ast
 import math
 
 # define the whitelist of allowed commands
-allowed_names = {'sum', 'min', 'max', 'abs', 'round', 'math', 'pow', 'sqrt', 'sin', 'cos', 'tan', 'ceil', 'floor', 'exp', 'log', 'log10', 'degrees', 'radians', 'fabs', 'prod', 'remainder', 'cbrt'}
+allowed_names = {}
+def load_allowed_names():
+  global allowed_names
+  with open('./allowed_names.json') as allowed_names_file:
+    allowed_names = json.load(allowed_names_file)['allowed_names']
 
 def safe_eval(msg) -> str:
+  load_allowed_names()
   # parse the expression into an AST
   try:
     parsed_expr = ast.parse(msg, mode = 'eval')
