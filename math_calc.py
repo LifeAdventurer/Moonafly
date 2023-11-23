@@ -2,8 +2,7 @@ import ast
 import math
 
 # define the whitelist of allowed commands
-allowed_names = {'sum', 'min', 'max', 'abs', 'round', 'math', 'pow', 'sqrt', 'sin', 'cos', 'tan'}
-# allowed_functions = {sum, min, max, abs, round, pow, math.sqrt, math.sin, math.cos, math.tan}
+allowed_names = {'sum', 'min', 'max', 'abs', 'round', 'math', 'pow', 'sqrt', 'sin', 'cos', 'tan', 'ceil', 'floor', 'exp', 'log', 'log10', 'degrees', 'radians', 'fabs', 'prod', 'remainder', 'cbrt'}
 
 def safe_eval(msg) -> str:
   # parse the expression into an AST
