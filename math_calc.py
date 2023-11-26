@@ -1,5 +1,6 @@
 import ast
 import math
+import json
 
 # define the whitelist of allowed commands
 allowed_names = {}
