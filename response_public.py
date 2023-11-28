@@ -32,7 +32,7 @@ def get_response_in_public_mode(message) -> str:
   if msg[0] == '!':
     msg = msg[1:]
     if msg[:4] == 'help':
-      return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n"
+      return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n!greek\n"
 
     if msg[:4] == 'math':
       msg = msg[5:]
@@ -58,7 +58,7 @@ def get_response_in_public_mode(message) -> str:
     elif msg[:6] == 'search':
       msg = msg[7:]
       if msg[:4] == 'help':
-        return "git\ngithub\ngoogle\noj\nyoutube"
+        return "git\ngithub\ngoogle\noj\nyoutube\n"
 
       elif msg[:2] == 'oj':
         msg = msg[3:]
@@ -130,7 +130,10 @@ def get_response_in_public_mode(message) -> str:
 
       else:
         return 'no such command'
-    
+
+    elif msg[:5] == 'greek':
+      return 'Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω\nα β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω\n'
+
     elif msg[:7] == 'weather':
       return search_weather.get_weather_info();
 

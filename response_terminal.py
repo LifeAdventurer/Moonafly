@@ -175,12 +175,14 @@ def get_response_in_terminal_mode(message) -> str:
     msg = msg[7:]
     if msg[:2] == 'ls':
       print(textwrap.dedent(f"""\
-        git  github  google  oj
+        git  github  google
+        oj   greek
         {current_directory()}
       """))
       return textwrap.dedent(f"""\
         ```
-        git  github  google  oj
+        git  github  google  
+        oj   greek
         {current_directory()}
         ```
       """)
@@ -302,6 +304,23 @@ def get_response_in_terminal_mode(message) -> str:
         return 'sorry, this function is still developing'
       # TO-DO
       # elif msg == 'setup':
+
+    elif msg[:5] == 'greek':
+      print(textwrap.dedent(f"""\
+        ```
+        Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+        α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+        {current_directory()}
+        ```
+      """))
+      return textwrap.dedent(f"""\
+        ```
+        Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+        α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+        {current_directory()}
+        ```
+      """)
+    
     else:
       return 'no such command'
   
