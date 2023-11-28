@@ -100,7 +100,7 @@ def get_response_in_public_mode(message) -> str:
 
 
       elif msg[:6] == 'google':
-        return "https://www.google.com/search?q=" + msg[7:]
+        return "https://www.google.com/search?q=" + msg[7:].replace(' ', '+')
 
       elif msg[:7] == 'youtube':
         return "https://www.youtube.com/results?search_query=" + msg[8:]
