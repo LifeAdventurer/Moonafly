@@ -25,8 +25,8 @@ def get_response_in_public_mode(message) -> str:
     ha_str = '哈' * random.randint(1, 10)
     return f"{ha_str} :rofl:"
 
-  match = chinese_pattern.search(msg)
-  if match:
+  pattern = r'!search google (.+)'
+  if chinese_pattern.search(msg) and not re.match(pattern, msg):  
     return
 
   if msg[0] == '!':
