@@ -14,6 +14,14 @@ import textwrap
 # vocab_list = json.load(vocab_file)['vocabularies']
 # vocab_file.close()
 
+directory_structure = []
+
+def get_directory_structure():
+  global directory_structure
+  with open('./json/directory_structure.json') as directory_structure_file:
+    directory_structure = json.load(directory_structure_file)['directory_structure']
+
+
 path_stack = []
 
 # generating the current working directory
@@ -37,8 +45,8 @@ def get_response_in_terminal_mode(message) -> str:
 
   global path_stack
 
+  # cd command
   if msg[:2] == 'cd':
-    # 
     path = msg[2:].lstrip()
     
     # blank or ~ should go directly to ~
@@ -49,12 +57,6 @@ def get_response_in_terminal_mode(message) -> str:
     
     # go to the root directory
     elif path == '/':
-      path_stack = ['/']
-      print(f"{current_directory()}")
-      return f"```{current_directory()}```"
-
-    # if at root directory 
-    elif path_stack == ['/']:
       print(textwrap.dedent(f"""\
         permission denied
         {current_directory()}
@@ -65,6 +67,12 @@ def get_response_in_terminal_mode(message) -> str:
         {current_directory()}
         ```
       """)
+      # path_stack = ['/']
+      # print(f"{current_directory()}")
+      # return f"```{current_directory()}```"
+
+    # # if at root directory 
+    # elif path_stack == ['/']:
 
     # skip all the '\' and split the path 
     path = path.replace('\\', '').split('/')
@@ -79,9 +87,19 @@ def get_response_in_terminal_mode(message) -> str:
         if len(path_stack) > 1:
           path_stack.pop()
         elif path_stack[0] == '~':
-          path_stack[0] = 'home'
-        elif path_stack[0] == 'home':
-          path_stack[0] = '/'
+          print(textwrap.dedent(f"""\
+            bash: cd: {msg[2:].lstrip()}: No such file or directory
+            {current_directory()}
+          """))
+          return textwrap.dedent(f"""\
+            ```
+            bash: cd: {msg[2:].lstrip()}: No such file or directory
+            {current_directory()}
+            ```
+          """)
+        #   path_stack[0] = 'home'
+        # elif path_stack[0] == 'home':
+        #   path_stack[0] = '/'
       
       # make sure the path /home/Moonafly/ is right 
       elif folder == 'home':
@@ -106,19 +124,22 @@ def get_response_in_terminal_mode(message) -> str:
     print(f"{current_directory()}")
     return f"```{current_directory()}```"
 
-  elif msg[:2] == 'ls':
-    print(textwrap.dedent(f"""\
-      dict  gen     math
-      roll  search  weather
-      {current_directory()}
-    """))
-    return textwrap.dedent(f"""\
-      ```
-      dict  gen     math
-      roll  search  weather
-      {current_directory()}
-      ```
-    """)
+  # ls command
+  # elif msg[:2] == 'ls':
+  #   get_directory_structure()
+  #   print(path_stack)
+  #   files = sorted(list(directory_structure))
+  #   return 
+  #   print(textwrap.dedent(f"""\
+  #     a
+  #     {current_directory()}
+  #   """))
+  #   return textwrap.dedent(f"""\
+  #     ```
+  #     a
+  #     {current_directory()}
+  #     ```
+  #   """)
 
   # return the full pathname of the current working directory
   elif msg[:3] == 'pwd':
@@ -129,6 +150,7 @@ def get_response_in_terminal_mode(message) -> str:
     
     if path_stack[0] == '~':
       path = 'home/Moonafly' + path 
+
     print(textwrap.dedent(f"""\
       /{path}
       {current_directory()}
