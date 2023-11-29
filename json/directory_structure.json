@@ -1,44 +1,42 @@
 {
   "directory_structure": {
-    "home": {
-      "Moonafly": {
-        "dict": {
-
+    "~": {
+      "dict": {
+         
+      },
+      "gen": {
+        "fortune": {
+           
         },
-        "gen": {
-          "fortune": {
-
-          },
-          "vocab": {
-
-          }
-        },
-        "math": {
-
-        },
-        "roll": {
-
-        },
-        "search": {
-          "git": {
-
-          },
-          "github": {
-
-          },
-          "google": {
-
-          },
-          "greek": {
-
-          },
-          "online-judge": {
-
-          }
-        },
-        "weather": {
-
+        "vocab": {
+           
         }
+      },
+      "math": {
+         
+      },
+      "roll": {
+         
+      },
+      "search": {
+        "git": {
+           
+        },
+        "github": {
+           
+        },
+        "google": {
+           
+        },
+        "greek": {
+           
+        },
+        "online-judge": {
+           
+        }
+      },
+      "weather": {
+         
       }
     }
   }
