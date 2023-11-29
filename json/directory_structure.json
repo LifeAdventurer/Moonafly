@@ -1,0 +1,45 @@
+{
+  "directory_structure": {
+    "home": {
+      "Moonafly": {
+        "dict": {
+
+        },
+        "gen": {
+          "fortune": {
+
+          },
+          "vocab": {
+
+          }
+        },
+        "math": {
+
+        },
+        "roll": {
+
+        },
+        "search": {
+          "git": {
+
+          },
+          "github": {
+
+          },
+          "google": {
+
+          },
+          "greek": {
+
+          },
+          "online-judge": {
+
+          }
+        },
+        "weather": {
+
+        }
+      }
+    }
+  }
+}
