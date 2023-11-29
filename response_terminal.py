@@ -175,14 +175,14 @@ def get_response_in_terminal_mode(message) -> str:
     msg = msg[7:]
     if msg[:2] == 'ls':
       print(textwrap.dedent(f"""\
-        git  github  google
-        oj   greek
+        git    github  google
+        greek  oj
         {current_directory()}
       """))
       return textwrap.dedent(f"""\
         ```
-        git  github  google  
-        oj   greek
+        git    github  google
+        greek  oj
         {current_directory()}
         ```
       """)
