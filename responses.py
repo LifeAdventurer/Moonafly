@@ -1,5 +1,5 @@
-import response_public
-import response_terminal
+from response_public import get_response_in_public_mode
+from response_terminal import get_response_in_terminal_mode
 import json
 
 # password

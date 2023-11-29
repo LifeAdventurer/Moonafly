@@ -1,5 +1,5 @@
 import discord
-import responses
+import responses 
 import json
 
 token = ""

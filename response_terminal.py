@@ -2,9 +2,9 @@ from math import *
 import json
 import random
 import requests
-import search_dict
-import search_weather
-import math_calc
+from search_dict import search_dict
+from search_weather import get_weather_info
+from math_calc import safe_eval
 import responses
 import os
 import re
@@ -144,7 +144,7 @@ def get_response_in_terminal_mode(message) -> str:
     msg = msg[5:]
     # if username not in responses.special_guests:
     #   return 'permission denied'
-    return math_calc.safe_eval(msg)
+    return safe_eval(msg)
 
   elif msg[:3] == 'gen':
     msg = msg[4:]
@@ -327,7 +327,7 @@ def get_response_in_terminal_mode(message) -> str:
   elif msg[:7] == 'weather':
     return textwrap.dedent(f"""\
       ```
-      {search_weather.get_weather_info()}
+      {get_weather_info()}
       {current_directory()}
       ```
     """)
@@ -345,13 +345,13 @@ def get_response_in_terminal_mode(message) -> str:
     msg = msg[5:]
     match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
     if match:
-      return search_dict.search_dict(match.group(1), int(match.group(2)))
+      return search_dict(match.group(1), int(match.group(2)))
     elif 'LIMIT' in msg:
       return 'please type a number after the command LIMIT'
     else:
       return textwrap.dedent(f"""
         ```
-        {search_dict.search_dict(msg, 3)}
+        {search_dict(msg, 3)}
         {current_directory()}
         ```
       """)

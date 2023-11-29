@@ -2,9 +2,9 @@ from math import *
 import json
 import random
 import requests
-import search_dict
-import search_weather
-import math_calc
+from search_dict import search_dict
+from search_weather import get_weather_info
+from math_calc import safe_eval
 import os
 import re
 
@@ -38,7 +38,7 @@ def get_response_in_public_mode(message) -> str:
       msg = msg[5:]
       # if username != 'life_adventurer':
       #   return 'permission denied'
-      return math_calc.safe_eval(msg)
+      return safe_eval(msg)
 
     elif msg[:3] == 'gen':
       msg = msg[4:]
@@ -135,7 +135,7 @@ def get_response_in_public_mode(message) -> str:
       return 'Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω\nα β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω\n'
 
     elif msg[:7] == 'weather':
-      return search_weather.get_weather_info();
+      return get_weather_info();
 
     elif msg[:4] == 'roll':
       msg = msg[5:]
@@ -149,11 +149,11 @@ def get_response_in_public_mode(message) -> str:
 
       match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
       if match:
-        return search_dict.search_dict(match.group(1), int(match.group(2)))
+        return search_dict(match.group(1), int(match.group(2)))
       elif 'LIMIT' in msg:
         return 'please type a number after the command LIMIT'
       else:
-        return search_dict.search_dict(msg, 3)
+        return search_dict(msg, 3)
 
     else:
       return 'no such command' 
