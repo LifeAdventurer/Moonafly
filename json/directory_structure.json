@@ -1,43 +1,21 @@
 {
-  "directory_structure": {
-    "~": {
-      "dict": {
-         
-      },
-      "gen": {
-        "fortune": {
-           
-        },
-        "vocab": {
-           
+    "directory_structure": {
+        "~": {
+            "dict": {},
+            "gen": {
+                "fortune": {},
+                "vocab": {}
+            },
+            "math": {},
+            "roll": {},
+            "search": {
+                "git": {},
+                "github": {},
+                "google": {},
+                "greek": {},
+                "online-judge": {}
+            },
+            "weather": {}
         }
-      },
-      "math": {
-         
-      },
-      "roll": {
-         
-      },
-      "search": {
-        "git": {
-           
-        },
-        "github": {
-           
-        },
-        "google": {
-           
-        },
-        "greek": {
-           
-        },
-        "online-judge": {
-           
-        }
-      },
-      "weather": {
-         
-      }
     }
-  }
 }

@@ -3,7 +3,7 @@
 1.  Set your token via `config.json`:
     ```json
     {
-      "token": "{your TOKEN}"
+        "token": "{your TOKEN}"
     }
     ```
 
