@@ -187,19 +187,8 @@ def get_response_in_terminal_mode(message) -> str:
 
     elif msg[:3] == 'gen':
         msg = msg[4:]
-        if msg[:2] == 'ls':
-            print(textwrap.dedent(f"""\
-                fortune vocab
-                {current_path()}
-            """))
-            return textwrap.dedent(f"""\
-                ```
-                fortune vocab
-                {current_path()}
-                ```
-            """)
 
-        elif 'vocabulary' in msg or 'vocab' in msg:
+        if 'vocabulary' in msg or 'vocab' in msg:
             return "sorry, still developing"
             return list[random.randint(0, len(list))]
 
@@ -212,46 +201,10 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif msg[:6] == 'search':
         msg = msg[7:]
-        if msg[:2] == 'ls':
-            print(textwrap.dedent(f"""\
-                git    github  google
-                greek  oj
-                {current_path()}
-            """))
-            return textwrap.dedent(f"""\
-                ```
-                git    github  google
-                greek  oj
-                {current_path()}
-                ```
-            """)
 
         # search for a handle in different online judges
-        elif msg[:2] == 'oj':
+        if msg[:2] == 'oj':
             msg = msg[3:]
-            if msg[:2] == 'ls':
-                print(textwrap.dedent(f"""\
-                    atcoder     -1
-                    codechef    -2
-                    codeforces  -3  
-                    csacademy   -4
-                    dmoj        -5
-                    leetcode    -6
-                    topcoder    -7
-                    {current_path()}
-                """))
-                return textwrap.dedent(f"""\
-                    ```
-                    atcoder     -1
-                    codechef    -2
-                    codeforces  -3  
-                    csacademy   -4
-                    dmoj        -5
-                    leetcode    -6
-                    topcoder    -7
-                    {current_path()}
-                    ```
-                """)
 
             pattern = r'-(\d+)\s+(\w+)'
             match = re.search(pattern, msg)
@@ -307,28 +260,28 @@ def get_response_in_terminal_mode(message) -> str:
 
         # search for git commands
         elif msg[:3] == 'git':
-            msg = msg[4:]
-            if msg[:2] == 'ls':
-                print(textwrap.dedent(f"""\
-                    setup              -1
-                    init               -2
-                    stage & snapshot   -3  
-                    branch & merge     -4
-                    inspect & compare  -5
-                    share & update     -6
-                    {current_path()}
-                """))
-                return textwrap.dedent(f"""\
-                    ```
-                    setup              -1
-                    init               -2
-                    stage & snapshot   -3  
-                    branch & merge     -4
-                    inspect & compare  -5
-                    share & update     -6
-                    {current_path()}
-                    ```
-                """)
+            # msg = msg[4:]
+            # if msg[:2] == 'ls':
+            #     print(textwrap.dedent(f"""\
+            #         setup              -1
+            #         init               -2
+            #         stage & snapshot   -3  
+            #         branch & merge     -4
+            #         inspect & compare  -5
+            #         share & update     -6
+            #         {current_path()}
+            #     """))
+            #     return textwrap.dedent(f"""\
+            #         ```
+            #         setup              -1
+            #         init               -2
+            #         stage & snapshot   -3  
+            #         branch & merge     -4
+            #         inspect & compare  -5
+            #         share & update     -6
+            #         {current_path()}
+            #         ```
+            #     """)
 
             # pattern = r'-(\d+)\s+(\w+)'
             # match = re.search(pattern, msg)
@@ -336,11 +289,11 @@ def get_response_in_terminal_mode(message) -> str:
             #     number = int(match.group(1))
             #     command = match.group(2)
 
-            msg = msg[1:]
-            if msg > '6' or msg < '1':
-                return 'no such command'
-            else:
-                return 'sorry, this function is still developing'
+            # msg = msg[1:]
+            # if msg > '6' or msg < '1':
+            #     return 'no such command'
+            # else:
+            #     return 'sorry, this function is still developing'
             # TO-DO
             # elif msg == 'setup':
 
