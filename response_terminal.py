@@ -293,7 +293,7 @@ def get_response_in_terminal_mode(message) -> str:
             # if msg > '6' or msg < '1':
             #     return 'no such command'
             # else:
-            #     return 'sorry, this function is still developing'
+                return 'sorry, this function is still developing'
             # TO-DO
             # elif msg == 'setup':
 
