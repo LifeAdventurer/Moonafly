@@ -66,15 +66,10 @@ def get_response_in_terminal_mode(message) -> str:
         # blank or ~ should go directly to ~
         if not path or path == '~':
             path_stack = ['~']
-            print(f"{current_path()}")
             return f"```{current_path()}```"
 
         # go to the root directory
         elif path == '/':
-            print(textwrap.dedent(f"""\
-                permission denied
-                {current_path()}
-            """))
             return textwrap.dedent(f"""\
                 ```
                 permission denied
@@ -82,7 +77,6 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
             # path_stack = ['/']
-            # print(f"{current_path()}")
             # return f"```{current_path()}```"
 
         # if at root directory: 
@@ -101,10 +95,6 @@ def get_response_in_terminal_mode(message) -> str:
                 if len(path_stack) > 1:
                     path_stack.pop()
                 elif path_stack[0] == '~':
-                    print(textwrap.dedent(f"""\
-                        bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_path()}
-                    """))
                     return textwrap.dedent(f"""\
                         ```
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
@@ -122,11 +112,6 @@ def get_response_in_terminal_mode(message) -> str:
                 if path_stack == ['home']:
                     path_stack = ['~']
                 else:
-                    print(folder)
-                    print(textwrap.dedent(f"""\
-                        bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_path()}
-                    """))
                     return textwrap.dedent(f"""\
                         ```
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
@@ -135,7 +120,6 @@ def get_response_in_terminal_mode(message) -> str:
                     """)
             else:
                 path_stack.append(folder)
-        print(f"{current_path()}")
         return f"```{current_path()}```"
 
     # ls command
@@ -147,10 +131,6 @@ def get_response_in_terminal_mode(message) -> str:
 
         files_in_current_directory = sorted(list(current_directory))
 
-        print(textwrap.dedent(f"""\
-            {get_ls_command_output(files_in_current_directory, 4, 3)}
-            {current_path()}
-        """))
         return textwrap.dedent(f"""\
             ```
             {get_ls_command_output(files_in_current_directory, 4, 3)}
@@ -168,10 +148,6 @@ def get_response_in_terminal_mode(message) -> str:
         if path_stack[0] == '~':
             path = 'home/Moonafly' + path 
 
-        print(textwrap.dedent(f"""\
-            /{path}
-            {current_path()}
-        """))
         return textwrap.dedent(f"""\
             ```
             /{path}
@@ -262,15 +238,6 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:3] == 'git':
             # msg = msg[4:]
             # if msg[:2] == 'ls':
-            #     print(textwrap.dedent(f"""\
-            #         setup              -1
-            #         init               -2
-            #         stage & snapshot   -3  
-            #         branch & merge     -4
-            #         inspect & compare  -5
-            #         share & update     -6
-            #         {current_path()}
-            #     """))
             #     return textwrap.dedent(f"""\
             #         ```
             #         setup              -1
@@ -298,13 +265,6 @@ def get_response_in_terminal_mode(message) -> str:
             # elif msg == 'setup':
 
         elif msg[:5] == 'greek':
-            print(textwrap.dedent(f"""\
-                ```
-                Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-                α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-                {current_path()}
-                ```
-            """))
             return textwrap.dedent(f"""\
                 ```
                 Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
