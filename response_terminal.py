@@ -43,14 +43,9 @@ def current_path() -> str:
     global path_stack
     path = "Moonafly:"
     for folder in path_stack:
-        # don't need this right now because checked before appending to path_stack
-        # if not folder:
-        #   continue
-
-        # ~ and / don't need a prefix '/'
-        if folder != '~' and folder != '/':
+        if folder != '~':
             path += '/'
-        path += f"{folder}"
+        path += folder
     return path + "$"
 
 def get_response_in_terminal_mode(message) -> str:
@@ -63,27 +58,24 @@ def get_response_in_terminal_mode(message) -> str:
     if msg[:2] == 'cd':
         path = msg[2:].lstrip()
 
+        
         # blank or ~ should go directly to ~
         if not path or path == '~':
             path_stack = ['~']
             return f"```{current_path()}```"
+        
+        # skip all the '\' and split the path into a folder list
+        path = path.replace('\\', '').split('/')
 
         # go to the root directory
-        elif path == '/':
+        if path[0] == '/':
             return textwrap.dedent(f"""\
                 ```
                 permission denied
+                * this command requires the highest authority
                 {current_path()}
                 ```
             """)
-            # path_stack = ['/']
-            # return f"```{current_path()}```"
-
-        # if at root directory: 
-        # elif path_stack == ['/']:
-
-        # skip all the '\' and split the path 
-        path = path.replace('\\', '').split('/')
 
         for folder in path:
             # if the folder is empty or . then nothing happens with the 
@@ -101,23 +93,7 @@ def get_response_in_terminal_mode(message) -> str:
                         {current_path()}
                         ```
                     """)
-                #     path_stack[0] = 'home'
-                # elif path_stack[0] == 'home':
-                #     path_stack[0] = '/'
 
-            # make sure the path /home/Moonafly/ is right 
-            elif folder == 'home':
-                path_stack = ['home']
-            elif folder == 'Moonafly':
-                if path_stack == ['home']:
-                    path_stack = ['~']
-                else:
-                    return textwrap.dedent(f"""\
-                        ```
-                        bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_path()}
-                        ```
-                    """)
             else:
                 path_stack.append(folder)
         return f"```{current_path()}```"
