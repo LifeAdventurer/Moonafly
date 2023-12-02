@@ -21,11 +21,25 @@ def get_directory_structure():
     with open('./json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
+def get_ls_command_output(files) -> str:
+    output = ""
+    columns = 3;
+    column_len = [0] * columns
+    for column_index in range(min(columns, len(files))):
+        grouped_files = [file for index, file in enumerate(files) if index % columns == column_index]
+        column_len[column_index] = max(len(file_name) for file_name in grouped_files)
+
+    for index, file in enumerate(files):
+        output += file + ' ' * (column_len[index % columns] - len(file) + 2 if index % columns != columns - 1 else 0)
+        if index % columns == columns - 1 and index != len(files) - 1:
+            output += '\n' + ' ' * 12
+
+    return output
 
 path_stack = []
 
 # generating the current working directory
-def current_directory() -> str:
+def current_path() -> str:
     global path_stack
     path = "Moonafly:"
     for folder in path_stack:
@@ -52,24 +66,24 @@ def get_response_in_terminal_mode(message) -> str:
         # blank or ~ should go directly to ~
         if not path or path == '~':
             path_stack = ['~']
-            print(f"{current_directory()}")
-            return f"```{current_directory()}```"
+            print(f"{current_path()}")
+            return f"```{current_path()}```"
 
         # go to the root directory
         elif path == '/':
             print(textwrap.dedent(f"""\
                 permission denied
-                {current_directory()}
+                {current_path()}
             """))
             return textwrap.dedent(f"""\
                 ```
                 permission denied
-                {current_directory()}
+                {current_path()}
                 ```
             """)
             # path_stack = ['/']
-            # print(f"{current_directory()}")
-            # return f"```{current_directory()}```"
+            # print(f"{current_path()}")
+            # return f"```{current_path()}```"
 
         # if at root directory: 
         # elif path_stack == ['/']:
@@ -89,12 +103,12 @@ def get_response_in_terminal_mode(message) -> str:
                 elif path_stack[0] == '~':
                     print(textwrap.dedent(f"""\
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_directory()}
+                        {current_path()}
                     """))
                     return textwrap.dedent(f"""\
                         ```
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_directory()}
+                        {current_path()}
                         ```
                     """)
                 #     path_stack[0] = 'home'
@@ -111,40 +125,43 @@ def get_response_in_terminal_mode(message) -> str:
                     print(folder)
                     print(textwrap.dedent(f"""\
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_directory()}
+                        {current_path()}
                     """))
                     return textwrap.dedent(f"""\
                         ```
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
-                        {current_directory()}
+                        {current_path()}
                         ```
                     """)
             else:
                 path_stack.append(folder)
-        print(f"{current_directory()}")
-        return f"```{current_directory()}```"
+        print(f"{current_path()}")
+        return f"```{current_path()}```"
 
     # ls command
-    # elif msg[:2] == 'ls':
-    #     get_directory_structure()
-    #     print(path_stack)
-    #     files = sorted(list(directory_structure))
-    #     return 
-    #     print(textwrap.dedent(f"""\
-    #         a
-    #         {current_directory()}
-    #     """))
-    #     return textwrap.dedent(f"""\
-    #         ```
-    #         a
-    #         {current_directory()}
-    #         ```
-    #     """)
+    elif msg[:2] == 'ls':
+        get_directory_structure()
+        current_directory = directory_structure
+        for folder in path_stack:
+            current_directory = current_directory[folder]
+
+        files_in_current_directory = sorted(list(current_directory))
+
+        print(textwrap.dedent(f"""\
+            {get_ls_command_output(files_in_current_directory)}
+            {current_path()}
+        """))
+        return textwrap.dedent(f"""\
+            ```
+            {get_ls_command_output(files_in_current_directory)}
+            {current_path()}
+            ```
+        """)
 
     # return the full pathname of the current working directory
     elif msg[:3] == 'pwd':
         # delete the prefix 'Moonafly:' and the suffix '$'
-        path = current_directory()[9:-1]
+        path = current_path()[9:-1]
         # delete the prefix no matter it is '~' or '/' path_stack still has the data
         path = path[1:]
 
@@ -153,12 +170,12 @@ def get_response_in_terminal_mode(message) -> str:
 
         print(textwrap.dedent(f"""\
             /{path}
-            {current_directory()}
+            {current_path()}
         """))
         return textwrap.dedent(f"""\
             ```
             /{path}
-            {current_directory()}
+            {current_path()}
             ```
         """)
     
@@ -173,12 +190,12 @@ def get_response_in_terminal_mode(message) -> str:
         if msg[:2] == 'ls':
             print(textwrap.dedent(f"""\
                 fortune vocab
-                {current_directory()}
+                {current_path()}
             """))
             return textwrap.dedent(f"""\
                 ```
                 fortune vocab
-                {current_directory()}
+                {current_path()}
                 ```
             """)
 
@@ -199,13 +216,13 @@ def get_response_in_terminal_mode(message) -> str:
             print(textwrap.dedent(f"""\
                 git    github  google
                 greek  oj
-                {current_directory()}
+                {current_path()}
             """))
             return textwrap.dedent(f"""\
                 ```
                 git    github  google
                 greek  oj
-                {current_directory()}
+                {current_path()}
                 ```
             """)
 
@@ -221,7 +238,7 @@ def get_response_in_terminal_mode(message) -> str:
                     dmoj        -5
                     leetcode    -6
                     topcoder    -7
-                    {current_directory()}
+                    {current_path()}
                 """))
                 return textwrap.dedent(f"""\
                     ```
@@ -232,7 +249,7 @@ def get_response_in_terminal_mode(message) -> str:
                     dmoj        -5
                     leetcode    -6
                     topcoder    -7
-                    {current_directory()}
+                    {current_path()}
                     ```
                 """)
 
@@ -299,7 +316,7 @@ def get_response_in_terminal_mode(message) -> str:
                     branch & merge     -4
                     inspect & compare  -5
                     share & update     -6
-                    {current_directory()}
+                    {current_path()}
                 """))
                 return textwrap.dedent(f"""\
                     ```
@@ -309,7 +326,7 @@ def get_response_in_terminal_mode(message) -> str:
                     branch & merge     -4
                     inspect & compare  -5
                     share & update     -6
-                    {current_directory()}
+                    {current_path()}
                     ```
                 """)
 
@@ -332,14 +349,14 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
                 Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
                 α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-                {current_directory()}
+                {current_path()}
                 ```
             """))
             return textwrap.dedent(f"""\
                 ```
                 Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
                 α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-                {current_directory()}
+                {current_path()}
                 ```
             """)
 
@@ -350,7 +367,7 @@ def get_response_in_terminal_mode(message) -> str:
         return textwrap.dedent(f"""\
             ```
             {get_weather_info()}
-            {current_directory()}
+            {current_path()}
             ```
         """)
 
@@ -374,7 +391,7 @@ def get_response_in_terminal_mode(message) -> str:
             return textwrap.dedent(f"""
                 ```
                 {search_dict(msg, 3)}
-                {current_directory()}
+                {current_path()}
                 ```
             """)
 
