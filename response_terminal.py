@@ -21,7 +21,7 @@ def get_directory_structure():
     with open('./json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
-def get_ls_command_output(files) -> str:
+def get_ls_command_output(files, tab_size, tab_count) -> str:
     output = ""
     columns = 3;
     column_len = [0] * columns
@@ -32,7 +32,7 @@ def get_ls_command_output(files) -> str:
     for index, file in enumerate(files):
         output += file + ' ' * (column_len[index % columns] - len(file) + 2 if index % columns != columns - 1 else 0)
         if index % columns == columns - 1 and index != len(files) - 1:
-            output += '\n' + ' ' * 12
+            output += '\n' + ' ' * tab_size * tab_count
 
     return output
 
@@ -148,12 +148,12 @@ def get_response_in_terminal_mode(message) -> str:
         files_in_current_directory = sorted(list(current_directory))
 
         print(textwrap.dedent(f"""\
-            {get_ls_command_output(files_in_current_directory)}
+            {get_ls_command_output(files_in_current_directory, 4, 3)}
             {current_path()}
         """))
         return textwrap.dedent(f"""\
             ```
-            {get_ls_command_output(files_in_current_directory)}
+            {get_ls_command_output(files_in_current_directory, 4, 3)}
             {current_path()}
             ```
         """)
