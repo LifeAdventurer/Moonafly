@@ -150,21 +150,41 @@ def get_response_in_terminal_mode(message) -> str:
     if path_stack[-1] == 'math':
         # if username not in responses.special_guests:
         #     return 'permission denied'
-        return safe_eval(msg)
+        return textwrap.dedent(f"""
+            ```
+            {safe_eval(msg)}
+            {current_path()}
+            ```
+        """)
 
     elif path_stack[-2] == 'gen':
         if path_stack[-1] == 'vocab':
             if msg == 'get':
-                return "sorry, still developing"
-                return list[random.randint(0, len(list))]
+                return textwrap.dedent(f"""
+                    ```
+                    sorry, still developing
+                    {current_path()}
+                    ```
+                """)
+                # return list[random.randint(0, len(list))]
 
         # my generators repo on github.io
         elif path_stack[-1] == 'fortune':
             if msg == 'get':
-                return 'https://lifeadventurer.github.io/generators/fortune_generator' 
+                return textwrap.dedent(f"""
+                    https://lifeadventurer.github.io/generators/fortune_generator
+                    ```
+                    {current_path()}
+                    ```
+                """)
 
         else:
-            return 'no such command' 
+            return textwrap.dedent(f"""
+                ```
+                no such command
+                {current_path()}
+                ```
+            """)
     
     elif path_stack[-2] == 'search':
         # search for a handle in different online judges
@@ -191,34 +211,75 @@ def get_response_in_terminal_mode(message) -> str:
                 elif number == 7:
                     url = "https://profiles.topcoder.com/"
                 else:
-                    return 'please enter a valid number'
+                    return textwrap.dedent(f"""
+                        ```
+                        please enter a valid number
+                        {current_path()}
+                        ```
+                    """)
 
                 url += handle
                 response = requests.get(url)
                 if response.status_code == 404:
-                    return f"The handle {handle} is not found"
+                    return textwrap.dedent(f"""
+                        ```
+                        The handle {handle} is not found
+                        {current_path()}
+                        ```
+                    """)
                 else:
-                    return url
+                    return textwrap.dedent(f"""
+                        {url}
+                        ```
+                        {current_path()}
+                        ```
+                    """)
 
             else:
-                return 'please type the right command format, using help to see what are the available options'
+                return textwrap.dedent(f"""
+                    ```
+                    please type the right command format, using help to see what are the available options
+                    {current_path()}
+                    ```
+                """)
 
         # just a google search -> must improve this more
         elif path_stack[-1] == 'google':
-            return "https://www.google.com/search?q=" + msg
+            return textwrap.dedent(f"""
+                https://www.google.com/search?q={msg}
+                ```
+                {current_path()}
+                ```
+            """)
+            return "
 
         # same as above -> need improvement
         elif path_stack[-1] == 'youtube':
-            return "https://www.youtube.com/results?search_query=" + msg
+            return textwrap.dedent(f"""
+                https://www.youtube.com/results?search_query={msg}
+                ```
+                {current_path()}
+                ```
+            """)
 
         # search for github repos or profiles -> because url
         elif path_stack[-1] == 'github':
             github_url = "https://github.com/" + msg
             response = requests.get(github_url)
             if response.status_code == 404:
-                return f"The url {github_url} is not found (404 Not Found)."
+                return textwrap.dedent(f"""
+                    The url {github_url} is not found (404 Not Found).
+                    ```
+                    {current_path()}
+                    ```
+                """)
             else:
-                return github_url
+                return textwrap.dedent(f"""
+                    {github_url}
+                    ```
+                    {current_path()}
+                    ```
+                """)
 
         # search for git commands
         elif path_stack[-1] == 'git':
@@ -246,7 +307,12 @@ def get_response_in_terminal_mode(message) -> str:
             # if msg > '6' or msg < '1':
             #     return 'no such command'
             # else:
-                return 'sorry, this function is still developing'
+                return textwrap.dedent(f"""
+                    ```
+                    sorry, this function is still developing
+                    {current_path()}
+                    ```
+                """)
             # TO-DO
             # elif msg == 'setup':
 
@@ -261,7 +327,12 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         else:
-            return 'no such command'
+            return textwrap.dedent(f"""
+                ```
+                no such command
+                {current_path()}
+                ```
+            """)
     
     elif path_stack[-1] == 'weather':
         if msg == 'get':
@@ -275,17 +346,37 @@ def get_response_in_terminal_mode(message) -> str:
     # roll a random number
     elif path_stack[-1] == 'roll':
         if not all(char.isdigit() for char in msg):
-            return 'please enter a valid number'
+            return textwrap.dedent(f"""
+                ```
+                please enter a valid number
+                {current_path()}
+                ```
+            """)
         else:
-            return random.randint(1, int(msg))
+            return textwrap.dedent(f"""
+                ```
+                {random.randint(1, int(msg))}
+                {current_path()}
+                ```
+            """)
 
     # return the definition and example of the enter word from a dictionary
     elif path_stack[-1] == 'dict':
         match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
         if match:
-            return search_dict(match.group(1), int(match.group(2)))
+            return textwrap.dedent(f"""
+                ```
+                {search_dict(match.group(1), int(match.group(2)))}
+                {current_path()}
+                ```
+            """)
         elif 'LIMIT' in msg:
-            return 'please type a number after the command LIMIT'
+            return textwrap.dedent(f"""
+                ```
+                please type a number after the command LIMIT
+                {current_path()}
+                ```
+            """)
         else:
             return textwrap.dedent(f"""
                 ```
@@ -295,4 +386,9 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
     else:
-        return 'no such command'
+        return textwrap.dedent(f"""
+            ```
+            no such command
+            {current_path()}
+            ```
+        """)
