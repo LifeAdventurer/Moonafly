@@ -100,7 +100,7 @@ def get_response_in_terminal_mode(message) -> str:
 
         current_directory = directory_structure
         for folder in temporary_path_stack:
-            if folder in lsit(current_directory):
+            if folder in list(current_directory):
                 current_directory = current_directory[folder]
             else:
                 return textwrap.dedent(f"""\
