@@ -99,6 +99,7 @@ def get_response_in_terminal_mode(message) -> str:
                 temporary_path_stack.append(folder)
 
         current_directory = directory_structure
+
         for folder in temporary_path_stack:
             if folder in list(current_directory):
                 current_directory = current_directory[folder]
@@ -337,7 +338,7 @@ def get_response_in_terminal_mode(message) -> str:
         if msg == 'get':
             return textwrap.dedent(f"""\
                 ```
-                {get_weather_info()}
+                {get_weather_info(4, 4)}
                 {current_path()}
                 ```
             """)
@@ -364,8 +365,8 @@ def get_response_in_terminal_mode(message) -> str:
         match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
         if match:
             return textwrap.dedent(f"""
+                {search_dict(match.group(1), int(match.group(2)), 4, 4)}
                 ```
-                {search_dict(match.group(1), int(match.group(2)))}
                 {current_path()}
                 ```
             """)
@@ -378,8 +379,8 @@ def get_response_in_terminal_mode(message) -> str:
             """)
         else:
             return textwrap.dedent(f"""
+                {search_dict(msg, 3, 4, 4)}
                 ```
-                {search_dict(msg, 3)}
                 {current_path()}
                 ```
             """)

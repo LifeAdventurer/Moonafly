@@ -135,7 +135,7 @@ def get_response_in_public_mode(message) -> str:
             return 'Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω\nα β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω\n'
 
         elif msg[:7] == 'weather':
-            return get_weather_info();
+            return get_weather_info(0, 0);
 
         elif msg[:4] == 'roll':
             msg = msg[5:]
@@ -149,11 +149,11 @@ def get_response_in_public_mode(message) -> str:
 
             match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
             if match:
-                return search_dict(match.group(1), int(match.group(2)))
+                return search_dict(match.group(1), int(match.group(2), 0, 0))
             elif 'LIMIT' in msg:
                 return 'please type a number after the command LIMIT'
             else:
-                return search_dict(msg, 3)
+                return search_dict(msg, 3, 0, 0)
 
         else:
             return 'no such command' 

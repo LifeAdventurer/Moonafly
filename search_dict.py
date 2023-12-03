@@ -37,16 +37,16 @@ def get_cambridge_dictionary_info(word, limit_example_count):
         print(f"Error: {e}")
         return None
 
-def search_dict(word, limit):
+def search_dict(word, limit, tab_size, tab_count):
     result = get_cambridge_dictionary_info(word, limit)
-
+    space = ' ' * tab_size * tab_count
     if result:
         definition, example_list = result
         definition = definition.rstrip(': ') # removes the certain trailing char from the string
-        information = f"### Definition: \n - {definition}\n"
-        information += f"### Examples: \n"
+        information = f"### Definition: \n{space}- {definition}\n{space}"
+        information += f"### Examples: \n{space}"
         for sentence in example_list:
-            information += f"- {sentence}\n"
-        return f"# {word}\n" + information
+            information += f"- {sentence}\n{space}"
+        return f"# {word}\n{space}" + information
     else:
         return f"Failed to retrieve information for the word '{word}'."
