@@ -57,7 +57,6 @@ def get_response_in_terminal_mode(message) -> str:
     # cd command
     if msg[:2] == 'cd':
         path = msg[2:].lstrip()
-
         
         # blank or ~ should go directly to ~
         if not path or path == '~':
@@ -77,6 +76,8 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
+        temporary_path_stack = path_stack
+
         for folder in path:
             # if the folder is empty or . then nothing happens with the 
             if folder == '' or folder == '.':
@@ -84,9 +85,9 @@ def get_response_in_terminal_mode(message) -> str:
 
             # move up one directory 
             elif folder == '..':
-                if len(path_stack) > 1:
-                    path_stack.pop()
-                elif path_stack[0] == '~':
+                if len(temporary_path_stack) > 1:
+                    temporary_path_stack.pop()
+                elif temporary_path_stack[0] == '~':
                     return textwrap.dedent(f"""\
                         ```
                         bash: cd: {msg[2:].lstrip()}: No such file or directory
@@ -95,7 +96,9 @@ def get_response_in_terminal_mode(message) -> str:
                     """)
 
             else:
-                path_stack.append(folder)
+                temporary_path_stack.append(folder)
+        
+        path_stack = temporary_path_stack
         return f"```{current_path()}```"
 
     # ls command
