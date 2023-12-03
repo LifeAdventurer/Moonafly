@@ -191,6 +191,17 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
             else:
                 return command_not_found(msg)
+        
+        elif path_stack[-1] == 'quote':
+            if msg == 'get':
+                return textwrap.dedent(f"""
+                    https://lifeadventurer.github.io/generators/quote_generator
+                    ```
+                    {current_path()}
+                    ```
+                """)
+            else:
+                return command_not_found(msg)
 
         else:
             return command_not_found(msg)

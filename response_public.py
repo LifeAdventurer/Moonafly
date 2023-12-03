@@ -50,7 +50,10 @@ def get_response_in_public_mode(message) -> str:
                 # return list[random.randint(0, len(list))]
 
             elif msg[:7] == 'fortune':
-                return 'https://lifeadventurer.github.io/generators/fortune_generator/index.html' 
+                return 'https://lifeadventurer.github.io/generators/fortune_generator/' 
+
+            elif msg[:5] == 'quote':
+                return 'https://lifeadventurer.github.io/generators/quote_generator/'
 
             else:
                 return 'no such command' 
