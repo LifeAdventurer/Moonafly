@@ -13,15 +13,7 @@
                 "github": {},
                 "google": {},
                 "greek": {},
-                "online-judge": {
-                    "atcoder     -1": {},
-                    "codechef    -2": {},
-                    "codeforces  -3": {},  
-                    "csacademy   -4": {},
-                    "dmoj        -5": {},
-                    "leetcode    -6": {},
-                    "topcoder    -7": {}
-                }
+                "online-judge": {}
             },
             "weather": {}
         }
