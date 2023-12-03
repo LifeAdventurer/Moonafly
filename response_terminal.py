@@ -97,7 +97,8 @@ def get_response_in_terminal_mode(message) -> str:
 
             else:
                 temporary_path_stack.append(folder)
-
+                
+        get_directory_structure()
         current_directory = directory_structure
 
         for folder in temporary_path_stack:
@@ -158,7 +159,7 @@ def get_response_in_terminal_mode(message) -> str:
             ```
         """)
 
-    elif path_stack[-2] == 'gen':
+    elif len(path_stack) >= 2 and path_stack[-2] == 'gen':
         if path_stack[-1] == 'vocab':
             if msg == 'get':
                 return textwrap.dedent(f"""
@@ -187,7 +188,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
     
-    elif path_stack[-2] == 'search':
+    elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
         if path_stack[-1] == 'oj':
             pattern = r'-(\d+)\s+(\w+)'
