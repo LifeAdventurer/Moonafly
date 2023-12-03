@@ -76,7 +76,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-        temporary_path_stack = path_stack
+        temporary_path_stack = path_stack[:]
 
         for folder in path:
             # if the folder is empty or . then nothing happens with the 
