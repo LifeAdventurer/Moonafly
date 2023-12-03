@@ -251,7 +251,6 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
-            return "
 
         # same as above -> need improvement
         elif path_stack[-1] == 'youtube':
