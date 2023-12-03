@@ -146,33 +146,29 @@ def get_response_in_terminal_mode(message) -> str:
             ```
         """)
     
-    elif msg[:4] == 'math':
-        msg = msg[5:]
+    # commands in certain directory
+    if path_stack[-1] == 'math':
         # if username not in responses.special_guests:
         #     return 'permission denied'
         return safe_eval(msg)
 
-    elif msg[:3] == 'gen':
-        msg = msg[4:]
-
-        if 'vocabulary' in msg or 'vocab' in msg:
-            return "sorry, still developing"
-            return list[random.randint(0, len(list))]
+    elif path_stack[-2] == 'gen':
+        if path_stack[-1] == 'vocab':
+            if msg == 'get':
+                return "sorry, still developing"
+                return list[random.randint(0, len(list))]
 
         # my generators repo on github.io
-        elif msg[:7] == 'fortune':
-            return 'https://lifeadventurer.github.io/generators/fortune_generator/index.html' 
+        elif path_stack[-1] == 'fortune':
+            if msg == 'get':
+                return 'https://lifeadventurer.github.io/generators/fortune_generator' 
 
         else:
             return 'no such command' 
     
-    elif msg[:6] == 'search':
-        msg = msg[7:]
-
+    elif path_stack[-2] == 'search':
         # search for a handle in different online judges
-        if msg[:2] == 'oj':
-            msg = msg[3:]
-
+        if path_stack[-1] == 'oj':
             pattern = r'-(\d+)\s+(\w+)'
             match = re.search(pattern, msg)
             if match:
@@ -208,16 +204,15 @@ def get_response_in_terminal_mode(message) -> str:
                 return 'please type the right command format, using help to see what are the available options'
 
         # just a google search -> must improve this more
-        elif msg[:6] == 'google':
-            return "https://www.google.com/search?q=" + msg[7:]
+        elif path_stack[-1] == 'google':
+            return "https://www.google.com/search?q=" + msg
 
         # same as above -> need improvement
-        elif msg[:7] == 'youtube':
-            return "https://www.youtube.com/results?search_query=" + msg[8:]
+        elif path_stack[-1] == 'youtube':
+            return "https://www.youtube.com/results?search_query=" + msg
 
         # search for github repos or profiles -> because url
-        elif msg[:6] == 'github':
-            msg = msg[7:]
+        elif path_stack[-1] == 'github':
             github_url = "https://github.com/" + msg
             response = requests.get(github_url)
             if response.status_code == 404:
@@ -226,7 +221,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return github_url
 
         # search for git commands
-        elif msg[:3] == 'git':
+        elif path_stack[-1] == 'git':
             # msg = msg[4:]
             # if msg[:2] == 'ls':
             #     return textwrap.dedent(f"""\
@@ -255,37 +250,37 @@ def get_response_in_terminal_mode(message) -> str:
             # TO-DO
             # elif msg == 'setup':
 
-        elif msg[:5] == 'greek':
-            return textwrap.dedent(f"""\
-                ```
-                Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-                α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-                {current_path()}
-                ```
-            """)
+        elif path_stack[-1] == 'greek':
+            if msg == 'get':
+                return textwrap.dedent(f"""\
+                    ```
+                    Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+                    α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+                    {current_path()}
+                    ```
+                """)
 
         else:
             return 'no such command'
     
-    elif msg[:7] == 'weather':
-        return textwrap.dedent(f"""\
-            ```
-            {get_weather_info()}
-            {current_path()}
-            ```
-        """)
+    elif path_stack[-1] == 'weather':
+        if msg == 'get':
+            return textwrap.dedent(f"""\
+                ```
+                {get_weather_info()}
+                {current_path()}
+                ```
+            """)
 
     # roll a random number
-    elif msg[:4] == 'roll':
-        msg = msg[5:]
+    elif path_stack[-1] == 'roll':
         if not all(char.isdigit() for char in msg):
             return 'please enter a valid number'
         else:
             return random.randint(1, int(msg))
 
     # return the definition and example of the enter word from a dictionary
-    elif msg[:4] == 'dict':
-        msg = msg[5:]
+    elif path_stack[-1] == 'dict':
         match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
         if match:
             return search_dict(match.group(1), int(match.group(2)))
