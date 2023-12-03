@@ -97,6 +97,18 @@ def get_response_in_terminal_mode(message) -> str:
 
             else:
                 temporary_path_stack.append(folder)
+
+        current_directory = directory_structure
+        for folder in temporary_path_stack:
+            if folder in lsit(current_directory):
+                current_directory = current_directory[folder]
+            else:
+                return textwrap.dedent(f"""\
+                    ```
+                    bash: cd: {msg[2:].lstrip()}: No such file or directory
+                    {current_path()}
+                    ```
+                """)
         
         path_stack = temporary_path_stack
         return f"```{current_path()}```"
