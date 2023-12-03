@@ -169,6 +169,13 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
                 # return list[random.randint(0, len(list))]
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    {msg}: command not found
+                    {current_path()}
+                    ```
+                """)
 
         # my generators repo on github.io
         elif path_stack[-1] == 'fortune':
@@ -179,11 +186,18 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    {msg}: command not found
+                    {current_path()}
+                    ```
+                """)
 
         else:
             return textwrap.dedent(f"""
                 ```
-                no such command
+                {msg}: command not found
                 {current_path()}
                 ```
             """)
@@ -326,11 +340,18 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    {msg}: command not found
+                    {current_path()}
+                    ```
+                """)
 
         else:
             return textwrap.dedent(f"""
                 ```
-                no such command
+                {msg}: command not found
                 {current_path()}
                 ```
             """)
@@ -340,6 +361,13 @@ def get_response_in_terminal_mode(message) -> str:
             return textwrap.dedent(f"""\
                 ```
                 {get_weather_info(4, 4)}
+                {current_path()}
+                ```
+            """)
+        else:
+            return textwrap.dedent(f"""
+                ```
+                {msg}: command not found
                 {current_path()}
                 ```
             """)
@@ -389,7 +417,7 @@ def get_response_in_terminal_mode(message) -> str:
     else:
         return textwrap.dedent(f"""
             ```
-            no such command
+            {msg}: command not found
             {current_path()}
             ```
         """)
