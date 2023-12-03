@@ -21,6 +21,14 @@ def get_directory_structure():
     with open('./json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
+def command_not_found(msg) -> str:
+    return textwrap.dedent(f"""
+        ```
+        {msg}: command not found
+        {current_path()}
+        ```
+    """)
+
 def get_ls_command_output(files, tab_size, tab_count) -> str:
     output = ""
     columns = 3;
@@ -170,12 +178,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
                 # return list[random.randint(0, len(list))]
             else:
-                return textwrap.dedent(f"""
-                    ```
-                    {msg}: command not found
-                    {current_path()}
-                    ```
-                """)
+                return command_not_found(msg)
 
         # my generators repo on github.io
         elif path_stack[-1] == 'fortune':
@@ -187,20 +190,10 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
             else:
-                return textwrap.dedent(f"""
-                    ```
-                    {msg}: command not found
-                    {current_path()}
-                    ```
-                """)
+                return command_not_found(msg)
 
         else:
-            return textwrap.dedent(f"""
-                ```
-                {msg}: command not found
-                {current_path()}
-                ```
-            """)
+            return command_not_found(msg)
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
@@ -341,20 +334,10 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
             else:
-                return textwrap.dedent(f"""
-                    ```
-                    {msg}: command not found
-                    {current_path()}
-                    ```
-                """)
+                return command_not_found(msg)
 
         else:
-            return textwrap.dedent(f"""
-                ```
-                {msg}: command not found
-                {current_path()}
-                ```
-            """)
+            return command_not_found(msg)
     
     elif path_stack[-1] == 'weather':
         if msg == 'get':
@@ -365,12 +348,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
         else:
-            return textwrap.dedent(f"""
-                ```
-                {msg}: command not found
-                {current_path()}
-                ```
-            """)
+            return command_not_found(msg)
 
     # roll a random number
     elif path_stack[-1] == 'roll':
@@ -415,9 +393,4 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
     else:
-        return textwrap.dedent(f"""
-            ```
-            {msg}: command not found
-            {current_path()}
-            ```
-        """)
+        return command_not_found(msg)
