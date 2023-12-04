@@ -10,10 +10,6 @@ import os
 import re
 import textwrap
 
-# vocab_file = open('./json/vocabulary_items.json')
-# vocab_list = json.load(vocab_file)['vocabularies']
-# vocab_file.close()
-
 directory_structure = []
 
 def get_directory_structure():
@@ -59,7 +55,7 @@ def current_path() -> str:
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-
+    
     global path_stack
 
     # cd command
@@ -70,9 +66,6 @@ def get_response_in_terminal_mode(message) -> str:
         if not path or path == '~':
             path_stack = ['~']
             return f"```{current_path()}```"
-        
-        # skip all the '\' and split the path into a folder list
-        path = path.replace('\\', '').split('/')
 
         # go to the root directory
         if path[0] == '/':
@@ -83,6 +76,9 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+        
+        # skip all the '\' and split the path into a folder list
+        path = path.replace('\\', '').split('/')
 
         temporary_path_stack = path_stack[:]
 
@@ -196,7 +192,7 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
-        if path_stack[-1] == 'oj':
+        if path_stack[-1] == 'online-judge':
             pattern = r'-(\d+)\s+(\w+)'
             match = re.search(pattern, msg)
             if match:
