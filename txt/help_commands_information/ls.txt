@@ -1,0 +1,3 @@
+Usage: ls
+List information about the FILEs in the current directory
+Sort entries alphabetically

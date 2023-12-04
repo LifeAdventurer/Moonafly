@@ -1,0 +1,2 @@
+Usage: tree
+    Visualizing the structure under current working directory as a tree.

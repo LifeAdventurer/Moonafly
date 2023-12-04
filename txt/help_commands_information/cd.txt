@@ -1,0 +1,8 @@
+cd: cd [dir]
+    Changing the working directory.
+
+    Change the current directory to DIR.
+
+    `..` is processed by removing the immediately
+    previous pathname component back to a slash or
+    the beginning of DIR.

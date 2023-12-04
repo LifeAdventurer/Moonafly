@@ -5,6 +5,7 @@ import requests
 from search_dict import search_dict
 from search_weather import get_weather_info
 from math_calc import safe_eval
+from command_help import get_help_information
 import responses
 import os
 import re
@@ -66,13 +67,22 @@ def get_response_in_terminal_mode(message) -> str:
     # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
     # remove the leading and trailing spaces
-    msg = msg.lstrip().rstrip()
+    msg = msg.strip()
     
     global path_stack
 
     # cd command
     if msg[:2] == 'cd':
-        path = msg[2:].lstrip()
+        msg = msg[2:].lstrip()
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('cd', 4, 4)}
+                {current_path()}
+                ```
+            """)
+
+        path = msg
         
         # blank or ~ should go directly to ~
         if not path or path == '~':
@@ -106,7 +116,7 @@ def get_response_in_terminal_mode(message) -> str:
                 elif temporary_path_stack[0] == '~':
                     return textwrap.dedent(f"""\
                         ```
-                        bash: cd: {msg[2:].lstrip()}: No such file or directory
+                        bash: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
                     """)
@@ -122,7 +132,7 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return textwrap.dedent(f"""\
                     ```
-                    bash: cd: {msg[2:].lstrip()}: No such file or directory
+                    bash: cd: {msg}: No such file or directory
                     {current_path()}
                     ```
                 """)
@@ -132,6 +142,15 @@ def get_response_in_terminal_mode(message) -> str:
 
     # ls command
     elif msg[:2] == 'ls':
+        msg = msg[3:].lstrip()
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('ls', 4, 4)}
+                {current_path()}
+                ```
+            """)
+
         current_directory = directory_structure
         for folder in path_stack:
             current_directory = current_directory[folder]
@@ -147,6 +166,15 @@ def get_response_in_terminal_mode(message) -> str:
 
     # return the full pathname of the current working directory
     elif msg[:3] == 'pwd':
+        msg = msg[3:].lstrip()
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('pwd', 4, 4)}
+                {current_path()}
+                ```
+            """)
+
         # delete the prefix 'Moonafly:' and the suffix '$'
         path = current_path()[9:-1]
         # delete the prefix no matter it is '~' or '/' path_stack still has the data
@@ -164,6 +192,15 @@ def get_response_in_terminal_mode(message) -> str:
     
     # show the directory_structure
     elif msg[:4] == 'tree':
+        msg = msg[4:].lstrip()
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('tree', 4, 4)}
+                {current_path()}
+                ```
+            """)
+
         current_structure = directory_structure
         for folder in path_stack:
             current_structure = current_structure[folder]
