@@ -116,7 +116,7 @@ def get_response_in_terminal_mode(message) -> str:
                 elif temporary_path_stack[0] == '~':
                     return textwrap.dedent(f"""\
                         ```
-                        bash: cd: {msg}: No such file or directory
+                        Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
                     """)
@@ -132,7 +132,7 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return textwrap.dedent(f"""\
                     ```
-                    bash: cd: {msg}: No such file or directory
+                    Moonafly: cd: {msg}: No such file or directory
                     {current_path()}
                     ```
                 """)
