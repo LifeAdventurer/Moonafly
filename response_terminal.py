@@ -214,6 +214,15 @@ def get_response_in_terminal_mode(message) -> str:
         """)
     
     elif msg[:4] == 'help':
+        msg = msg[4:].lstrip()
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('help', 4, 4)}
+                {current_path()}
+                ```
+            """)
+
         return textwrap.dedent(f"""
             ```
             Moonafly, version {responses.terminal_version}
