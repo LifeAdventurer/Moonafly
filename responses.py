@@ -79,9 +79,9 @@ def get_response(message) -> str:
             return
         elif msg == 'status':
             if is_public_mode:
-                return 'public mode v1.0.1'
+                return 'public mode v1.0.2'
             else:
-                return f'```terminal mode v1.1.0\n{response_terminal.current_path()}```'
+                return f'```terminal mode v1.2.0\n{response_terminal.current_path()}```'
         if is_public_mode:
             return response_public.get_response_in_public_mode(message)
         else:
