@@ -31,7 +31,7 @@ def get_response(message) -> str:
     # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
     # remove the leading and trailing spaces
-    msg = msg.lstrip().rstrip()
+    msg = msg.strip()
 
     global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal
 

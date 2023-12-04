@@ -16,7 +16,7 @@ def get_response_in_public_mode(message) -> str:
     # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
     # remove the leading and trailing spaces
-    msg = msg.lstrip().rstrip()
+    msg = msg.strip()
 
     if '機率' in msg:
         return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
