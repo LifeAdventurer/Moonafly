@@ -43,6 +43,8 @@ def run_discord_bot():
         username = str(message.author)
         user_message = str(message.content)
         channel = str(message.channel)
+        if channel[:14] == 'Direct Message':
+            print('WARNING: people using bot in Direct Message\n')
 
         # avoid endless loops
         if not user_message:
