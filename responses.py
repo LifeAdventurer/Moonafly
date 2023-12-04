@@ -2,6 +2,10 @@ import response_public
 import response_terminal 
 import json
 
+# versions
+public_version = 'v1.0.2'
+terminal_version = 'v1.2.0'
+
 # password
 password = ""
 def load_password_for_terminal():
@@ -78,9 +82,9 @@ def get_response(message) -> str:
             return
         elif msg == 'status':
             if is_public_mode:
-                return 'public mode v1.0.2'
+                return f"public mode {public_version}"
             else:
-                return f'```terminal mode v1.2.0\n{response_terminal.current_path()}```'
+                return f'```terminal mode {terminal_version}\n{response_terminal.current_path()}```'
         if is_public_mode:
             return response_public.get_response_in_public_mode(message)
         else:
