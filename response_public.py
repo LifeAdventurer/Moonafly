@@ -13,8 +13,10 @@ chinese_pattern = re.compile('[\u4e00-\u9fff]')
 def get_response_in_public_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-    #prevent ' and " separating the string
+    # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
+    # remove the leading and trailing spaces
+    msg = msg.lstrip().rstrip()
 
     if '機率' in msg:
         return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"

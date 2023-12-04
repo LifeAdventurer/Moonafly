@@ -55,8 +55,10 @@ def current_path() -> str:
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-    #prevent ' and " separating the string
+    # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
+    # remove the leading and trailing spaces
+    msg = msg.lstrip().rstrip()
     
     global path_stack
 

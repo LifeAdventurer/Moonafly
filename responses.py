@@ -24,8 +24,10 @@ is_public_mode = True
 def get_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-    #prevent ' and " separating the string
+    # prevent ' and " separating the string
     msg = msg.replace("'", "\\'").replace("\"", "\\\"")
+    # remove the leading and trailing spaces
+    msg = msg.lstrip().rstrip()
 
     global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal
 
