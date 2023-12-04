@@ -33,7 +33,6 @@ def get_response(message) -> str:
 
     if entering_password and incorrect_count < 3 and username not in special_guests:
         if msg == password:
-            password = password[::-1]
             incorrect_count = 0
             entering_password = False
             is_public_mode = False
