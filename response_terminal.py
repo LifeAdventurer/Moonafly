@@ -19,6 +19,8 @@ def get_directory_structure():
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
 def command_not_found(msg) -> str:
+    space = ' ' * 4 * 2
+    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
     return textwrap.dedent(f"""
         ```
         {msg}: command not found
