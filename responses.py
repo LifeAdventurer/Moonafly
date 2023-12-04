@@ -4,7 +4,7 @@ import json
 
 # versions
 public_version = 'v1.0.2'
-terminal_version = 'v1.2.0'
+terminal_version = 'v1.3.0'
 
 # password
 password = ""
