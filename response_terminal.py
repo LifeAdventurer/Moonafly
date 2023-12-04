@@ -164,9 +164,12 @@ def get_response_in_terminal_mode(message) -> str:
     
     # show the directory_structure
     elif msg[:4] == 'tree':
+        current_structure = directory_structure
+        for folder in path_stack:
+            current_structure = current_structure[folder]
         return textwrap.dedent(f"""
             ```
-            {visualize_directory_structure(directory_structure, 4, 3)}
+            {visualize_directory_structure(current_structure, 4, 3)}
             {current_path()}
             ```
         """)
