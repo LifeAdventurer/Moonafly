@@ -117,6 +117,8 @@ def get_response_in_terminal_mode(message) -> str:
                     temporary_path_stack.pop()
                 elif temporary_path_stack[0] == '~':
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+                    space = ' ' * 4 * 6
+                    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                     return textwrap.dedent(f"""\
                         ```
                         Moonafly: cd: {msg}: No such file or directory
@@ -134,6 +136,8 @@ def get_response_in_terminal_mode(message) -> str:
                 current_directory = current_directory[folder]
             else:
                 msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+                space = ' ' * 4 * 5
+                msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                 return textwrap.dedent(f"""\
                     ```
                     Moonafly: cd: {msg}: No such file or directory
