@@ -23,7 +23,7 @@ def get_response_in_public_mode(message) -> str:
         ha_str = '哈' * random.randint(1, 10)
         return f"{ha_str} :rofl:"
 
-    pattern = r'!search google (.+)'
+    pattern = r'^!search google (.+)$'
     if chinese_pattern.search(msg) and not re.match(pattern, msg):  
         return
 
@@ -62,7 +62,7 @@ def get_response_in_public_mode(message) -> str:
                 if msg[:4] == 'help':
                     return 'codeforces -1\natcoder -2\ncodechef -3\ntopcoder -4\nleetcode -5\ncsacademy -6\ndmoj  -7\n'
 
-                pattern = r'-(\d+)\s+(\w+)'
+                pattern = r'^-(\d+)\s+(.*?)$'
                 match = re.search(pattern, msg)
                 if match:
                     number = int(match.group(1))
@@ -144,7 +144,7 @@ def get_response_in_public_mode(message) -> str:
         elif msg[:4] == 'dict':
             msg = msg[5:]
 
-            match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
+            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
                 return search_dict(match.group(1), int(match.group(2), 0, 0))
             elif 'LIMIT' in msg:

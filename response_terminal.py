@@ -195,7 +195,7 @@ def get_response_in_terminal_mode(message) -> str:
     elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
         if path_stack[-1] == 'online-judge':
-            pattern = r'-(\d+)\s+(\w+)'
+            pattern = r'^-(\d+)\s+(\w+)$'
             match = re.search(pattern, msg)
             if match:
                 number = int(match.group(1))
@@ -302,7 +302,7 @@ def get_response_in_terminal_mode(message) -> str:
             #         ```
             #     """)
 
-            # pattern = r'-(\d+)\s+(\w+)'
+            # pattern = r'^-(\d+)\s+(\w+)$'
             # match = re.search(pattern, msg)
             # if match:
             #     number = int(match.group(1))
@@ -366,7 +366,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     # return the definition and example of the enter word from a dictionary
     elif path_stack[-1] == 'dict':
-        match = re.search(r'(\w+)\s+LIMIT\s+(\d+)', msg)
+        match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
         if match:
             return textwrap.dedent(f"""
                 {search_dict(match.group(1), int(match.group(2)), 4, 4)}
