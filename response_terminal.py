@@ -174,6 +174,19 @@ def get_response_in_terminal_mode(message) -> str:
             ```
         """)
     
+    elif msg[:4] == 'help':
+        return textwrap.dedent(f"""
+            ```
+            Moonafly, version {responses.terminal_version}
+
+             cd [dir]
+             help
+             ls 
+             pwd
+             tree
+            ```
+        """)
+    
     # commands in certain directory
     if path_stack[-1] == 'math':
         # if username not in responses.special_guests:
