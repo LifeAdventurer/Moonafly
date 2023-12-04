@@ -8,10 +8,6 @@ from math_calc import safe_eval
 import os
 import re
 
-# vocab_file = open('./json/vocabulary_items.json')
-# vocab_list = json.load(vocab_file)['vocabularies']
-# vocab_file.close()
-
 chinese_pattern = re.compile('[\u4e00-\u9fff]')
 
 def get_response_in_public_mode(message) -> str:
@@ -43,11 +39,7 @@ def get_response_in_public_mode(message) -> str:
         elif msg[:3] == 'gen':
             msg = msg[4:]
             if msg[:4] == 'help':
-                return "vocabulary or (vocab) instead\nfortune"
-
-            elif 'vocabulary' in msg or 'vocab' in msg:
-                return "sorry, still developing"
-                # return list[random.randint(0, len(list))]
+                return "fortune\nquote\n"
 
             elif msg[:7] == 'fortune':
                 return 'https://lifeadventurer.github.io/generators/fortune_generator/' 

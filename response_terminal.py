@@ -168,20 +168,8 @@ def get_response_in_terminal_mode(message) -> str:
         """)
 
     elif len(path_stack) >= 2 and path_stack[-2] == 'gen':
-        if path_stack[-1] == 'vocab':
-            if msg == 'get':
-                return textwrap.dedent(f"""
-                    ```
-                    sorry, still developing
-                    {current_path()}
-                    ```
-                """)
-                # return list[random.randint(0, len(list))]
-            else:
-                return command_not_found(msg)
-
         # my generators repo on github.io
-        elif path_stack[-1] == 'fortune':
+        if path_stack[-1] == 'fortune':
             if msg == 'get':
                 return textwrap.dedent(f"""
                     https://lifeadventurer.github.io/generators/fortune_generator
