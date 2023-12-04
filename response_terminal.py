@@ -40,6 +40,14 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
 
     return output
 
+def visualize_directory_structure(data, tab_size, tab_count, indent = 0) -> str:
+    tree = ""
+    if isinstance(data, dict):
+        for key, value in sorted(data.items()):
+            tree += ' ' * tab_size * indent + '\-- ' + key + '\n' + ' ' * tab_size * tab_count
+            tree += visualize_directory_structure(value, tab_size, tab_count, indent + 1)
+    return tree 
+
 path_stack = []
 
 # generating the current working directory
@@ -156,7 +164,12 @@ def get_response_in_terminal_mode(message) -> str:
     
     # show the directory_structure
     elif msg[:4] == 'tree':
-        return
+        return textwrap.dedent(f"""
+            ```
+            {visualize_directory_structure(directory_structure, 4, 3)}
+            {current_path()}
+            ```
+        """)
     
     # commands in certain directory
     if path_stack[-1] == 'math':
