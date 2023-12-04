@@ -106,7 +106,6 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 temporary_path_stack.append(folder)
                 
-        get_directory_structure()
         current_directory = directory_structure
 
         for folder in temporary_path_stack:
@@ -125,7 +124,6 @@ def get_response_in_terminal_mode(message) -> str:
 
     # ls command
     elif msg[:2] == 'ls':
-        get_directory_structure()
         current_directory = directory_structure
         for folder in path_stack:
             current_directory = current_directory[folder]
@@ -155,6 +153,10 @@ def get_response_in_terminal_mode(message) -> str:
             {current_path()}
             ```
         """)
+    
+    # show the directory_structure
+    elif msg[:4] == 'tree':
+        return
     
     # commands in certain directory
     if path_stack[-1] == 'math':

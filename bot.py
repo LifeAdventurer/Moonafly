@@ -1,5 +1,6 @@
 import discord
 import responses 
+import response_terminal
 import json
 
 token = ""
@@ -22,6 +23,7 @@ def init_files():
     load_token()
     responses.special_guest_list()
     responses.load_password_for_terminal()
+    response_terminal.get_directory_structure()
 
 def run_discord_bot():
     init_files()
