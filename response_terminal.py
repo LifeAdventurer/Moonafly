@@ -62,6 +62,9 @@ def current_path() -> str:
         path += folder
     return path + "$"
 
+playing_game = False
+target_number = ''
+
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -70,7 +73,7 @@ def get_response_in_terminal_mode(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
     
-    global path_stack
+    global path_stack, playing_game, target_number
 
     # cd command
     if msg[:2] == 'cd':
@@ -483,14 +486,47 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
     
-    elif path_stack[-1] == 'game':
+    elif len(path_stack) >= 2 and path_stack[-2] == 'game':
+        if path_stack[-1] == '1A2B':
+            if not playing_game and msg == 'start':
+                playing_game = True
+                target_number = ''.join(random.sample('0123456789', 4))
+                return textwrap.dedent(f"""
+                    ```
+                    4-digit number generated.
+                    ```
+                """)
 
-        return textwrap.dedent(f"""
-            ```
-            sorry, this function is still developing
-            {current_path()}
-            ```
-        """)
+            elif playing_game:
+                guess = msg
+                if len(guess) == 4 and guess.isdigit():
+                    A_cnt = sum(t == g for t, g in zip(target_number, guess))
+                    B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
+                    if A_cnt == 4:
+                        return textwrap.dedent(f"""
+                            ```
+                            Congratulations! You guessed the target number {target_number}.
+                            {current_path()}
+                            ```
+                        """)
+
+                    else:
+                        return textwrap.dedent(f"""
+                            ```
+                            {A_cnt}A{B_cnt}B
+                            ```
+                        """)
+
+                else:
+                    return textwrap.dedent(f"""
+                        ```
+                        please enter a valid input with only numbers and the correct length
+                        {current_path()}
+                        ```
+                    """)
+
+            else:
+                return command_not_found(msg)
 
     else:
         return command_not_found(msg)

@@ -9,6 +9,8 @@ import re
 
 chinese_pattern = re.compile('[\u4e00-\u9fff]')
 
+playing_game = False
+
 def get_response_in_public_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -155,6 +157,13 @@ def get_response_in_public_mode(message) -> str:
             msg = msg[6:]
             words = msg.split()
             return str(len(words))
+
+        elif msg[:4] == 'game':
+            msg = msg[5:]
+            if msg[:4] == '1A2B':
+                return 'For your better experience, this game can only be played in terminal mode.'
+            else:
+                return 'no such command'
 
         else:
             return 'no such command' 

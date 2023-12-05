@@ -20,7 +20,9 @@
                 "youtube": {}
             },
             "weather": {},
-            "game": {}
+            "game": {
+                "1A2B": {}
+            }
         }
     }
 }
