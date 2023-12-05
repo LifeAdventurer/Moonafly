@@ -1,4 +1,3 @@
-from math import *
 import json
 import random
 import requests
