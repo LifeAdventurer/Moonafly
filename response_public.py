@@ -137,7 +137,7 @@ def get_response_in_public_mode(message) -> str:
 
         elif msg[:4] == 'roll':
             msg = msg[5:]
-            if not all(char.isdigit() for char in msg):
+            if not msg.isdigit():
                 return 'please enter a valid number'
             else:
                 return random.randint(1, int(msg))

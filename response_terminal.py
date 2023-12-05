@@ -446,7 +446,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     # roll a random number
     elif path_stack[-1] == 'roll':
-        if not all(char.isdigit() for char in msg):
+        if not msg.isdigit():
             return textwrap.dedent(f"""
                 ```
                 please enter a valid number
