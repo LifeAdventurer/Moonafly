@@ -21,7 +21,6 @@ def special_guest_list():
     with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
 
-special_guest_using_terminal = False
 entering_password = False
 incorrect_count = 0
 is_public_mode = True
@@ -35,7 +34,7 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal, current_using_user
+    global is_public_mode, entering_password, incorrect_count, password, current_using_user
 
     if entering_password and incorrect_count < 3 and username not in special_guests:
         if msg == password:
@@ -60,7 +59,7 @@ def get_response(message) -> str:
                 return '```the maximum number of entries has been reached\nauto exited```'
             return '```incorrect, please enter again```'
 
-    if special_guest_using_terminal and username not in special_guests:
+    if current_using_user != '' and username != current_using_user:
         return
 
     if not is_public_mode and (msg == 'moonafly -p' or msg == 'Moonafly -p' or msg == '-p'):
@@ -72,7 +71,6 @@ def get_response(message) -> str:
             entering_password = True
             return '```please enter password```'
         else:
-            special_guest_using_terminal = True
             is_public_mode = False
             response_terminal.path_stack = ['~']
             current_using_user = username
@@ -91,7 +89,6 @@ def get_response(message) -> str:
 
     else:
         if msg == 'exit' and not is_public_mode and username == current_using_user:
-            special_guest_using_terminal = False
             is_public_mode = True
             incorrect_count = 0
             response_terminal.path_stack.clear()
