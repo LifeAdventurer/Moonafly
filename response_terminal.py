@@ -237,6 +237,7 @@ def get_response_in_terminal_mode(message) -> str:
              ls 
              pwd
              tree
+            {current_path()}
             ```
         """)
     
