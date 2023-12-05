@@ -5,7 +5,7 @@ import textwrap
 
 # versions
 public_version = 'v1.0.2'
-terminal_version = 'v1.4.0'
+terminal_version = 'v1.4.1'
 
 # password
 password = ""
