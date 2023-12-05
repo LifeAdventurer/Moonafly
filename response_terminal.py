@@ -14,7 +14,7 @@ directory_structure = []
 
 def get_directory_structure():
     global directory_structure
-    with open('./json/directory_structure.json') as directory_structure_file:
+    with open('./data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
 def command_not_found(msg) -> str:

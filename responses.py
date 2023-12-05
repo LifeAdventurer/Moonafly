@@ -11,14 +11,14 @@ terminal_version = 'v1.4.1'
 password = ""
 def load_password_for_terminal():
     global password
-    with open('./json/passwords.json') as passwords_file:
+    with open('./data/json/passwords.json') as passwords_file:
         password = json.load(passwords_file)['terminal_password']
 
 # special guest
 special_guests = []
 def special_guest_list():
     global special_guests
-    with open('./json/special_guests.json') as special_guest_file:
+    with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
 
 special_guest_using_terminal = False
