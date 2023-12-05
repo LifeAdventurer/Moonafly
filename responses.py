@@ -25,6 +25,7 @@ special_guest_using_terminal = False
 entering_password = False
 incorrect_count = 0
 is_public_mode = True
+current_using_user = ''
 
 def get_response(message) -> str:
     username = str(message.author)
@@ -34,7 +35,7 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal
+    global is_public_mode, entering_password, incorrect_count, password, special_guest_using_terminal, current_using_user
 
     if entering_password and incorrect_count < 3 and username not in special_guests:
         if msg == password:
@@ -42,6 +43,7 @@ def get_response(message) -> str:
             entering_password = False
             is_public_mode = False
             response_terminal.path_stack.append("~")
+            current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
             return textwrap.dedent(f"""\
@@ -71,27 +73,28 @@ def get_response(message) -> str:
             return '```please enter password```'
         else:
             special_guest_using_terminal = True
-        is_public_mode = False
-        response_terminal.path_stack.append("~")
-        print('swap to terminal mode')
-        print('Moonafly:~$')
-        if len(msg) > 0:
-            message.content = msg[(2 if msg[:2] == '-t' else 11):].strip()
-            get_response(message)
+            is_public_mode = False
+            response_terminal.path_stack.append("~")
+            current_using_user = username
+            print('swap to terminal mode')
+            print('Moonafly:~$')
+            if len(msg) > 0:
+                message.content = msg[(2 if msg[:2] == '-t' else 11):].strip()
+                get_response(message)
 
-        return textwrap.dedent(f"""\
-            ```
-            {response_terminal.current_path()}
-            ```
-        """)
+            return textwrap.dedent(f"""\
+                ```
+                {response_terminal.current_path()}
+                ```
+            """)
 
     else:
-        if msg == 'exit' and not is_public_mode:
-            if username in special_guests:
-                special_guest_using_terminal = False
+        if msg == 'exit' and not is_public_mode and username == current_using_user:
+            special_guest_using_terminal = False
             is_public_mode = True
             incorrect_count = 0
             response_terminal.path_stack.clear()
+            current_using_user = ''
             return
         elif msg == 'status':
             if is_public_mode:
