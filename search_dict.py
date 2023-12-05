@@ -43,10 +43,10 @@ def search_dict(word, limit, tab_size, tab_count):
     if result:
         definition, example_list = result
         definition = definition.rstrip(': ') # removes the certain trailing char from the string
-        information = f"### Definition: \n{space}- {definition}\n{space}"
-        information += f"### Examples: \n{space}"
+        information = f"{space}### Definition: \n{space}- {definition}\n"
+        information += f"{space}### Examples: \n"
         for sentence in example_list:
-            information += f"- {sentence}\n{space}"
-        return f"# {word}\n{space}" + information
+            information += f"{space}- {sentence}\n"
+        return f"{space}# {word}\n" + information
     else:
         return f"Failed to retrieve information for the word '{word}'."
