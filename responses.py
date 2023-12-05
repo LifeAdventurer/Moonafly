@@ -1,6 +1,7 @@
 import response_public
 import response_terminal 
 import json
+import textwrap
 
 # versions
 public_version = 'v1.0.2'
@@ -43,7 +44,11 @@ def get_response(message) -> str:
             response_terminal.path_stack.append("~")
             print('swap to terminal mode')
             print('Moonafly:~$')
-            return '```Moonafly:~$```'
+            return textwrap.dedent(f"""\
+                ```
+                {response_terminal.current_path()}
+                ```
+            """)
         else:
             incorrect_count += 1
             if incorrect_count == 3:
@@ -60,7 +65,7 @@ def get_response(message) -> str:
         is_public_mode = True
         print('swap to public mode')
         return 'Successfully swap to public mode!'
-    elif msg == 'moonafly -t' or msg == 'Moonafly -t' or msg == '-t':
+    elif msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t' or msg[:2] == '-t':
         if username not in special_guests:
             entering_password = True
             return '```please enter password```'
@@ -70,7 +75,15 @@ def get_response(message) -> str:
         response_terminal.path_stack.append("~")
         print('swap to terminal mode')
         print('Moonafly:~$')
-        return '```Moonafly:~$```'
+        if len(msg) > 0:
+            message.content = msg[(2 if msg[:2] == '-t' else 11):].strip()
+            get_response(message)
+
+        return textwrap.dedent(f"""\
+            ```
+            {response_terminal.current_path()}
+            ```
+        """)
 
     else:
         if msg == 'exit' and not is_public_mode:
@@ -84,7 +97,13 @@ def get_response(message) -> str:
             if is_public_mode:
                 return f"public mode {public_version}"
             else:
-                return f'```terminal mode {terminal_version}\n{response_terminal.current_path()}```'
+                return textwrap.dedent(f"""\
+                    ```
+                    terminal mode {terminal_version}
+                    {response_terminal.current_path()}
+                    ```
+                """)
+
         if is_public_mode:
             return response_public.get_response_in_public_mode(message)
         else:
