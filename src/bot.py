@@ -44,8 +44,9 @@ def run_discord_bot():
         user_message = str(message.content)
         channel = str(message.channel)
         
-        if not responses.is_public_mode and username != responses.current_using_user and username != responses.special_guests[0]:
+        if not responses.is_public_mode and username != responses.current_using_user:
             return
+        
         
         if channel[:14] == 'Direct Message':
             print('WARNING: people using bot in Direct Message\n')
