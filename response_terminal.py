@@ -251,7 +251,12 @@ def get_response_in_terminal_mode(message) -> str:
             """)
         elif path_stack[-1] == 'count':
             words = msg.split()
-            return str(len(words))
+            return textwrap.dedent(f"""
+                ```
+                {str(len(words))}
+                {current_path()}
+                ```
+            """)
 
     elif len(path_stack) >= 2 and path_stack[-2] == 'gen':
         # my generators repo on github.io
