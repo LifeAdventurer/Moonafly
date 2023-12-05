@@ -55,7 +55,7 @@ path_stack = []
 # generating the current working directory
 def current_path() -> str:
     global path_stack
-    path = f"{username}@Moonafly:"
+    path = f"{responses.current_using_user}@Moonafly:"
     for folder in path_stack:
         if folder != '~':
             path += '/'
@@ -63,7 +63,6 @@ def current_path() -> str:
     return path + "$"
 
 def get_response_in_terminal_mode(message) -> str:
-    global username
     username = str(message.author)
     msg = str(message.content)
     # prevent ' and " separating the string

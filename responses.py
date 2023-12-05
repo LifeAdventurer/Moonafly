@@ -78,9 +78,11 @@ def get_response(message) -> str:
             current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
+            msg = msg[(2 if msg[:2] == '-t' else 11):].strip()
+            print(len(msg))
             if len(msg) > 0:
-                message.content = msg[(2 if msg[:2] == '-t' else 11):].strip()
-                get_response(message)
+                message.content = msg
+                return get_response(message)
 
             return textwrap.dedent(f"""\
                 ```
