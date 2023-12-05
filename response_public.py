@@ -1,4 +1,3 @@
-from math import *
 import json
 import random
 import requests
@@ -36,8 +35,6 @@ def get_response_in_public_mode(message) -> str:
 
         if msg[:4] == 'math':
             msg = msg[5:]
-            # if username != 'life_adventurer':
-            #     return 'permission denied'
             return safe_eval(msg)
 
         elif msg[:3] == 'gen':
