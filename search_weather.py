@@ -8,5 +8,5 @@ def get_weather_info(tab_size, tab_count):
     data = response.json()
     current_temperature = data['current']['temperature_2m']
     wind_speed = data['current']['wind_speed_10m']
-    return (f"Current Temperature: {current_temperature}°C\n{' ' * tab_size * tab_count}Wind Speed: {wind_speed} m/s")
+    return (f"Current Temperature: {current_temperature}°C\n{' ' * tab_size * tab_count}Wind Speed: {wind_speed} km/h")
 
