@@ -241,7 +241,7 @@ def get_response_in_terminal_mode(message) -> str:
         """)
     
     # commands in certain directory
-    if path_stack[-2] == 'math':
+    if len(path_stack) >= 2 and path_stack[-2] == 'math':
         if path_stack[-1] == 'calc':
             return textwrap.dedent(f"""
                 ```
