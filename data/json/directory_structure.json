@@ -1,0 +1,22 @@
+{
+    "directory_structure": {
+        "~": {
+            "dict": {},
+            "gen": {
+                "fortune": {},
+                "quote": {}
+            },
+            "math": {},
+            "roll": {},
+            "search": {
+                "git": {},
+                "github": {},
+                "google": {},
+                "greek": {},
+                "online-judge": {},
+                "youtube": {}
+            },
+            "weather": {}
+        }
+    }
+}

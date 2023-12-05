@@ -1,0 +1,26 @@
+{
+    "allowed_names": [
+        "sum", 
+        "min", 
+        "max", 
+        "abs",
+        "round",
+        "math",
+        "pow",
+        "sqrt",
+        "sin",
+        "cos",
+        "tan",
+        "ceil",
+        "floor",
+        "exp",
+        "log",
+        "log10",
+        "degrees",
+        "radians",
+        "fabs",
+        "prod",
+        "remainder",
+        "cbrt"
+    ]
+}
