@@ -241,15 +241,17 @@ def get_response_in_terminal_mode(message) -> str:
         """)
     
     # commands in certain directory
-    if path_stack[-1] == 'math':
-        # if username not in responses.special_guests:
-        #     return 'permission denied'
-        return textwrap.dedent(f"""
-            ```
-            {safe_eval(msg)}
-            {current_path()}
-            ```
-        """)
+    if path_stack[-2] == 'math':
+        if path_stack[-1] == 'calc':
+            return textwrap.dedent(f"""
+                ```
+                {safe_eval(msg)}
+                {current_path()}
+                ```
+            """)
+        elif path_stack[-1] == 'count':
+            words = msg.split()
+            return str(len(words))
 
     elif len(path_stack) >= 2 and path_stack[-2] == 'gen':
         # my generators repo on github.io
@@ -474,6 +476,15 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+    
+    elif path_stack[-1] == 'game':
+
+        return textwrap.dedent(f"""
+            ```
+            sorry, this function is still developing
+            {current_path()}
+            ```
+        """)
 
     else:
         return command_not_found(msg)

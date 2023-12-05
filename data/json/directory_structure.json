@@ -6,7 +6,10 @@
                 "fortune": {},
                 "quote": {}
             },
-            "math": {},
+            "math": {
+                "calc": {},
+                "count": {}
+            },
             "roll": {},
             "search": {
                 "git": {},

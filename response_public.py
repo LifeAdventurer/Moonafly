@@ -151,5 +151,10 @@ def get_response_in_public_mode(message) -> str:
             else:
                 return search_dict(msg, 3, 0, 0)
 
+        elif msg[:5] == 'count':
+            msg = msg[6:]
+            words = msg.split()
+            return str(len(words))
+
         else:
             return 'no such command' 
