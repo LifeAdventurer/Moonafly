@@ -74,7 +74,7 @@ def get_response(message) -> str:
         else:
             special_guest_using_terminal = True
             is_public_mode = False
-            response_terminal.path_stack.append("~")
+            response_terminal.path_stack = ['~']
             current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
