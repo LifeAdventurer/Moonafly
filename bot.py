@@ -15,7 +15,7 @@ async def send_message(message, user_message):
     try:
         # get response from responses.py
         response = responses.get_response(message)
-        if len(response) > 0:
+        if response != None:
             await message.channel.send(response)
     except Exception as e:
         print(e)
