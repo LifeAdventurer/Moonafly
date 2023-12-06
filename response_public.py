@@ -1,11 +1,13 @@
 import json
 import random
 import requests
+import os
+import re
+
+# other py files
 from search_dict import search_dict
 from search_weather import get_weather_info
 from math_calc import safe_eval
-import os
-import re
 
 chinese_pattern = re.compile('[\u4e00-\u9fff]')
 
@@ -174,3 +176,5 @@ def get_response_in_public_mode(message) -> str:
 
         else:
             return 'no such command' 
+
+# ! consider to close the public mode

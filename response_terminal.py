@@ -1,14 +1,16 @@
 import json
 import random
 import requests
+import os
+import re
+import textwrap
+
+# other py files
 from search_dict import search_dict
 from search_weather import get_weather_info
 from math_calc import safe_eval
 from command_help import get_help_information
 import responses
-import os
-import re
-import textwrap
 
 directory_structure = []
 
@@ -70,6 +72,7 @@ def current_path() -> str:
         path += folder
     return path + "$"
 
+# for game commands
 playing_game = False
 target_number = ''
 
@@ -81,7 +84,10 @@ def get_response_in_terminal_mode(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
     
-    global path_stack, playing_game, target_number
+    # for directory
+    global path_stack
+    # for game commands
+    global playing_game, target_number
 
     # cd command
     if msg[:2] == 'cd':
@@ -114,6 +120,7 @@ def get_response_in_terminal_mode(message) -> str:
         # skip all the '\' and split the path into a folder list
         path = path.replace('\\', '').split('/')
 
+        # using [:] to prevent temporary_path_stack and path_stack affecting each other 
         temporary_path_stack = path_stack[:]
 
         for folder in path:
@@ -126,8 +133,10 @@ def get_response_in_terminal_mode(message) -> str:
                 if len(temporary_path_stack) > 1:
                     temporary_path_stack.pop()
                 elif temporary_path_stack[0] == '~':
+                    # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
                     space = ' ' * 4 * 6
+                    # multi-line adjustment
                     msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                     return textwrap.dedent(f"""\
                         ```
@@ -145,8 +154,10 @@ def get_response_in_terminal_mode(message) -> str:
             if folder in list(current_directory):
                 current_directory = current_directory[folder]
             else:
+                # reverse the message to original command by removing the escape character
                 msg = msg.replace("\\'", "'").replace("\\\"", "\"")
                 space = ' ' * 4 * 5
+                # multi-line adjustment
                 msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                 return textwrap.dedent(f"""\
                     ```
@@ -238,7 +249,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
-
+        
         return textwrap.dedent(f"""
             ```
             Moonafly, version {responses.terminal_version}
@@ -293,9 +304,6 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
             else:
                 return command_not_found(msg)
-
-        else:
-            return command_not_found(msg)
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
@@ -432,9 +440,6 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
             else:
                 return command_not_found(msg)
-
-        else:
-            return command_not_found(msg)
     
     elif path_stack[-1] == 'weather':
         if msg == 'get':

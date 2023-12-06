@@ -21,9 +21,11 @@ def special_guest_list():
     with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
 
+# password feature for terminal mode 
 entering_password = False
 incorrect_count = 0
 is_public_mode = True
+# prevent multiple user using the terminal at once
 current_using_user = ''
 
 def get_response(message) -> str:
@@ -41,7 +43,8 @@ def get_response(message) -> str:
             incorrect_count = 0
             entering_password = False
             is_public_mode = False
-            response_terminal.path_stack.append("~")
+            # don't use append or it might cause double '~' when using recursion -t -t... command
+            response_terminal.path_stack = ['~']
             current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
@@ -62,16 +65,17 @@ def get_response(message) -> str:
     if current_using_user != '' and username != current_using_user:
         return
 
-    if not is_public_mode and (msg == 'moonafly -p' or msg == 'Moonafly -p' or msg == '-p'):
+    if not is_public_mode and (msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'):
         is_public_mode = True
         print('swap to public mode')
         return 'Successfully swap to public mode!'
-    elif msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t' or msg[:2] == '-t':
+    elif msg[:2] == '-t' or msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t':
         if username not in special_guests:
             entering_password = True
             return '```please enter password```'
         else:
             is_public_mode = False
+            # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
             current_using_user = username
             print('swap to terminal mode')
@@ -88,6 +92,7 @@ def get_response(message) -> str:
             """)
 
     else:
+        # make sure no other user can exit the terminal 
         if msg == 'exit' and not is_public_mode and username == current_using_user:
             is_public_mode = True
             incorrect_count = 0
