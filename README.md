@@ -28,7 +28,25 @@
     }
     ```
 
-4. Run the bot in your terminal
+4. Set rank list for game 1A2B feature via `game_1A2B_ranks.json`:
+
+    ```json
+    {
+        "4": [
+            {
+                "attempts": 6
+            }
+        ],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [],
+        "10": []
+    }
+    ```
+
+5. Run the bot in your terminal
 
     ```bash
     py main.py
