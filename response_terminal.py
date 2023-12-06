@@ -30,15 +30,15 @@ def save_game_1A2B_result(length, attempts):
     records = get_game_1A2B_ranks()
     records.setdefault(str(length), [])
     
-    records[str(length)].append({'attempts': attempts})
+    records[str(length)].append({'attempts': attempts + 1})
     records[str(length)].sort(key = lambda x : x['attempts'])
 
-    rank = records[str(length)].index({'attempts': attempts})
+    rank = records[str(length)].index({'attempts': attempts + 1})
 
     with open('./data/json/game_1A2B_ranks.json', 'w')as game_1A2B_ranks:
         json.dump(records, game_1A2B_ranks, indent = 4)
 
-    return rank + 1
+    return rank
 
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
