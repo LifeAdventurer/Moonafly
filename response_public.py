@@ -30,7 +30,7 @@ def get_response_in_public_mode(message) -> str:
 
     pattern = r'^!search google (.+)$'
     if chinese_pattern.search(msg) and not re.match(pattern, msg):  
-        return
+        return ''
 
     if msg[0] == '!':
         msg = msg[1:]

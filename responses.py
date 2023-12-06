@@ -63,7 +63,7 @@ def get_response(message) -> str:
             return '```incorrect, please enter again```'
 
     if current_using_user != '' and username != current_using_user:
-        return
+        return ''
 
     if not is_public_mode and (msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'):
         is_public_mode = True
@@ -99,7 +99,7 @@ def get_response(message) -> str:
             response_terminal.playing_game = False
             response_terminal.path_stack.clear()
             current_using_user = ''
-            return
+            return ''
         elif msg == 'status':
             if is_public_mode:
                 return f"public mode {public_version}"
