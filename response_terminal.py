@@ -520,7 +520,7 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
-            if not playing_game and msg[:5] == 'start':
+            if not playing_game and (msg[:5] == 'start' or msg[:5] == 'Start'):
                 playing_game = True
                 attempts = 0
                 msg = msg[5:].strip()
@@ -545,7 +545,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
             elif playing_game:
-                if msg == 'stop':
+                if msg == 'stop' or msg == 'Stop':
                     playing_game = False
                     return textwrap.dedent(f"""
                         ```
