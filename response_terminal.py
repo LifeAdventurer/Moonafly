@@ -19,6 +19,27 @@ def get_directory_structure():
     with open('./data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
+def get_game_1A2B_ranks():
+    global game_1A2B_ranks
+    with open('./data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
+        game_1A2B_ranks = json.load(game_1A2B_ranks)
+    
+    return game_1A2B_ranks
+
+def save_game_1A2B_result(length, attempts):
+    records = get_game_1A2B_ranks()
+    records.setdefault(str(length), [])
+    
+    records[str(length)].append({'attempts': attempts})
+    records[str(length)].sort(key = lambda x : x['attempts'])
+
+    rank = records[str(length)].index({'attempts': attempts})
+
+    with open('./data/json/game_1A2B_ranks.json', 'w')as game_1A2B_ranks:
+        json.dump(records, game_1A2B_ranks, indent = 4)
+
+    return rank + 1
+
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
     msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
@@ -504,7 +525,7 @@ def get_response_in_terminal_mode(message) -> str:
                 attempts = 0
                 msg = msg[5:].strip()
                 if len(msg) > 0:
-                    if msg.isdigit() and 4 <= int(msg) and int(msg) <= 10:
+                    if msg.isdigit() and 4 <= int(msg) <= 10:
                         target_number_len = int(msg)
                     else:
                         return textwrap.dedent(f"""
@@ -516,6 +537,7 @@ def get_response_in_terminal_mode(message) -> str:
                 else:
                     target_number_len = 4
                 target_number = ''.join(random.sample('0123456789', target_number_len))
+                print(target_number)
                 return textwrap.dedent(f"""
                     ```
                     {target_number_len}-digit number generated.
@@ -530,9 +552,11 @@ def get_response_in_terminal_mode(message) -> str:
                     attempts += 1
                     if A_cnt == target_number_len:
                         playing_game = False
+                        user_rank = save_game_1A2B_result(target_number_len, attempts)
                         return textwrap.dedent(f"""
                             ```
                             Congratulations! You guessed the target number {target_number} in {attempts} attempts.
+                            Your got rank {user_rank} in length {target_number_len} !!!
                             {current_path()}
                             ```
                         """)
