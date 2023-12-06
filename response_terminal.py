@@ -75,6 +75,7 @@ def current_path() -> str:
 # for game commands
 playing_game = False
 target_number = ''
+attempts = 0
 
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
@@ -87,7 +88,7 @@ def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
     # for game commands
-    global playing_game, target_number
+    global playing_game, target_number, attempts
 
     # cd command
     if msg[:2] == 'cd':
@@ -498,6 +499,7 @@ def get_response_in_terminal_mode(message) -> str:
         if path_stack[-1] == '1A2B':
             if not playing_game and msg == 'start':
                 playing_game = True
+                attempts = 0
                 target_number = ''.join(random.sample('0123456789', 4))
                 return textwrap.dedent(f"""
                     ```
@@ -511,14 +513,16 @@ def get_response_in_terminal_mode(message) -> str:
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
                     B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
                     if A_cnt == 4:
+                        playing_game = False
                         return textwrap.dedent(f"""
                             ```
-                            Congratulations! You guessed the target number {target_number}.
+                            Congratulations! You guessed the target number {target_number} in {attempts} attempts.
                             {current_path()}
                             ```
                         """)
 
                     else:
+                        attempts += 1
                         return textwrap.dedent(f"""
                             ```
                             {A_cnt}A{B_cnt}B
