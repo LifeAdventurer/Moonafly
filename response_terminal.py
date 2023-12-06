@@ -27,6 +27,14 @@ def command_not_found(msg) -> str:
         ```
     """)
 
+def function_developing() -> str:
+    return textwrap.dedent(f"""
+        ```
+        sorry, this function is still developing
+        {current_path()}
+        ```
+    """)
+
 def get_ls_command_output(files, tab_size, tab_count) -> str:
     output = ""
     columns = 3;
@@ -409,12 +417,7 @@ def get_response_in_terminal_mode(message) -> str:
             # if msg > '6' or msg < '1':
             #     return 'no such command'
             # else:
-                return textwrap.dedent(f"""
-                    ```
-                    sorry, this function is still developing
-                    {current_path()}
-                    ```
-                """)
+                return function_developing()
             # TO-DO
             # elif msg == 'setup':
 
