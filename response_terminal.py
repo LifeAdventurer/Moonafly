@@ -4,6 +4,7 @@ import requests
 import os
 import re
 import textwrap
+import time
 
 # other py files
 from search_dict import search_dict
@@ -30,12 +31,16 @@ def save_game_1A2B_result(length, attempts):
     records = get_game_1A2B_ranks()
     records.setdefault(str(length), [])
     
-    records[str(length)].append({'attempts': attempts + 1})
+    records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")})
     records[str(length)].sort(key = lambda x : x['attempts'])
 
-    rank = records[str(length)].index({'attempts': attempts + 1})
+    rank = 0
+    for record in records[str(length)]:
+        if record['attempts'] > attempts:
+            break
+        rank += 1
 
-    with open('./data/json/game_1A2B_ranks.json', 'w')as game_1A2B_ranks:
+    with open('./data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
         json.dump(records, game_1A2B_ranks, indent = 4)
 
     return rank
