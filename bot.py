@@ -20,6 +20,12 @@ async def send_message(message, user_message):
     except Exception as e:
         print(e)
 
+async def send_message_in_private(message):
+    try:
+        await message.author.send(message)
+    except Exception as e:
+        print(e)
+
 def init_files():
     load_token()
     responses.special_guest_list()
@@ -46,6 +52,7 @@ def run_discord_bot():
         channel = str(message.channel)
         
         if not responses.is_public_mode and username != responses.current_using_user:
+            send_message_in_private('someone is using the terminal')
             return
         
         
