@@ -75,6 +75,7 @@ def current_path() -> str:
 # for game commands
 playing_game = False
 target_number = ''
+target_number_len = 0
 attempts = 0
 
 def get_response_in_terminal_mode(message) -> str:
@@ -88,7 +89,7 @@ def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
     # for game commands
-    global playing_game, target_number, attempts
+    global playing_game, target_number, target_number_len, attempts
 
     if not playing_game:
         # cd command
@@ -498,22 +499,35 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
-            if not playing_game and msg == 'start':
+            if not playing_game and msg[:5] == 'start':
                 playing_game = True
                 attempts = 0
-                target_number = ''.join(random.sample('0123456789', 4))
+                msg = msg[5:].strip()
+                if len(msg) > 0:
+                    if msg.isdigit() and 4 <= int(msg) and int(msg) <= 10:
+                        target_number_len = int(msg)
+                    else:
+                        return textwrap.dedent(f"""
+                            ```
+                            please enter a valid number between 4 to 10
+                            {current_path()}
+                            ```
+                        """)
+                else:
+                    target_number_len = 4
+                target_number = ''.join(random.sample('0123456789', target_number_len))
                 return textwrap.dedent(f"""
                     ```
-                    4-digit number generated.
+                    {target_number_len}-digit number generated.
                     ```
                 """)
 
             elif playing_game:
                 guess = msg
-                if len(guess) == 4 and guess.isdigit():
+                if len(guess) == target_number_len and guess.isdigit():
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
                     B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
-                    if A_cnt == 4:
+                    if A_cnt == target_number_len:
                         playing_game = False
                         return textwrap.dedent(f"""
                             ```
