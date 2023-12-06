@@ -52,7 +52,7 @@ def run_discord_bot():
         channel = str(message.channel)
         
         if not responses.is_public_mode and username != responses.current_using_user:
-            send_message_in_private('someone is using the terminal')
+            await send_message_in_private('someone is using the terminal')
             return
         
         
