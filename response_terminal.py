@@ -527,6 +527,7 @@ def get_response_in_terminal_mode(message) -> str:
                 if len(guess) == target_number_len and guess.isdigit():
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
                     B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
+                    attempts += 1
                     if A_cnt == target_number_len:
                         playing_game = False
                         return textwrap.dedent(f"""
@@ -537,7 +538,6 @@ def get_response_in_terminal_mode(message) -> str:
                         """)
 
                     else:
-                        attempts += 1
                         return textwrap.dedent(f"""
                             ```
                             {A_cnt}A{B_cnt}B
