@@ -33,7 +33,7 @@ def get_response_in_public_mode(message) -> str:
     if msg[0] == '!':
         msg = msg[1:]
         if msg[:4] == 'help':
-            return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n!greek\n"
+            return "!math\n!gen\n!search\n!dict\n!weather\n!roll\n!greek\n!game"
 
         if msg[:4] == 'math':
             msg = msg[5:]
@@ -160,8 +160,15 @@ def get_response_in_public_mode(message) -> str:
 
         elif msg[:4] == 'game':
             msg = msg[5:]
+            if msg[:4] == 'help':
+                return '1A2B\nCTF\n'
+
             if msg[:4] == '1A2B':
                 return 'For your better experience, this game can only be played in terminal mode.'
+
+            elif msg[:3] == 'CTF':
+                return 'For your better experience, this game can only be played in terminal mode.'
+
             else:
                 return 'no such command'
 
