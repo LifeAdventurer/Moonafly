@@ -90,53 +90,75 @@ def get_response_in_terminal_mode(message) -> str:
     # for game commands
     global playing_game, target_number, attempts
 
-    # cd command
-    if msg[:2] == 'cd':
-        msg = msg[2:].lstrip()
-        if msg[:6] == '--help':
-            return textwrap.dedent(f"""\
-                ```
-                {get_help_information('cd', 4, 4)}
-                {current_path()}
-                ```
-            """)
+    if not playing_game:
+        # cd command
+        if msg[:2] == 'cd':
+            msg = msg[2:].lstrip()
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('cd', 4, 4)}
+                    {current_path()}
+                    ```
+                """)
 
-        path = msg
-        
-        # blank or ~ should go directly to ~
-        if not path or path == '~':
-            path_stack = ['~']
-            return f"```{current_path()}```"
+            path = msg
 
-        # go to the root directory
-        if path[0] == '/':
-            return textwrap.dedent(f"""\
-                ```
-                permission denied
-                * this command requires the highest authority
-                {current_path()}
-                ```
-            """)
-        
-        # skip all the '\' and split the path into a folder list
-        path = path.replace('\\', '').split('/')
+            # blank or ~ should go directly to ~
+            if not path or path == '~':
+                path_stack = ['~']
+                return f"```{current_path()}```"
 
-        # using [:] to prevent temporary_path_stack and path_stack affecting each other 
-        temporary_path_stack = path_stack[:]
+            # go to the root directory
+            if path[0] == '/':
+                return textwrap.dedent(f"""\
+                    ```
+                    permission denied
+                    * this command requires the highest authority
+                    {current_path()}
+                    ```
+                """)
 
-        for folder in path:
-            # if the folder is empty or . then nothing happens with the 
-            if folder == '' or folder == '.':
-                continue
+            # skip all the '\' and split the path into a folder list
+            path = path.replace('\\', '').split('/')
 
-            # move up one directory 
-            elif folder == '..':
-                if len(temporary_path_stack) > 1:
-                    temporary_path_stack.pop()
-                elif temporary_path_stack[0] == '~':
+            # using [:] to prevent temporary_path_stack and path_stack affecting each other 
+            temporary_path_stack = path_stack[:]
+
+            for folder in path:
+                # if the folder is empty or . then nothing happens with the 
+                if folder == '' or folder == '.':
+                    continue
+
+                # move up one directory 
+                elif folder == '..':
+                    if len(temporary_path_stack) > 1:
+                        temporary_path_stack.pop()
+                    elif temporary_path_stack[0] == '~':
+                        # reverse the message to original command by removing the escape character
+                        msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+                        space = ' ' * 4 * 6
+                        # multi-line adjustment
+                        msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
+                        return textwrap.dedent(f"""\
+                            ```
+                            Moonafly: cd: {msg}: No such file or directory
+                            {current_path()}
+                            ```
+                        """)
+
+                else:
+                    temporary_path_stack.append(folder)
+
+            current_directory = directory_structure
+
+            for folder in temporary_path_stack:
+                if folder in list(current_directory):
+                    current_directory = current_directory[folder]
+                else:
                     # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * 4 * 6
+                    space = ' ' * 4 * 5
                     # multi-line adjustment
                     msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                     return textwrap.dedent(f"""\
@@ -146,124 +168,103 @@ def get_response_in_terminal_mode(message) -> str:
                         ```
                     """)
 
-            else:
-                temporary_path_stack.append(folder)
-                
-        current_directory = directory_structure
+            path_stack = temporary_path_stack
+            return f"```{current_path()}```"
 
-        for folder in temporary_path_stack:
-            if folder in list(current_directory):
-                current_directory = current_directory[folder]
-            else:
-                # reverse the message to original command by removing the escape character
-                msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                space = ' ' * 4 * 5
-                # multi-line adjustment
-                msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
+        # ls command
+        elif msg[:2] == 'ls':
+            msg = msg[3:].lstrip()
+            if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    Moonafly: cd: {msg}: No such file or directory
+                    {get_help_information('ls', 4, 4)}
                     {current_path()}
                     ```
                 """)
-        
-        path_stack = temporary_path_stack
-        return f"```{current_path()}```"
 
-    # ls command
-    elif msg[:2] == 'ls':
-        msg = msg[3:].lstrip()
-        if msg[:6] == '--help':
+            current_directory = directory_structure
+            for folder in path_stack:
+                current_directory = current_directory[folder]
+
+            files_in_current_directory = sorted(list(current_directory))
+
             return textwrap.dedent(f"""\
                 ```
-                {get_help_information('ls', 4, 4)}
+                {get_ls_command_output(files_in_current_directory, 4, 3)}
                 {current_path()}
                 ```
             """)
 
-        current_directory = directory_structure
-        for folder in path_stack:
-            current_directory = current_directory[folder]
+        # return the full pathname of the current working directory
+        elif msg[:3] == 'pwd':
+            msg = msg[3:].lstrip()
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('pwd', 4, 4)}
+                    {current_path()}
+                    ```
+                """)
 
-        files_in_current_directory = sorted(list(current_directory))
+            # delete the prefix 'Moonafly:' and the suffix '$'
+            path = current_path()[(10 + len(username)):-1]
+            # delete the prefix no matter it is '~' or '/' path_stack still has the data
+            path = path[1:]
 
-        return textwrap.dedent(f"""\
-            ```
-            {get_ls_command_output(files_in_current_directory, 4, 3)}
-            {current_path()}
-            ```
-        """)
+            if path_stack[0] == '~':
+                path = 'home/Moonafly' + path 
 
-    # return the full pathname of the current working directory
-    elif msg[:3] == 'pwd':
-        msg = msg[3:].lstrip()
-        if msg[:6] == '--help':
             return textwrap.dedent(f"""\
                 ```
-                {get_help_information('pwd', 4, 4)}
+                /{path}
                 {current_path()}
                 ```
             """)
 
-        # delete the prefix 'Moonafly:' and the suffix '$'
-        path = current_path()[(10 + len(username)):-1]
-        # delete the prefix no matter it is '~' or '/' path_stack still has the data
-        path = path[1:]
+        # show the directory_structure
+        elif msg[:4] == 'tree':
+            msg = msg[4:].lstrip()
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('tree', 4, 4)}
+                    {current_path()}
+                    ```
+                """)
 
-        if path_stack[0] == '~':
-            path = 'home/Moonafly' + path 
-
-        return textwrap.dedent(f"""\
-            ```
-            /{path}
-            {current_path()}
-            ```
-        """)
-    
-    # show the directory_structure
-    elif msg[:4] == 'tree':
-        msg = msg[4:].lstrip()
-        if msg[:6] == '--help':
-            return textwrap.dedent(f"""\
+            current_structure = directory_structure
+            for folder in path_stack:
+                current_structure = current_structure[folder]
+            return textwrap.dedent(f"""
                 ```
-                {get_help_information('tree', 4, 4)}
+                {visualize_directory_structure(current_structure, 4, 3)}
                 {current_path()}
                 ```
             """)
 
-        current_structure = directory_structure
-        for folder in path_stack:
-            current_structure = current_structure[folder]
-        return textwrap.dedent(f"""
-            ```
-            {visualize_directory_structure(current_structure, 4, 3)}
-            {current_path()}
-            ```
-        """)
-    
-    elif msg[:4] == 'help':
-        msg = msg[4:].lstrip()
-        if msg[:6] == '--help':
-            return textwrap.dedent(f"""\
+        elif msg[:4] == 'help':
+            msg = msg[4:].lstrip()
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('help', 4, 4)}
+                    {current_path()}
+                    ```
+                """)
+
+            return textwrap.dedent(f"""
                 ```
-                {get_help_information('help', 4, 4)}
+                Moonafly, version {responses.terminal_version}
+
+                 cd [dir]
+                 help
+                 ls 
+                 pwd
+                 tree
                 {current_path()}
                 ```
             """)
-        
-        return textwrap.dedent(f"""
-            ```
-            Moonafly, version {responses.terminal_version}
 
-             cd [dir]
-             help
-             ls 
-             pwd
-             tree
-            {current_path()}
-            ```
-        """)
-    
     # commands in certain directory
     if len(path_stack) >= 2 and path_stack[-2] == 'math':
         if path_stack[-1] == 'calc':
