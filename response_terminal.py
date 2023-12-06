@@ -548,7 +548,6 @@ def get_response_in_terminal_mode(message) -> str:
                     return textwrap.dedent(f"""
                         ```
                         please enter a valid input with only numbers and the correct length
-                        {current_path()}
                         ```
                     """)
 
