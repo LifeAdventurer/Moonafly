@@ -98,7 +98,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('cd', 4, 4)}
+                    {get_help_information('cd', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -138,7 +138,7 @@ def get_response_in_terminal_mode(message) -> str:
                     elif temporary_path_stack[0] == '~':
                         # reverse the message to original command by removing the escape character
                         msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                        space = ' ' * 4 * 6
+                        space = ' ' * 4 * 7
                         # multi-line adjustment
                         msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                         return textwrap.dedent(f"""\
@@ -159,7 +159,7 @@ def get_response_in_terminal_mode(message) -> str:
                 else:
                     # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * 4 * 5
+                    space = ' ' * 4 * 6
                     # multi-line adjustment
                     msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                     return textwrap.dedent(f"""\
@@ -178,7 +178,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('ls', 4, 4)}
+                    {get_help_information('ls', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -191,7 +191,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             return textwrap.dedent(f"""\
                 ```
-                {get_ls_command_output(files_in_current_directory, 4, 3)}
+                {get_ls_command_output(files_in_current_directory, 4, 4)}
                 {current_path()}
                 ```
             """)
@@ -202,7 +202,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('pwd', 4, 4)}
+                    {get_help_information('pwd', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -228,7 +228,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('tree', 4, 4)}
+                    {get_help_information('tree', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -238,7 +238,7 @@ def get_response_in_terminal_mode(message) -> str:
                 current_structure = current_structure[folder]
             return textwrap.dedent(f"""
                 ```
-                {visualize_directory_structure(current_structure, 4, 3)}
+                {visualize_directory_structure(current_structure, 4, 4)}
                 {current_path()}
                 ```
             """)
@@ -248,7 +248,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('help', 4, 4)}
+                    {get_help_information('help', 4, 5)}
                     {current_path()}
                     ```
                 """)
