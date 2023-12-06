@@ -119,7 +119,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     if playing_game:
         if path_stack[-1] == '1A2B':
-            if not any(char.isdigit() for char in msg):
+            if not msg[:4] == 'stop' and not msg[:4] == 'Stop' and not any(char.isdigit() for char in msg):
                 return ''
 
     else:
@@ -555,8 +555,12 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
             elif playing_game:
-                if msg == 'stop' or msg == 'Stop':
+                if msg[:4] == 'stop' or msg[:4] == 'Stop':
                     playing_game = False
+                    msg = msg[4:].strip()
+                    if len(msg) > 0:
+                        message.content = msg
+                        return responses.get_response(message)
                     return textwrap.dedent(f"""
                         ```
                         Game ended.
