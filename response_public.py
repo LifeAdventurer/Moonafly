@@ -21,13 +21,6 @@ def get_response_in_public_mode(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    if '機率' in msg:
-        return f"{((random.randint(1, len(msg)) ^ len(msg)) << len(msg)) % 100}%"
-
-    if msg == '笑' or '哈哈' in msg:
-        ha_str = '哈' * random.randint(1, 10)
-        return f"{ha_str} :rofl:"
-
     pattern = r'^!search google (.+)$'
     if chinese_pattern.search(msg) and not re.match(pattern, msg):  
         return ''
