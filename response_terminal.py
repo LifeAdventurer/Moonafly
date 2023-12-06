@@ -545,6 +545,14 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
             elif playing_game:
+                if msg == 'stop':
+                    playing_game = False
+                    return textwrap.dedent(f"""
+                        ```
+                        Game ended.
+                        {current_path()}
+                        ```
+                    """)
                 guess = msg
                 if len(guess) == target_number_len and guess.isdigit():
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
