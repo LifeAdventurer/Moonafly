@@ -117,7 +117,12 @@ def get_response_in_terminal_mode(message) -> str:
     # for game commands
     global playing_game, target_number, target_number_len, attempts
 
-    if not playing_game:
+    if playing_game:
+        if path_stack[-1] == '1A2B':
+            if not any(char.isdigit() for char in msg):
+                return ''
+
+    else:
         # cd command
         if msg[:2] == 'cd':
             msg = msg[2:].lstrip()
