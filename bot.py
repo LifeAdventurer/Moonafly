@@ -11,7 +11,7 @@ def load_token():
     with open('./config.json') as token_file:
         token = json.load(token_file)['token']
 
-async def send_message(message, user_message):
+async def send_message(message):
     try:
         # get response from responses.py
         response = responses.get_response(message)
@@ -22,7 +22,7 @@ async def send_message(message, user_message):
 
 async def send_message_in_private(message):
     try:
-        await message.author.send(message)
+        await message.author.send(message.content)
     except Exception as e:
         print(e)
 
@@ -34,6 +34,7 @@ def init_files():
 
 def run_discord_bot():
     init_files()
+    
     intents = discord.Intents.default()
     intents.message_content = True
     client = discord.Client(intents=intents)
@@ -51,8 +52,16 @@ def run_discord_bot():
         user_message = str(message.content)
         channel = str(message.channel)
         
+        if username == responses.special_guests[0] and user_message == 'exit --force':
+            message.content = 'exit'
+            print(message.content)
+            await send_message(message)
+            return
+        
         if not responses.is_public_mode and username != responses.current_using_user:
-            await send_message_in_private('someone is using the terminal')
+            if user_message[:2] == '-t' or user_message[:11] == 'Moonafly -t' or user_message[:11] == 'moonafly -t':
+                message.content = 'someone is using the terminal'
+                await send_message_in_private(message)
             return
         
         
@@ -66,6 +75,6 @@ def run_discord_bot():
         # uncomment this line only for debug
         # print(f"user: {username} \nmessage: '{user_message}'\nchannel: {channel}")
 
-        await send_message(message, user_message)
+        await send_message(message)
 
     client.run(token)

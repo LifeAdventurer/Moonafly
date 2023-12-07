@@ -62,8 +62,8 @@ def get_response(message) -> str:
                 return '```the maximum number of entries has been reached\nauto exited```'
             return '```incorrect, please enter again```'
 
-    if current_using_user != '' and username != current_using_user:
-        return ''
+    # if current_using_user != '' and username != current_using_user:
+    #     return ''
 
     if not is_public_mode and (msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'):
         is_public_mode = True
@@ -93,7 +93,7 @@ def get_response(message) -> str:
 
     else:
         # make sure no other user can exit the terminal 
-        if msg == 'exit' and not is_public_mode and username == current_using_user:
+        if msg == 'exit' and not is_public_mode:
             is_public_mode = True
             incorrect_count = 0
             response_terminal.playing_game = False
