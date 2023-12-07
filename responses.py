@@ -9,13 +9,16 @@ terminal_version = 'v1.5.0'
 
 # password
 password = ""
+# initialed when bot started via init_files() in `bot.py`
 def load_password_for_terminal():
     global password
     with open('./data/json/passwords.json') as passwords_file:
         password = json.load(passwords_file)['terminal_password']
 
-# special guest
+# special guest list
+# author in the first line
 special_guests = []
+# initialed when bot started via init_files() in `bot.py`
 def special_guest_list():
     global special_guests
     with open('./data/json/special_guests.json') as special_guest_file:
@@ -25,6 +28,7 @@ def special_guest_list():
 entering_password = False
 incorrect_count = 0
 is_public_mode = True
+
 # prevent multiple user using the terminal at once
 current_using_user = ''
 

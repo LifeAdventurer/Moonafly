@@ -15,6 +15,7 @@ import responses
 
 directory_structure = []
 
+# initialed when bot started via init_files() in `bot.py`
 def get_directory_structure():
     global directory_structure
     with open('./data/json/directory_structure.json') as directory_structure_file:
@@ -28,18 +29,25 @@ def get_game_1A2B_ranks():
     return game_1A2B_ranks
 
 def save_game_1A2B_result(length, attempts):
+    # you must get the ranks every time due to the user might play several times
     records = get_game_1A2B_ranks()
+    # switch to the length group selected by the 
     records.setdefault(str(length), [])
     
+    # save the record data including attempts, user, timestamp
     records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")})
+    # sort the rank by attempts first then timestamp
     records[str(length)].sort(key = lambda x : (x['attempts'], x['timestamp']))
 
     rank = 0
     for record in records[str(length)]:
+        # the first position of the next attempts = the last position of the user attempt + 1
+        # which can match the rank starts with 0 
         if record['attempts'] > attempts:
             break
         rank += 1
 
+    # save the result to json file
     with open('./data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
         json.dump(records, game_1A2B_ranks, indent = 4)
 
@@ -47,6 +55,7 @@ def save_game_1A2B_result(length, attempts):
 
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
+    # unify the indentation of multiline
     msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
     return textwrap.dedent(f"""
         ```
@@ -68,6 +77,7 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
     columns = 3;
     column_len = [0] * columns
     for column_index in range(min(columns, len(files))):
+        # group the files with vertical lines and {columns} groups
         grouped_files = [file for index, file in enumerate(files) if index % columns == column_index]
         column_len[column_index] = max(len(file_name) for file_name in grouped_files)
 
@@ -80,10 +90,11 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
 
 def visualize_directory_structure(data, tab_size, tab_count, indent = 0) -> str:
     tree = ""
-    if isinstance(data, dict):
-        for key, value in sorted(data.items()):
-            tree += ' ' * tab_size * indent + '\-- ' + key + '\n' + ' ' * tab_size * tab_count
-            tree += visualize_directory_structure(value, tab_size, tab_count, indent + 1)
+    # just make sure the structure file is always a dict
+    for key, value in sorted(data.items()):
+        #           structure indentation     folder      output indentation
+        tree += f"{' ' * tab_size * indent}\--{key}\n{' ' * tab_size * tab_count}"
+        tree += visualize_directory_structure(value, tab_size, tab_count, indent + 1)
     return tree 
 
 path_stack = []
@@ -91,6 +102,7 @@ path_stack = []
 # generating the current working directory
 def current_path() -> str:
     global path_stack
+    # show the current using user
     path = f"{responses.current_using_user}@Moonafly:"
     for folder in path_stack:
         if folder != '~':
@@ -117,6 +129,7 @@ def get_response_in_terminal_mode(message) -> str:
     # for game commands
     global playing_game, target_number, target_number_len, attempts
 
+    # you can comment messages without digits during the game
     if playing_game:
         if path_stack[-1] == '1A2B':
             if not msg[:4] == 'stop' and not msg[:4] == 'Stop' and not any(char.isdigit() for char in msg):
@@ -166,6 +179,7 @@ def get_response_in_terminal_mode(message) -> str:
                 elif folder == '..':
                     if len(temporary_path_stack) > 1:
                         temporary_path_stack.pop()
+
                     elif temporary_path_stack[0] == '~':
                         # reverse the message to original command by removing the escape character
                         msg = msg.replace("\\'", "'").replace("\\\"", "\"")
@@ -187,6 +201,7 @@ def get_response_in_terminal_mode(message) -> str:
             for folder in temporary_path_stack:
                 if folder in list(current_directory):
                     current_directory = current_directory[folder]
+
                 else:
                     # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
@@ -214,10 +229,13 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
 
+            # copy the directory_structure
             current_directory = directory_structure
+            # and move it to the current directory
             for folder in path_stack:
                 current_directory = current_directory[folder]
 
+            # sort the folders alphabetically
             files_in_current_directory = sorted(list(current_directory))
 
             return textwrap.dedent(f"""\
@@ -242,7 +260,7 @@ def get_response_in_terminal_mode(message) -> str:
             path = current_path()[(10 + len(username)):-1]
             # delete the prefix no matter it is '~' or '/' path_stack still has the data
             path = path[1:]
-
+            
             if path_stack[0] == '~':
                 path = 'home/Moonafly' + path 
 
@@ -264,9 +282,12 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
 
+            # copy the directory structure
             current_structure = directory_structure
+            # and move it to the current directory
             for folder in path_stack:
                 current_structure = current_structure[folder]
+
             return textwrap.dedent(f"""
                 ```
                 {visualize_directory_structure(current_structure, 4, 4)}
@@ -306,6 +327,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+
         elif path_stack[-1] == 'count':
             words = msg.split()
             return textwrap.dedent(f"""
@@ -325,6 +347,7 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+
             else:
                 return command_not_found(msg)
         
@@ -336,14 +359,18 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+
             else:
                 return command_not_found(msg)
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'search':
         # search for a handle in different online judges
         if path_stack[-1] == 'online-judge':
+            # -{number} handle
+            # search for certain pattern
             pattern = r'^-(\d+)\s+(\w+)$'
             match = re.search(pattern, msg)
+
             if match:
                 number = int(match.group(1))
                 handle = match.group(2)
@@ -380,6 +407,7 @@ def get_response_in_terminal_mode(message) -> str:
                         {current_path()}
                         ```
                     """)
+
                 else:
                     return textwrap.dedent(f"""
                         {url}
@@ -425,6 +453,7 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+
             else:
                 return textwrap.dedent(f"""
                     {github_url}
@@ -472,6 +501,7 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+
             else:
                 return command_not_found(msg)
     
@@ -483,6 +513,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+
         else:
             return command_not_found(msg)
 
@@ -495,6 +526,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+
         else:
             return textwrap.dedent(f"""
                 ```
@@ -534,10 +566,13 @@ def get_response_in_terminal_mode(message) -> str:
                 playing_game = True
                 attempts = 0
                 msg = msg[5:].strip()
+                # choose the length you want to start playing
                 if len(msg) > 0:
                     if msg.isdigit() and 4 <= int(msg) <= 10:
                         target_number_len = int(msg)
+                        # the numbers won't be duplicated
                         target_number = ''.join(random.sample('0123456789', target_number_len))
+
                     else:
                         return textwrap.dedent(f"""
                             ```
@@ -545,8 +580,11 @@ def get_response_in_terminal_mode(message) -> str:
                             {current_path()}
                             ```
                         """)
+
                 else:
+                    # the default length for this game
                     target_number_len = 4
+                    # the numbers won't be duplicated
                     target_number = ''.join(random.sample('123456', target_number_len))
                 print(target_number)
                 return textwrap.dedent(f"""
@@ -556,12 +594,17 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
             elif playing_game:
+                # stop the game if you want
                 if msg[:4] == 'stop' or msg[:4] == 'Stop':
                     playing_game = False
                     msg = msg[4:].strip()
+
+                    # use `stop start` to restart the game if you want
+                    # any other commands can be add after that
                     if len(msg) > 0:
                         message.content = msg
                         return responses.get_response(message)
+
                     return textwrap.dedent(f"""
                         ```
                         Game ended.
@@ -569,13 +612,23 @@ def get_response_in_terminal_mode(message) -> str:
                         ```
                     """)
                 guess = msg
+
                 if len(guess) == target_number_len and guess.isdigit():
+                    # A means the number is correct and the position is correct
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
+
+                    # B means the number is correct, but teh position is incorrect
                     B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
+
                     attempts += 1
+
+                    # User got the target number
                     if A_cnt == target_number_len:
                         playing_game = False
+                        
+                        # save game records for the rank board
                         user_rank = save_game_1A2B_result(target_number_len, attempts)
+
                         return textwrap.dedent(f"""
                             ```
                             Congratulations! You guessed the target number {target_number} in {attempts} attempts.
