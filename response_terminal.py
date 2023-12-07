@@ -537,6 +537,7 @@ def get_response_in_terminal_mode(message) -> str:
                 if len(msg) > 0:
                     if msg.isdigit() and 4 <= int(msg) <= 10:
                         target_number_len = int(msg)
+                        target_number = ''.join(random.sample('0123456789', target_number_len))
                     else:
                         return textwrap.dedent(f"""
                             ```
@@ -546,7 +547,7 @@ def get_response_in_terminal_mode(message) -> str:
                         """)
                 else:
                     target_number_len = 4
-                target_number = ''.join(random.sample('0123456789', target_number_len))
+                    target_number = ''.join(random.sample('123456', target_number_len))
                 print(target_number)
                 return textwrap.dedent(f"""
                     ```
