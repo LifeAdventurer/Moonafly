@@ -2,6 +2,7 @@ import response_public
 import response_terminal 
 import json
 import textwrap
+import time
 
 # versions
 public_version = 'v1.0.2'
@@ -23,6 +24,23 @@ def special_guest_list():
     global special_guests
     with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
+
+def get_terminal_login_record():
+    global login_records
+    with open('./data/json/terminal_login_history.json') as login_history_file:
+        login_records = json.load(login_history_file)
+
+    return login_records
+
+def save_terminal_login_record():
+    # you must get the record every time since the user might enter several times
+    records = get_terminal_login_record()
+
+    records['history'].append({'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
+    
+    # save the record to json file
+    with open('./data/json/terminal_login_history.json', 'w') as login_history_file:
+        json.dump(records, login_history_file, indent = 4)
 
 # password feature for terminal mode 
 entering_password = False
@@ -47,9 +65,13 @@ def get_response(message) -> str:
             incorrect_count = 0
             entering_password = False
             is_public_mode = False
+            current_using_user = username
+            
+            # call this function after current_using_user has been assigned
+            save_terminal_login_record()
+
             # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
-            current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
             return textwrap.dedent(f"""\
@@ -79,9 +101,13 @@ def get_response(message) -> str:
             return '```please enter password```'
         else:
             is_public_mode = False
+            current_using_user = username
+
+            # call this function after current_using_user has been assigned
+            save_terminal_login_record()
+            
             # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
-            current_using_user = username
             print('swap to terminal mode')
             print('Moonafly:~$')
             msg = msg[(2 if msg[:2] == '-t' else 11):].strip()

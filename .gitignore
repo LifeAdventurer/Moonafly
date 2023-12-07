@@ -3,5 +3,6 @@ config.json
 passwords.json
 special_guests.json
 game_1A2B_ranks.json
+terminal_login_history.json
 
 *__pycache__
