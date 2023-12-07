@@ -32,7 +32,7 @@ def save_game_1A2B_result(length, attempts):
     records.setdefault(str(length), [])
     
     records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")})
-    records[str(length)].sort(key = lambda x : x['attempts'])
+    records[str(length)].sort(key = lambda x : (x['attempts'], x['timestamp']))
 
     rank = 0
     for record in records[str(length)]:
