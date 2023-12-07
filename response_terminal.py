@@ -31,7 +31,7 @@ def get_game_1A2B_ranks():
 def save_game_1A2B_result(length, attempts):
     # you must get the ranks every time due to the user might play several times
     records = get_game_1A2B_ranks()
-    # switch to the length group selected by the 
+    # set the group if there isn't one in the data
     records.setdefault(str(length), [])
     
     # save the record data including attempts, user, timestamp
