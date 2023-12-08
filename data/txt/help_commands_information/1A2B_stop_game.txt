@@ -1,0 +1,6 @@
+Usage: stop [-R]
+    Stop 1A2B game.
+
+    Options:
+      -R        restart the game by using stop start
+                

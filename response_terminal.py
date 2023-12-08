@@ -608,6 +608,13 @@ def get_response_in_terminal_mode(message) -> str:
                 if msg[:4] == 'stop' or msg[:4] == 'Stop':
                     playing_game = False
                     msg = msg[5:].strip()
+                    if msg[:6] == '--help':
+                        return textwrap.dedent(f"""\
+                            ```
+                            {get_help_information('1A2B_stop_game', 4, 7)}
+                            {current_path()}
+                            ```
+                        """)
 
                     # use `stop start` to restart the game if you want
                     # any other commands can be add after that
