@@ -64,7 +64,9 @@ def get_response(message) -> str:
 
     # password for entering terminal mode 
     # special guests doesn't need this
-    if entering_password and incorrect_count < 3 and username not in special_guests:
+    if (username not in special_guests and 
+        entering_password and 
+        incorrect_count < 3):
         if msg == password:
             incorrect_count = 0
             entering_password = False
@@ -98,12 +100,17 @@ def get_response(message) -> str:
     # if current_using_user != '' and username != current_using_user:
     #     return ''
 
-    if not is_public_mode and (msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'):
+    if (not is_public_mode and 
+       (msg == '-p'          or
+        msg == 'moonafly -p' or
+        msg == 'Moonafly -p')):
         is_public_mode = True
         print('swap to public mode')
         return 'Successfully swap to public mode!'
 
-    elif msg[:2] == '-t' or msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t':
+    elif (msg[:2] == '-t'         or
+        msg[:11] == 'moonafly -t' or
+        msg[:11] == 'Moonafly -t'):
         if username not in special_guests:
             entering_password = True
             return '```please enter password```'

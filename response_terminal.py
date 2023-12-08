@@ -130,7 +130,9 @@ def get_response_in_terminal_mode(message) -> str:
     # you can comment messages without digits during the game
     if playing_game:
         if path_stack[-1] == '1A2B':
-            if not msg[:4] == 'stop' and not msg[:4] == 'Stop' and not any(char.isdigit() for char in msg):
+            if (msg[:4] != 'stop' and
+                msg[:4] != 'Stop' and
+                not any(char.isdigit() for char in msg)):
                 return ''
 
     else:
@@ -148,7 +150,7 @@ def get_response_in_terminal_mode(message) -> str:
             path = msg
 
             # blank or ~ should go directly to ~
-            if not path or path == '~':
+            if path == '' or path == '~':
                 path_stack = ['~']
                 return f"```{current_path()}```"
 
@@ -560,7 +562,9 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
-            if not playing_game and (msg[:5] == 'start' or msg[:5] == 'Start'):
+            if (not playing_game and
+               (msg[:5] == 'start' or
+                msg[:5] == 'Start')):
                 playing_game = True
                 attempts = 0
                 msg = msg[6:].strip()
