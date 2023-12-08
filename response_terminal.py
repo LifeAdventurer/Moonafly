@@ -14,7 +14,6 @@ from command_help import get_help_information
 import responses
 
 directory_structure = []
-
 # initialed when bot started via init_files() in `bot.py`
 def get_directory_structure():
     global directory_structure
@@ -98,7 +97,6 @@ def visualize_directory_structure(data, tab_size, tab_count, indent = 0) -> str:
     return tree 
 
 path_stack = []
-
 # generating the current working directory
 def current_path() -> str:
     global path_stack
@@ -565,7 +563,15 @@ def get_response_in_terminal_mode(message) -> str:
             if not playing_game and (msg[:5] == 'start' or msg[:5] == 'Start'):
                 playing_game = True
                 attempts = 0
-                msg = msg[5:].strip()
+                msg = msg[6:].strip()
+                if msg[:6] == '--help':
+                    return textwrap.dedent(f"""\
+                        ```
+                        {get_help_information('1A2B_start_game', 4, 6)}
+                        {current_path()}
+                        ```
+                    """)
+
                 # choose the length you want to start playing
                 if len(msg) > 0:
                     if msg.isdigit() and 4 <= int(msg) <= 10:
@@ -597,7 +603,7 @@ def get_response_in_terminal_mode(message) -> str:
                 # stop the game if you want
                 if msg[:4] == 'stop' or msg[:4] == 'Stop':
                     playing_game = False
-                    msg = msg[4:].strip()
+                    msg = msg[5:].strip()
 
                     # use `stop start` to restart the game if you want
                     # any other commands can be add after that

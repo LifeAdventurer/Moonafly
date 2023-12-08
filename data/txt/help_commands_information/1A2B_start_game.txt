@@ -1,0 +1,6 @@
+Usage: start [-L]
+    Start 1A2B game.
+
+    Options:
+      -L        decide the length of 1A2B game, it 
+                should be between 4 and 10
