@@ -5,7 +5,7 @@ import textwrap
 import time
 
 # project version
-project_version = 'v1.5.0'
+project_version = 'v1.6.0'
 
 # password
 password = ""
