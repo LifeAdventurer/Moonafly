@@ -36,7 +36,7 @@ def save_terminal_login_record():
     records = get_terminal_login_record()
 
     records['history'].append({'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
-    
+
     # save the record to json file
     with open('./data/json/terminal_login_history.json', 'w') as login_history_file:
         json.dump(records, login_history_file, indent = 4)
@@ -67,7 +67,9 @@ def get_response(message) -> str:
             current_using_user = username
             
             # call this function after current_using_user has been assigned
-            save_terminal_login_record()
+            # ignore author login
+            if current_using_user != special_guests[0]:
+                save_terminal_login_record()
 
             # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
