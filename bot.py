@@ -17,7 +17,7 @@ def load_token():
 def check_maintenance():
     global in_maintenance, estimated_end_time
     with open('./data/txt/init_files/maintenance.txt') as maintenance_file:
-        in_maintenance = bool(maintenance_file.readline().strip())
+        in_maintenance = maintenance_file.readline().strip() == 'True'
         estimated_end_time = maintenance_file.readline().strip()
 
 async def send_message(message):
