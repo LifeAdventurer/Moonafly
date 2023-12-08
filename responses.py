@@ -21,7 +21,7 @@ special_guests = []
 author = ''
 # initialed when bot started via init_files() in `bot.py`
 def special_guest_list():
-    global special_guests
+    global special_guests, author
     with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
     # author has the highest authority
@@ -85,6 +85,7 @@ def get_response(message) -> str:
                 {response_terminal.current_path()}
                 ```
             """)
+
         else:
             incorrect_count += 1
             if incorrect_count == 3:
@@ -101,6 +102,7 @@ def get_response(message) -> str:
         is_public_mode = True
         print('swap to public mode')
         return 'Successfully swap to public mode!'
+
     elif msg[:2] == '-t' or msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t':
         if username not in special_guests:
             entering_password = True
@@ -110,7 +112,9 @@ def get_response(message) -> str:
             current_using_user = username
 
             # call this function after current_using_user has been assigned
-            save_terminal_login_record()
+            # ignore author login
+            if current_using_user != author:
+                save_terminal_login_record()
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
