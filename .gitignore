@@ -1,8 +1,11 @@
-# some secret json file
+# some secret json files
 config.json
 passwords.json
 special_guests.json
 game_1A2B_ranks.json
 terminal_login_history.json
+
+# txt files
+maintenance.txt
 
 *__pycache__
