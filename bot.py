@@ -52,7 +52,7 @@ def run_discord_bot():
         user_message = str(message.content)
         channel = str(message.channel)
         
-        if username == responses.special_guests[0] and user_message == 'exit --force':
+        if username == responses.author and user_message == 'exit --force':
             message.content = 'exit'
             print(message.content)
             await send_message(message)

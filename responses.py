@@ -18,11 +18,14 @@ def load_password_for_terminal():
 # special guest list
 # author in the first line
 special_guests = []
+author = ''
 # initialed when bot started via init_files() in `bot.py`
 def special_guest_list():
     global special_guests
     with open('./data/json/special_guests.json') as special_guest_file:
         special_guests = json.load(special_guest_file)['guests']
+    # author has the highest authority
+    author = special_guests[0]
 
 def get_terminal_login_record():
     global login_records
@@ -59,6 +62,8 @@ def get_response(message) -> str:
 
     global is_public_mode, entering_password, incorrect_count, password, current_using_user
 
+    # password for entering terminal mode 
+    # special guests doesn't need this
     if entering_password and incorrect_count < 3 and username not in special_guests:
         if msg == password:
             incorrect_count = 0
@@ -68,7 +73,7 @@ def get_response(message) -> str:
             
             # call this function after current_using_user has been assigned
             # ignore author login
-            if current_using_user != special_guests[0]:
+            if current_using_user != author:
                 save_terminal_login_record()
 
             # don't use append or it might cause double '~' when using recursion -t -t... command
