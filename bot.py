@@ -2,7 +2,9 @@ import discord
 import responses 
 import response_terminal
 import json
+from datetime import datetime
 
+# token should be encrypted
 token = ""
 
 # open token JSON file
@@ -11,12 +13,26 @@ def load_token():
     with open('./config.json') as token_file:
         token = json.load(token_file)['token']
 
+# check whether there is maintenance and the duration
+def check_maintenance():
+    global in_maintenance, estimated_end_time
+    with open('./data/txt/init_files/maintenance.txt') as maintenance_file:
+        in_maintenance = bool(maintenance_file.readline().strip())
+        estimated_end_time = maintenance_file.readline().strip()
+
 async def send_message(message):
     try:
-        # get response from responses.py
+        # get response from `responses.py`
         response = responses.get_response(message)
         if response != None:
             await message.channel.send(response)
+    except Exception as e:
+        print(e)
+
+# send message directly without `responses.py`
+async def send_message_direct(message):
+    try:
+        await message.channel.send(message.content)
     except Exception as e:
         print(e)
 
@@ -28,6 +44,7 @@ async def send_message_in_private(message):
 
 def init_files():
     load_token()
+    check_maintenance()
     responses.special_guest_list()
     responses.load_password_for_terminal()
     response_terminal.get_directory_structure()
@@ -58,6 +75,30 @@ def run_discord_bot():
             await send_message(message)
             return
         
+        # if in maintenance and user using command
+        # announce the maintenance time 
+        if in_maintenance and (user_message[0] == '!' or user_message[:2] == '-t' or user_message[:11] == 'Moonafly -t' or user_message[:11] == 'moonafly -t'):
+            current_time = datetime.now()
+            end_time = datetime.strptime(estimated_end_time, '%Y-%m-%d %H:%M:%S')
+
+            seconds = int((end_time - current_time).total_seconds())
+            announce = ''
+            if seconds > 0:
+                # get remaining maintenance time 
+                minutes, seconds = divmod(seconds, 60)
+                hours, minutes = divmod(minutes, 60)
+                # days, hours = divmod(hours, 24)
+                announce = f"Maintenance is over in {hours}h {minutes}m {seconds}s" 
+
+            else:
+                announce = 'Still under maintenance'
+
+            message.content = announce
+            await send_message_direct(message)
+
+        
+        # when someone else wants to use terminal 
+        # send private message to notice the user
         if not responses.is_public_mode and username != responses.current_using_user:
             if user_message[:2] == '-t' or user_message[:11] == 'Moonafly -t' or user_message[:11] == 'moonafly -t':
                 message.content = 'someone is using the terminal'

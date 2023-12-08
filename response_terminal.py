@@ -35,7 +35,7 @@ def save_game_1A2B_result(length, attempts):
     records.setdefault(str(length), [])
     
     # save the record data including attempts, user, timestamp
-    records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")})
+    records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
     # sort the rank by attempts first then timestamp
     records[str(length)].sort(key = lambda x : (x['attempts'], x['timestamp']))
 
