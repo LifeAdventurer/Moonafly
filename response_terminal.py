@@ -307,7 +307,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             return textwrap.dedent(f"""
                 ```
-                Moonafly, version {responses.terminal_version}
+                Moonafly, version {responses.project_version}
 
                  cd [dir]
                  help

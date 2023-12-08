@@ -4,9 +4,8 @@ import json
 import textwrap
 import time
 
-# versions
-public_version = 'v1.0.2'
-terminal_version = 'v1.5.0'
+# project version
+project_version = 'v1.5.0'
 
 # password
 password = ""
@@ -132,11 +131,11 @@ def get_response(message) -> str:
             return ''
         elif msg == 'status':
             if is_public_mode:
-                return f"public mode {public_version}"
+                return f"Moonafly {project_version}"
             else:
                 return textwrap.dedent(f"""\
                     ```
-                    terminal mode {terminal_version}
+                    Moonafly {project_version}
                     {response_terminal.current_path()}
                     ```
                 """)
