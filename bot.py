@@ -77,7 +77,7 @@ def run_discord_bot():
         
         # if in maintenance and user using command
         # announce the maintenance time 
-        if in_maintenance and (user_message[0] == '!' or user_message[:2] == '-t' or user_message[:11] == 'Moonafly -t' or user_message[:11] == 'moonafly -t'):
+        if in_maintenance and username != responses.author and (user_message[0] == '!' or user_message[:2] == '-t' or user_message[:11] == 'Moonafly -t' or user_message[:11] == 'moonafly -t'):
             current_time = datetime.now()
             end_time = datetime.strptime(estimated_end_time, '%Y-%m-%d %H:%M:%S')
 
