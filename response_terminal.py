@@ -52,6 +52,22 @@ def save_game_1A2B_result(length, attempts):
 
     return rank
 
+def show_1A2B_leaderboard(tab_size, tab_count):
+    records = get_game_1A2B_ranks()
+
+    indentation = ' ' * tab_size * tab_count
+    leaderboard = 'length | attempts | user\n' + indentation
+    leaderboard += '------------------------\n'
+    for length in range(4, 11):
+        leaderboard += indentation + f"  {(' ' + str(length))[-2:]}"
+        if len(records[str(length)]) == 0:
+            leaderboard += '   | no data  | no data\n'
+            continue
+        # print(records[str(length)])
+        leaderboard += f"   |    {(' ' + str(records[str(length)][0]['attempts']))[-max(2, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
+    
+    return leaderboard
+
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
     # unify the indentation of multiline
@@ -562,46 +578,54 @@ def get_response_in_terminal_mode(message) -> str:
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
-            if (not playing_game and
-               (msg[:5] == 'start' or
-                msg[:5] == 'Start')):
-                playing_game = True
-                attempts = 0
-                msg = msg[6:].strip()
-                if msg[:6] == '--help':
-                    return textwrap.dedent(f"""\
-                        ```
-                        {get_help_information('1A2B_start_game', 4, 6)}
-                        {current_path()}
-                        ```
-                    """)
-
-                # choose the length you want to start playing
-                if len(msg) > 0:
-                    if msg.isdigit() and 4 <= int(msg) <= 10:
-                        target_number_len = int(msg)
-                        # the numbers won't be duplicated
-                        target_number = ''.join(random.sample('0123456789', target_number_len))
-
-                    else:
-                        return textwrap.dedent(f"""
+            if not playing_game:
+                if msg[:5] == 'start' or msg[:5] == 'Start':
+                    playing_game = True
+                    attempts = 0
+                    msg = msg[6:].strip()
+                    if msg[:6] == '--help':
+                        return textwrap.dedent(f"""\
                             ```
-                            please enter a valid number between 4 to 10
+                            {get_help_information('1A2B_start_game', 4, 6)}
                             {current_path()}
                             ```
                         """)
 
-                else:
-                    # the default length for this game
-                    target_number_len = 4
-                    # the numbers won't be duplicated
-                    target_number = ''.join(random.sample('123456', target_number_len))
-                print(target_number)
-                return textwrap.dedent(f"""
-                    ```
-                    {target_number_len}-digit number generated.
-                    ```
-                """)
+                    # choose the length you want to start playing
+                    if len(msg) > 0:
+                        if msg.isdigit() and 4 <= int(msg) <= 10:
+                            target_number_len = int(msg)
+                            # the numbers won't be duplicated
+                            target_number = ''.join(random.sample('0123456789', target_number_len))
+
+                        else:
+                            return textwrap.dedent(f"""
+                                ```
+                                please enter a valid number between 4 to 10
+                                {current_path()}
+                                ```
+                            """)
+
+                    else:
+                        # the default length for this game
+                        target_number_len = 4
+                        # the numbers won't be duplicated
+                        target_number = ''.join(random.sample('123456', target_number_len))
+                    print(target_number)
+                    return textwrap.dedent(f"""
+                        ```
+                        {target_number_len}-digit number generated.
+                        ```
+                    """)
+
+                elif msg[:4] == 'rank' or msg[:4] == 'Rank':
+                    msg = msg[5:].strip()
+                    return textwrap.dedent(f"""
+                        ```
+                        {show_1A2B_leaderboard(4, 6)}
+                        {current_path()}
+                        ```
+                    """)
 
             elif playing_game:
                 # stop the game if you want
