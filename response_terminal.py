@@ -693,10 +693,10 @@ def get_response_in_terminal_mode(message) -> str:
                         
                         # search user ranking
                         else:
-                            username = msg
+                            certain_user = msg
                             return textwrap.dedent(f"""
                                 ```
-                                {show_1A2B_certain_user_ranking(username, 4, 8)}
+                                {show_1A2B_certain_user_ranking(certain_user, 4, 8)}
                                 {current_path()}
                                 ```
                             """)
