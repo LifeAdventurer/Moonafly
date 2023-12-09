@@ -87,6 +87,29 @@ def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
     
     return ranking
 
+def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
+    records = get_game_1A2B_ranks()
+
+    indentation = ' ' * tab_size * tab_count
+    ranking = f"user - {username}\n{indentation}"
+    ranking += 'length | attempts\n' + indentation
+    ranking += '-------------------\n'
+    for length in range(4, 11):
+        ranking += indentation + f"  {(' ' + str(length))[-2:]}"
+        
+        no_data = True
+        for record in records[str(length)]:
+            if record['user'] == username:
+                no_data = False
+                ranking += f"   |   {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}\n"
+                break
+        
+        if no_data:
+            ranking += '   |  no data\n'
+            continue
+
+    return ranking
+
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
     # unify the indentation of multiline
@@ -650,19 +673,30 @@ def get_response_in_terminal_mode(message) -> str:
 
                     # show certain length ranking
                     if len(msg) > 0:
-                        if msg.isdigit() and 4 <= int(msg) <= 10:
-                            search_rank_length = int(msg)
-                            return textwrap.dedent(f"""
-                                ```
-                                {show_1A2B_certain_length_ranking(search_rank_length, 4, 8)}
-                                {current_path()}
-                                ```
-                            """)
+                        if msg.isdigit():
+                            if 4 <= int(msg) <= 10:
+                                search_rank_length = int(msg)
+                                return textwrap.dedent(f"""
+                                    ```
+                                    {show_1A2B_certain_length_ranking(search_rank_length, 4, 9)}
+                                    {current_path()}
+                                    ```
+                                """)
 
+                            else:
+                                return textwrap.dedent(f"""
+                                    ```
+                                    please enter a valid number between 4 to 10
+                                    {current_path()}
+                                    ```
+                                """)
+                        
+                        # search user ranking
                         else:
+                            username = msg
                             return textwrap.dedent(f"""
                                 ```
-                                please enter a valid number between 4 to 10
+                                {show_1A2B_certain_user_ranking(username, 4, 8)}
                                 {current_path()}
                                 ```
                             """)
