@@ -30,11 +30,13 @@
 
     guest 1 should be author
 
-4. Set rank list for game 1A2B feature via `game_1A2B_ranks.json`:
+4. Set rank list for game 1A2B feature via `game_1A2B_ranks.json`
 
-5. Set terminal login history via `terminal_login_history.json`:
+5. Set terminal login history via `terminal_login_history.json`
 
-6. Run the bot in your terminal
+6. Set your maintenance status via `maintenance.txt`
+
+7. Run the bot in your terminal
 
     ```bash
     py main.py
