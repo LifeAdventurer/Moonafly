@@ -98,10 +98,10 @@ def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
         ranking += indentation + f"  {(' ' + str(length))[-2:]}"
         
         no_data = True
-        for record in records[str(length)]:
+        for index, record in enumerate(records[str(length)]):
             if record['user'] == username:
                 no_data = False
-                ranking += f"   |   {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}\n"
+                ranking += f"   | {('  ' + str(record['attempts']))[-max(3, len(str(length))):]} (rank {index + 1})\n"
                 break
         
         if no_data:
