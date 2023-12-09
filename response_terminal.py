@@ -639,6 +639,16 @@ def get_response_in_terminal_mode(message) -> str:
 
                 elif msg[:4] == 'rank' or msg[:4] == 'Rank':
                     msg = msg[5:].strip()
+
+                    if msg[:6] == '--help':
+                        return textwrap.dedent(f"""\
+                            ```
+                            {get_help_information('1A2B_game_rank', 4, 6)}
+                            {current_path()}
+                            ```
+                        """)
+
+                    # show certain length ranking
                     if len(msg) > 0:
                         if msg.isdigit() and 4 <= int(msg) <= 10:
                             search_rank_length = int(msg)
@@ -657,6 +667,7 @@ def get_response_in_terminal_mode(message) -> str:
                                 ```
                             """)
 
+                    # show every length ranking
                     return textwrap.dedent(f"""
                         ```
                         {show_1A2B_every_length_ranking(4, 6)}

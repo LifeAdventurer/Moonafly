@@ -1,0 +1,7 @@
+rank: rank [-L]
+    Show the best records for each length of the
+    1A2B game
+
+    Options:
+      -L        show the certain length ranking, it
+                should be between 4 and 10
