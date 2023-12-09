@@ -78,7 +78,8 @@ def run_discord_bot():
         # if in maintenance and user using command
         # announce the maintenance time 
         if (in_maintenance               and
-            username != responses.author and
+            username != responses.author and 
+            len(user_message) > 0        and
            (user_message[0]   == '!'           or
             user_message[:2]  == '-t'          or
             user_message[:11] == 'moonafly -t' or
