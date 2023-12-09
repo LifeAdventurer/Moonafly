@@ -52,40 +52,40 @@ def save_game_1A2B_result(length, attempts):
 
     return rank
 
-def show_1A2B_every_length_leaderboard(tab_size, tab_count):
+def show_1A2B_every_length_ranking(tab_size, tab_count):
     records = get_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
-    leaderboard = 'length | attempts | user\n' + indentation
-    leaderboard += '------------------------\n'
+    ranking = 'length | attempts | user\n' + indentation
+    ranking += '------------------------\n'
     for length in range(4, 11):
-        leaderboard += indentation + f"  {(' ' + str(length))[-2:]}"
+        ranking += indentation + f"  {(' ' + str(length))[-2:]}"
         if len(records[str(length)]) == 0:
-            leaderboard += '   | no data  | no data\n'
+            ranking += '   | no data  | no data\n'
             continue
 
-        leaderboard += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
+        ranking += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
     
-    return leaderboard
+    return ranking
 
-def show_1A2B_certain_length_leaderboard(length, tab_size, tab_count):
+def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
     records = get_game_1A2B_ranks()[str(length)]
     
     indentation = ' ' * tab_size * tab_count
-    leaderboard = f"length - {length}\n{indentation}"
+    ranking = f"length - {length}\n{indentation}"
     if len(records) == 0:
-        leaderboard += 'no data'
-        return leaderboard
+        ranking += 'no data'
+        return ranking
     
-    leaderboard += 'attempts | user\n' + indentation
-    leaderboard += '----------------\n'
+    ranking += 'attempts | user\n' + indentation
+    ranking += '----------------\n'
     for index, record in enumerate(records):
         if index >= 10:
             break
 
-        leaderboard += indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
+        ranking += indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
     
-    return leaderboard
+    return ranking
 
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
@@ -644,7 +644,7 @@ def get_response_in_terminal_mode(message) -> str:
                             search_rank_length = int(msg)
                             return textwrap.dedent(f"""
                                 ```
-                                {show_1A2B_certain_length_leaderboard(search_rank_length, 4, 8)}
+                                {show_1A2B_certain_length_ranking(search_rank_length, 4, 8)}
                                 {current_path()}
                                 ```
                             """)
@@ -659,7 +659,7 @@ def get_response_in_terminal_mode(message) -> str:
 
                     return textwrap.dedent(f"""
                         ```
-                        {show_1A2B_every_length_leaderboard(4, 6)}
+                        {show_1A2B_every_length_ranking(4, 6)}
                         {current_path()}
                         ```
                     """)
