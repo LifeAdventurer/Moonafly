@@ -64,7 +64,7 @@ def show_1A2B_every_length_ranking(tab_size, tab_count):
             ranking += '   | no data  | no data\n'
             continue
 
-        ranking += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
+        ranking += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}   | {records[str(length)][0]['user']}\n"
     
     return ranking
 
