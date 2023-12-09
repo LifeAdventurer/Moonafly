@@ -52,7 +52,7 @@ def save_game_1A2B_result(length, attempts):
 
     return rank
 
-def show_1A2B_leaderboard(tab_size, tab_count):
+def show_1A2B_every_length_leaderboard(tab_size, tab_count):
     records = get_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
@@ -63,8 +63,27 @@ def show_1A2B_leaderboard(tab_size, tab_count):
         if len(records[str(length)]) == 0:
             leaderboard += '   | no data  | no data\n'
             continue
-        # print(records[str(length)])
-        leaderboard += f"   |    {(' ' + str(records[str(length)][0]['attempts']))[-max(2, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
+
+        leaderboard += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}    | {records[str(length)][0]['user']}\n"
+    
+    return leaderboard
+
+def show_1A2B_certain_length_leaderboard(length, tab_size, tab_count):
+    records = get_game_1A2B_ranks()[str(length)]
+    
+    indentation = ' ' * tab_size * tab_count
+    leaderboard = f"length - {length}\n{indentation}"
+    if len(records) == 0:
+        leaderboard += 'no data'
+        return leaderboard
+    
+    leaderboard += 'attempts | user\n' + indentation
+    leaderboard += '----------------\n'
+    for index, record in enumerate(records):
+        if index >= 10:
+            break
+
+        leaderboard += indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
     
     return leaderboard
 
@@ -620,9 +639,27 @@ def get_response_in_terminal_mode(message) -> str:
 
                 elif msg[:4] == 'rank' or msg[:4] == 'Rank':
                     msg = msg[5:].strip()
+                    if len(msg) > 0:
+                        if msg.isdigit() and 4 <= int(msg) <= 10:
+                            search_rank_length = int(msg)
+                            return textwrap.dedent(f"""
+                                ```
+                                {show_1A2B_certain_length_leaderboard(search_rank_length, 4, 8)}
+                                {current_path()}
+                                ```
+                            """)
+
+                        else:
+                            return textwrap.dedent(f"""
+                                ```
+                                please enter a valid number between 4 to 10
+                                {current_path()}
+                                ```
+                            """)
+
                     return textwrap.dedent(f"""
                         ```
-                        {show_1A2B_leaderboard(4, 6)}
+                        {show_1A2B_every_length_leaderboard(4, 6)}
                         {current_path()}
                         ```
                     """)
