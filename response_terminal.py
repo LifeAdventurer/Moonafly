@@ -694,6 +694,8 @@ def get_response_in_terminal_mode(message) -> str:
                         # search user ranking
                         else:
                             certain_user = msg
+                            if msg == '-p':
+                                certain_user = username
                             return textwrap.dedent(f"""
                                 ```
                                 {show_1A2B_certain_user_ranking(certain_user, 4, 8)}
