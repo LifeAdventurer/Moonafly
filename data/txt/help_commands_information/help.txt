@@ -2,4 +2,5 @@ help: help
     Display information about builtin commands.
 
     Displays brief summaries of builtin commands.
-    Get detailed help by using `--help` after the command with spaces.
+    Get detailed help by using `--help` after the
+    command with spaces.
