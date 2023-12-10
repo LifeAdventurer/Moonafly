@@ -36,7 +36,9 @@
 
 6. Set your maintenance status via `maintenance.txt`
 
-7. Run the bot in your terminal
+7. Set your Moonafly structure via `Moonafly_structure.json`
+
+8. Run the bot in your terminal
 
     ```bash
     py main.py
