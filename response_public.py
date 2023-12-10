@@ -138,15 +138,28 @@ def get_response_in_public_mode(message) -> str:
                 return random.randint(1, int(msg))
 
         elif msg[:4] == 'dict':
-            msg = msg[5:]
+            msg = msg[4:].strip()
 
-            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
-            if match:
-                return search_dict('English', match.group(1), int(match.group(2), 0, 0))
-            elif 'LIMIT' in msg:
-                return 'please type a number after the command LIMIT'
+            if msg[:2] == 'en':
+                match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
+                if match:
+                    return search_dict('en', match.group(1), int(match.group(2), 0, 0))
+                elif 'LIMIT' in msg:
+                    return 'please type a number after the command LIMIT'
+                else:
+                    return search_dict('en', msg, 3, 0, 0)
+            
+            elif msg[8] == 'en-zh_TW':
+                match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
+                if match:
+                    return search_dict('en-zh_TW', match.group(1), int(match.group(2), 0, 0))
+                elif 'LIMIT' in msg:
+                    return 'please type a number after the command LIMIT'
+                else:
+                    return search_dict('en-zh_TW', msg, 3, 0, 0)
+                    
             else:
-                return search_dict('English', msg, 3, 0, 0)
+                return 'no such command'
 
         elif msg[:5] == 'count':
             msg = msg[6:]

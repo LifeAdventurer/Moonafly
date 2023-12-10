@@ -594,29 +594,55 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
     # return the definition and example of the enter word from a dictionary
-    elif path_stack[-1] == 'dict':
-        match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
-        if match:
-            return textwrap.dedent(f"""
-                {search_dict('English', match.group(1), int(match.group(2)), 4, 4)}
-                ```
-                {current_path()}
-                ```
-            """)
-        elif 'LIMIT' in msg:
-            return textwrap.dedent(f"""
-                ```
-                please type a number after the command LIMIT
-                {current_path()}
-                ```
-            """)
-        else:
-            return textwrap.dedent(f"""
-                {search_dict('English', msg, 3, 4, 4)}
-                ```
-                {current_path()}
-                ```
-            """)
+    elif len(path_stack) >= 2 and path_stack[-2] == 'dict':
+        # different languages
+        if path_stack[-1] == 'en':
+            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
+            if match:
+                return textwrap.dedent(f"""
+                    {search_dict('en', match.group(1), int(match.group(2)), 4, 5)}
+                    ```
+                    {current_path()}
+                    ```
+                """)
+            elif 'LIMIT' in msg:
+                return textwrap.dedent(f"""
+                    ```
+                    please type a number after the command LIMIT
+                    {current_path()}
+                    ```
+                """)
+            else:
+                return textwrap.dedent(f"""
+                    {search_dict('en', msg, 3, 4, 5)}
+                    ```
+                    {current_path()}
+                    ```
+                """)
+
+        elif path_stack[-1] == 'en-zh_TW':
+            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
+            if match:
+                return textwrap.dedent(f"""
+                    {search_dict('en-zh_TW', match.group(1), int(match.group(2)), 4, 5)}
+                    ```
+                    {current_path()}
+                    ```
+                """)
+            elif 'LIMIT' in msg:
+                return textwrap.dedent(f"""
+                    ```
+                    please type a number after the command LIMIT
+                    {current_path()}
+                    ```
+                """)
+            else:
+                return textwrap.dedent(f"""
+                    {search_dict('en-zh_TW', msg, 3, 4, 5)}
+                    ```
+                    {current_path()}
+                    ```
+                """)
     
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':

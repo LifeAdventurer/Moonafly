@@ -1,7 +1,10 @@
 {
     "directory_structure": {
         "~": {
-            "dict": {},
+            "dict": {
+                "en": {},
+                "en-zh_TW": {}
+            },
             "gen": {
                 "fortune": {},
                 "quote": {}
