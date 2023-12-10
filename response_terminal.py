@@ -598,7 +598,7 @@ def get_response_in_terminal_mode(message) -> str:
         match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
         if match:
             return textwrap.dedent(f"""
-                {search_dict(match.group(1), int(match.group(2)), 4, 4)}
+                {search_dict('English', match.group(1), int(match.group(2)), 4, 4)}
                 ```
                 {current_path()}
                 ```
@@ -612,7 +612,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
         else:
             return textwrap.dedent(f"""
-                {search_dict(msg, 3, 4, 4)}
+                {search_dict('English', msg, 3, 4, 4)}
                 ```
                 {current_path()}
                 ```
