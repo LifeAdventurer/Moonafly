@@ -563,6 +563,7 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return command_not_found(msg)
     
+    # weather API
     elif path_stack[-1] == 'weather':
         if msg == 'get':
             return textwrap.dedent(f"""\
@@ -596,7 +597,9 @@ def get_response_in_terminal_mode(message) -> str:
     # return the definition and example of the enter word from a dictionary
     elif len(path_stack) >= 2 and path_stack[-2] == 'dict':
         # different languages
+        # en
         if path_stack[-1] == 'en':
+            # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
                 return textwrap.dedent(f"""
@@ -620,7 +623,9 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
 
+        # en-zh_TW
         elif path_stack[-1] == 'en-zh_TW':
+            # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
                 return textwrap.dedent(f"""
@@ -644,6 +649,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
     
+    # games
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
             if not playing_game:
