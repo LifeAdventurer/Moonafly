@@ -20,6 +20,13 @@ def get_directory_structure():
     with open('./data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
+Moonafly_structure = []
+# initialed when bot started via init_files() in `bot.py`
+def get_Moonafly_structure():
+    global Moonafly_structure
+    with open('./data/json/Moonafly_structure.json') as Moonafly_structure_file:
+        Moonafly_structure = json.load(Moonafly_structure_file)['Moonafly_structure']
+
 def get_game_1A2B_ranks():
     global game_1A2B_ranks
     with open('./data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
@@ -373,6 +380,14 @@ def get_response_in_terminal_mode(message) -> str:
                 return textwrap.dedent(f"""\
                     ```
                     {get_help_information('tree', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
+            if msg[:8] == 'Moonafly':
+                return textwrap.dedent(f"""
+                    ```
+                    {visualize_structure(Moonafly_structure, 4, 5)}
                     {current_path()}
                     ```
                 """)

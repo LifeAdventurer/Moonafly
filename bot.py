@@ -48,6 +48,7 @@ def init_files():
     responses.special_guest_list()
     responses.load_password_for_terminal()
     response_terminal.get_directory_structure()
+    response_terminal.get_Moonafly_structure()
 
 def run_discord_bot():
     init_files()
