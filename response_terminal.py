@@ -194,8 +194,45 @@ def get_response_in_terminal_mode(message) -> str:
                 return ''
 
     else:
+        if msg[:3] == 'cat':
+            msg = msg[3:].strip()
+            if username != responses.author:
+                return textwrap.dedent(f"""\
+                    ```
+                    permission denied
+                    * this command requires the highest authority
+                    {current_path()}
+                    ```
+                """)
+            
+            filename = msg
+            try:
+                with open(filename, 'r') as file:
+                    content = file.read()
+                indentation = ' ' * 4 * 5
+                output = f"{filename}\n{indentation}\n"
+                content = content.splitlines()
+                for line in content:
+                    print(line)
+                    output += indentation + line + '\n'
+                return textwrap.dedent(f"""\
+                    ```
+                    {output}
+                    {' '}
+                    {current_path()}
+                    ```
+                """)
+
+            except FileNotFoundError:
+                return textwrap.dedent(f"""\
+                    ```
+                    Error: File "{filename}" not found.
+                    {current_path()}
+                    ```
+                """)
+
         # cd command
-        if msg[:2] == 'cd':
+        elif msg[:2] == 'cd':
             msg = msg[2:].lstrip()
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
@@ -213,7 +250,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return f"```{current_path()}```"
 
             # go to the root directory
-            if path[0] == '/':
+            if path[0] == '/' and username != responses.author:
                 return textwrap.dedent(f"""\
                     ```
                     permission denied
@@ -366,7 +403,8 @@ def get_response_in_terminal_mode(message) -> str:
             return textwrap.dedent(f"""
                 ```
                 Moonafly, version {responses.project_version}
-
+                 
+                 cat [file]
                  cd [dir]
                  help
                  ls 
