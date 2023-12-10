@@ -145,13 +145,13 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
 
     return output
 
-def visualize_directory_structure(data, tab_size, tab_count, indent = 0) -> str:
+def visualize_structure(data, tab_size, tab_count, indent = 0) -> str:
     tree = ""
     # just make sure the structure file is always a dict
     for key, value in sorted(data.items()):
         #           structure indentation     folder      output indentation
         tree += f"{' ' * tab_size * indent}\--{key}\n{' ' * tab_size * tab_count}"
-        tree += visualize_directory_structure(value, tab_size, tab_count, indent + 1)
+        tree += visualize_structure(value, tab_size, tab_count, indent + 1)
     return tree 
 
 path_stack = []
@@ -348,7 +348,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             return textwrap.dedent(f"""
                 ```
-                {visualize_directory_structure(current_structure, 4, 4)}
+                {visualize_structure(current_structure, 4, 4)}
                 {current_path()}
                 ```
             """)
