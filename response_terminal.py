@@ -670,6 +670,14 @@ def get_response_in_terminal_mode(message) -> str:
         # different languages
         # en
         if path_stack[-1] == 'en':
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('dict_en', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:

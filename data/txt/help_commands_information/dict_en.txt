@@ -1,0 +1,9 @@
+Usage: [word] [-L [count]]
+    get the definition and examples of the word
+    the default example count is 3
+    this command is under ~/dict/en 
+
+    Options:
+      -L        Limit the examples count by using
+                `[word] LIMIT COUNT`, COUNT must 
+                be an integer
