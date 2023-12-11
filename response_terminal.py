@@ -223,13 +223,12 @@ def get_response_in_terminal_mode(message) -> str:
             
             filename = msg
             try:
-                with open(filename, 'r') as file:
+                with open(filename, 'r', encoding='utf-8') as file:
                     content = file.read()
                 indentation = ' ' * 4 * 5
                 output = f"{filename}\n{indentation}\n"
                 content = content.splitlines()
                 for line in content:
-                    print(line)
                     output += indentation + line + '\n'
                 return textwrap.dedent(f"""\
                     ```
