@@ -1,3 +1,7 @@
-Usage: tree
+Usage: tree [-M]
     Visualizing the structure under current working
     directory as a tree.
+
+    Options:
+      -M        show the structure tree of project 
+                Moonafly by using tree Moonafly
