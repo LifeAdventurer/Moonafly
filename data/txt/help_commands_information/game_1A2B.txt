@@ -1,0 +1,6 @@
+Usage: [command]
+
+commands under ~/game/1A2B 
+ start [-L]
+ stop [-R]
+ rank [-L] [[name] | -S]

@@ -723,6 +723,14 @@ def get_response_in_terminal_mode(message) -> str:
     # games
     elif len(path_stack) >= 2 and path_stack[-2] == 'game':
         if path_stack[-1] == '1A2B':
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('game_1A2B', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             if not playing_game:
                 if msg[:5] == 'start' or msg[:5] == 'Start':
                     playing_game = True
