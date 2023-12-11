@@ -2,3 +2,4 @@ Usage: [equation]
     Using eval function to calculate the EQUATION
     The eval function whitelist is under the file
     `/data/json/allowed_names.json`
+    this command is under ~/math/calc
