@@ -441,6 +441,14 @@ def get_response_in_terminal_mode(message) -> str:
     # commands in certain directory
     if len(path_stack) >= 2 and path_stack[-2] == 'math':
         if path_stack[-1] == 'calc':
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('math_calc', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             return textwrap.dedent(f"""
                 ```
                 {safe_eval(msg)}
