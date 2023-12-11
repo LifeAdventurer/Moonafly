@@ -203,6 +203,15 @@ def get_response_in_terminal_mode(message) -> str:
     else:
         if msg[:3] == 'cat':
             msg = msg[3:].strip()
+
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('cat', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             if username != responses.author:
                 return textwrap.dedent(f"""\
                     ```

@@ -1,0 +1,3 @@
+cat: cat [file]
+    Open and output the FILE after cat command
+    
