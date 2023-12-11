@@ -4,4 +4,4 @@ Usage: tree [-M]
 
     Options:
       -M        show the structure tree of project 
-                Moonafly by using tree Moonafly
+                Moonafly by using `tree Moonafly`
