@@ -650,6 +650,14 @@ def get_response_in_terminal_mode(message) -> str:
     # roll a random number
     elif len(path_stack) >= 2 and path_stack[-2] == 'random':
         if path_stack[-1] == 'number':
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('random_number', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             if msg.isdigit():
                 return textwrap.dedent(f"""
                     ```
