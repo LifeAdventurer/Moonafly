@@ -636,6 +636,14 @@ def get_response_in_terminal_mode(message) -> str:
     
     # weather API
     elif path_stack[-1] == 'weather':
+        if msg[:6] == '--help':
+            return textwrap.dedent(f"""\
+                ```
+                {get_help_information('weather', 4, 6)}
+                {current_path()}
+                ```
+            """)
+            
         if msg == 'get':
             return textwrap.dedent(f"""\
                 ```

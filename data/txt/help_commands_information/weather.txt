@@ -1,0 +1,4 @@
+Usage: get
+    get weather information including wind speed(km/h)
+    and temperature(Celsius) 
+    this command is under ~/weather
