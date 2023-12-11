@@ -730,7 +730,7 @@ def get_response_in_terminal_mode(message) -> str:
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('1A2B_start_game', 4, 6)}
+                            {get_help_information('game_1A2B_start', 4, 6)}
                             {current_path()}
                             ```
                         """)
@@ -768,7 +768,7 @@ def get_response_in_terminal_mode(message) -> str:
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('1A2B_game_rank', 4, 6)}
+                            {get_help_information('game_1A2B_rank', 4, 6)}
                             {current_path()}
                             ```
                         """)
@@ -821,7 +821,7 @@ def get_response_in_terminal_mode(message) -> str:
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('1A2B_stop_game', 4, 7)}
+                            {get_help_information('game_1A2B_stop', 4, 7)}
                             {current_path()}
                             ```
                         """)
