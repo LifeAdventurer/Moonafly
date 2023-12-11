@@ -1,4 +1,5 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 
 # en
@@ -79,7 +80,7 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
         print(f"Error: {e}")
         return None
 
-def search_dict(dictionary, word, limit, tab_size, tab_count):
+def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
     
     if dictionary == 'en':
         result = get_info_in_English(word, limit)
@@ -106,6 +107,19 @@ def search_dict(dictionary, word, limit, tab_size, tab_count):
             # removes the certain trailing char from the string
             en_definition = en_definition.strip(': ') 
             zh_TW_definition = zh_TW_definition.strip(': ')
+
+            # save vocabulary
+            if zh_TW_definition != 'No definition found':
+                with open('./data/json/vocabulary_items.json', 'r') as file:
+                    data = json.load(file)
+                
+                if username in data:
+                    data[username].append({'word': word, 'word_in_zh_TW': zh_TW_definition})
+                else:
+                    data[username] = [{'word': word, 'word_in_zh_TW': zh_TW_definition}]
+                
+                with open('./data/json/vocabulary_items.json', 'w') as file:
+                    json.dump(data, file, indent = 4)
 
             information = f"# {word}\n"
             information += f"{space}### Definition: \n"

@@ -38,7 +38,9 @@
 
 7. Set your Moonafly structure via `Moonafly_structure.json`
 
-8. Run the bot in your terminal
+8. Set your vocabulary items list via `vocabulary_items.json`
+
+9. Run the bot in your terminal
 
     ```bash
     py main.py
