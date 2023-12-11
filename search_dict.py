@@ -110,7 +110,7 @@ def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
 
             # save vocabulary
             if zh_TW_definition != 'No definition found':
-                with open('./data/json/vocabulary_items.json', 'r') as file:
+                with open('./data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
                     data = json.load(file)
                 
                 if username in data:
@@ -118,8 +118,8 @@ def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
                 else:
                     data[username] = [{'word': word, 'word_in_zh_TW': zh_TW_definition}]
                 
-                with open('./data/json/vocabulary_items.json', 'w') as file:
-                    json.dump(data, file, indent = 4)
+                with open('./data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                    json.dump(data, file, indent = 4, ensure_ascii = False)
 
             information = f"# {word}\n"
             information += f"{space}### Definition: \n"
