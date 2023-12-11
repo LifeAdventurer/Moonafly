@@ -114,7 +114,7 @@ def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
                     data = json.load(file)
                 
                 if username in data:
-                    data[username].append({'word': word, 'word_in_zh_TW': zh_TW_definition})
+                    data[username].append({'word': word.lower(), 'word_in_zh_TW': zh_TW_definition})
                 else:
                     data[username] = [{'word': word, 'word_in_zh_TW': zh_TW_definition}]
                 
