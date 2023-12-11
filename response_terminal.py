@@ -648,22 +648,23 @@ def get_response_in_terminal_mode(message) -> str:
             return command_not_found(msg)
 
     # roll a random number
-    elif path_stack[-1] == 'roll':
-        if not msg.isdigit():
-            return textwrap.dedent(f"""
-                ```
-                please enter a valid number
-                {current_path()}
-                ```
-            """)
+    elif len(path_stack) >= 2 and path_stack[-2] == 'random':
+        if path_stack[-1] == 'number':
+            if msg.isdigit():
+                return textwrap.dedent(f"""
+                    ```
+                    {random.randint(1, int(msg))}
+                    {current_path()}
+                    ```
+                """)
 
-        else:
-            return textwrap.dedent(f"""
-                ```
-                {random.randint(1, int(msg))}
-                {current_path()}
-                ```
-            """)
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    please enter a valid number
+                    {current_path()}
+                    ```
+                """)
 
     # return the definition and example of the enter word from a dictionary
     elif len(path_stack) >= 2 and path_stack[-2] == 'dict':

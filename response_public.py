@@ -130,12 +130,16 @@ def get_response_in_public_mode(message) -> str:
         elif msg[:7] == 'weather':
             return get_weather_info(0, 0);
 
-        elif msg[:4] == 'roll':
-            msg = msg[5:]
-            if not msg.isdigit():
-                return 'please enter a valid number'
+        elif msg[:4] == 'random':
+            msg = msg[5:].strip()
+            if msg[:6] == 'number':
+                if msg.isdigit():
+                    return random.randint(1, int(msg))
+                else:
+                    return 'please enter a valid number'
             else:
-                return random.randint(1, int(msg))
+                return 'no such command'
+                
 
         elif msg[:4] == 'dict':
             msg = msg[4:].strip()

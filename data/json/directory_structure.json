@@ -13,7 +13,9 @@
                 "calc": {},
                 "count": {}
             },
-            "roll": {},
+            "random": {
+                "number": {}
+            },
             "search": {
                 "git": {},
                 "github": {},
