@@ -70,11 +70,17 @@ def run_discord_bot():
         user_message = str(message.content)
         channel = str(message.channel)
         
-        if username == responses.author and user_message == 'exit --force':
-            message.content = 'exit'
-            print(message.content)
-            await send_message(message)
-            return
+        if username == responses.author:
+            if user_message == 'exit --force':
+                message.content = 'exit'
+                await send_message(message)
+                return
+            
+            elif user_message == 'init --hard':
+                init_files()
+                message.content = '```init files success```'
+                await send_message(message)
+                return
         
         # if in maintenance and user using command
         # announce the maintenance time 
