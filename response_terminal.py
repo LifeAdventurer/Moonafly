@@ -458,6 +458,14 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
         elif path_stack[-1] == 'count':
+            if msg[:6] == '--help':
+                return textwrap.dedent(f"""\
+                    ```
+                    {get_help_information('math_count', 4, 5)}
+                    {current_path()}
+                    ```
+                """)
+
             words = msg.split()
             return textwrap.dedent(f"""
                 ```

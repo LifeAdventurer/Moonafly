@@ -1,0 +1,3 @@
+Usage: [content]
+    count how many words are in the CONTENT
+    this command is under ~/math/count
