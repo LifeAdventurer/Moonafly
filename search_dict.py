@@ -80,27 +80,29 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
         print(f"Error: {e}")
         return None
 
-def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
+def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = ''):
     
+    search_word = search_word.lower()
+
     if dictionary == 'en':
-        result = get_info_in_English(word, limit)
+        result = get_info_in_English(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
             en_definition, example_list = result
             # removes the certain trailing char from the string
             en_definition = en_definition.rstrip(': ') 
 
-            information = f"# {word}\n"
+            information = f"# {search_word}\n"
             information += f"{space}### Definition: \n{space}- {en_definition}\n"
             information += f"{space}### Examples: \n"
             for sentence in example_list:
                 information += f"{space}- {sentence}\n"
             return information
         else:
-            return f"Failed to retrieve information for the word '{word}'."
+            return f"Failed to retrieve information for the word '{search_word}'."
             
     elif dictionary == 'en-zh_TW':
-        result = get_info_in_English_Chinese_traditional(word, limit)
+        result = get_info_in_English_Chinese_traditional(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
             en_definition, zh_TW_definition, example_list = result
@@ -114,14 +116,20 @@ def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
                     data = json.load(file)
                 
                 if username in data:
-                    data[username].append({'word': word.lower(), 'word_in_zh_TW': zh_TW_definition})
+                    word_in_data = False
+                    for word in data[username]:
+                        if search_word == word['word']:
+                            word_in_data = True
+                            word['count'] += 1
+                    if not word_in_data:
+                        data[username].append({'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count' : 0})
                 else:
-                    data[username] = [{'word': word, 'word_in_zh_TW': zh_TW_definition}]
-                
+                    data[username] = [{'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count': 0}]
+
                 with open('./data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
                     json.dump(data, file, indent = 4, ensure_ascii = False)
 
-            information = f"# {word}\n"
+            information = f"# {search_word}\n"
             information += f"{space}### Definition: \n"
             information += f"{space}- {en_definition}\n"
             information += f"{space}- {zh_TW_definition}\n"
@@ -130,4 +138,4 @@ def search_dict(dictionary, word, limit, tab_size, tab_count, username = ''):
                 information += f"{space}- {sentence.strip()}\n"
             return information
         else:
-            return f"Failed to retrieve information for the word '{word}'."
+            return f"Failed to retrieve information for the word '{search_word}'."
