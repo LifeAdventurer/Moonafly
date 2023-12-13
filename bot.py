@@ -24,20 +24,29 @@ async def send_message(message):
     try:
         # get response from `responses.py`
         response = responses.get_response(message)
-        
         if response != None:
+            # large output split
+            # discord limits each message to a maximum of 2000 characters
             if len(response) > 2000:
-                word_count = 0
-                line_count = 0
+                # current message group total word count
+                word_count = 0 
+                # calculate the count of '\n' it takes 1 space
+                line_count = 0 
                 response = response.splitlines()
+                # the filename bar
                 output_prefix = '\n'.join(response[:3])
-                output_suffix = '\n'.join(response[-3:])
                 await message.channel.send(output_prefix)
+                # the current path bar
+                output_suffix = '\n'.join(response[-3:])
+                # cut the prefix and suffix
                 response = response[4:-4]
                 lines = []
                 for line in response:
+                    # prevent backticks breaking the code block 
+                    # TODO: find a escape backticks method
                     line = line.replace('```', '` ` `')
-                    print(line)
+
+                    # 50 is just a free space for avoiding unpredictable error
                     if word_count + len(line) + line_count + 50 > 2000:
                         word_count = len(line)
                         line_count = 1
@@ -45,19 +54,21 @@ async def send_message(message):
                         lines = [line]
                         content = f"```{response_terminal.file_language}\n{content}\n```\n"
                         await message.channel.send(content)
+                    
                     else:
                         word_count += len(line)
                         line_count += 1
                         lines.append(line)
-                
+                # last part of message
                 content = '\n'.join(lines)
                 content = f"```{response_terminal.file_language}\n{content}\n```\n"
                 await message.channel.send(content)
-
+                # the current path bar
                 await message.channel.send(output_suffix)
 
             else:
                 await message.channel.send(response)
+
     except Exception as e:
         print(e)
 
@@ -141,7 +152,6 @@ def run_discord_bot():
 
             message.content = announce
             await send_message_direct(message)
-
         
         # when someone else wants to use terminal 
         # send private message to notice the user
@@ -153,7 +163,6 @@ def run_discord_bot():
                 message.content = 'someone is using the terminal'
                 await send_message_in_private(message)
             return
-        
         
         if channel[:14] == 'Direct Message':
             print('WARNING: people using bot in Direct Message\n')
@@ -167,4 +176,5 @@ def run_discord_bot():
 
         await send_message(message)
 
+    # start discord client
     client.run(token)
