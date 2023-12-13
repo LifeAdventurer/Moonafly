@@ -25,7 +25,8 @@ def load_user_identity_list():
     with open('./data/json/user_identity.json') as user_identity_file:
         data = json.load(user_identity_file)
     # author has the highest authority
-    author = data['author']
+    # only one author
+    author = data['author'][0] 
     developers = data['developers']
     special_guests = data['guests']
 
