@@ -197,7 +197,7 @@ def get_response_in_terminal_mode(message) -> str:
         if path_stack[-1] == '1A2B':
             if (msg[:4] != 'stop' and
                 msg[:4] != 'Stop' and
-                not any(char.isdigit() for char in msg)):
+                not all(char.isdigit() for char in msg)):
                 return ''
 
     else:
