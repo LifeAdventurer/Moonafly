@@ -3,6 +3,8 @@ import random
 import requests
 import os
 import re
+import textwrap
+import responses
 
 # other py files
 from search_dict import search_dict
@@ -24,6 +26,23 @@ def get_response_in_public_mode(message) -> str:
     pattern = r'^!search google (.+)$'
     if chinese_pattern.search(msg) and not re.match(pattern, msg):  
         return ''
+
+    if msg == 'help':
+        return textwrap.dedent(f"""\
+            ```
+            Moonafly {responses.project_version}
+            
+            - public mode (default)
+            - terminal mode 
+
+            commands to switch mode
+              -t        switch to terminal mode, `Moonafly -t`
+                        and `moonafly -t`
+              -p        switch to public mode when you are in 
+                        terminal mode
+              exit      leaving terminal mode
+            ```
+        """)
 
     if msg[0] == '!':
         msg = msg[1:]
