@@ -124,7 +124,7 @@ def run_Moonafly():
             elif user_message == 'init --hard':
                 init_files()
                 message.content = '```init files success```'
-                await send_message(message)
+                await send_message_without_response(message)
                 return
         
         # if in maintenance and user using command
