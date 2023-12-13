@@ -36,7 +36,7 @@ async def send_message(message):
                 response = response[4:-4]
                 lines = []
                 for line in response:
-                    line = line.replace('```', '\`\`\`')
+                    line = line.replace('```', '` ` `')
                     print(line)
                     if word_count + len(line) + line_count + 50 > 2000:
                         word_count = len(line)
