@@ -227,6 +227,7 @@ def get_response_in_terminal_mode(message) -> str:
                     content = file.read()
 
                 parts = filename.split('.')
+                global file_language
                 file_language = parts[-1] if len(parts) > 1 else ''
                 indentation = ' ' * 4 * 5
                 output = '\n'

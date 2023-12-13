@@ -24,8 +24,36 @@ async def send_message(message):
     try:
         # get response from `responses.py`
         response = responses.get_response(message)
+        
         if response != None:
-            await message.channel.send(response)
+            if len(response) > 2000:
+                word_count = 0
+                line_count = 0
+                response = response.splitlines()
+                output_prefix = '\n'.join(response[:3])
+                output_suffix = '\n'.join(response[-3:])
+                await message.channel.send(output_prefix)
+                response = response[4:-4]
+                lines = []
+                for line in response:
+                    line = line.replace('```', '\`\`\`')
+                    print(line)
+                    if word_count + len(line) + line_count + 50 > 2000:
+                        word_count = len(line)
+                        line_count = 1
+                        content = '\n'.join(lines)
+                        lines = [line]
+                        content = f"```{response_terminal.file_language}\n{content}\n```\n"
+                        await message.channel.send(content)
+                    else:
+                        word_count += len(line)
+                        line_count += 1
+                        lines.append(line)
+
+                await message.channel.send(output_suffix)
+
+            else:
+                await message.channel.send(response)
     except Exception as e:
         print(e)
 
