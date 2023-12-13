@@ -1,4 +1,4 @@
-def get_help_information(command, tab_size, tab_count) -> str:
+def load_help_command_information(command, tab_size, tab_count) -> str:
     information = ''
     space = ' ' * tab_size * tab_count
     path_to_txt = f"./data/txt/help_commands_information/{command}.txt"

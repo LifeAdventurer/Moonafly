@@ -8,26 +8,26 @@ import time
 
 # other py files
 from search_dict import search_dict
-from search_weather import get_weather_info
+from weather import get_weather_info
 from math_calc import safe_eval
-from command_help import get_help_information
+from command_help import load_help_command_information
 import responses
 
 directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
-def get_directory_structure():
+def load_directory_structure():
     global directory_structure
     with open('./data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
 Moonafly_structure = []
 # initialed when bot started via init_files() in `bot.py`
-def get_Moonafly_structure():
+def load_Moonafly_structure():
     global Moonafly_structure
     with open('./data/json/Moonafly_structure.json') as Moonafly_structure_file:
         Moonafly_structure = json.load(Moonafly_structure_file)['Moonafly_structure']
 
-def get_game_1A2B_ranks():
+def load_game_1A2B_ranks():
     global game_1A2B_ranks
     with open('./data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
         game_1A2B_ranks = json.load(game_1A2B_ranks)
@@ -36,7 +36,7 @@ def get_game_1A2B_ranks():
 
 def save_game_1A2B_result(length, attempts):
     # you must get the ranks every time due to the user might play several times
-    records = get_game_1A2B_ranks()
+    records = load_game_1A2B_ranks()
     # set the group if there isn't one in the data
     records.setdefault(str(length), [])
     
@@ -60,7 +60,7 @@ def save_game_1A2B_result(length, attempts):
     return rank
 
 def show_1A2B_every_length_ranking(tab_size, tab_count):
-    records = get_game_1A2B_ranks()
+    records = load_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
     ranking = 'length | attempts | user\n' + indentation
@@ -76,7 +76,7 @@ def show_1A2B_every_length_ranking(tab_size, tab_count):
     return ranking
 
 def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
-    records = get_game_1A2B_ranks()[str(length)]
+    records = load_game_1A2B_ranks()[str(length)]
     
     indentation = ' ' * tab_size * tab_count
     ranking = f"length - {length}\n{indentation}"
@@ -95,7 +95,7 @@ def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
     return ranking
 
 def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
-    records = get_game_1A2B_ranks()
+    records = load_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
     ranking = f"user - {username}\n{indentation}"
@@ -174,7 +174,7 @@ def current_path() -> str:
     return path + "$"
 
 # for game commands
-playing_game = False
+playing_game_1A2B = False
 target_number = ''
 target_number_len = 0
 attempts = 0
@@ -190,10 +190,10 @@ def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
     # for game commands
-    global playing_game, target_number, target_number_len, attempts
+    global playing_game_1A2B, target_number, target_number_len, attempts
 
     # you can comment messages without digits during the game
-    if playing_game:
+    if playing_game_1A2B:
         if path_stack[-1] == '1A2B':
             if (msg[:4] != 'stop' and
                 msg[:4] != 'Stop' and
@@ -207,7 +207,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('cat', 4, 5)}
+                    {load_help_command_information('cat', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -261,7 +261,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('cd', 4, 5)}
+                    {load_help_command_information('cd', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -343,7 +343,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('ls', 4, 5)}
+                    {load_help_command_information('ls', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -370,7 +370,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('pwd', 4, 5)}
+                    {load_help_command_information('pwd', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -396,7 +396,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('tree', 4, 5)}
+                    {load_help_command_information('tree', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -427,7 +427,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('help', 4, 5)}
+                    {load_help_command_information('help', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -454,7 +454,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('math_calc', 4, 5)}
+                    {load_help_command_information('math_calc', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -470,7 +470,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('math_count', 4, 5)}
+                    {load_help_command_information('math_count', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -656,7 +656,7 @@ def get_response_in_terminal_mode(message) -> str:
         if msg[:6] == '--help':
             return textwrap.dedent(f"""\
                 ```
-                {get_help_information('weather', 4, 6)}
+                {load_help_command_information('weather', 4, 6)}
                 {current_path()}
                 ```
             """)
@@ -678,7 +678,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('random_number', 4, 5)}
+                    {load_help_command_information('random_number', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -707,7 +707,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('dict_en', 4, 5)}
+                    {load_help_command_information('dict_en', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -741,7 +741,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('dict_en-zh_TW', 4, 5)}
+                    {load_help_command_information('dict_en-zh_TW', 4, 5)}
                     {current_path()}
                     ```
                 """)
@@ -775,20 +775,20 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
-                    {get_help_information('game_1A2B', 4, 5)}
+                    {load_help_command_information('game_1A2B', 4, 5)}
                     {current_path()}
                     ```
                 """)
 
-            if not playing_game:
+            if not playing_game_1A2B:
                 if msg[:5] == 'start' or msg[:5] == 'Start':
-                    playing_game = True
+                    playing_game_1A2B = True
                     attempts = 0
                     msg = msg[6:].strip()
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('game_1A2B_start', 4, 6)}
+                            {load_help_command_information('game_1A2B_start', 4, 6)}
                             {current_path()}
                             ```
                         """)
@@ -826,7 +826,7 @@ def get_response_in_terminal_mode(message) -> str:
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('game_1A2B_rank', 4, 6)}
+                            {load_help_command_information('game_1A2B_rank', 4, 6)}
                             {current_path()}
                             ```
                         """)
@@ -871,15 +871,15 @@ def get_response_in_terminal_mode(message) -> str:
                         ```
                     """)
 
-            elif playing_game:
+            elif playing_game_1A2B:
                 # stop the game if you want
                 if msg[:4] == 'stop' or msg[:4] == 'Stop':
-                    playing_game = False
+                    playing_game_1A2B = False
                     msg = msg[5:].strip()
                     if msg[:6] == '--help':
                         return textwrap.dedent(f"""\
                             ```
-                            {get_help_information('game_1A2B_stop', 4, 7)}
+                            {load_help_command_information('game_1A2B_stop', 4, 7)}
                             {current_path()}
                             ```
                         """)
@@ -909,7 +909,7 @@ def get_response_in_terminal_mode(message) -> str:
 
                     # User got the target number
                     if A_cnt == target_number_len:
-                        playing_game = False
+                        playing_game_1A2B = False
                         
                         # save game records for the rank board
                         user_rank = save_game_1A2B_result(target_number_len, attempts)

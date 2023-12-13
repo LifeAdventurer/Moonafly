@@ -8,12 +8,10 @@ import responses
 
 # other py files
 from search_dict import search_dict
-from search_weather import get_weather_info
+from weather import get_weather_info
 from math_calc import safe_eval
 
 Chinese_pattern = re.compile('[\u4e00-\u9fff]')
-
-playing_game = False
 
 def get_response_in_public_mode(message) -> str:
     username = str(message.author)

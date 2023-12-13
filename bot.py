@@ -1,8 +1,9 @@
 import discord
-import responses 
-import response_terminal
 import json
 from datetime import datetime
+
+import responses 
+import response_terminal
 
 # token should be encrypted
 token = ""
@@ -73,12 +74,13 @@ async def send_message(message):
         print(e)
 
 # send message directly without `responses.py`
-async def send_message_direct(message):
+async def send_message_without_response(message):
     try:
         await message.channel.send(message.content)
     except Exception as e:
         print(e)
 
+# send message in private
 async def send_message_in_private(message):
     try:
         await message.author.send(message.content)
@@ -90,10 +92,10 @@ def init_files():
     check_maintenance()
     responses.load_user_identity_list()
     responses.load_password_for_terminal()
-    response_terminal.get_directory_structure()
-    response_terminal.get_Moonafly_structure()
+    response_terminal.load_directory_structure()
+    response_terminal.load_Moonafly_structure()
 
-def run_discord_bot():
+def run_Moonafly():
     init_files()
     
     intents = discord.Intents.default()
@@ -151,7 +153,7 @@ def run_discord_bot():
                 announce = 'Still under maintenance'
 
             message.content = announce
-            await send_message_direct(message)
+            await send_message_without_response(message)
         
         # when someone else wants to use terminal 
         # send private message to notice the user

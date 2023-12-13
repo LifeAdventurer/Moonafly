@@ -146,7 +146,7 @@ def get_response(message) -> str:
         if msg == 'exit' and not is_public_mode:
             is_public_mode = True
             incorrect_count = 0
-            response_terminal.playing_game = False
+            response_terminal.playing_game_1A2B = False
             response_terminal.path_stack.clear()
             current_using_user = ''
             return ''

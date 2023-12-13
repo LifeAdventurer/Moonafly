@@ -1,5 +1,5 @@
 {
-    "allowed_names": [
+    "math_calc_allow_names": [
         "sum", 
         "min", 
         "max", 
