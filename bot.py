@@ -88,7 +88,7 @@ async def send_message_in_private(message):
 def init_files():
     load_token()
     check_maintenance()
-    responses.special_guest_list()
+    responses.load_user_identity_list()
     responses.load_password_for_terminal()
     response_terminal.get_directory_structure()
     response_terminal.get_Moonafly_structure()

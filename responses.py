@@ -15,17 +15,19 @@ def load_password_for_terminal():
     with open('./data/json/passwords.json') as passwords_file:
         password = json.load(passwords_file)['terminal_password']
 
-# special guest list
-# author in the first line
-special_guests = []
+# user identity
 author = ''
+developers = []
+special_guests = []
 # initialed when bot started via init_files() in `bot.py`
-def special_guest_list():
-    global special_guests, author
-    with open('./data/json/special_guests.json') as special_guest_file:
-        special_guests = json.load(special_guest_file)['guests']
+def load_user_identity_list():
+    global author, developers, special_guests
+    with open('./data/json/user_identity.json') as user_identity_file:
+        data = json.load(user_identity_file)
     # author has the highest authority
-    author = special_guests[0]
+    author = data['author']
+    developers = data['developers']
+    special_guests = data['guests']
 
 def get_terminal_login_record():
     global login_records

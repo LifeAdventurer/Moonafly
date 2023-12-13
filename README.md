@@ -16,14 +16,18 @@
     }
     ```
 
-3. Set your special guest list to let certain users use the terminal mode without a password via `special_guests.json`:
+3. Set your user identity list via `user_identity.json` including author, developer, guests role:
 
     ```json
     {
+        "author": [
+            
+        ],
+        "developer": [
+
+        ],
         "guests": [
-            "{guest 1}", 
-            "{guest 2}",
-            "{guest 3}"
+
         ]
     }
     ```
