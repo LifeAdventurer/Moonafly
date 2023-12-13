@@ -49,6 +49,10 @@ async def send_message(message):
                         word_count += len(line)
                         line_count += 1
                         lines.append(line)
+                
+                content = '\n'.join(lines)
+                content = f"```{response_terminal.file_language}\n{content}\n```\n"
+                await message.channel.send(content)
 
                 await message.channel.send(output_suffix)
 
