@@ -1,3 +1,9 @@
+import responses
+from cmd.search_dict   import search_dict
+from cmd.weather       import get_weather_info
+from cmd.math_calc     import safe_eval
+from cmd.command_help  import load_help_command_information
+
 import json
 import random
 import requests
@@ -6,30 +12,24 @@ import re
 import textwrap
 import time
 
-# other py files
-from search_dict import search_dict
-from weather import get_weather_info
-from math_calc import safe_eval
-from command_help import load_help_command_information
-import responses
 
 directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_directory_structure():
     global directory_structure
-    with open('./data/json/directory_structure.json') as directory_structure_file:
+    with open('../data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
 Moonafly_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_Moonafly_structure():
     global Moonafly_structure
-    with open('./data/json/Moonafly_structure.json') as Moonafly_structure_file:
+    with open('../data/json/Moonafly_structure.json') as Moonafly_structure_file:
         Moonafly_structure = json.load(Moonafly_structure_file)['Moonafly_structure']
 
 def load_game_1A2B_ranks():
     global game_1A2B_ranks
-    with open('./data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
+    with open('../data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
         game_1A2B_ranks = json.load(game_1A2B_ranks)
     
     return game_1A2B_ranks
@@ -54,7 +54,7 @@ def save_game_1A2B_result(length, attempts):
         rank += 1
 
     # save the result to json file
-    with open('./data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
+    with open('.../data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
         json.dump(records, game_1A2B_ranks, indent = 4)
 
     return rank

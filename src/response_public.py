@@ -1,15 +1,16 @@
+import responses
+from cmd.search_dict  import search_dict
+from cmd.weather      import get_weather_info
+from cmd.math_calc    import safe_eval
+
 import json
 import random
 import requests
 import os
 import re
 import textwrap
-import responses
 
-# other py files
-from search_dict import search_dict
-from weather import get_weather_info
-from math_calc import safe_eval
+
 
 Chinese_pattern = re.compile('[\u4e00-\u9fff]')
 
