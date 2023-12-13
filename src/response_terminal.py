@@ -157,7 +157,7 @@ def visualize_structure(data, tab_size, tab_count, indent = 0) -> str:
     # just make sure the structure file is always a dict
     for key, value in sorted(data.items()):
         #           structure indentation     folder      output indentation
-        tree += f"{' ' * tab_size * indent}\--{key}\n{' ' * tab_size * tab_count}"
+        tree += f"{' ' * tab_size * indent}\-- {key}\n{' ' * tab_size * tab_count}"
         tree += visualize_structure(value, tab_size, tab_count, indent + 1)
     return tree 
 
