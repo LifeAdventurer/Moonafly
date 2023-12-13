@@ -231,8 +231,9 @@ def get_response_in_terminal_mode(message) -> str:
                 indentation = ' ' * 4 * 5
                 output = '\n'
                 content = content.splitlines()
-                for line in content:
-                    output += indentation + line + '\n'
+                lines_str_len = len(str(len(content)))
+                for index, line in enumerate(content):
+                    output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
                 return textwrap.dedent(f"""\
                     ```
                     {filename}
