@@ -1,5 +1,7 @@
 # Moonafly
 
+## Secret files
+
 1. Set your token via `config.json`:
 
     ```json
@@ -44,8 +46,16 @@
 
 8. Set your vocabulary items list via `vocabulary_items.json`
 
-9. Run the bot in your terminal
+## Run Moonafly
 
-    ```bash
-    py main.py
-    ```
+### Windows
+
+```bat
+run_moonafly.bat
+```
+
+### macOS/Linux
+
+```bash
+run_moonafly.sh
+```
