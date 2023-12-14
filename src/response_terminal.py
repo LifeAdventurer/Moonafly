@@ -902,7 +902,7 @@ def get_response_in_terminal_mode(message) -> str:
                     # A means the number is correct and the position is correct
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
 
-                    # B means the number is correct, but teh position is incorrect
+                    # B means the number is correct, but the position is incorrect
                     B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
 
                     attempts += 1
