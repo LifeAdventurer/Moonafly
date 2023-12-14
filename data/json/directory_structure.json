@@ -14,7 +14,10 @@
                 "count": {}
             },
             "random": {
-                "number": {}
+                "number": {},
+                "vocab": {
+                    "test": {}
+                }
             },
             "search": {
                 "git": {},

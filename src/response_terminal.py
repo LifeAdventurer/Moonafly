@@ -1,5 +1,5 @@
 import responses
-from cmd.search_dict   import search_dict
+from cmd.dict   import search_dict
 from cmd.weather       import get_weather_info
 from cmd.math_calc     import safe_eval
 from cmd.command_help  import load_help_command_information
@@ -178,6 +178,9 @@ playing_game_1A2B = False
 target_number = ''
 target_number_len = 0
 attempts = 0
+# for random vocab test
+random_vocab_testing = False
+vocab_index = 0
 
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
@@ -191,6 +194,8 @@ def get_response_in_terminal_mode(message) -> str:
     global path_stack
     # for game commands
     global playing_game_1A2B, target_number, target_number_len, attempts
+    # for random vocab test
+    global random_vocab_testing, vocab_index
 
     # you can comment messages without digits during the game
     if playing_game_1A2B:
@@ -698,6 +703,75 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
+        
+        elif path_stack[2] == 'vocab':
+            if path_stack[3] == 'test':
+                if msg.lower() == 'g':
+                    global vocabulary_list
+                    with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
+                        vocabulary_list = json.load(file)
+                    
+                    if username in vocabulary_list:
+                        if len(vocabulary_list[username]) == 0:
+                            return textwrap.dedent(f"""
+                                ```
+                                You have cleared all the words.
+                                {current_path()}
+                                ```
+                            """)
+                        else:
+                            random_vocab_testing = True
+                            vocab_index = random.randint(0, len(vocabulary_list[username]) - 1)
+                            return textwrap.dedent(f"""
+                                ```
+                                {vocabulary_list[username][vocab_index]['word']}
+                                ```
+                            """)
+
+                    else: 
+                        return textwrap.dedent(f"""
+                            ```
+                            You have never use dict feature before. 
+                            Try it to save vocabulary items in Moonafly, then
+                            use ~/random/vocab/test to examine yourself
+                            {current_path()}
+                            ```
+                        """)
+                
+                elif random_vocab_testing:
+                    if msg in vocabulary_list[username][vocab_index]['word_in_zh_TW']:
+                        random_vocab_testing = False
+                        vocabulary_list[username][vocab_index]['count'] -= 1
+                        word = vocabulary_list[username][vocab_index]['word']
+                        word_in_zh_TW = vocabulary_list[username][vocab_index]['word_in_zh_TW']
+                        if vocabulary_list[username][vocab_index]['count'] == 0:
+                            del vocabulary_list[username][vocab_index]
+                            with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                                json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
+                        return textwrap.dedent(f"""
+                            ```
+                            Correct!
+                            {word}
+                            {word_in_zh_TW}
+                            {current_path()}
+                            ```
+                        """)
+
+                    else:
+                        vocabulary_list[username][vocab_index]['count'] += 1
+                        with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                            json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
+                        return textwrap.dedent(f"""
+                            ```
+                            Oops! Wrong
+                            {vocabulary_list[username][vocab_index]['word']}
+                            {vocabulary_list[username][vocab_index]['word_in_zh_TW']}
+                            {current_path()}
+                            ```
+                        """)
+
+                else:
+                    return command_not_found(msg)
 
     # return the definition and example of the enter word from a dictionary
     elif path_stack[1] == 'dict':

@@ -1,5 +1,5 @@
 import responses
-from cmd.search_dict  import search_dict
+from cmd.dict  import search_dict
 from cmd.weather      import get_weather_info
 from cmd.math_calc    import safe_eval
 
