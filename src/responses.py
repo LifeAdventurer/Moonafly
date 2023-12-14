@@ -108,6 +108,11 @@ def get_response(message) -> str:
         msg == 'moonafly -p' or
         msg == 'Moonafly -p')):
         is_public_mode = True
+        incorrect_count = 0
+        response_terminal.playing_game_1A2B = False
+        response_terminal.random_vocab_testing = False
+        response_terminal.path_stack.clear()
+        current_using_user = ''
         print('swap to public mode')
         return 'Successfully swap to public mode!'
 
