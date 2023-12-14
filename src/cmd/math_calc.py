@@ -6,7 +6,7 @@ import json
 math_calc_allow_names = []
 def load_math_calc_allow_names():
     global math_calc_allow_names
-    with open('.../data/json/math_calc_allow_names.json') as math_calc_allow_names_file:
+    with open('../data/json/math_calc_allow_names.json') as math_calc_allow_names_file:
         math_calc_allow_names = json.load(math_calc_allow_names_file)['math_calc_allow_names']
 
 def safe_eval(msg) -> str:

@@ -34,9 +34,9 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
 
             # save vocabulary
             if zh_TW_definition != 'No definition found':
-                with open('.../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
+                with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
                     data = json.load(file)
-                
+
                 if username in data:
                     word_in_data = False
                     for word in data[username]:
@@ -44,11 +44,11 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
                             word_in_data = True
                             word['count'] += 1
                     if not word_in_data:
-                        data[username].append({'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count' : 0})
+                        data[username].append({'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count' : 1})
                 else:
-                    data[username] = [{'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count': 0}]
+                    data[username] = [{'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count': 1}]
 
-                with open('.../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
                     json.dump(data, file, indent = 4, ensure_ascii = False)
 
             information = f"# {search_word}\n"
