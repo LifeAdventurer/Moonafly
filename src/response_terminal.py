@@ -758,6 +758,7 @@ def get_response_in_terminal_mode(message) -> str:
                         """)
 
                     else:
+                        random_vocab_testing = False
                         vocabulary_list[username][vocab_index]['count'] += 1
                         with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
                             json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
