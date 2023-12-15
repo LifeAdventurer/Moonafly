@@ -754,8 +754,8 @@ def get_response_in_terminal_mode(message) -> str:
                         word_in_zh_TW = vocabulary_list[username][vocab_index]['word_in_zh_TW']
                         if vocabulary_list[username][vocab_index]['count'] == 0:
                             del vocabulary_list[username][vocab_index]
-                            with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
-                                json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
+                        with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                            json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
                         return textwrap.dedent(f"""
                             ```
                             Correct!
