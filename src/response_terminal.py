@@ -199,7 +199,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     # you can comment messages without digits during the game
     if playing_game_1A2B:
-        if path_stack[2] == '1A2B':
+        if len(path_stack) > 2 and path_stack[2] == '1A2B':
             if (msg[:4] != 'stop' and
                 msg[:4] != 'Stop' and
                 not all(char.isdigit() for char in msg)):
@@ -454,7 +454,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
     # commands in certain directory
-    if path_stack[1] == 'math':
+    if len(path_stack) > 1 and path_stack[1] == 'math':
         if path_stack[-1] == 'calc':
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
@@ -488,7 +488,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-    elif path_stack[1] == 'gen':
+    elif len(path_stack) > 1 and path_stack[1] == 'gen':
         # my generators repo on github.io
         if path_stack[-1] == 'fortune':
             if msg == 'get':
@@ -514,9 +514,9 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return command_not_found(msg)
     
-    elif path_stack[1] == 'search':
+    elif len(path_stack) > 1 and path_stack[1] == 'search':
         # search for a handle in different online judges
-        if path_stack[2] == 'online-judge':
+        if len(path_stack) > 2 and path_stack[2] == 'online-judge':
             # -{number} handle
             # search for certain pattern
             pattern = r'^-(\d+)\s+(\w+)$'
@@ -576,7 +576,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         # just a google search -> must improve this more
-        elif path_stack[2] == 'google':
+        elif len(path_stack) > 2 and path_stack[2] == 'google':
             return textwrap.dedent(f"""
                 https://www.google.com/search?q={msg}
                 ```
@@ -585,7 +585,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
         # same as above -> need improvement
-        elif path_stack[2] == 'youtube':
+        elif len(path_stack) > 2 and path_stack[2] == 'youtube':
             return textwrap.dedent(f"""
                 https://www.youtube.com/results?search_query={msg}
                 ```
@@ -594,7 +594,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
         # search for github repos or profiles -> because url
-        elif path_stack[2] == 'github':
+        elif len(path_stack) > 2 and path_stack[2] == 'github':
             github_url = "https://github.com/" + msg
             response = requests.get(github_url)
             if response.status_code == 404:
@@ -614,7 +614,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         # search for git commands
-        elif path_stack[2] == 'git':
+        elif len(path_stack) > 2 and path_stack[2] == 'git':
             # msg = msg[4:]
             # if msg[:2] == 'ls':
             #     return textwrap.dedent(f"""\
@@ -643,7 +643,7 @@ def get_response_in_terminal_mode(message) -> str:
             # TO-DO
             # elif msg == 'setup':
 
-        elif path_stack[2] == 'greek':
+        elif len(path_stack) > 2 and path_stack[2] == 'greek':
             if msg == 'get':
                 return textwrap.dedent(f"""\
                     ```
@@ -657,7 +657,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_not_found(msg)
     
     # weather API
-    elif path_stack[1] == 'weather':
+    elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg[:6] == '--help':
             return textwrap.dedent(f"""\
                 ```
@@ -678,8 +678,8 @@ def get_response_in_terminal_mode(message) -> str:
             return command_not_found(msg)
 
     # roll a random number
-    elif path_stack[1] == 'random':
-        if path_stack[2] == 'number':
+    elif len(path_stack) > 1 and path_stack[1] == 'random':
+        if len(path_stack) > 2 and path_stack[2] == 'number':
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
@@ -704,8 +704,8 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
         
-        elif path_stack[2] == 'vocab':
-            if path_stack[3] == 'test':
+        elif len(path_stack) > 2 and path_stack[2] == 'vocab':
+            if len(path_stack) > 3 and path_stack[3] == 'test':
                 if msg[:6] == '--help':
                     return textwrap.dedent(f"""\
                         ```
@@ -783,10 +783,10 @@ def get_response_in_terminal_mode(message) -> str:
                     return command_not_found(msg)
 
     # return the definition and example of the enter word from a dictionary
-    elif path_stack[1] == 'dict':
+    elif len(path_stack) > 1 and path_stack[1] == 'dict':
         # different languages
         # en
-        if path_stack[2] == 'en':
+        if len(path_stack) > 2 and path_stack[2] == 'en':
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
@@ -820,7 +820,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         # en-zh_TW
-        elif path_stack[2] == 'en-zh_TW':
+        elif len(path_stack) > 2 and path_stack[2] == 'en-zh_TW':
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
@@ -853,8 +853,8 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
     
     # games
-    elif path_stack[1] == 'game':
-        if path_stack[2] == '1A2B':
+    elif len(path_stack) > 1 and path_stack[1] == 'game':
+        if len(path_stack) > 2 and path_stack[2] == '1A2B':
             if msg[:6] == '--help':
                 return textwrap.dedent(f"""\
                     ```
@@ -1022,7 +1022,7 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return command_not_found(msg)
 
-        elif path_stack[2] == 'CTF':
+        elif len(path_stack) > 2 and path_stack[2] == 'CTF':
             return function_developing()
 
     else:
