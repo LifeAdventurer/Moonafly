@@ -1,5 +1,5 @@
 import response_public
-import response_terminal 
+import response_terminal
 import json
 import textwrap
 import time
@@ -9,16 +9,21 @@ project_version = 'v2.0.0'
 
 # password
 password = ""
+
+
 # initialed when bot started via init_files() in `bot.py`
 def load_password_for_terminal():
     global password
     with open('../data/json/passwords.json') as passwords_file:
         password = json.load(passwords_file)['terminal_password']
 
+
 # user identity
 author = ''
 developers = []
 special_guests = []
+
+
 # initialed when bot started via init_files() in `bot.py`
 def load_user_identity_list():
     global author, developers, special_guests
@@ -26,9 +31,10 @@ def load_user_identity_list():
         data = json.load(user_identity_file)
     # author has the highest authority
     # only one author
-    author = data['author'][0] 
+    author = data['author'][0]
     developers = data['developers']
     special_guests = data['guests']
+
 
 def get_terminal_login_record():
     global login_records
@@ -37,23 +43,28 @@ def get_terminal_login_record():
 
     return login_records
 
+
 def save_terminal_login_record():
     # you must get the record every time since the user might enter several times
     records = get_terminal_login_record()
 
-    records['history'].append({'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
+    records['history'].append(
+        {'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')}
+    )
 
     # save the record to json file
     with open('../data/json/terminal_login_history.json', 'w') as login_history_file:
-        json.dump(records, login_history_file, indent = 4)
+        json.dump(records, login_history_file, indent=4)
 
-# password feature for terminal mode 
+
+# password feature for terminal mode
 entering_password = False
 incorrect_count = 0
 is_public_mode = True
 
 # prevent multiple user using the terminal at once
 current_using_user = ''
+
 
 def get_response(message) -> str:
     username = str(message.author)
@@ -65,17 +76,15 @@ def get_response(message) -> str:
 
     global is_public_mode, entering_password, incorrect_count, password, current_using_user
 
-    # password for entering terminal mode 
+    # password for entering terminal mode
     # special guests doesn't need this
-    if (username not in special_guests and 
-        entering_password and 
-        incorrect_count < 3):
+    if username not in special_guests and entering_password and incorrect_count < 3:
         if msg == password:
             incorrect_count = 0
             entering_password = False
             is_public_mode = False
             current_using_user = username
-            
+
             # call this function after current_using_user has been assigned
             # ignore author login
             if current_using_user != author:
@@ -85,11 +94,13 @@ def get_response(message) -> str:
             response_terminal.path_stack = ['~']
             print('swap to terminal mode')
             print('Moonafly:~$')
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(
+                f"""\
                 ```
                 {response_terminal.current_path()}
                 ```
-            """)
+            """
+            )
 
         else:
             incorrect_count += 1
@@ -97,16 +108,17 @@ def get_response(message) -> str:
                 incorrect_count = 0
                 entering_password = False
                 is_public_mode = True
-                return '```the maximum number of entries has been reached\nauto exited```'
+                return (
+                    '```the maximum number of entries has been reached\nauto exited```'
+                )
             return '```incorrect, please enter again```'
 
     # if current_using_user != '' and username != current_using_user:
     #     return ''
 
-    if (not is_public_mode and 
-       (msg == '-p'          or
-        msg == 'moonafly -p' or
-        msg == 'Moonafly -p')):
+    if not is_public_mode and (
+        msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'
+    ):
         is_public_mode = True
         incorrect_count = 0
         response_terminal.playing_game_1A2B = False
@@ -116,9 +128,7 @@ def get_response(message) -> str:
         print('swap to public mode')
         return 'Successfully swap to public mode!'
 
-    elif (msg[:2] == '-t'         or
-        msg[:11] == 'moonafly -t' or
-        msg[:11] == 'Moonafly -t'):
+    elif msg[:2] == '-t' or msg[:11] == 'moonafly -t' or msg[:11] == 'Moonafly -t':
         if username not in special_guests:
             entering_password = True
             return '```please enter password```'
@@ -130,24 +140,26 @@ def get_response(message) -> str:
             # ignore author login
             if current_using_user != author:
                 save_terminal_login_record()
-            
+
             # don't use append or it might cause double '~' when using recursion -t -t... command
             response_terminal.path_stack = ['~']
             print('swap to terminal mode')
             print('Moonafly:~$')
-            msg = msg[(2 if msg[:2] == '-t' else 11):].strip()
+            msg = msg[(2 if msg[:2] == '-t' else 11) :].strip()
             if len(msg) > 0:
                 message.content = msg
                 return get_response(message)
 
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(
+                f"""\
                 ```
                 {response_terminal.current_path()}
                 ```
-            """)
+            """
+            )
 
     else:
-        # make sure no other user can exit the terminal 
+        # make sure no other user can exit the terminal
         if msg == 'exit' and not is_public_mode:
             is_public_mode = True
             incorrect_count = 0
@@ -160,12 +172,14 @@ def get_response(message) -> str:
             if is_public_mode:
                 return f"Moonafly {project_version}"
             else:
-                return textwrap.dedent(f"""\
+                return textwrap.dedent(
+                    f"""\
                     ```
                     Moonafly {project_version}
                     {response_terminal.current_path()}
                     ```
-                """)
+                """
+                )
 
         if is_public_mode:
             return response_public.get_response_in_public_mode(message)
