@@ -706,6 +706,14 @@ def get_response_in_terminal_mode(message) -> str:
         
         elif path_stack[2] == 'vocab':
             if path_stack[3] == 'test':
+                if msg[:6] == '--help':
+                    return textwrap.dedent(f"""\
+                        ```
+                        {load_help_command_information('random_vocab_test', 4, 6)}
+                        {current_path()}
+                        ```
+                    """)
+
                 if msg.lower() == 'g':
                     global vocabulary_list
                     with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
