@@ -165,9 +165,7 @@ def get_response_in_public_mode(message) -> str:
             if msg[:2] == 'en':
                 match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
                 if match:
-                    return search_dict(
-                        'en', match.group(1), int(match.group(2)), 0, 0, username
-                    )
+                    return search_dict('en', match.group(1), int(match.group(2)), 0, 0, username)
                 elif 'LIMIT' in msg:
                     return 'please type a number after the command LIMIT'
                 else:
@@ -176,9 +174,7 @@ def get_response_in_public_mode(message) -> str:
             elif msg[8] == 'en-zh_TW':
                 match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
                 if match:
-                    return search_dict(
-                        'en-zh_TW', match.group(1), int(match.group(2)), 0, 0, username
-                    )
+                    return search_dict('en-zh_TW', match.group(1), int(match.group(2)), 0, 0, username)
                 elif 'LIMIT' in msg:
                     return 'please type a number after the command LIMIT'
                 else:

@@ -48,9 +48,7 @@ def save_terminal_login_record():
     # you must get the record every time since the user might enter several times
     records = get_terminal_login_record()
 
-    records['history'].append(
-        {'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')}
-    )
+    records['history'].append({'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
 
     # save the record to json file
     with open('../data/json/terminal_login_history.json', 'w') as login_history_file:
@@ -108,17 +106,13 @@ def get_response(message) -> str:
                 incorrect_count = 0
                 entering_password = False
                 is_public_mode = True
-                return (
-                    '```the maximum number of entries has been reached\nauto exited```'
-                )
+                return '```the maximum number of entries has been reached\nauto exited```'
             return '```incorrect, please enter again```'
 
     # if current_using_user != '' and username != current_using_user:
     #     return ''
 
-    if not is_public_mode and (
-        msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'
-    ):
+    if not is_public_mode and (msg == '-p' or msg == 'moonafly -p' or msg == 'Moonafly -p'):
         is_public_mode = True
         incorrect_count = 0
         response_terminal.playing_game_1A2B = False

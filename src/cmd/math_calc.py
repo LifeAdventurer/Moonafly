@@ -9,9 +9,7 @@ math_calc_allow_names = []
 def load_math_calc_allow_names():
     global math_calc_allow_names
     with open('../data/json/math_calc_allow_names.json') as math_calc_allow_names_file:
-        math_calc_allow_names = json.load(math_calc_allow_names_file)[
-            'math_calc_allow_names'
-        ]
+        math_calc_allow_names = json.load(math_calc_allow_names_file)['math_calc_allow_names']
 
 
 def safe_eval(msg) -> str:
@@ -25,11 +23,7 @@ def safe_eval(msg) -> str:
     # !IMPORTANT check that only allowed names and functions are used
     for node in ast.walk(parsed_expr):
         if isinstance(node, ast.Name):
-            if not (
-                hasattr(node, 'id')
-                and node.id is not None
-                and node.id in math_calc_allow_names
-            ):
+            if not (hasattr(node, 'id') and node.id is not None and node.id in math_calc_allow_names):
                 return f"Name '{getattr(node, 'id', 'Unknown')}' is not allowed"
 
     # Evaluate the expression

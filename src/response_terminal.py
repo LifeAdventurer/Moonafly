@@ -1,17 +1,17 @@
-import responses
-from cmd.dict import search_dict
-from cmd.weather import get_weather_info
-from cmd.math_calc import safe_eval
-from cmd.command_help import load_help_command_information
-
 import json
-import random
-import requests
 import os
+import random
 import re
 import textwrap
 import time
+from cmd.command_help import load_help_command_information
+from cmd.dict import search_dict
+from cmd.math_calc import safe_eval
+from cmd.weather import get_weather_info
 
+import requests
+
+import responses
 
 directory_structure = []
 
@@ -106,8 +106,7 @@ def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
             break
 
         ranking += (
-            indentation
-            + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
+            indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
         )
 
     return ranking
@@ -140,12 +139,7 @@ def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
     # unify the indentation of multiline
-    msg = '\n'.join(
-        [
-            space + line if index > 0 else line
-            for index, line in enumerate(msg.split('\n'))
-        ]
-    )
+    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
     return textwrap.dedent(
         f"""
         ```
@@ -173,17 +167,11 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
     column_len = [0] * columns
     for column_index in range(min(columns, len(files))):
         # group the files with vertical lines and {columns} groups
-        grouped_files = [
-            file for index, file in enumerate(files) if index % columns == column_index
-        ]
+        grouped_files = [file for index, file in enumerate(files) if index % columns == column_index]
         column_len[column_index] = max(len(file_name) for file_name in grouped_files)
 
     for index, file in enumerate(files):
-        output += file + ' ' * (
-            column_len[index % columns] - len(file) + 2
-            if index % columns != columns - 1
-            else 0
-        )
+        output += file + ' ' * (column_len[index % columns] - len(file) + 2 if index % columns != columns - 1 else 0)
         if index % columns == columns - 1 and index != len(files) - 1:
             output += '\n' + ' ' * tab_size * tab_count
 
@@ -243,11 +231,7 @@ def get_response_in_terminal_mode(message) -> str:
     # you can comment messages without digits during the game
     if playing_game_1A2B:
         if len(path_stack) > 2 and path_stack[2] == '1A2B':
-            if (
-                msg[:4] != 'stop'
-                and msg[:4] != 'Stop'
-                and not all(char.isdigit() for char in msg)
-            ):
+            if msg[:4] != 'stop' and msg[:4] != 'Stop' and not all(char.isdigit() for char in msg):
                 return ''
 
     else:
@@ -367,10 +351,7 @@ def get_response_in_terminal_mode(message) -> str:
                         space = ' ' * 4 * 7
                         # multi-line adjustment
                         msg = '\n'.join(
-                            [
-                                space + line if index > 0 else line
-                                for index, line in enumerate(msg.split('\n'))
-                            ]
+                            [space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))]
                         )
                         return textwrap.dedent(
                             f"""\
@@ -395,12 +376,7 @@ def get_response_in_terminal_mode(message) -> str:
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
                     space = ' ' * 4 * 6
                     # multi-line adjustment
-                    msg = '\n'.join(
-                        [
-                            space + line if index > 0 else line
-                            for index, line in enumerate(msg.split('\n'))
-                        ]
-                    )
+                    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
                     return textwrap.dedent(
                         f"""\
                         ```
@@ -847,9 +823,7 @@ def get_response_in_terminal_mode(message) -> str:
 
                 if msg.lower() == 'g':
                     global vocabulary_list
-                    with open(
-                        '../data/json/vocabulary_items.json', 'r', encoding='utf-8'
-                    ) as file:
+                    with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
                         vocabulary_list = json.load(file)
 
                     if username in vocabulary_list:
@@ -864,9 +838,7 @@ def get_response_in_terminal_mode(message) -> str:
                             )
                         else:
                             random_vocab_testing = True
-                            vocab_index = random.randint(
-                                0, len(vocabulary_list[username]) - 1
-                            )
+                            vocab_index = random.randint(0, len(vocabulary_list[username]) - 1)
                             return textwrap.dedent(
                                 f"""
                                 ```
@@ -892,17 +864,11 @@ def get_response_in_terminal_mode(message) -> str:
                         random_vocab_testing = False
                         vocabulary_list[username][vocab_index]['count'] -= 1
                         word = vocabulary_list[username][vocab_index]['word']
-                        word_in_zh_TW = vocabulary_list[username][vocab_index][
-                            'word_in_zh_TW'
-                        ]
+                        word_in_zh_TW = vocabulary_list[username][vocab_index]['word_in_zh_TW']
                         if vocabulary_list[username][vocab_index]['count'] == 0:
                             del vocabulary_list[username][vocab_index]
-                        with open(
-                            '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
-                        ) as file:
-                            json.dump(
-                                vocabulary_list, file, indent=4, ensure_ascii=False
-                            )
+                        with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                            json.dump(vocabulary_list, file, indent=4, ensure_ascii=False)
                         return textwrap.dedent(
                             f"""
                             ```
@@ -917,12 +883,8 @@ def get_response_in_terminal_mode(message) -> str:
                     else:
                         random_vocab_testing = False
                         vocabulary_list[username][vocab_index]['count'] += 1
-                        with open(
-                            '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
-                        ) as file:
-                            json.dump(
-                                vocabulary_list, file, indent=4, ensure_ascii=False
-                            )
+                        with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                            json.dump(vocabulary_list, file, indent=4, ensure_ascii=False)
                         return textwrap.dedent(
                             f"""
                             ```
@@ -1056,9 +1018,7 @@ def get_response_in_terminal_mode(message) -> str:
                         if msg.isdigit() and 4 <= int(msg) <= 10:
                             target_number_len = int(msg)
                             # the numbers won't be duplicated
-                            target_number = ''.join(
-                                random.sample('0123456789', target_number_len)
-                            )
+                            target_number = ''.join(random.sample('0123456789', target_number_len))
 
                         else:
                             return textwrap.dedent(
@@ -1074,9 +1034,7 @@ def get_response_in_terminal_mode(message) -> str:
                         # the default length for this game
                         target_number_len = 4
                         # the numbers won't be duplicated
-                        target_number = ''.join(
-                            random.sample('123456', target_number_len)
-                        )
+                        target_number = ''.join(random.sample('123456', target_number_len))
                     print(target_number)
                     return textwrap.dedent(
                         f"""
@@ -1183,13 +1141,7 @@ def get_response_in_terminal_mode(message) -> str:
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
 
                     # B means the number is correct, but the position is incorrect
-                    B_cnt = (
-                        sum(
-                            min(target_number.count(digit), guess.count(digit))
-                            for digit in target_number
-                        )
-                        - A_cnt
-                    )
+                    B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
 
                     attempts += 1
 
