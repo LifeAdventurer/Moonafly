@@ -25,7 +25,7 @@
         "author": [
             
         ],
-        "developer": [
+        "developers": [
 
         ],
         "guests": [
