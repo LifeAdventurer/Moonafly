@@ -63,7 +63,7 @@ def save_game_1A2B_result(length, attempts):
         rank += 1
 
     # save the result to json file
-    with open('.../data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
+    with open('../data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
         json.dump(records, game_1A2B_ranks, indent = 4)
 
     return rank
