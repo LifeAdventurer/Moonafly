@@ -4,8 +4,6 @@ import json
 
 # define the whitelist of allowed commands
 math_calc_allow_names = []
-
-
 def load_math_calc_allow_names():
     global math_calc_allow_names
     with open('../data/json/math_calc_allow_names.json') as math_calc_allow_names_file:
@@ -16,7 +14,7 @@ def safe_eval(msg) -> str:
     load_math_calc_allow_names()
     # parse the expression into an AST
     try:
-        parsed_expr = ast.parse(msg, mode='eval')
+        parsed_expr = ast.parse(msg, mode = 'eval')
     except SyntaxError:
         return 'SyntaxError'
 

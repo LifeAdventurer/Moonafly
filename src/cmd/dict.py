@@ -2,8 +2,8 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-
-def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''):
+def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = ''):
+    
     search_word = search_word.lower()
 
     if dictionary == 'en':
@@ -12,7 +12,7 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''
         if result:
             en_definition, example_list = result
             # removes the certain trailing char from the string
-            en_definition = en_definition.rstrip(': ')
+            en_definition = en_definition.rstrip(': ') 
 
             information = f"# {search_word}\n"
             information += f"{space}### Definition: \n{space}- {en_definition}\n"
@@ -22,14 +22,14 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''
             return information
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
-
+            
     elif dictionary == 'en-zh_TW':
         result = get_info_in_English_Chinese_traditional(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
             en_definition, zh_TW_definition, example_list = result
             # removes the certain trailing char from the string
-            en_definition = en_definition.strip(': ')
+            en_definition = en_definition.strip(': ') 
             zh_TW_definition = zh_TW_definition.strip(': ')
 
             # save vocabulary
@@ -44,21 +44,9 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''
                             word_in_data = True
                             word['count'] += 1
                     if not word_in_data:
-                        data[username].append(
-                            {
-                                'word': search_word,
-                                'word_in_zh_TW': zh_TW_definition,
-                                'count': 1,
-                            }
-                        )
+                        data[username].append({'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count' : 1})
                 else:
-                    data[username] = [
-                        {
-                            'word': search_word,
-                            'word_in_zh_TW': zh_TW_definition,
-                            'count': 1,
-                        }
-                    ]
+                    data[username] = [{'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count': 1}]
 
                 with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
                     json.dump(data, file, indent=4, ensure_ascii=False)
@@ -73,7 +61,6 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''
             return information
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
-
 
 # en
 def get_info_in_English(word, limit_example_count):
@@ -111,8 +98,7 @@ def get_info_in_English(word, limit_example_count):
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None
-
-
+    
 # en-zh_TW
 def get_info_in_English_Chinese_traditional(word, limit_example_count):
     url = f'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/{word}'
@@ -152,4 +138,3 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
 
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
-        return None
