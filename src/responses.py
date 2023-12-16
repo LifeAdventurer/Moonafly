@@ -14,8 +14,8 @@ password = ""
 # initialed when bot started via init_files() in `bot.py`
 def load_password_for_terminal():
     global password
-    with open('../data/json/passwords.json') as passwords_file:
-        password = json.load(passwords_file)['terminal_password']
+    with open('../data/json/passwords.json') as file:
+        password = json.load(file)['terminal_password']
 
 
 # user identity
@@ -25,8 +25,8 @@ special_guests = []
 # initialed when bot started via init_files() in `bot.py`
 def load_user_identity_list():
     global author, developers, special_guests
-    with open('../data/json/user_identity.json') as user_identity_file:
-        data = json.load(user_identity_file)
+    with open('../data/json/user_identity.json') as file:
+        data = json.load(file)
     # author has the highest authority
     # only one author
     author = data['author'][0] 
@@ -36,8 +36,8 @@ def load_user_identity_list():
 
 def get_terminal_login_record():
     global login_records
-    with open('../data/json/terminal_login_history.json') as login_history_file:
-        login_records = json.load(login_history_file)
+    with open('../data/json/terminal_login_history.json') as file:
+        login_records = json.load(file)
 
     return login_records
 
@@ -54,8 +54,8 @@ def save_terminal_login_record():
     )
 
     # save the record to json file
-    with open('../data/json/terminal_login_history.json', 'w') as login_history_file:
-        json.dump(records, login_history_file, indent=4)
+    with open('../data/json/terminal_login_history.json', 'w') as file:
+        json.dump(records, file, indent=4)
 
 # password feature for terminal mode 
 entering_password = False

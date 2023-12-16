@@ -12,16 +12,16 @@ token = ""
 # open token JSON file
 def load_token():
     global token
-    with open('../config.json') as token_file:
-        token = json.load(token_file)['token']
+    with open('../config.json') as file:
+        token = json.load(file)['token']
 
 
 # check whether there is maintenance and the duration
 def check_maintenance():
     global in_maintenance, estimated_end_time
-    with open('../data/txt/init_files/maintenance.txt') as maintenance_file:
-        in_maintenance = maintenance_file.readline().strip() == 'True'
-        estimated_end_time = maintenance_file.readline().strip()
+    with open('../data/txt/init_files/maintenance.txt') as file:
+        in_maintenance = file.readline().strip() == 'True'
+        estimated_end_time = file.readline().strip()
 
 
 async def send_message(message):

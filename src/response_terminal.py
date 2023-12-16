@@ -17,22 +17,22 @@ directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_directory_structure():
     global directory_structure
-    with open('../data/json/directory_structure.json') as directory_structure_file:
-        directory_structure = json.load(directory_structure_file)['directory_structure']
+    with open('../data/json/directory_structure.json') as file:
+        directory_structure = json.load(file)['directory_structure']
 
 
 Moonafly_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_Moonafly_structure():
     global Moonafly_structure
-    with open('../data/json/Moonafly_structure.json') as Moonafly_structure_file:
-        Moonafly_structure = json.load(Moonafly_structure_file)['Moonafly_structure']
+    with open('../data/json/Moonafly_structure.json') as file:
+        Moonafly_structure = json.load(file)['Moonafly_structure']
 
 
 def load_game_1A2B_ranks():
     global game_1A2B_ranks
-    with open('../data/json/game_1A2B_ranks.json') as game_1A2B_ranks:
-        game_1A2B_ranks = json.load(game_1A2B_ranks)
+    with open('../data/json/game_1A2B_ranks.json') as file:
+        game_1A2B_ranks = json.load(file)
     
     return game_1A2B_ranks
 
@@ -63,8 +63,8 @@ def save_game_1A2B_result(length, attempts):
         rank += 1
 
     # save the result to json file
-    with open('../data/json/game_1A2B_ranks.json', 'w') as game_1A2B_ranks:
-        json.dump(records, game_1A2B_ranks, indent = 4)
+    with open('../data/json/game_1A2B_ranks.json', 'w') as file:
+        json.dump(records, file, indent = 4)
 
     return rank
 
