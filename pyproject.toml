@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "moonafly"
+version = "2.0.0"
+description = "Moonafly isn't just a discord bot."
+authors = ["LifeAdventurer <life0adventurer@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+beautifulsoup4 = "^4.12.2"
+discord-py = "^2.3.2"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"

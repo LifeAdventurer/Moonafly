@@ -11,3 +11,5 @@ vocabulary_items.json
 maintenance.txt
 
 *__pycache__
+
+/.idea
