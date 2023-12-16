@@ -1,8 +1,8 @@
 import responses
-from cmd.dict   import search_dict
-from cmd.weather       import get_weather_info
-from cmd.math_calc     import safe_eval
-from cmd.command_help  import load_help_command_information
+from cmd.dict import search_dict
+from cmd.weather import get_weather_info
+from cmd.math_calc import safe_eval
+from cmd.command_help import load_help_command_information
 
 import json
 import random
@@ -20,12 +20,14 @@ def load_directory_structure():
     with open('../data/json/directory_structure.json') as directory_structure_file:
         directory_structure = json.load(directory_structure_file)['directory_structure']
 
+
 Moonafly_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_Moonafly_structure():
     global Moonafly_structure
     with open('../data/json/Moonafly_structure.json') as Moonafly_structure_file:
         Moonafly_structure = json.load(Moonafly_structure_file)['Moonafly_structure']
+
 
 def load_game_1A2B_ranks():
     global game_1A2B_ranks
@@ -34,6 +36,7 @@ def load_game_1A2B_ranks():
     
     return game_1A2B_ranks
 
+
 def save_game_1A2B_result(length, attempts):
     # you must get the ranks every time due to the user might play several times
     records = load_game_1A2B_ranks()
@@ -41,14 +44,20 @@ def save_game_1A2B_result(length, attempts):
     records.setdefault(str(length), [])
     
     # save the record data including attempts, user, timestamp
-    records[str(length)].append({'attempts': attempts, 'user': responses.current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
+    records[str(length)].append(
+        {
+            'attempts': attempts,
+            'user': responses.current_using_user,
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    )
     # sort the rank by attempts first then timestamp
-    records[str(length)].sort(key = lambda x : (x['attempts'], x['timestamp']))
+    records[str(length)].sort(key=lambda x: (x['attempts'], x['timestamp']))
 
     rank = 0
     for record in records[str(length)]:
         # the first position of the next attempts = the last position of the user attempt + 1
-        # which can match the rank starts with 0 
+        # which can match the rank starts with 0
         if record['attempts'] > attempts:
             break
         rank += 1
@@ -58,6 +67,7 @@ def save_game_1A2B_result(length, attempts):
         json.dump(records, game_1A2B_ranks, indent = 4)
 
     return rank
+
 
 def show_1A2B_every_length_ranking(tab_size, tab_count):
     records = load_game_1A2B_ranks()
@@ -74,6 +84,7 @@ def show_1A2B_every_length_ranking(tab_size, tab_count):
         ranking += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}   | {records[str(length)][0]['user']}\n"
     
     return ranking
+
 
 def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
     records = load_game_1A2B_ranks()[str(length)]
@@ -93,6 +104,7 @@ def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
         ranking += indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
     
     return ranking
+
 
 def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
     records = load_game_1A2B_ranks()
@@ -117,16 +129,23 @@ def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
 
     return ranking
 
+
 def command_not_found(msg) -> str:
     space = ' ' * 4 * 2
     # unify the indentation of multiline
-    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
+    msg = '\n'.join(
+        [
+            space + line if index > 0 else line
+            for index, line in enumerate(msg.split('\n'))
+        ]
+    )
     return textwrap.dedent(f"""
         ```
         {msg}: command not found
         {current_path()}
         ```
     """)
+
 
 def function_developing() -> str:
     return textwrap.dedent(f"""
@@ -136,23 +155,33 @@ def function_developing() -> str:
         ```
     """)
 
+
 def get_ls_command_output(files, tab_size, tab_count) -> str:
     output = ""
-    columns = 3;
+    columns = 3
     column_len = [0] * columns
     for column_index in range(min(columns, len(files))):
         # group the files with vertical lines and {columns} groups
-        grouped_files = [file for index, file in enumerate(files) if index % columns == column_index]
+        grouped_files = [
+            file 
+            for index, file in enumerate(files) 
+            if index % columns == column_index
+        ]
         column_len[column_index] = max(len(file_name) for file_name in grouped_files)
 
     for index, file in enumerate(files):
-        output += file + ' ' * (column_len[index % columns] - len(file) + 2 if index % columns != columns - 1 else 0)
+        output += file + ' ' * (
+            column_len[index % columns] - len(file) + 2
+            if index % columns != columns - 1
+            else 0
+        )
         if index % columns == columns - 1 and index != len(files) - 1:
             output += '\n' + ' ' * tab_size * tab_count
 
     return output
 
-def visualize_structure(data, tab_size, tab_count, indent = 0) -> str:
+
+def visualize_structure(data, tab_size, tab_count, indent=0) -> str:
     tree = ""
     # just make sure the structure file is always a dict
     for key, value in sorted(data.items()):
@@ -160,6 +189,7 @@ def visualize_structure(data, tab_size, tab_count, indent = 0) -> str:
         tree += f"{' ' * tab_size * indent}\-- {key}\n{' ' * tab_size * tab_count}"
         tree += visualize_structure(value, tab_size, tab_count, indent + 1)
     return tree 
+
 
 path_stack = []
 # generating the current working directory
@@ -173,6 +203,7 @@ def current_path() -> str:
         path += folder
     return path + "$"
 
+
 # for game commands
 playing_game_1A2B = False
 target_number = ''
@@ -181,6 +212,7 @@ attempts = 0
 # for random vocab test
 random_vocab_testing = False
 vocab_index = 0
+
 
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
@@ -200,9 +232,11 @@ def get_response_in_terminal_mode(message) -> str:
     # you can comment messages without digits during the game
     if playing_game_1A2B:
         if len(path_stack) > 2 and path_stack[2] == '1A2B':
-            if (msg[:4] != 'stop' and
-                msg[:4] != 'Stop' and
-                not all(char.isdigit() for char in msg)):
+            if (
+                msg[:4] != 'stop'
+                and msg[:4] != 'Stop'
+                and not all(char.isdigit() for char in msg)
+            ):
                 return ''
 
     else:
@@ -291,15 +325,15 @@ def get_response_in_terminal_mode(message) -> str:
             # skip all the '\' and split the path into a folder list
             path = path.replace('\\', '').split('/')
 
-            # using [:] to prevent temporary_path_stack and path_stack affecting each other 
+            # using [:] to prevent temporary_path_stack and path_stack affecting each other
             temporary_path_stack = path_stack[:]
 
             for folder in path:
-                # if the folder is empty or . then nothing happens with the 
+                # if the folder is empty or . then nothing happens with the
                 if folder == '' or folder == '.':
                     continue
 
-                # move up one directory 
+                # move up one directory
                 elif folder == '..':
                     if len(temporary_path_stack) > 1:
                         temporary_path_stack.pop()
@@ -309,7 +343,12 @@ def get_response_in_terminal_mode(message) -> str:
                         msg = msg.replace("\\'", "'").replace("\\\"", "\"")
                         space = ' ' * 4 * 7
                         # multi-line adjustment
-                        msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
+                        msg = '\n'.join(
+                            [
+                                space + line if index > 0 else line
+                                for index, line in enumerate(msg.split('\n'))
+                            ]
+                        )
                         return textwrap.dedent(f"""\
                             ```
                             Moonafly: cd: {msg}: No such file or directory
@@ -331,7 +370,12 @@ def get_response_in_terminal_mode(message) -> str:
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
                     space = ' ' * 4 * 6
                     # multi-line adjustment
-                    msg = '\n'.join([space + line if index > 0 else line for index, line in enumerate(msg.split('\n'))])
+                    msg = '\n'.join(
+                        [
+                            space + line if index > 0 else line
+                            for index, line in enumerate(msg.split('\n'))
+                        ]
+                    )
                     return textwrap.dedent(f"""\
                         ```
                         Moonafly: cd: {msg}: No such file or directory
@@ -386,7 +430,7 @@ def get_response_in_terminal_mode(message) -> str:
             path = path[1:]
             
             if path_stack[0] == '~':
-                path = 'home/Moonafly' + path 
+                path = 'home/Moonafly' + path
 
             return textwrap.dedent(f"""\
                 ```
@@ -755,7 +799,7 @@ def get_response_in_terminal_mode(message) -> str:
                         if vocabulary_list[username][vocab_index]['count'] == 0:
                             del vocabulary_list[username][vocab_index]
                         with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
-                            json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
+                            json.dump(vocabulary_list, file, indent=4, ensure_ascii=False)
                         return textwrap.dedent(f"""
                             ```
                             Correct!
@@ -769,7 +813,7 @@ def get_response_in_terminal_mode(message) -> str:
                         random_vocab_testing = False
                         vocabulary_list[username][vocab_index]['count'] += 1
                         with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
-                            json.dump(vocabulary_list, file, indent = 4, ensure_ascii = False)
+                            json.dump(vocabulary_list, file, indent=4, ensure_ascii=False)
                         return textwrap.dedent(f"""
                             ```
                             Oops! Wrong
@@ -986,7 +1030,12 @@ def get_response_in_terminal_mode(message) -> str:
                     A_cnt = sum(t == g for t, g in zip(target_number, guess))
 
                     # B means the number is correct, but the position is incorrect
-                    B_cnt = sum(min(target_number.count(digit), guess.count(digit)) for digit in target_number) - A_cnt
+                    B_cnt = (
+                        sum(
+                            min(target_number.count(digit), guess.count(digit))
+                            for digit in target_number
+                        ) - A_cnt
+                    )
 
                     attempts += 1
 
