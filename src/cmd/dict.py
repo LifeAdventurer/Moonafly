@@ -2,8 +2,8 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = ''):
-    
+
+def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''):
     search_word = search_word.lower()
 
     if dictionary == 'en':
@@ -12,7 +12,7 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
         if result:
             en_definition, example_list = result
             # removes the certain trailing char from the string
-            en_definition = en_definition.rstrip(': ') 
+            en_definition = en_definition.rstrip(': ')
 
             information = f"# {search_word}\n"
             information += f"{space}### Definition: \n{space}- {en_definition}\n"
@@ -22,14 +22,14 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
             return information
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
-            
+
     elif dictionary == 'en-zh_TW':
         result = get_info_in_English_Chinese_traditional(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
             en_definition, zh_TW_definition, example_list = result
             # removes the certain trailing char from the string
-            en_definition = en_definition.strip(': ') 
+            en_definition = en_definition.strip(': ')
             zh_TW_definition = zh_TW_definition.strip(': ')
 
             # save vocabulary
@@ -44,12 +44,24 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
                             word_in_data = True
                             word['count'] += 1
                     if not word_in_data:
-                        data[username].append({'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count' : 1})
+                        data[username].append(
+                            {
+                                'word': search_word,
+                                'word_in_zh_TW': zh_TW_definition,
+                                'count': 1
+                            }
+                        )
                 else:
-                    data[username] = [{'word': search_word, 'word_in_zh_TW': zh_TW_definition, 'count': 1}]
+                    data[username] = [
+                        {
+                            'word': search_word,
+                            'word_in_zh_TW': zh_TW_definition,
+                            'count': 1
+                        }
+                    ]
 
                 with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
-                    json.dump(data, file, indent = 4, ensure_ascii = False)
+                    json.dump(data, file, indent=4, ensure_ascii=False)
 
             information = f"# {search_word}\n"
             information += f"{space}### Definition: \n"
@@ -61,6 +73,7 @@ def search_dict(dictionary, search_word, limit, tab_size, tab_count, username = 
             return information
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
+
 
 # en
 def get_info_in_English(word, limit_example_count):
@@ -82,13 +95,21 @@ def get_info_in_English(word, limit_example_count):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Extract the definition
-        en_definition = soup.find('div', {'class': 'def ddef_d db'})
-        en_definition_text = en_definition.text.strip() if en_definition else 'No definition found'
+        en_definition = soup.find(
+            'div', {'class': 'def ddef_d db'}
+        )
+        en_definition_text = (
+            en_definition.text.strip() if en_definition else 'No definition found'
+        )
 
         # Extract example sentence
-        examples = soup.find_all('div', {'class': 'examp dexamp'})
+        examples = soup.find_all(
+            'div', {'class': 'examp dexamp'}
+        )
         for example in examples:
-            example_sentence = example.text.strip() if example else 'No example sentence found'
+            example_sentence = (
+                example.text.strip() if example else 'No example sentence found'
+            )
             example_list.append(example_sentence)
             if len(example_list) == limit_example_count:
                 break
@@ -99,6 +120,7 @@ def get_info_in_English(word, limit_example_count):
         print(f"Error: {e}")
         return None
     
+
 # en-zh_TW
 def get_info_in_English_Chinese_traditional(word, limit_example_count):
     url = f'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/{word}'
@@ -120,16 +142,28 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
 
         # Extract the definition
         # en
-        en_definition = soup.find('div', {'class': 'def ddef_d db'})
-        en_definition_text = en_definition.text.strip() if en_definition else 'No definition found'
+        en_definition = soup.find(
+            'div', {'class': 'def ddef_d db'}
+        )
+        en_definition_text = (
+            en_definition.text.strip() if en_definition else 'No definition found'
+        )
         # zh_TW
-        zh_TW_definition = soup.find('span', {'class': 'trans dtrans dtrans-se break-cj'})
-        zh_TW_definition_text = zh_TW_definition.text.strip() if zh_TW_definition else 'No definition found'
+        zh_TW_definition = soup.find(
+            'span', {'class': 'trans dtrans dtrans-se break-cj'}
+        )
+        zh_TW_definition_text = (
+            zh_TW_definition.text.strip() if zh_TW_definition else 'No definition found'
+        )
 
         # Extract example sentence
-        examples = soup.find_all('div', {'class': 'examp dexamp'})
+        examples = soup.find_all(
+            'div', {'class': 'examp dexamp'}
+        )
         for example in examples:
-            example_sentence = example.text.strip() if example else 'No example sentence found'
+            example_sentence = (
+                example.text.strip() if example else 'No example sentence found'
+            )
             example_list.append(example_sentence)
             if len(example_list) == limit_example_count:
                 break

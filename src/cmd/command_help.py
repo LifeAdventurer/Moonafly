@@ -6,6 +6,11 @@ def load_help_command_information(command, tab_size, tab_count) -> str:
     with open(path_to_txt, 'r') as information_file:
         lines = information_file.readlines()
 
-    information = '\n'.join([space + line.rstrip() if index > 0 else line.rstrip() for index, line in enumerate(lines)])
+    information = '\n'.join(
+        [
+            space + line.rstrip() if index > 0 else line.rstrip() 
+            for index, line in enumerate(lines)
+        ]
+    )
     
     return information

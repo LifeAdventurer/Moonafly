@@ -4,6 +4,8 @@ import json
 import textwrap
 import time
 
+
+
 # project version
 project_version = 'v2.0.0'
 
@@ -14,6 +16,7 @@ def load_password_for_terminal():
     global password
     with open('../data/json/passwords.json') as passwords_file:
         password = json.load(passwords_file)['terminal_password']
+
 
 # user identity
 author = ''
@@ -30,6 +33,7 @@ def load_user_identity_list():
     developers = data['developers']
     special_guests = data['guests']
 
+
 def get_terminal_login_record():
     global login_records
     with open('../data/json/terminal_login_history.json') as login_history_file:
@@ -37,15 +41,21 @@ def get_terminal_login_record():
 
     return login_records
 
+
 def save_terminal_login_record():
     # you must get the record every time since the user might enter several times
     records = get_terminal_login_record()
 
-    records['history'].append({'user': current_using_user, 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')})
+    records['history'].append(
+        {
+            'user': current_using_user,
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    )
 
     # save the record to json file
     with open('../data/json/terminal_login_history.json', 'w') as login_history_file:
-        json.dump(records, login_history_file, indent = 4)
+        json.dump(records, login_history_file, indent=4)
 
 # password feature for terminal mode 
 entering_password = False
@@ -54,6 +64,7 @@ is_public_mode = True
 
 # prevent multiple user using the terminal at once
 current_using_user = ''
+
 
 def get_response(message) -> str:
     username = str(message.author)
@@ -103,10 +114,14 @@ def get_response(message) -> str:
     # if current_using_user != '' and username != current_using_user:
     #     return ''
 
-    if (not is_public_mode and 
-       (msg == '-p'          or
-        msg == 'moonafly -p' or
-        msg == 'Moonafly -p')):
+    if (
+        not is_public_mode
+        and (
+            msg == '-p'
+            or msg == 'moonafly -p'
+            or msg == 'Moonafly -p'
+        )
+    ):
         is_public_mode = True
         incorrect_count = 0
         response_terminal.playing_game_1A2B = False
@@ -116,9 +131,11 @@ def get_response(message) -> str:
         print('swap to public mode')
         return 'Successfully swap to public mode!'
 
-    elif (msg[:2] == '-t'         or
-        msg[:11] == 'moonafly -t' or
-        msg[:11] == 'Moonafly -t'):
+    elif (
+        msg[:2] == '-t'
+        or msg[:11] == 'moonafly -t'
+        or msg[:11] == 'Moonafly -t'
+    ):
         if username not in special_guests:
             entering_password = True
             return '```please enter password```'

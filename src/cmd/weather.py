@@ -1,5 +1,6 @@
 import requests
 
+
 def get_weather_info(tab_size, tab_count):
 
     # TODO: search the input place and get the latitude and longitude
@@ -13,5 +14,5 @@ def get_weather_info(tab_size, tab_count):
     current_temperature = data['current']['temperature_2m']
     wind_speed = data['current']['wind_speed_10m']
     
-    return (f"Current Temperature: {current_temperature}°C\n{' ' * tab_size * tab_count}Wind Speed: {wind_speed} km/h")
+    return f"Current Temperature: {current_temperature}°C\n{' ' * tab_size * tab_count}Wind Speed: {wind_speed} km/h"
 
