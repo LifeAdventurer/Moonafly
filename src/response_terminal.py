@@ -732,9 +732,9 @@ def get_response_in_terminal_mode(message) -> str:
             # if msg > '6' or msg < '1':
             #     return 'no such command'
             # else:
-            return function_developing()
-        # TO-DO
-        # elif msg == 'setup':
+                return function_developing()
+            # TO-DO
+            # elif msg == 'setup':
 
         elif len(path_stack) > 2 and path_stack[2] == 'greek':
             if msg == 'get':
