@@ -1034,3 +1034,4 @@ def get_response_in_terminal_mode(message) -> str:
             return function_developing()
 
     else:
+        return command_not_found(msg)
