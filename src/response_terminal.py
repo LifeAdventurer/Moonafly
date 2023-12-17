@@ -1,8 +1,11 @@
 import responses
+
+
 from cmd.dict import search_dict
 from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
 from cmd.command_help import load_help_command_information
+
 
 import json
 import random
@@ -244,12 +247,7 @@ def get_response_in_terminal_mode(message) -> str:
             msg = msg[3:].strip()
 
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('cat', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('cat')
 
             if username != responses.author:
                 return textwrap.dedent(f"""\
@@ -298,12 +296,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:2] == 'cd':
             msg = msg[2:].lstrip()
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('cd', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('cd')
 
             path = msg
 
@@ -390,12 +383,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:2] == 'ls':
             msg = msg[3:].lstrip()
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('ls', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('ls')
 
             # copy the directory_structure
             current_directory = directory_structure
@@ -417,12 +405,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:3] == 'pwd':
             msg = msg[3:].lstrip()
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('pwd', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('pwd')
 
             # delete the prefix 'Moonafly:' and the suffix '$'
             path = current_path()[(10 + len(username)):-1]
@@ -443,12 +426,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:4] == 'tree':
             msg = msg[4:].lstrip()
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('tree', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('tree')
 
             if msg[:8] == 'Moonafly':
                 return textwrap.dedent(f"""
@@ -474,12 +452,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif msg[:4] == 'help':
             msg = msg[4:].lstrip()
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('help', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('help')
 
             return textwrap.dedent(f"""
                 ```
@@ -501,12 +474,7 @@ def get_response_in_terminal_mode(message) -> str:
     if len(path_stack) > 1 and path_stack[1] == 'math':
         if path_stack[-1] == 'calc':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('math_calc', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('math_calc')
 
             return textwrap.dedent(f"""
                 ```
@@ -517,12 +485,7 @@ def get_response_in_terminal_mode(message) -> str:
 
         elif path_stack[-1] == 'count':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('math_count', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('math_count')
 
             words = msg.split()
             return textwrap.dedent(f"""
@@ -703,12 +666,7 @@ def get_response_in_terminal_mode(message) -> str:
     # weather API
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg[:6] == '--help':
-            return textwrap.dedent(f"""\
-                ```
-                {load_help_command_information('weather', 4, 6)}
-                {current_path()}
-                ```
-            """)
+            return load_help_command_information('weather')
             
         if msg == 'get':
             return textwrap.dedent(f"""\
@@ -725,12 +683,7 @@ def get_response_in_terminal_mode(message) -> str:
     elif len(path_stack) > 1 and path_stack[1] == 'random':
         if len(path_stack) > 2 and path_stack[2] == 'number':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('random_number', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('random_number')
 
             if msg.isdigit():
                 return textwrap.dedent(f"""
@@ -751,12 +704,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif len(path_stack) > 2 and path_stack[2] == 'vocab':
             if len(path_stack) > 3 and path_stack[3] == 'test':
                 if msg[:6] == '--help':
-                    return textwrap.dedent(f"""\
-                        ```
-                        {load_help_command_information('random_vocab_test', 4, 6)}
-                        {current_path()}
-                        ```
-                    """)
+                    return load_help_command_information('random_vocab_test')
 
                 if msg.lower() == 'g':
                     global vocabulary_list
@@ -832,12 +780,7 @@ def get_response_in_terminal_mode(message) -> str:
         # en
         if len(path_stack) > 2 and path_stack[2] == 'en':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('dict_en', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('dict_en')
 
             # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
@@ -866,12 +809,7 @@ def get_response_in_terminal_mode(message) -> str:
         # en-zh_TW
         elif len(path_stack) > 2 and path_stack[2] == 'en-zh_TW':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('dict_en-zh_TW', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('dict_en-zh_TW')
             # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
@@ -900,12 +838,7 @@ def get_response_in_terminal_mode(message) -> str:
     elif len(path_stack) > 1 and path_stack[1] == 'game':
         if len(path_stack) > 2 and path_stack[2] == '1A2B':
             if msg[:6] == '--help':
-                return textwrap.dedent(f"""\
-                    ```
-                    {load_help_command_information('game_1A2B', 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return load_help_command_information('game_1A2B')
 
             if not playing_game_1A2B:
                 if msg[:5] == 'start' or msg[:5] == 'Start':
@@ -913,12 +846,7 @@ def get_response_in_terminal_mode(message) -> str:
                     attempts = 0
                     msg = msg[6:].strip()
                     if msg[:6] == '--help':
-                        return textwrap.dedent(f"""\
-                            ```
-                            {load_help_command_information('game_1A2B_start', 4, 6)}
-                            {current_path()}
-                            ```
-                        """)
+                        return load_help_command_information('game_1A2B_start')
 
                     # choose the length you want to start playing
                     if len(msg) > 0:
@@ -951,12 +879,7 @@ def get_response_in_terminal_mode(message) -> str:
                     msg = msg[5:].strip()
 
                     if msg[:6] == '--help':
-                        return textwrap.dedent(f"""\
-                            ```
-                            {load_help_command_information('game_1A2B_rank', 4, 6)}
-                            {current_path()}
-                            ```
-                        """)
+                        return load_help_command_information('game_1A2B_rank')
 
                     # show certain length ranking
                     if len(msg) > 0:
@@ -1004,12 +927,7 @@ def get_response_in_terminal_mode(message) -> str:
                     playing_game_1A2B = False
                     msg = msg[5:].strip()
                     if msg[:6] == '--help':
-                        return textwrap.dedent(f"""\
-                            ```
-                            {load_help_command_information('game_1A2B_stop', 4, 7)}
-                            {current_path()}
-                            ```
-                        """)
+                        return load_help_command_information('game_1A2B_stop')
 
                     # use `stop start` to restart the game if you want
                     # any other commands can be add after that

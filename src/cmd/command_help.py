@@ -1,6 +1,6 @@
-def load_help_command_information(command, tab_size, tab_count) -> str:
+def load_help_command_information(command) -> str:
     information = ''
-    space = ' ' * tab_size * tab_count
+    space = ' ' * 4 * 2
     path_to_txt = f"../data/txt/help_commands_information/{command}.txt"
 
     with open(path_to_txt, 'r') as information_file:
@@ -12,5 +12,9 @@ def load_help_command_information(command, tab_size, tab_count) -> str:
             for index, line in enumerate(lines)
         ]
     )
-    
-    return information
+    return textwrap.dedent(f"""\
+        ```
+        {information}
+        {response_terminal.current_path()}
+        ```
+    """)
