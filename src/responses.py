@@ -7,7 +7,7 @@ import time
 
 
 # project version
-project_version = 'v2.0.0'
+project_version = 'v2.1.0'
 
 # password
 password = ""
