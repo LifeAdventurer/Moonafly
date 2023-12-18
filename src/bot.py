@@ -1,9 +1,11 @@
 import discord
 import json
 from datetime import datetime
+import textwrap
 
 import responses
 import response_terminal
+
 
 # token should be encrypted
 token = ""
