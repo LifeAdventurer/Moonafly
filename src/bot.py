@@ -178,7 +178,7 @@ def run_Moonafly():
 
         # when someone else wants to use terminal
         # send private message to notice the user
-        if not responses.is_public_mode and username != responses.current_using_user:
+        if not responses.is_normal_mode and username != responses.current_using_user:
             if (
                 user_message[:2]  == '-t'
                 or user_message[:11] == 'moonafly -t'

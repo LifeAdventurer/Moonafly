@@ -1,4 +1,4 @@
-import response_public
+import response_normal
 import response_terminal 
 import json
 import textwrap
@@ -60,7 +60,7 @@ def save_terminal_login_record():
 # password feature for terminal mode 
 entering_password = False
 incorrect_count = 0
-is_public_mode = True
+is_normal_mode = True
 
 # prevent multiple user using the terminal at once
 current_using_user = ''
@@ -74,7 +74,7 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_public_mode, entering_password, incorrect_count, password, current_using_user
+    global is_normal_mode, entering_password, incorrect_count, password, current_using_user
 
     # password for entering terminal mode 
     # special guests doesn't need this
@@ -84,7 +84,7 @@ def get_response(message) -> str:
         if msg == password:
             incorrect_count = 0
             entering_password = False
-            is_public_mode = False
+            is_normal_mode = False
             current_using_user = username
             
             # call this function after current_using_user has been assigned
@@ -107,7 +107,7 @@ def get_response(message) -> str:
             if incorrect_count == 3:
                 incorrect_count = 0
                 entering_password = False
-                is_public_mode = True
+                is_normal_mode = True
                 return '```the maximum number of entries has been reached\nauto exited```'
             return '```incorrect, please enter again```'
 
@@ -115,23 +115,6 @@ def get_response(message) -> str:
     #     return ''
 
     if (
-        not is_public_mode
-        and (
-            msg == '-p'
-            or msg == 'moonafly -p'
-            or msg == 'Moonafly -p'
-        )
-    ):
-        is_public_mode = True
-        incorrect_count = 0
-        response_terminal.playing_game_1A2B = False
-        response_terminal.random_vocab_testing = False
-        response_terminal.path_stack.clear()
-        current_using_user = ''
-        print('swap to public mode')
-        return 'Successfully swap to public mode!'
-
-    elif (
         msg[:2] == '-t'
         or msg[:11] == 'moonafly -t'
         or msg[:11] == 'Moonafly -t'
@@ -140,7 +123,7 @@ def get_response(message) -> str:
             entering_password = True
             return '```please enter password```'
         else:
-            is_public_mode = False
+            is_normal_mode = False
             current_using_user = username
 
             # call this function after current_using_user has been assigned
@@ -165,8 +148,8 @@ def get_response(message) -> str:
 
     else:
         # make sure no other user can exit the terminal 
-        if msg == 'exit' and not is_public_mode:
-            is_public_mode = True
+        if msg == 'exit' and not is_normal_mode:
+            is_normal_mode = True
             incorrect_count = 0
             response_terminal.playing_game_1A2B = False
             response_terminal.random_vocab_testing = False
@@ -174,7 +157,7 @@ def get_response(message) -> str:
             current_using_user = ''
             return ''
         elif msg == 'status':
-            if is_public_mode:
+            if is_normal_mode:
                 return f"Moonafly {project_version}"
             else:
                 return textwrap.dedent(f"""\
@@ -184,7 +167,8 @@ def get_response(message) -> str:
                     ```
                 """)
 
-        if is_public_mode:
-            return response_public.get_response_in_public_mode(message)
         else:
-            return response_terminal.get_response_in_terminal_mode(message)
+            if is_normal_mode:
+                return response_normal.get_response_in_normal_mode(message)
+            else:
+                return response_terminal.get_response_in_terminal_mode(message)
