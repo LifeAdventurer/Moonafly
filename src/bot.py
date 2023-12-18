@@ -107,7 +107,6 @@ def init_files():
     load_token()
     check_maintenance()
     responses.load_user_identity_list()
-    responses.load_password_for_terminal()
     response_terminal.load_directory_structure()
     response_terminal.load_Moonafly_structure()
 

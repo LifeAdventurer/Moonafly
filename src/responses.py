@@ -5,17 +5,7 @@ import textwrap
 import time
 
 
-
-# project version
 project_version = 'v2.1.0'
-
-# password
-password = ""
-# initialed when bot started via init_files() in `bot.py`
-def load_password_for_terminal():
-    global password
-    with open('../data/json/passwords.json') as file:
-        password = json.load(file)['terminal_password']
 
 
 # user identity
@@ -57,14 +47,10 @@ def save_terminal_login_record():
     with open('../data/json/terminal_login_history.json', 'w') as file:
         json.dump(records, file, indent=4)
 
-# password feature for terminal mode 
-entering_password = False
-incorrect_count = 0
-is_normal_mode = True
 
 # prevent multiple user using the terminal at once
 current_using_user = ''
-
+is_normal_mode = True
 
 def get_response(message) -> str:
     username = str(message.author)
@@ -74,55 +60,14 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_normal_mode, entering_password, incorrect_count, password, current_using_user
-
-    # password for entering terminal mode 
-    # special guests doesn't need this
-    if (username not in special_guests and 
-        entering_password and 
-        incorrect_count < 3):
-        if msg == password:
-            incorrect_count = 0
-            entering_password = False
-            is_normal_mode = False
-            current_using_user = username
-            
-            # call this function after current_using_user has been assigned
-            # ignore author login
-            if current_using_user != author:
-                save_terminal_login_record()
-
-            # don't use append or it might cause double '~' when using recursion -t -t... command
-            response_terminal.path_stack = ['~']
-            print('swap to terminal mode')
-            print('Moonafly:~$')
-            return textwrap.dedent(f"""\
-                ```
-                {response_terminal.current_path()}
-                ```
-            """)
-
-        else:
-            incorrect_count += 1
-            if incorrect_count == 3:
-                incorrect_count = 0
-                entering_password = False
-                is_normal_mode = True
-                return '```the maximum number of entries has been reached\nauto exited```'
-            return '```incorrect, please enter again```'
-
-    # if current_using_user != '' and username != current_using_user:
-    #     return ''
+    global is_normal_mode, current_using_user
 
     if (
         msg[:2] == '-t'
         or msg[:11] == 'moonafly -t'
         or msg[:11] == 'Moonafly -t'
     ):
-        if username not in special_guests:
-            entering_password = True
-            return '```please enter password```'
-        else:
+        if username in special_guests:
             is_normal_mode = False
             current_using_user = username
 
@@ -145,6 +90,13 @@ def get_response(message) -> str:
                 {response_terminal.current_path()}
                 ```
             """)
+        
+        else:
+            return textwrap.dedent(f"""\
+                ```
+                you don't have the permission to access terminal mode
+                ```
+            """) 
 
     else:
         # make sure no other user can exit the terminal 
@@ -160,6 +112,7 @@ def get_response(message) -> str:
             return textwrap.dedent(f"""\
                 ```
                 Moonafly {project_version}
+                {'normal mode' if is_normal_mode else 'terminal mode'}
                 ```
             """)
 
