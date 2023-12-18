@@ -59,8 +59,7 @@ async def send_message(message):
                         content = '\n'.join(lines)
                         lines = [line]
                         content = textwrap.dedent(f"""
-                            ```
-                            {response_terminal.file_language}
+                            ```{response_terminal.file_language}
                             {content}
                             ```
                         """)
@@ -73,12 +72,10 @@ async def send_message(message):
                 # last part of message
                 content = '\n'.join(lines)
                 content = textwrap.dedent(f"""
-                    ```
-                    {response_terminal.file_language}
+                    ```{response_terminal.file_language}
                     {content}
                     ```
                 """)
-                content = f"```{response_terminal.file_language}\n{content}\n```\n"
                 await message.channel.send(content)
                 # the current path bar
                 await message.channel.send(output_suffix)
