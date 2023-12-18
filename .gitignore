@@ -10,6 +10,8 @@ vocabulary_items.json
 # txt files
 maintenance.txt
 
+/dump 
+
 *__pycache__
 
 /.idea
