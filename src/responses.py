@@ -157,15 +157,11 @@ def get_response(message) -> str:
             current_using_user = ''
             return ''
         elif msg == 'status':
-            if is_normal_mode:
-                return f"Moonafly {project_version}"
-            else:
-                return textwrap.dedent(f"""\
-                    ```
-                    Moonafly {project_version}
-                    {response_terminal.current_path()}
-                    ```
-                """)
+            return textwrap.dedent(f"""\
+                ```
+                Moonafly {project_version}
+                ```
+            """)
 
         else:
             if is_normal_mode:
