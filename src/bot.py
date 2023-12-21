@@ -53,7 +53,7 @@ async def send_message(message):
                     line = line.replace('```', '` ` `')
 
                     # 50 is just a free space for avoiding unpredictable error
-                    if word_count + len(line) + line_count + 50 > 2000:
+                    if word_count + len(line) + line_count * 2 + 100 > 2000:
                         word_count = len(line)
                         line_count = 1
                         content = '\n'.join(lines)
