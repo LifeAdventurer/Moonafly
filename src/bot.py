@@ -52,11 +52,10 @@ async def send_message(message):
                     # TODO: find a escape backticks method
                     line = line.replace('```', '` ` `')
 
-                    # 50 is just a free space for avoiding unpredictable error
                     if word_count + len(line) + line_count * 2 + 100 > 2000:
                         word_count = len(line)
                         line_count = 1
-                        content = '\n'.join(lines)
+                        content = ('\n' + ' ' * 4 * 7).join(lines)
                         lines = [line]
                         content = textwrap.dedent(f"""
                             ```{response_terminal.file_language}
@@ -70,7 +69,7 @@ async def send_message(message):
                         line_count += 1
                         lines.append(line)
                 # last part of message
-                content = '\n'.join(lines)
+                content = ('\n' + ' ' * 4 * 5).join(lines)
                 content = textwrap.dedent(f"""
                     ```{response_terminal.file_language}
                     {content}
