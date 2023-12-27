@@ -243,11 +243,11 @@ def get_response_in_terminal_mode(message) -> str:
                 return ''
 
     else:
-        if msg[:3] == 'cat':
-            msg = msg[3:].strip()
+        if msg[:6] == 'remote':
+            msg = msg[6:].strip()
 
             if msg[:6] == '--help':
-                return load_help_command_information('cat')
+                return load_help_command_information('remote')
 
             if username != responses.author:
                 return textwrap.dedent(f"""\
@@ -460,7 +460,7 @@ def get_response_in_terminal_mode(message) -> str:
                 
                 a star(*) in front of the command means that it requires the highest authority
 
-                *cat [file]
+                *remote [file]
                  cd [dir]
                  help
                  ls 
