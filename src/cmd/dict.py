@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 
 
-def search_dict(dictionary, search_word, limit, tab_size, tab_count, username=''):
+def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, tab_count: int, username: str = None) -> str:
     search_word = search_word.lower()
 
     if dictionary == 'en':

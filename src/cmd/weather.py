@@ -1,7 +1,7 @@
 import requests
 
 
-def get_weather_info(tab_size, tab_count):
+def get_weather_info(tab_size: int, tab_count: int) -> str:
 
     # TODO: search the input place and get the latitude and longitude
     latitude = 23.0

@@ -10,7 +10,7 @@ def load_math_calc_allow_names():
         math_calc_allow_names = json.load(file)['math_calc_allow_names']
 
 
-def safe_eval(msg) -> str:
+def safe_eval(msg: str) -> str:
     load_math_calc_allow_names()
     # parse the expression into an AST
     try:

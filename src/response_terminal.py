@@ -14,7 +14,7 @@ import os
 import re
 import textwrap
 import time
-
+# from typing import Dict
 
 directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
@@ -32,7 +32,7 @@ def load_Moonafly_structure():
         Moonafly_structure = json.load(file)['Moonafly_structure']
 
 
-def load_game_1A2B_ranks():
+def load_game_1A2B_ranks() -> dict:
     global game_1A2B_ranks
     with open('../data/json/game_1A2B_ranks.json') as file:
         game_1A2B_ranks = json.load(file)
@@ -40,7 +40,7 @@ def load_game_1A2B_ranks():
     return game_1A2B_ranks
 
 
-def save_game_1A2B_result(length, attempts):
+def save_game_1A2B_result(length: int, attempts: int) -> int:
     # you must get the ranks every time due to the user might play several times
     records = load_game_1A2B_ranks()
     # set the group if there isn't one in the data
@@ -72,7 +72,7 @@ def save_game_1A2B_result(length, attempts):
     return rank
 
 
-def show_1A2B_every_length_ranking(tab_size, tab_count):
+def show_1A2B_every_length_ranking(tab_size: int, tab_count: int) -> str:
     records = load_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
@@ -89,7 +89,7 @@ def show_1A2B_every_length_ranking(tab_size, tab_count):
     return ranking
 
 
-def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
+def show_1A2B_certain_length_ranking(length: int, tab_size: int, tab_count: int) -> str:
     records = load_game_1A2B_ranks()[str(length)]
     
     indentation = ' ' * tab_size * tab_count
@@ -109,7 +109,7 @@ def show_1A2B_certain_length_ranking(length, tab_size, tab_count):
     return ranking
 
 
-def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
+def show_1A2B_certain_user_ranking(username : str, tab_size: int, tab_count: int) -> str:
     records = load_game_1A2B_ranks()
 
     indentation = ' ' * tab_size * tab_count
@@ -133,7 +133,7 @@ def show_1A2B_certain_user_ranking(username, tab_size, tab_count):
     return ranking
 
 
-def command_not_found(msg) -> str:
+def command_not_found(msg: str) -> str:
     space = ' ' * 4 * 2
     # unify the indentation of multiline
     msg = '\n'.join(
@@ -159,7 +159,7 @@ def function_developing() -> str:
     """)
 
 
-def get_ls_command_output(files, tab_size, tab_count) -> str:
+def get_ls_command_output(files: dict, tab_size: int, tab_count: int) -> str:
     output = ""
     columns = 3
     column_len = [0] * columns
@@ -184,7 +184,7 @@ def get_ls_command_output(files, tab_size, tab_count) -> str:
     return output
 
 
-def visualize_structure(data, tab_size, tab_count, indent=0) -> str:
+def visualize_structure(data: dict, tab_size: int, tab_count: int, indent: int = 0) -> str:
     tree = ""
     # just make sure the structure file is always a dict
     for key, value in sorted(data.items()):

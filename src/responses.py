@@ -24,7 +24,7 @@ def load_user_identity_list():
     special_guests = data['guests']
 
 
-def get_terminal_login_record():
+def get_terminal_login_record() -> dict:
     global login_records
     with open('../data/json/terminal_login_history.json') as file:
         login_records = json.load(file)
