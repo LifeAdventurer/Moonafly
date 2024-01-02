@@ -4,7 +4,7 @@ import response_terminal
 def load_help_command_information(command: str) -> str:
     information = ''
     space = ' ' * 4 * 2
-    path_to_txt = f"../data/txt/help_commands_information/{command}.txt"
+    path_to_txt = f"../data/txt/help_cmd_info/{command}.txt"
 
     with open(path_to_txt, 'r') as information_file:
         lines = information_file.readlines()
