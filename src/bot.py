@@ -31,7 +31,7 @@ async def send_message(message):
     try:
         # get response from `responses.py`
         response = responses.get_response(message)
-        if response != None:
+        if response != None and len(response) > 0:
             # large output split
             # discord limits each message to a maximum of 2000 characters
             if len(response) > 2000:
