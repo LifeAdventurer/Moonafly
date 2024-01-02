@@ -1,3 +1,6 @@
+import textwrap
+import response_terminal
+
 def load_help_command_information(command: str) -> str:
     information = ''
     space = ' ' * 4 * 2
