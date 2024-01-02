@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 import textwrap
 
+
 import responses
 import response_terminal
 
@@ -108,13 +109,17 @@ def init_files():
     response_terminal.load_directory_structure()
     response_terminal.load_Moonafly_structure()
 
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+
+
+async def stop_Moonafly():
+    await client.close()
+
 
 def run_Moonafly():
     init_files()
-
-    intents = discord.Intents.default()
-    intents.message_content = True
-    client = discord.Client(intents=intents)
 
     @client.event
     async def on_ready():
@@ -129,8 +134,14 @@ def run_Moonafly():
         user_message = str(message.content)
         channel = str(message.channel)
         
+        # commands only author can trigger
         if username == responses.author:
-            if user_message == 'exit --force':
+            if user_message == 'Moonafly --stop':
+                print('Moonafly stopped by command')
+                await stop_Moonafly()
+                return
+            
+            elif user_message == 'exit --force':
                 message.content = 'exit'
                 await send_message(message)
                 return
