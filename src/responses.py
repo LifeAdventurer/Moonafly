@@ -5,7 +5,7 @@ import textwrap
 import time
 
 
-project_version = 'v2.1.0'
+project_version = 'v2.2.0'
 
 
 # user identity
