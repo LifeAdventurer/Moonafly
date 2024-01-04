@@ -20,10 +20,6 @@ def get_response_in_normal_mode(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    pattern = r'^!search google (.+)$'
-    if Chinese_pattern.search(msg) and not re.match(pattern, msg):
-        return ''
-
     if msg == 'help':
         return textwrap.dedent(f"""\
             ```
