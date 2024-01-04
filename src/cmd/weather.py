@@ -1,7 +1,11 @@
+import terminal_mode
+
+
 import requests
+import textwrap
 
 
-def get_weather_info(tab_size: int, tab_count: int) -> str:
+def get_weather_info() -> str:
 
     # TODO: search the input place and get the latitude and longitude
     latitude = 23.0
@@ -13,6 +17,11 @@ def get_weather_info(tab_size: int, tab_count: int) -> str:
     data = response.json()
     current_temperature = data['current']['temperature_2m']
     wind_speed = data['current']['wind_speed_10m']
-    
-    return f"Current Temperature: {current_temperature}°C\n{' ' * tab_size * tab_count}Wind Speed: {wind_speed} km/h"
+    return textwrap.dedent(f"""\
+        ```
+        Current Temperature: {current_temperature}°C
+        Wind Speed: {wind_speed} km/h
+        {terminal_mode.current_path()}
+        ```
+    """)
 

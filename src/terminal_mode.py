@@ -659,18 +659,12 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return command_not_found(msg)
     
-    # weather API
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg[:6] == '--help':
             return load_help_command_information('weather')
             
         if msg == 'get':
-            return textwrap.dedent(f"""\
-                ```
-                {get_weather_info(4, 4)}
-                {current_path()}
-                ```
-            """)
+            return get_weather_info()
 
         else:
             return command_not_found(msg)
