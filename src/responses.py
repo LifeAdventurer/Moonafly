@@ -1,11 +1,13 @@
-import response_normal
-import response_terminal 
+import normal_mode
+import terminal_mode
+
+
 import json
 import textwrap
 import time
 
 
-project_version = 'v2.2.0'
+Moonafly_version = 'v2.2.0'
 
 
 # user identity
@@ -77,7 +79,7 @@ def get_response(message) -> str:
                 save_terminal_login_record()
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
-            response_terminal.path_stack = ['~']
+            terminal_mode.path_stack = ['~']
             print('swap to terminal mode')
             print('Moonafly:~$')
             msg = msg[(2 if msg[:2] == '-t' else 11):].strip()
@@ -87,7 +89,7 @@ def get_response(message) -> str:
 
             return textwrap.dedent(f"""\
                 ```
-                {response_terminal.current_path()}
+                {terminal_mode.current_path()}
                 ```
             """)
         
@@ -103,21 +105,21 @@ def get_response(message) -> str:
         if msg == 'exit' and not is_normal_mode:
             is_normal_mode = True
             incorrect_count = 0
-            response_terminal.playing_game_1A2B = False
-            response_terminal.random_vocab_testing = False
-            response_terminal.path_stack.clear()
+            terminal_mode.playing_game_1A2B = False
+            terminal_mode.random_vocab_testing = False
+            terminal_mode.path_stack.clear()
             current_using_user = ''
             return ''
         elif msg == 'status':
             return textwrap.dedent(f"""\
                 ```
-                Moonafly {project_version}
+                Moonafly {Moonafly_version}
                 {'normal mode' if is_normal_mode else 'terminal mode'}
                 ```
             """)
 
         else:
             if is_normal_mode:
-                return response_normal.get_response_in_normal_mode(message)
+                return normal_mode.get_response_in_normal_mode(message)
             else:
-                return response_terminal.get_response_in_terminal_mode(message)
+                return terminal_mode.get_response_in_terminal_mode(message)

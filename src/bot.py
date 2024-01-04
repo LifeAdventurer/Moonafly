@@ -1,11 +1,11 @@
+import responses
+import terminal_mode
+
+
 import discord
 import json
 from datetime import datetime
 import textwrap
-
-
-import responses
-import response_terminal
 
 
 # token should be encrypted
@@ -59,7 +59,7 @@ async def send_message(message):
                         content = ('\n' + ' ' * 4 * 7).join(lines)
                         lines = [line]
                         content = textwrap.dedent(f"""
-                            ```{response_terminal.file_language}
+                            ```{terminal_mode.file_language}
                             {content}
                             ```
                         """)
@@ -72,7 +72,7 @@ async def send_message(message):
                 # last part of message
                 content = ('\n' + ' ' * 4 * 5).join(lines)
                 content = textwrap.dedent(f"""
-                    ```{response_terminal.file_language}
+                    ```{terminal_mode.file_language}
                     {content}
                     ```
                 """)
@@ -106,8 +106,8 @@ def init_files():
     load_token()
     check_maintenance()
     responses.load_user_identity_list()
-    response_terminal.load_directory_structure()
-    response_terminal.load_Moonafly_structure()
+    terminal_mode.load_directory_structure()
+    terminal_mode.load_Moonafly_structure()
 
 intents = discord.Intents.default()
 intents.message_content = True

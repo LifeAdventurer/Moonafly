@@ -1,5 +1,5 @@
 import textwrap
-import response_terminal
+import terminal_mode
 
 def load_help_command_information(command: str) -> str:
     information = ''
@@ -18,6 +18,6 @@ def load_help_command_information(command: str) -> str:
     return textwrap.dedent(f"""\
         ```
         {information}
-        {response_terminal.current_path()}
+        {terminal_mode.current_path()}
         ```
     """)

@@ -1,7 +1,7 @@
 import textwrap
 import json
 import random
-import response_terminal
+import terminal_mode
 
 random_vocab_testing = False
 vocab_index = 0
@@ -26,7 +26,7 @@ def get_random_vocab_test(message) -> str:
                 return textwrap.dedent(f"""
                     ```
                     You have cleared all the words.
-                    {response_terminal.current_path()}
+                    {terminal_mode.current_path()}
                     ```
                 """)
             else:
@@ -44,7 +44,7 @@ def get_random_vocab_test(message) -> str:
                 You have never use dict feature before. 
                 Try it to save vocabulary items in Moonafly, then
                 use ~/random/vocab/test to examine yourself
-                {response_terminal.current_path()}
+                {terminal_mode.current_path()}
                 ```
             """)
     
@@ -63,7 +63,7 @@ def get_random_vocab_test(message) -> str:
                 Correct!
                 {word}
                 {word_in_zh_TW}
-                {response_terminal.current_path()}
+                {terminal_mode.current_path()}
                 ```
             """)
 
@@ -77,7 +77,7 @@ def get_random_vocab_test(message) -> str:
                 Oops! Wrong
                 {vocabulary_list[username][vocab_index]['word']}
                 {vocabulary_list[username][vocab_index]['word_in_zh_TW']}
-                {response_terminal.current_path()}
+                {terminal_mode.current_path()}
                 ```
             """)
 

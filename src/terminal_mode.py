@@ -452,7 +452,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             return textwrap.dedent(f"""
                 ```
-                Moonafly, version {responses.project_version}
+                Moonafly, version {responses.Moonafly_version}
                 
                 a star(*) in front of the command means that it requires the highest authority
 
