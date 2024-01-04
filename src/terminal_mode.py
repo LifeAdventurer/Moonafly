@@ -920,8 +920,5 @@ def get_response_in_terminal_mode(message) -> str:
             else:
                 return command_not_found(msg)
 
-        elif len(path_stack) > 2 and path_stack[2] == 'CTF':
-            return function_developing()
-
     else:
         return command_not_found(msg)
