@@ -27,10 +27,14 @@ def get_response_in_normal_mode(message) -> str:
             
             - normal mode (default)
             - terminal mode 
+            - develop mode
 
             commands to switch mode
               -t        switch to terminal mode, `Moonafly -t`
                         and `moonafly -t` is also fine
-              exit      leaving terminal mode
+              -d        switch to develop mode, `Moonafly -d`
+                        and `moonafly -d` is also fine
+              exit      leaving current mode and switch to normal
+                        mode
             ```
         """)

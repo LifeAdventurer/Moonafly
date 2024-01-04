@@ -1,5 +1,6 @@
 import normal_mode
 import terminal_mode
+import develop_mode
 
 
 import json
@@ -52,7 +53,11 @@ def save_terminal_login_record():
 
 # prevent multiple user using the terminal at once
 current_using_user = ''
+
+
 is_normal_mode = True
+is_develop_mode = False
+
 
 def get_response(message) -> str:
     username = str(message.author)
@@ -62,7 +67,7 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_normal_mode, current_using_user
+    global is_normal_mode, is_develop_mode, current_using_user
 
     if (
         msg[:2] == '-t'
@@ -99,11 +104,41 @@ def get_response(message) -> str:
                 you don't have the permission to access terminal mode
                 ```
             """) 
+    
+    elif (
+        msg[:2] == '-d'
+        or msg[:11] == 'moonafly -d'
+        or msg[:11] == 'Moonafly -d'
+    ):
+        if username in developers:
+            is_normal_mode = False
+            is_develop_mode = True
+            
+            # don't use append or it might cause double '~' when using recursion -t -t... command
+            print('swap to develop mode')
+            msg = msg[(2 if msg[:2] == '-d' else 11):].strip()
+            if len(msg) > 0:
+                message.content = msg
+                return get_response(message)
+
+            return textwrap.dedent(f"""\
+                ```
+                Welcome, developer {username}!
+                ```
+            """)
+        
+        else:
+            return textwrap.dedent(f"""\
+                ```
+                you don't have the permission to access develop mode
+                ```
+            """) 
 
     else:
         # make sure no other user can exit the terminal 
         if msg == 'exit' and not is_normal_mode:
             is_normal_mode = True
+            is_develop_mode = False
             incorrect_count = 0
             terminal_mode.playing_game_1A2B = False
             terminal_mode.random_vocab_testing = False
@@ -111,15 +146,24 @@ def get_response(message) -> str:
             current_using_user = ''
             return ''
         elif msg == 'status':
+            mode = ''
+            if is_normal_mode:
+                mode = 'normal_mode'
+            elif is_develop_mode:
+                mode = 'develop_mode'
+            else:
+                mode = 'terminal_mode'
             return textwrap.dedent(f"""\
                 ```
                 Moonafly {Moonafly_version}
-                {'normal mode' if is_normal_mode else 'terminal mode'}
+                {mode}
                 ```
             """)
 
         else:
             if is_normal_mode:
                 return normal_mode.get_response_in_normal_mode(message)
+            elif is_develop_mode:
+                return develop_mode.get_response_in_develop_mode(message)
             else:
                 return terminal_mode.get_response_in_terminal_mode(message)
