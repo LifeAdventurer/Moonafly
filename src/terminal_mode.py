@@ -456,11 +456,11 @@ def get_response_in_terminal_mode(message) -> str:
                 
                 a star(*) in front of the command means that it requires the highest authority
 
-                *remote [file]
                  cd [dir]
                  help
                  ls 
                  pwd
+                *remote [file]
                  tree
                 {current_path()}
                 ```
