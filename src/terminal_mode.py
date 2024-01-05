@@ -479,19 +479,6 @@ def get_response_in_terminal_mode(message) -> str:
                 return function_developing()
             # TO-DO
             # elif msg == 'setup':
-
-        elif len(path_stack) > 2 and path_stack[2] == 'greek':
-            if msg == 'get':
-                return textwrap.dedent(f"""\
-                    ```
-                    Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-                    α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-                    {current_path()}
-                    ```
-                """)
-
-            else:
-                return command_not_found(msg)
     
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg[:6] == '--help':
