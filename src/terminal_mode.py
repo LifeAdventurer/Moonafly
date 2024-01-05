@@ -9,6 +9,7 @@ from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
 from cmd.random_vocab_test import get_random_vocab_test
 from cmd import game_1A2B
+from cmd.clipboard import get_clipboard_data
 
 
 import json
@@ -343,31 +344,12 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-    elif len(path_stack) > 1 and path_stack[1] == 'gen':
-        # my generators repo on github.io
-        if path_stack[-1] == 'fortune':
-            if msg == 'get':
-                return textwrap.dedent(f"""
-                    https://lifeadventurer.github.io/generators/fortune_generator
-                    ```
-                    {current_path()}
-                    ```
-                """)
-
-            else:
-                return command_not_found(msg)
-        
-        elif path_stack[-1] == 'quote':
-            if msg == 'get':
-                return textwrap.dedent(f"""
-                    https://lifeadventurer.github.io/generators/quote_generator
-                    ```
-                    {current_path()}
-                    ```
-                """)
-
-            else:
-                return command_not_found(msg)
+    elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
+        if msg[:3] == 'get':
+            msg = msg[3:].strip()
+            return get_clipboard_data(msg)
+        else: 
+            return command_not_found(msg)
     
     elif len(path_stack) > 1 and path_stack[1] == 'search':
         # search for a handle in different online judges

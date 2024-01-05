@@ -1,0 +1,10 @@
+{
+    "fortune": {
+        "data": "https://lifeadventurer.github.io/generators/fortune_generator/",
+        "type": "link"
+    },
+    "quote": {
+        "data": "https://lifeadventurer.github.io/generators/quote_generator/",
+        "type": "link"
+    }
+}
