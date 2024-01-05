@@ -138,7 +138,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
             
-            return load_remote_file(msg)
+            return load_remote_file(msg, 'author')
 
         # cd command
         elif msg[:2] == 'cd':

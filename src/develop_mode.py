@@ -1,6 +1,9 @@
 import responses
 
 
+from cmd.remote import load_remote_file
+
+
 import textwrap
 
 
@@ -20,5 +23,24 @@ def get_response_in_develop_mode(message) -> str:
             - normal mode
             - terminal mode 
             - develop mode (current)
+
+              remote [file]
             ```
         """)
+
+    if msg[:6] == 'remote':
+        msg = msg[6:].strip()
+
+        if msg[:6] == '--help':
+            return load_help_command_information('remote')
+
+        if username not in responses.developers:
+            return textwrap.dedent(f"""\
+                ```
+                permission denied
+                * this command can only be used by developers
+                {current_path()}
+                ```
+            """)
+        
+        return load_remote_file(msg, 'developer', username)
