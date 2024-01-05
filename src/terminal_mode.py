@@ -1,10 +1,12 @@
 import responses
 
 
+from cmd.remote import load_remote_file
+from cmd.command_help import load_help_command_information
+
 from cmd.dict import search_dict
 from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
-from cmd.command_help import load_help_command_information
 from cmd.random_vocab_test import get_random_vocab_test
 
 
@@ -254,39 +256,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
             
-            filename = msg
-            try:
-                with open(filename, 'r', encoding='utf-8') as file:
-                    content = file.read()
-
-                parts = filename.split('.')
-                global file_language
-                file_language = parts[-1] if len(parts) > 1 else ''
-                indentation = ' ' * 4 * 5
-                output = '\n'
-                content = content.splitlines()
-                lines_str_len = len(str(len(content)))
-                for index, line in enumerate(content):
-                    output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
-                return textwrap.dedent(f"""\
-                    ```
-                    {filename}
-                    ```
-                    ```{file_language}
-                    {output}
-                    ```
-                    ```
-                    {current_path()}
-                    ```
-                """)
-
-            except FileNotFoundError:
-                return textwrap.dedent(f"""\
-                    ```
-                    Error: File "{filename}" not found.
-                    {current_path()}
-                    ```
-                """)
+            return load_remote_file(msg)
 
         # cd command
         elif msg[:2] == 'cd':
@@ -735,6 +705,7 @@ def get_response_in_terminal_mode(message) -> str:
         elif len(path_stack) > 2 and path_stack[2] == 'en-zh_TW':
             if msg[:6] == '--help':
                 return load_help_command_information('dict_en-zh_TW')
+
             # LIMIT example count
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:

@@ -2,6 +2,9 @@ import responses
 import terminal_mode
 
 
+from cmd import remote
+
+
 import discord
 import json
 from datetime import datetime
@@ -59,7 +62,7 @@ async def send_message(message):
                         content = ('\n' + ' ' * 4 * 7).join(lines)
                         lines = [line]
                         content = textwrap.dedent(f"""
-                            ```{terminal_mode.file_language}
+                            ```{remote.file_language}
                             {content}
                             ```
                         """)
@@ -72,7 +75,7 @@ async def send_message(message):
                 # last part of message
                 content = ('\n' + ' ' * 4 * 5).join(lines)
                 content = textwrap.dedent(f"""
-                    ```{terminal_mode.file_language}
+                    ```{remote.file_language}
                     {content}
                     ```
                 """)
