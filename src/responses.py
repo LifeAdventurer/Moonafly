@@ -8,7 +8,7 @@ import textwrap
 import time
 
 
-Moonafly_version = 'v2.2.0'
+Moonafly_version = 'v2.3.0'
 
 
 # user identity
