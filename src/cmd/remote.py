@@ -4,7 +4,13 @@ import terminal_mode
 import textwrap
 
 
+on_remote = False
+
+
 def load_remote_file(filename: str) -> str:
+
+    global on_remote
+
     try:
         with open(filename, 'r', encoding='utf-8') as file:
             content = file.read()
@@ -20,6 +26,8 @@ def load_remote_file(filename: str) -> str:
 
         for index, line in enumerate(content):
             output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
+
+        on_remote = True
 
         return textwrap.dedent(f"""\
             ```

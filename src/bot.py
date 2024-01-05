@@ -37,7 +37,7 @@ async def send_message(message):
         if response != None and len(response) > 0:
             # large output split
             # discord limits each message to a maximum of 2000 characters
-            if len(response) > 2000:
+            if remote.on_remote == True:
                 # current message group total word count
                 word_count = 0
                 # calculate the count of '\n' it takes 1 space
@@ -73,15 +73,18 @@ async def send_message(message):
                         line_count += 1
                         lines.append(line)
                 # last part of message
-                content = ('\n' + ' ' * 4 * 5).join(lines)
-                content = textwrap.dedent(f"""
-                    ```{remote.file_language}
-                    {content}
-                    ```
-                """)
+                if len(lines) > 0:
+                    content = ('\n' + ' ' * 4 * 6).join(lines)
+                    content = textwrap.dedent(f"""
+                        ```{remote.file_language}
+                        {content}
+                        ```
+                    """)
                 await message.channel.send(content)
                 # the current path bar
                 await message.channel.send(output_suffix)
+
+                remote.on_remote = False
 
             else:
                 await message.channel.send(response)
