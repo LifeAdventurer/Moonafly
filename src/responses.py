@@ -54,7 +54,7 @@ def save_terminal_login_record():
 # prevent multiple user using the terminal at once
 current_using_user = ''
 
-
+is_normal_mode = True
 is_terminal_mode = False
 is_develop_mode = False
 
@@ -67,15 +67,20 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_terminal_mode, is_develop_mode, current_using_user
+    global is_normal_mode, is_terminal_mode, is_develop_mode, current_using_user
 
     if (
-        msg[:2] == '-t'
-        or msg[:11] == 'moonafly -t'
-        or msg[:11] == 'Moonafly -t'
+        is_normal_mode == True
+        and (
+            msg[:2] == '-t'
+            or msg[:11] == 'moonafly -t'
+            or msg[:11] == 'Moonafly -t'
+        )
     ):
         if username in special_guests:
+            is_normal_mode = False
             is_terminal_mode = True
+            
             current_using_user = username
 
             # call this function after current_using_user has been assigned
@@ -106,11 +111,15 @@ def get_response(message) -> str:
             """) 
     
     elif (
-        msg[:2] == '-d'
-        or msg[:11] == 'moonafly -d'
-        or msg[:11] == 'Moonafly -d'
+        is_normal_mode == True
+        and (
+            msg[:2] == '-d'
+            or msg[:11] == 'moonafly -d'
+            or msg[:11] == 'Moonafly -d'
+        )
     ):
         if username in developers:
+            is_normal_mode = False
             is_develop_mode = True
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
@@ -138,13 +147,18 @@ def get_response(message) -> str:
         if msg == 'exit':
             if is_terminal_mode:
                 is_terminal_mode = False
+                is_normal_mode = True
+
                 incorrect_count = 0
                 terminal_mode.playing_game_1A2B = False
                 terminal_mode.random_vocab_testing = False
                 terminal_mode.path_stack.clear()
                 current_using_user = ''
+
             elif is_develop_mode:
                 is_develop_mode = False
+                is_normal_mode = True
+
             return ''
         elif msg == 'status':
             mode = ''
