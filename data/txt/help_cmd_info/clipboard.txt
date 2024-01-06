@@ -1,0 +1,3 @@
+Usage: get [keyword]
+    get previously saved data based on KEYWORD
+    this command is under ~/clipboard
