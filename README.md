@@ -46,6 +46,8 @@
 
 8. Set your vocabulary items list via `vocabulary_items.json`
 
+9. Set your clipboard via `clipboard.json`
+
 ## Run Moonafly
 
 ### Windows
