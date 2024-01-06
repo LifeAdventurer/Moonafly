@@ -19,9 +19,7 @@
             "search": {
                 "git": {},
                 "github": {},
-                "google": {},
-                "online-judge": {},
-                "youtube": {}
+                "online-judge": {}
             },
             "weather": {},
             "game": {

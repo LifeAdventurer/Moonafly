@@ -412,24 +412,6 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
 
-        # just a google search -> must improve this more
-        elif len(path_stack) > 2 and path_stack[2] == 'google':
-            return textwrap.dedent(f"""
-                https://www.google.com/search?q={msg}
-                ```
-                {current_path()}
-                ```
-            """)
-
-        # same as above -> need improvement
-        elif len(path_stack) > 2 and path_stack[2] == 'youtube':
-            return textwrap.dedent(f"""
-                https://www.youtube.com/results?search_query={msg}
-                ```
-                {current_path()}
-                ```
-            """)
-
         # search for github repos or profiles -> because url
         elif len(path_stack) > 2 and path_stack[2] == 'github':
             github_url = "https://github.com/" + msg
