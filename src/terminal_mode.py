@@ -9,7 +9,7 @@ from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
 from cmd.random_vocab_test import get_random_vocab_test
 from cmd import game_1A2B
-from cmd.clipboard import get_clipboard_data
+from cmd.clipboard import get_clipboard_response
 
 
 import json
@@ -344,15 +344,13 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
+
     elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
         if msg[:6] == '--help':
                 return load_help_cmd_info('clipboard')
 
-        if msg[:3] == 'get':
-            msg = msg[3:].strip()
-            return get_clipboard_data(msg)
-        else: 
-            return command_not_found(msg)
+        return get_clipboard_response(message)
+
     
     elif len(path_stack) > 1 and path_stack[1] == 'search':
         # search for a handle in different online judges
