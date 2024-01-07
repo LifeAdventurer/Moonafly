@@ -32,7 +32,7 @@ def get_response_in_develop_mode(message) -> str:
         msg = msg[6:].strip()
 
         if msg[:6] == '--help':
-            return load_help_command_information('remote')
+            return load_help_cmd_info('remote')
 
         if username not in responses.developers:
             return textwrap.dedent(f"""\

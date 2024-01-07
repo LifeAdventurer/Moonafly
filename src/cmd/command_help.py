@@ -1,8 +1,10 @@
-import textwrap
 import terminal_mode
 
-def load_help_command_information(command: str) -> str:
-    information = ''
+
+import textwrap
+
+
+def load_help_cmd_info(command: str) -> str:
     space = ' ' * 4 * 2
     path_to_txt = f"../data/txt/help_cmd_info/{command}.txt"
 
