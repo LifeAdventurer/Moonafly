@@ -1,0 +1,3 @@
+Usage: save [type] [keyword] [data]
+    save DATA in database using KEYWORD
+    *DATA can be multiple lines

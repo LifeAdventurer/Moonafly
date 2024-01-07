@@ -1,3 +1,5 @@
-Usage: get [keyword]
-    get previously saved data based on KEYWORD
-    this command is under ~/clipboard
+Usage: [command]
+
+commands under ~/clipboard
+ get [keyword]
+ save [type] [keyword] [data]

@@ -1,0 +1,2 @@
+Usage: get [keyword]
+    get previously saved data based on KEYWORD
