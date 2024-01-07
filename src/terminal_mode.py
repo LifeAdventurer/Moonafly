@@ -346,9 +346,6 @@ def get_response_in_terminal_mode(message) -> str:
 
 
     elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
-        if msg[:6] == '--help':
-                return load_help_cmd_info('clipboard')
-
         return get_clipboard_response(message)
 
     

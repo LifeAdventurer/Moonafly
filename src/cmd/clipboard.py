@@ -1,6 +1,9 @@
 import terminal_mode 
 
 
+from command_help import load_help_cmd_info
+
+
 import textwrap
 import json
 import re
@@ -125,12 +128,21 @@ def get_clipboard_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
+    if msg[:6] == '--help':
+        return load_help_cmd_info('clipboard')
+
     if msg[:3] == 'get':
         msg = msg[3:].strip()
+        if msg[:6] == '--help':
+            return load_help_cmd_info('clipboard_get')
+
         return get_clipboard_data(msg)
 
     elif msg[:4] == 'save':
         msg = msg[4:].strip()
+        if msg[:6] == '--help':
+            return load_help_cmd_info('clipboard_save')
+
         return save_data_to_clipboard(msg)
 
     else: 
