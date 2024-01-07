@@ -35,7 +35,7 @@ def get_clipboard_data(keyword: str) -> str:
         elif data_type == 'text':
             return textwrap.dedent(f"""
                 ```
-                {f"{' ' * 4 * 4}".join(clipboard_data[keyword]['data'].splitlines())}
+                {('\n' + ' ' * 4 * 4).join(clipboard_data[keyword]['data'].splitlines())}
                 {terminal_mode.current_path()}
                 ```
             """)
