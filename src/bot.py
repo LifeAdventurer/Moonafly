@@ -194,7 +194,7 @@ def run_Moonafly():
         # send private message to notice the user
         if responses.is_terminal_mode and username != responses.current_using_user:
             if (
-                user_message[:2]  == '-t'
+                user_message[:2] == '-t'
                 or user_message[:11] == 'moonafly -t'
                 or user_message[:11] == 'Moonafly -t'
             ):
