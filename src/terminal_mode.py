@@ -112,6 +112,13 @@ def current_path() -> str:
     return path + "$"
 
 
+def in_interaction() -> bool:
+    directory_statuses = [
+        game_1A2B.playing_game_1A2B,
+        clipboard.checking_clipboard_keyword_override
+    ]
+    return any(directory_statuses) == True
+
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -123,7 +130,7 @@ def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
 
-    if game_1A2B.playing_game_1A2B == False and clipboard.checking_clipboard_keyword_override == False:
+    if in_interaction() == False:
         if msg[:6] == 'remote':
             msg = msg[6:].strip()
 
