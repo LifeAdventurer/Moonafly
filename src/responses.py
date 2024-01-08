@@ -163,7 +163,7 @@ def get_response(message) -> str:
                 is_develop_mode = False
                 is_normal_mode = True
 
-            return ''
+            return 'exited successfully'
 
         elif msg == 'status':
             mode = ''
