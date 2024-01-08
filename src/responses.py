@@ -151,8 +151,6 @@ def get_response(message) -> str:
             if is_terminal_mode:
                 is_terminal_mode = False
                 is_normal_mode = True
-
-                incorrect_count = 0
                 
                 clipboard.checking_clipboard_keyword_override = False
 
@@ -166,6 +164,7 @@ def get_response(message) -> str:
                 is_normal_mode = True
 
             return ''
+
         elif msg == 'status':
             mode = ''
             if is_terminal_mode:
