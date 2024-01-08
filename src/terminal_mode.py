@@ -7,7 +7,7 @@ from cmd.command_help import load_help_cmd_info
 from cmd.dict import search_dict
 from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
-from cmd.random_vocab_test import get_random_vocab_test
+from cmd import random_vocab_test
 from cmd import game_1A2B
 from cmd import clipboard
 
@@ -115,9 +115,11 @@ def current_path() -> str:
 def in_interaction() -> bool:
     directory_statuses = [
         game_1A2B.playing_game_1A2B,
-        clipboard.checking_clipboard_keyword_override
+        clipboard.checking_clipboard_keyword_override,
+        random_vocab_test.random_vocab_testing
     ]
     return any(directory_statuses) == True
+
 
 def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
@@ -504,7 +506,7 @@ def get_response_in_terminal_mode(message) -> str:
                 if msg[:6] == '--help':
                     return load_help_cmd_info('random_vocab_test')
 
-                return get_random_vocab_test(message)
+                return random_vocab_test.get_random_vocab_test(message)
 
 
     # return the definition and example of the enter word from a dictionary
