@@ -9,7 +9,7 @@ from cmd.weather import get_weather_info
 from cmd.math_calc import safe_eval
 from cmd.random_vocab_test import get_random_vocab_test
 from cmd import game_1A2B
-from cmd.clipboard import get_clipboard_response
+from cmd import clipboard
 
 
 import json
@@ -123,7 +123,7 @@ def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
 
-    if game_1A2B.playing_game_1A2B == False:
+    if game_1A2B.playing_game_1A2B == False and clipboard.checking_clipboard_keyword_override == False:
         if msg[:6] == 'remote':
             msg = msg[6:].strip()
 
@@ -346,7 +346,7 @@ def get_response_in_terminal_mode(message) -> str:
 
 
     elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
-        return get_clipboard_response(message)
+        return clipboard.get_clipboard_response(message)
 
     
     elif len(path_stack) > 1 and path_stack[1] == 'search':

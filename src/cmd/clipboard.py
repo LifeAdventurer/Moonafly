@@ -1,7 +1,7 @@
 import terminal_mode 
 
 
-from command_help import load_help_cmd_info
+from cmd.command_help import load_help_cmd_info
 
 
 import textwrap
@@ -55,9 +55,53 @@ def get_clipboard_data(keyword: str) -> str:
 
 data_types = ['link', 'text']
 
+checking_clipboard_keyword_override = False
+temp_keyword = ''
+temp_data_type = ''
+temp_data = ''
 
 def save_data_to_clipboard(msg: str) -> str:
     lines = msg.splitlines()
+
+    global checking_clipboard_keyword_override
+    global temp_keyword, temp_data_type, temp_data
+
+    if checking_clipboard_keyword_override == True:
+        if msg.lower() == 'yes' or msg.lower() == 'y':
+            checking_clipboard_keyword_override = False
+
+            clipboard = load_clipboard_data()
+
+            clipboard[temp_keyword] = {
+                "data": temp_data,
+                "type": data_type
+            }
+
+            return textwrap.dedent(f"""
+                ```
+                Keyword: {temp_keyword} overrode successfully
+                {terminal_mode.current_path()}
+                ```
+            """)
+        elif msg.lower() == 'no' or msg.lower() == 'n':
+            checking_clipboard_keyword_override = False
+
+            return textwrap.dedent(f"""
+                ```
+                if you still want to save your data, change your keyword and try again
+                {terminal_mode.current_path()}
+                ```
+            """)
+        
+        else: 
+            # do you want to override the original data by {keyword}? 
+            
+            return textwrap.dedent(f"""
+                ```
+                please type yes/no (y/n)
+                {terminal_mode.current_path()}
+                ```
+            """)
 
     pattern = r'^(\w+)\s+(\w+)$'
 
@@ -73,10 +117,24 @@ def save_data_to_clipboard(msg: str) -> str:
 
             if len(data) > 0:
                 clipboard_data = load_clipboard_data()
-                clipboard_data[keyword] = {
-                    "data": data,
-                    "type": data_type
-                }
+                if keyword in clipboard_data:
+                    
+                    checking_clipboard_keyword_override = True
+                    temp_keyword = keyword
+                    temp_data_type = data_type
+                    temp_data = data
+
+                    return textwrap.dedent(f"""
+                        ```
+                        keyword already in use, do you want to override it? (y/n)
+                        {terminal_mode.current_path()}
+                        ```
+                    """)
+                else:
+                    clipboard_data[keyword] = {
+                        "data": data,
+                        "type": data_type
+                    }
 
                 save_clipboard_data(clipboard_data)
 
@@ -128,8 +186,13 @@ def get_clipboard_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
+    global checking_clipboard_keyword_override
+
     if msg[:6] == '--help':
         return load_help_cmd_info('clipboard')
+
+    if checking_clipboard_keyword_override == True:
+        return save_data_to_clipboard(msg)
 
     if msg[:3] == 'get':
         msg = msg[3:].strip()

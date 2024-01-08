@@ -3,6 +3,9 @@ import terminal_mode
 import develop_mode
 
 
+from cmd import clipboard
+
+
 import json
 import textwrap
 import time
@@ -150,6 +153,9 @@ def get_response(message) -> str:
                 is_normal_mode = True
 
                 incorrect_count = 0
+                
+                clipboard.checking_clipboard_keyword_override = False
+
                 terminal_mode.playing_game_1A2B = False
                 terminal_mode.random_vocab_testing = False
                 terminal_mode.path_stack.clear()
