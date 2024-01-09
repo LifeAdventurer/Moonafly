@@ -198,12 +198,15 @@ def run_Moonafly():
                 or user_message[:11] == 'moonafly -t'
                 or user_message[:11] == 'Moonafly -t'
             ):
-                message.content = 'someone is using the terminal'
+                if username == responses.author:
+                    message.content = f"{responses.current_using_user} is using the terminal"
+                else:
+                    message.content = 'someone is using the terminal'
                 await send_message_in_private(message)
             return
 
         if channel[:14] == 'Direct Message' and username != responses.author:
-            print('WARNING: people using bot in Direct Message\n')
+            print(f"WARNING: {username} using bot in Direct Message\n")
 
         # avoid endless loops
         if not user_message:
