@@ -183,10 +183,10 @@ def run_Moonafly():
                 minutes, seconds = divmod(seconds, 60)
                 hours, minutes = divmod(minutes, 60)
                 # days, hours = divmod(hours, 24)
-                announce = f"Developer {developer} is still developing and maintaining Moonafly! It will end in {hours}h {minutes}m {seconds}s"
+                announce = f"```Developer {developer} is still developing and maintaining Moonafly! It will end in {hours}h {minutes}m {seconds}s```"
 
             else:
-                announce = f"Developer {developer} is still developing and maintaining Moonafly!"
+                announce = f"```Developer {developer} is still developing and maintaining Moonafly!```"
 
             message.content = announce
             await send_message_without_response(message)
@@ -200,9 +200,9 @@ def run_Moonafly():
                 or user_message[:11] == 'Moonafly -t'
             ):
                 if username == responses.author:
-                    message.content = f"{responses.current_using_user} is using the terminal"
+                    message.content = f"```{responses.current_using_user} is using the terminal```"
                 else:
-                    message.content = 'someone is using the terminal'
+                    message.content = '```someone is using the terminal```'
                 await send_message_in_private(message)
             return
 
