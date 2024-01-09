@@ -10,15 +10,7 @@
     }
     ```
 
-2. Set your password for entering terminal mode via `passwords.json`:
-
-    ```json
-    {
-        "terminal_password": "{your password}"
-    }
-    ```
-
-3. Set your user identity list via `user_identity.json` including author, developer, guests role:
+2. Set your user identity list via `user_identity.json` including author, developer, guests role:
 
     ```json
     {
@@ -34,11 +26,11 @@
     }
     ```
 
-4. Set rank list for game 1A2B feature via `game_1A2B_ranks.json`
+3. Set rank list for game 1A2B feature via `game_1A2B_ranks.json`
 
-5. Set terminal login history via `terminal_login_history.json`
+4. Set terminal login history via `terminal_login_history.json`
 
-6. Set your maintenance status via `maintenance.txt`:
+5. Set your maintenance status via `maintenance.txt`:
 
     ```json
     True / False
@@ -46,11 +38,11 @@
     DEVELOPER_NAME
     ```
 
-7. Set your Moonafly structure via `Moonafly_structure.json`
+6. Set your Moonafly structure via `Moonafly_structure.json`
 
-8. Set your vocabulary items list via `vocabulary_items.json`
+7. Set your vocabulary items list via `vocabulary_items.json`
 
-9. Set your clipboard via `clipboard.json`
+8. Set your clipboard via `clipboard.json`
 
 ## Run Moonafly
 
