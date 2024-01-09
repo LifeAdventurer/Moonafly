@@ -1,11 +1,11 @@
 {
     "directory_structure": {
         "~": {
+            "clipboard": {},
             "dict": {
                 "en": {},
                 "en-zh_TW": {}
             },
-            "clipboard": {},
             "math": {
                 "calc": {},
                 "count": {}

@@ -10,6 +10,7 @@ from cmd.math_calc import safe_eval
 from cmd import random_vocab_test
 from cmd import game_1A2B
 from cmd import clipboard
+from cmd import tree
 
 
 import json
@@ -88,15 +89,6 @@ def get_ls_command_output(files: dict, tab_size: int, tab_count: int) -> str:
 
     return output
 
-
-def visualize_structure(data: dict, tab_size: int, tab_count: int, indent: int = 0) -> str:
-    tree = ""
-    # just make sure the structure file is always a dict
-    for key, value in sorted(data.items()):
-        #           structure indentation     folder      output indentation
-        tree += f"{' ' * tab_size * indent}\-- {key}\n{' ' * tab_size * tab_count}"
-        tree += visualize_structure(value, tab_size, tab_count, indent + 1)
-    return tree 
 
 
 path_stack = []
@@ -287,12 +279,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return load_help_cmd_info('tree')
 
             if msg[:8] == 'Moonafly':
-                return textwrap.dedent(f"""
-                    ```
-                    {visualize_structure(Moonafly_structure, 4, 5)}
-                    {current_path()}
-                    ```
-                """)
+                return tree.visualize_structure(Moonafly_structure)
 
             # copy the directory structure
             current_structure = directory_structure
@@ -300,12 +287,7 @@ def get_response_in_terminal_mode(message) -> str:
             for folder in path_stack:
                 current_structure = current_structure[folder]
 
-            return textwrap.dedent(f"""
-                ```
-                {visualize_structure(current_structure, 4, 4)}
-                {current_path()}
-                ```
-            """)
+            return tree.visualize_structure(current_structure)
 
         elif msg[:4] == 'help':
             msg = msg[4:].lstrip()
