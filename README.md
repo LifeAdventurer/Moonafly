@@ -43,6 +43,7 @@
     ```json
     True / False
     YYYY-MM-DD hh:mm:ss
+    DEVELOPER_NAME
     ```
 
 7. Set your Moonafly structure via `Moonafly_structure.json`
