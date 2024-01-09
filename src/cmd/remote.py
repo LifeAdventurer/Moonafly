@@ -9,6 +9,7 @@ on_remote = False
 allowed_paths = []
 Moonafly_path_stack = []
 
+
 def load_allowed_paths(data: dict):
     # just make sure the structure file is always a dict
     if len(data) == 0:

@@ -1,7 +1,7 @@
 import terminal_mode
 
 
-from cmd.command_help import load_help_cmd_info
+from cmd import command_help
 
 
 import textwrap
@@ -141,7 +141,7 @@ def play_game_1A2B(message) -> str:
             attempts = 0
             msg = msg[6:].strip()
             if msg[:6] == '--help':
-                return load_help_cmd_info('game_1A2B_start')
+                return command_help.load_help_cmd_info('game_1A2B_start')
 
             # choose the length you want to start playing
             if len(msg) > 0:
@@ -174,7 +174,7 @@ def play_game_1A2B(message) -> str:
             msg = msg[5:].strip()
 
             if msg[:6] == '--help':
-                return load_help_cmd_info('game_1A2B_rank')
+                return command_help.load_help_cmd_info('game_1A2B_rank')
 
             # show certain length ranking
             if len(msg) > 0:
@@ -222,7 +222,7 @@ def play_game_1A2B(message) -> str:
             playing_game_1A2B = False
             msg = msg[5:].strip()
             if msg[:6] == '--help':
-                return load_help_cmd_info('game_1A2B_stop')
+                return command_help.load_help_cmd_info('game_1A2B_stop')
 
             # use `stop start` to restart the game if you want
             # any other commands can be add after that

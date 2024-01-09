@@ -2,6 +2,7 @@ import ast
 import math
 import json
 
+
 # define the whitelist of allowed commands
 math_calc_allow_names = []
 def load_math_calc_allow_names():
