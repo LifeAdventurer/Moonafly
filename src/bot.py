@@ -24,10 +24,11 @@ def load_token():
 
 # check whether there is maintenance and the duration
 def check_maintenance():
-    global in_maintenance, estimated_end_time
+    global in_maintenance, estimated_end_time, developer
     with open('../data/txt/init_files/maintenance.txt') as file:
         in_maintenance = file.readline().strip() == 'True'
         estimated_end_time = file.readline().strip()
+        developer = file.readline().strip()
 
 
 async def send_message(message):
@@ -182,10 +183,10 @@ def run_Moonafly():
                 minutes, seconds = divmod(seconds, 60)
                 hours, minutes = divmod(minutes, 60)
                 # days, hours = divmod(hours, 24)
-                announce = f"Maintenance is over in {hours}h {minutes}m {seconds}s"
+                announce = f"Developer {developer} is still developing and maintaining Moonafly! It will end in {hours}h {minutes}m {seconds}s"
 
             else:
-                announce = 'Still under maintenance'
+                announce = f"Developer {developer} is still developing and maintaining Moonafly!"
 
             message.content = announce
             await send_message_without_response(message)
