@@ -23,12 +23,12 @@ import time
 # from typing import Dict
 
 
-directory_structure = []
+terminal_mode_directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
-def load_directory_structure():
-    global directory_structure
-    with open('../data/json/directory_structure.json') as file:
-        directory_structure = json.load(file)['directory_structure']
+def load_terminal_mode_directory_structure():
+    global terminal_mode_directory_structure
+    with open('../data/json/terminal_mode_directory_structure.json') as file:
+        terminal_mode_directory_structure = json.load(file)['structure']
 
 
 Moonafly_structure = []
@@ -36,7 +36,7 @@ Moonafly_structure = []
 def load_Moonafly_structure():
     global Moonafly_structure
     with open('../data/json/Moonafly_structure.json') as file:
-        Moonafly_structure = json.load(file)['Moonafly_structure']
+        Moonafly_structure = json.load(file)['structure']
 
 
 def command_not_found(msg: str) -> str:
@@ -202,7 +202,7 @@ def get_response_in_terminal_mode(message) -> str:
                 else:
                     temporary_path_stack.append(folder)
 
-            current_directory = directory_structure
+            current_directory = terminal_mode_directory_structure
 
             for folder in temporary_path_stack:
                 if folder in list(current_directory):
@@ -235,8 +235,8 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('ls')
 
-            # copy the directory_structure
-            current_directory = directory_structure
+            # copy the terminal_mode_directory_structure
+            current_directory = terminal_mode_directory_structure
             # and move it to the current directory
             for folder in path_stack:
                 current_directory = current_directory[folder]
@@ -272,7 +272,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-        # show the directory_structure
+        # show the terminal_mode_directory_structure
         elif msg[:4] == 'tree':
             msg = msg[4:].lstrip()
             if msg[:6] == '--help':
@@ -282,7 +282,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return tree.visualize_structure(Moonafly_structure)
 
             # copy the directory structure
-            current_structure = directory_structure
+            current_structure = terminal_mode_directory_structure
             # and move it to the current directory
             for folder in path_stack:
                 current_structure = current_structure[folder]
