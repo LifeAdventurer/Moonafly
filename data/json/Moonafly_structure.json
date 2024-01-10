@@ -1,0 +1,48 @@
+{
+    "structure": {
+        "data": {
+            "json": {
+                "clipboard.json": {},
+                "game_1A2B_ranks.json": {},
+                "math_calc_allow_names.json": {},
+                "Moonafly_structure.json": {},
+                "terminal_login_history.json": {},
+                "terminal_mode_directory_structure.json": {},
+                "user_identity.json": {},
+                "vocabulary_items.json": {}
+            },
+            "txt": {
+                "help_cmd_info": {},
+                "init_files": {
+                    "maintenance.txt": {}
+                }
+            }
+        },
+        "src": {
+            "cmd": {
+                "clipboard.py": {},
+                "command_help.py": {},
+                "dict.py": {},
+                "game_1A2B.py": {},
+                "math_calc.py": {},
+                "random_vocab_test.py": {},
+                "remote.py": {},
+                "tree.py": {},
+                "weather.py": {}
+            },
+            "bot.py": {},
+            "develop_mode.py": {},
+            "main.py": {},
+            "normal_mode.py": {},
+            "responses.py": {},
+            "terminal_mode.py": {}
+        },
+        ".gitignore": {},
+        "poetry.lock": {},
+        "pyproject.toml": {},
+        "README.md": {},
+        "requirements.txt": {},
+        "run_moonafly.bat": {},
+        "run_moonafly.sh": {}
+    }
+}
