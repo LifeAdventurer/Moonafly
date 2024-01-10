@@ -132,7 +132,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_help.load_help_cmd_info('remote')
 
             if username != responses.author:
-                return textwrap.dedent(f"""\
+                return textwrap.dedent(f"""
                     ```
                     permission denied
                     * this command requires the highest authority
@@ -157,7 +157,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             # go to the root directory
             if path[0] == '/' and username != responses.author:
-                return textwrap.dedent(f"""\
+                return textwrap.dedent(f"""
                     ```
                     permission denied
                     * this command requires the highest authority
@@ -192,7 +192,7 @@ def get_response_in_terminal_mode(message) -> str:
                                 for index, line in enumerate(msg.split('\n'))
                             ]
                         )
-                        return textwrap.dedent(f"""\
+                        return textwrap.dedent(f"""
                             ```
                             Moonafly: cd: {msg}: No such file or directory
                             {current_path()}
@@ -219,7 +219,7 @@ def get_response_in_terminal_mode(message) -> str:
                             for index, line in enumerate(msg.split('\n'))
                         ]
                     )
-                    return textwrap.dedent(f"""\
+                    return textwrap.dedent(f"""
                         ```
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
@@ -244,7 +244,7 @@ def get_response_in_terminal_mode(message) -> str:
             # sort the folders alphabetically
             files_in_current_directory = sorted(list(current_directory))
 
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 {get_ls_command_output(files_in_current_directory, 4, 4)}
                 {current_path()}
@@ -265,7 +265,7 @@ def get_response_in_terminal_mode(message) -> str:
             if path_stack[0] == '~':
                 path = 'home/Moonafly' + path
 
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 /{path}
                 {current_path()}
