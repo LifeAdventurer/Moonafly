@@ -103,4 +103,4 @@ def get_response_in_develop_mode(message) -> str:
         return tree.visualize_structure(current_structure, 'develop', username)
     
     else:
-        command_not_found(msg)
+        return command_not_found(msg)
