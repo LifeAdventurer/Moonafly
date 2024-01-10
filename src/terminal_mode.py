@@ -278,7 +278,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('tree')
 
-            if msg[:8] == 'Moonafly':
+            if msg[:8] == 'Moonafly' and username == responses.author:
                 return tree.visualize_structure(Moonafly_structure)
 
             # copy the directory structure
