@@ -125,25 +125,8 @@ def get_response_in_terminal_mode(message) -> str:
     global path_stack
 
     if in_interaction() == False:
-        if msg[:6] == 'remote':
-            msg = msg[6:].strip()
-
-            if msg[:6] == '--help':
-                return command_help.load_help_cmd_info('remote')
-
-            if username != responses.author:
-                return textwrap.dedent(f"""
-                    ```
-                    permission denied
-                    * this command requires the highest authority
-                    {current_path()}
-                    ```
-                """)
-            
-            return remote.load_remote_file(msg, 'author')
-
         # cd command
-        elif msg[:2] == 'cd':
+        if msg[:2] == 'cd':
             msg = msg[2:].lstrip()
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('cd')
@@ -206,7 +189,19 @@ def get_response_in_terminal_mode(message) -> str:
 
             for folder in temporary_path_stack:
                 if folder in list(current_directory):
-                    current_directory = current_directory[folder]
+                    if folder == 'author':
+                        if username == responses.author:
+                            current_directory = current_directory[folder]
+                        else:
+                            return textwrap.dedent(f"""
+                                ```
+                                permission denied
+                                your command path contains certain directory that requires the highest authority
+                                {current_path()}
+                                ```
+                            """)
+                    else:
+                        current_directory = current_directory[folder]
 
                 else:
                     # reverse the message to original command by removing the escape character
@@ -243,6 +238,8 @@ def get_response_in_terminal_mode(message) -> str:
 
             # sort the folders alphabetically
             files_in_current_directory = sorted(list(current_directory))
+            if username != responses.author and 'author' in files_in_current_directory:
+                files_in_current_directory.remove('author')
 
             return textwrap.dedent(f"""
                 ```
@@ -279,7 +276,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_help.load_help_cmd_info('tree')
 
             if msg[:8] == 'Moonafly' and username == responses.author:
-                return tree.visualize_structure(Moonafly_structure, 'terminal')
+                return tree.visualize_structure(Moonafly_structure, 'terminal', username)
 
             # copy the directory structure
             current_structure = terminal_mode_directory_structure
@@ -287,7 +284,7 @@ def get_response_in_terminal_mode(message) -> str:
             for folder in path_stack:
                 current_structure = current_structure[folder]
 
-            return tree.visualize_structure(current_structure, 'terminal')
+            return tree.visualize_structure(current_structure, 'terminal', username)
 
         elif msg[:4] == 'help':
             msg = msg[4:].lstrip()
@@ -313,6 +310,27 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+
+    # only author can access this part
+    if len(path_stack) > 1 and path_stack[1] == 'author':
+        if len(path_stack) > 2 and path_stack[2] == 'remote':
+            if len(path_stack) > 3 and path_stack[3] == 'file':
+                if msg[:6] == 'remote':
+                    msg = msg[6:].strip()
+
+                    if msg[:6] == '--help':
+                        return command_help.load_help_cmd_info('remote')
+
+                    if username != responses.author:
+                        return textwrap.dedent(f"""
+                            ```
+                            permission denied
+                            * this command requires the highest authority
+                            {current_path()}
+                            ```
+                        """)
+
+                    return remote.load_remote_file(msg, 'author')
 
     # commands in certain directory
     if len(path_stack) > 1 and path_stack[1] == 'math':

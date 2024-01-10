@@ -1,6 +1,11 @@
 {
     "structure": {
         "~": {
+            "author": {
+                "remote": {
+                    "file": {}
+                }
+            },
             "clipboard": {},
             "dict": {
                 "en": {},
