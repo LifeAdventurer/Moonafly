@@ -72,14 +72,6 @@ def get_response_in_develop_mode(message) -> str:
             ```
         """)
 
-    if msg[:6] == 'remote':
-        msg = msg[6:].strip()
-
-        if msg[:6] == '--help':
-            return command_help.load_help_cmd_info('remote_file')
-        
-        return remote.load_remote_file(msg, 'developer', username)
-
     # cd command
     if msg[:2] == 'cd':
         msg = msg[2:].lstrip()
@@ -185,8 +177,12 @@ def get_response_in_develop_mode(message) -> str:
 
         return tree.visualize_structure(current_structure, 'develop', username)
     
+    if len(path_stack) > 1 and path_stack[1] == 'remote':
+        if len(path_stack) > 2 and path_stack[2] == 'file': 
+            if msg[:6] == '--help':
+                return command_help.load_help_cmd_info('remote_file')
 
-
+            return remote.load_remote_file(msg, 'developer', username)
     
     else:
         return command_not_found(msg)
