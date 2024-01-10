@@ -11,6 +11,7 @@ from cmd import game_1A2B
 import json
 import textwrap
 import time
+import psutil
 
 
 Moonafly_version = 'v2.4.0'
@@ -183,10 +184,15 @@ def get_response(message) -> str:
                 mode = 'develop_mode'
             else:
                 mode = 'normal_mode'
+            battery = psutil.sensors_battery()
+            percent = battery.percent
+            is_charging = battery.power_plugged
+
             return textwrap.dedent(f"""
                 ```
                 Moonafly {Moonafly_version}
                 {mode}
+                server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
                 ```
             """)
 
