@@ -60,7 +60,7 @@ temp_keyword = ''
 temp_data_type = ''
 temp_data = ''
 
-def save_data_to_clipboard(msg: str) -> str:
+def save_data_to_clipboard(msg: str, username: str) -> str:
     lines = msg.splitlines()
 
     global checking_clipboard_keyword_override
@@ -74,7 +74,8 @@ def save_data_to_clipboard(msg: str) -> str:
 
             clipboard[temp_keyword] = {
                 "data": temp_data,
-                "type": data_type
+                "type": data_type,
+                "user": username
             }
 
             return textwrap.dedent(f"""
@@ -133,7 +134,8 @@ def save_data_to_clipboard(msg: str) -> str:
                 else:
                     clipboard_data[keyword] = {
                         "data": data,
-                        "type": data_type
+                        "type": data_type,
+                        "user": username
                     }
 
                 save_clipboard_data(clipboard_data)
@@ -192,7 +194,7 @@ def get_clipboard_response(message) -> str:
         return command_help.load_help_cmd_info('clipboard')
 
     if checking_clipboard_keyword_override == True:
-        return save_data_to_clipboard(msg)
+        return save_data_to_clipboard(msg, username)
 
     if msg[:3] == 'get':
         msg = msg[3:].strip()
@@ -206,7 +208,7 @@ def get_clipboard_response(message) -> str:
         if msg[:6] == '--help':
             return command_help.load_help_cmd_info('clipboard_save')
 
-        return save_data_to_clipboard(msg)
+        return save_data_to_clipboard(msg, username)
 
     else: 
         return terminal_mode.command_not_found(msg)
