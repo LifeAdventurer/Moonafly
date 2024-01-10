@@ -1,4 +1,5 @@
 import terminal_mode
+import develop_mode
 
 
 import textwrap
@@ -28,7 +29,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
     if identity == 'author':
         remote_status = terminal_mode.current_path()
     elif identity == 'developer':
-        remote_status = f"{username}@Moonafly: using remote"
+        remote_status = develop_mode.current_path()
 
     try:
         if identity == 'author':
