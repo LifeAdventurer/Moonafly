@@ -30,6 +30,23 @@ def current_path() -> str:
     return path + "$"
 
 
+def command_not_found(msg: str) -> str:
+    space = ' ' * 4 * 2
+    # unify the indentation of multiline
+    msg = '\n'.join(
+        [
+            space + line if index > 0 else line
+            for index, line in enumerate(msg.split('\n'))
+        ]
+    )
+    return textwrap.dedent(f"""
+        ```
+        {msg}: command not found
+        {current_path()}
+        ```
+    """)
+
+
 def get_response_in_develop_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -66,3 +83,6 @@ def get_response_in_develop_mode(message) -> str:
             """)
         
         return remote.load_remote_file(msg, 'developer', username)
+    
+    else:
+        command_not_found(msg)
