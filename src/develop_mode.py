@@ -18,6 +18,14 @@ def load_develop_mode_directory_structure():
         develop_mode_directory_structure = json.load(file)['structure']
 
 
+Moonafly_structure = []
+# initialed when bot started via init_files() in `bot.py`
+def load_Moonafly_structure():
+    global Moonafly_structure
+    with open('../data/json/Moonafly_structure.json') as file:
+        Moonafly_structure = json.load(file)['structure']
+
+
 path_stack = []
 # generating the current working directory
 def current_path() -> str:
