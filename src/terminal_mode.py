@@ -279,7 +279,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_help.load_help_cmd_info('tree')
 
             if msg[:8] == 'Moonafly' and username == responses.author:
-                return tree.visualize_structure(Moonafly_structure)
+                return tree.visualize_structure(Moonafly_structure, 'terminal')
 
             # copy the directory structure
             current_structure = terminal_mode_directory_structure
@@ -287,7 +287,7 @@ def get_response_in_terminal_mode(message) -> str:
             for folder in path_stack:
                 current_structure = current_structure[folder]
 
-            return tree.visualize_structure(current_structure)
+            return tree.visualize_structure(current_structure, 'terminal')
 
         elif msg[:4] == 'help':
             msg = msg[4:].lstrip()
@@ -306,10 +306,10 @@ def get_response_in_terminal_mode(message) -> str:
 
                  cd [dir]
                  help
-                 ls 
+                 ls
                  pwd
                 *remote [file]
-                 tree
+                 tree [-M]
                 {current_path()}
                 ```
             """)
