@@ -4,6 +4,8 @@ import develop_mode
 
 
 from cmd import clipboard
+from cmd import random_vocab_test
+from cmd import game_1A2B
 
 
 import json
@@ -58,6 +60,7 @@ def save_terminal_login_record():
 terminal_mode_current_using_user = ''
 develop_mode_current_using_user = ''
 
+# in which mode status
 is_normal_mode = True
 is_terminal_mode = False
 is_develop_mode = False
@@ -101,14 +104,14 @@ def get_response(message) -> str:
                 message.content = msg
                 return get_response(message)
 
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 {terminal_mode.current_path()}
                 ```
             """)
         
         else:
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 you don't have the permission to access terminal mode
                 ```
@@ -128,7 +131,6 @@ def get_response(message) -> str:
 
             develop_mode_current_using_user = username
             
-            # don't use append or it might cause double '~' when using recursion -t -t... command
             develop_mode.path_stack = ['~']
             print('swap to develop mode')
             msg = msg[(2 if msg[:2] == '-d' else 11):].strip()
@@ -136,7 +138,7 @@ def get_response(message) -> str:
                 message.content = msg
                 return get_response(message)
 
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 Welcome, developer {username}!
                 {develop_mode.current_path()}
@@ -144,7 +146,7 @@ def get_response(message) -> str:
             """)
         
         else:
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 you don't have the permission to access develop mode
                 ```
@@ -158,9 +160,9 @@ def get_response(message) -> str:
                 is_normal_mode = True
                 
                 clipboard.checking_clipboard_keyword_override = False
+                game_1A2B.playing_game_1A2B = False
+                random_vocab_test.random_vocab_testing = False
 
-                terminal_mode.playing_game_1A2B = False
-                terminal_mode.random_vocab_testing = False
                 terminal_mode.path_stack.clear()
                 terminal_mode_current_using_user = ''
 
@@ -181,7 +183,7 @@ def get_response(message) -> str:
                 mode = 'develop_mode'
             else:
                 mode = 'normal_mode'
-            return textwrap.dedent(f"""\
+            return textwrap.dedent(f"""
                 ```
                 Moonafly {Moonafly_version}
                 {mode}
