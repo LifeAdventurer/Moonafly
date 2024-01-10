@@ -1,0 +1,4 @@
+remote: [file]
+    Open and output the FILE after remote command
+    
+    must be used under remote/file

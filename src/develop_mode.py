@@ -74,7 +74,7 @@ def get_response_in_develop_mode(message) -> str:
         msg = msg[6:].strip()
 
         if msg[:6] == '--help':
-            return command_help.load_help_cmd_info('remote')
+            return command_help.load_help_cmd_info('remote_file')
 
         if username not in responses.developers:
             return textwrap.dedent(f"""
@@ -101,6 +101,9 @@ def get_response_in_develop_mode(message) -> str:
             current_structure = current_structure[folder]
 
         return tree.visualize_structure(current_structure, 'develop', username)
+    
+
+
     
     else:
         return command_not_found(msg)

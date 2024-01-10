@@ -305,7 +305,6 @@ def get_response_in_terminal_mode(message) -> str:
                  help
                  ls
                  pwd
-                *remote [file]
                  tree [-M]
                 {current_path()}
                 ```
@@ -315,22 +314,19 @@ def get_response_in_terminal_mode(message) -> str:
     if len(path_stack) > 1 and path_stack[1] == 'author':
         if len(path_stack) > 2 and path_stack[2] == 'remote':
             if len(path_stack) > 3 and path_stack[3] == 'file':
-                if msg[:6] == 'remote':
-                    msg = msg[6:].strip()
+                if msg[:6] == '--help':
+                    return command_help.load_help_cmd_info('remote_file')
 
-                    if msg[:6] == '--help':
-                        return command_help.load_help_cmd_info('remote')
+                if username != responses.author:
+                    return textwrap.dedent(f"""
+                        ```
+                        permission denied
+                        * this command requires the highest authority
+                        {current_path()}
+                        ```
+                    """)
 
-                    if username != responses.author:
-                        return textwrap.dedent(f"""
-                            ```
-                            permission denied
-                            * this command requires the highest authority
-                            {current_path()}
-                            ```
-                        """)
-
-                    return remote.load_remote_file(msg, 'author')
+                return remote.load_remote_file(msg, 'author')
 
     # commands in certain directory
     if len(path_stack) > 1 and path_stack[1] == 'math':

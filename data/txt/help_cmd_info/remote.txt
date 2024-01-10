@@ -1,3 +1,0 @@
-remote: remote [file]
-    Open and output the FILE after remote command
-    
