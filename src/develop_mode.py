@@ -75,14 +75,6 @@ def get_response_in_develop_mode(message) -> str:
 
         if msg[:6] == '--help':
             return command_help.load_help_cmd_info('remote_file')
-
-        if username not in responses.developers:
-            return textwrap.dedent(f"""
-                ```
-                permission denied
-                * this command can only be used by developers
-                ```
-            """)
         
         return remote.load_remote_file(msg, 'developer', username)
     

@@ -317,15 +317,6 @@ def get_response_in_terminal_mode(message) -> str:
                 if msg[:6] == '--help':
                     return command_help.load_help_cmd_info('remote_file')
 
-                if username != responses.author:
-                    return textwrap.dedent(f"""
-                        ```
-                        permission denied
-                        * this command requires the highest authority
-                        {current_path()}
-                        ```
-                    """)
-
                 return remote.load_remote_file(msg, 'author')
 
     # commands in certain directory
