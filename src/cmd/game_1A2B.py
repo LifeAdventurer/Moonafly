@@ -33,7 +33,7 @@ def save_game_1A2B_result(length: int, attempts: int) -> int:
     records[str(length)].append(
         {
             'attempts': attempts,
-            'user': responses.current_using_user,
+            'user': responses.terminal_mode_current_using_user,
             'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
         }
     )

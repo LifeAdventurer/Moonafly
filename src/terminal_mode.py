@@ -96,7 +96,7 @@ path_stack = []
 def current_path() -> str:
     global path_stack
     # show the current using user
-    path = f"{responses.current_using_user}@Moonafly:"
+    path = f"{responses.terminal_mode_current_using_user}@Moonafly:"
     for folder in path_stack:
         if folder != '~':
             path += '/'

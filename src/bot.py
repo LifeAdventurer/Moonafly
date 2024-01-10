@@ -193,14 +193,14 @@ def run_Moonafly():
 
         # when someone else wants to use terminal
         # send private message to notice the user
-        if responses.is_terminal_mode and username != responses.current_using_user:
+        if responses.is_terminal_mode and username != responses.terminal_mode_current_using_user:
             if (
                 user_message[:2] == '-t'
                 or user_message[:11] == 'moonafly -t'
                 or user_message[:11] == 'Moonafly -t'
             ):
                 if username == responses.author:
-                    message.content = f"```{responses.current_using_user} is using the terminal```"
+                    message.content = f"```{responses.terminal_mode_current_using_user} is using the terminal```"
                 else:
                     message.content = '```someone is using the terminal```'
                 await send_message_in_private(message)

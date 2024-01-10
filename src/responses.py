@@ -44,7 +44,7 @@ def save_terminal_login_record():
 
     records['history'].append(
         {
-            'user': current_using_user,
+            'user': terminal_mode_current_using_user,
             'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
         }
     )
@@ -54,8 +54,8 @@ def save_terminal_login_record():
         json.dump(records, file, indent=4)
 
 
-# prevent multiple user using the terminal at once
-current_using_user = ''
+# prevent multiple user using terminal or develop mode at the same time
+terminal_mode_current_using_user = ''
 
 is_normal_mode = True
 is_terminal_mode = False
@@ -70,7 +70,7 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_normal_mode, is_terminal_mode, is_develop_mode, current_using_user
+    global is_normal_mode, is_terminal_mode, is_develop_mode, terminal_mode_current_using_user
 
     if (
         is_normal_mode == True
@@ -84,11 +84,11 @@ def get_response(message) -> str:
             is_normal_mode = False
             is_terminal_mode = True
             
-            current_using_user = username
+            terminal_mode_current_using_user = username
 
-            # call this function after current_using_user has been assigned
+            # call this function after terminal_mode_current_using_user has been assigned
             # ignore author login
-            if current_using_user != author:
+            if terminal_mode_current_using_user != author:
                 save_terminal_login_record()
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
@@ -157,7 +157,7 @@ def get_response(message) -> str:
                 terminal_mode.playing_game_1A2B = False
                 terminal_mode.random_vocab_testing = False
                 terminal_mode.path_stack.clear()
-                current_using_user = ''
+                terminal_mode_current_using_user = ''
 
             elif is_develop_mode:
                 is_develop_mode = False
