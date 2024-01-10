@@ -298,6 +298,10 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
                 Moonafly, version {responses.Moonafly_version}
                 
+                - normal mode
+                - terminal mode (current)
+                - develop mode
+
                 a star(*) in front of the command means that it requires the highest authority
 
                  cd [dir]

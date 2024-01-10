@@ -25,7 +25,7 @@ def get_response_in_normal_mode(message) -> str:
             ```
             Moonafly {responses.Moonafly_version}
             
-            - normal mode (default)
+            - normal mode (default) (current)
             - terminal mode 
             - develop mode
 
