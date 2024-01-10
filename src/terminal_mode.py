@@ -321,7 +321,7 @@ def get_response_in_terminal_mode(message) -> str:
 
     # commands in certain directory
     if len(path_stack) > 1 and path_stack[1] == 'math':
-        if path_stack[-1] == 'calc':
+        if len(path_stack) > 2 and path_stack[2] == 'calc':
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('math_calc')
 
@@ -332,7 +332,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-        elif path_stack[-1] == 'count':
+        elif len(path_stack) > 2 and path_stack[2] == 'count':
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('math_count')
 
