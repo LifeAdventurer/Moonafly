@@ -33,7 +33,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
 
     try:
         if identity == 'author':
-            with open(file_path, 'r', encoding='utf-8') as file:
+            with open('../' + file_path, 'r', encoding='utf-8') as file:
                 content = file.read()
         elif identity == 'developer':
             load_allowed_paths(terminal_mode.Moonafly_structure)
@@ -42,7 +42,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
                 with open('../' + file_path, 'r', encoding='utf-8') as file:
                     content = file.read()
             else:
-                return textwrap.dedent(f"""\
+                return textwrap.dedent(f"""
                     ```
                     remote: You don't have permission to access file "{file_path}".
                     {remote_status}
@@ -63,7 +63,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
 
         on_remote = True
 
-        return textwrap.dedent(f"""\
+        return textwrap.dedent(f"""
             ```
             {file_path}
             ```
@@ -76,7 +76,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
         """)
 
     except FileNotFoundError:
-        return textwrap.dedent(f"""\
+        return textwrap.dedent(f"""
             ```
             remote: File "{file_path}" not found.
             {remote_status}
