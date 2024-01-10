@@ -56,6 +56,7 @@ def save_terminal_login_record():
 
 # prevent multiple user using terminal or develop mode at the same time
 terminal_mode_current_using_user = ''
+develop_mode_current_using_user = ''
 
 is_normal_mode = True
 is_terminal_mode = False
@@ -70,7 +71,8 @@ def get_response(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
-    global is_normal_mode, is_terminal_mode, is_develop_mode, terminal_mode_current_using_user
+    global is_normal_mode, is_terminal_mode, is_develop_mode
+    global terminal_mode_current_using_user, develop_mode_current_using_user
 
     if (
         is_normal_mode == True
@@ -94,7 +96,6 @@ def get_response(message) -> str:
             # don't use append or it might cause double '~' when using recursion -t -t... command
             terminal_mode.path_stack = ['~']
             print('swap to terminal mode')
-            print('Moonafly:~$')
             msg = msg[(2 if msg[:2] == '-t' else 11):].strip()
             if len(msg) > 0:
                 message.content = msg
@@ -124,8 +125,11 @@ def get_response(message) -> str:
         if username in developers:
             is_normal_mode = False
             is_develop_mode = True
+
+            develop_mode_current_using_user = username
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
+            develop_mode.path_stack = ['~']
             print('swap to develop mode')
             msg = msg[(2 if msg[:2] == '-d' else 11):].strip()
             if len(msg) > 0:
@@ -135,6 +139,7 @@ def get_response(message) -> str:
             return textwrap.dedent(f"""\
                 ```
                 Welcome, developer {username}!
+                {develop_mode.current_path()}
                 ```
             """)
         
@@ -162,6 +167,9 @@ def get_response(message) -> str:
             elif is_develop_mode:
                 is_develop_mode = False
                 is_normal_mode = True
+
+                develop_mode.path_stack.clear()
+                develop_mode_current_using_user = ''
 
             return 'exited successfully'
 

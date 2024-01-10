@@ -6,6 +6,28 @@ from cmd import command_help
 
 
 import textwrap
+import json
+
+
+develop_mode_directory_structure = []
+# initialed when bot started via init_files() in `bot.py`
+def load_develop_mode_directory_structure():
+    global develop_mode_directory_structure
+    with open('../data/json/develop_mode_directory_structure.json') as file:
+        develop_mode_directory_structure = json.load(file)['structure']
+
+
+path_stack = []
+# generating the current working directory
+def current_path() -> str:
+    global path_stack
+    # show the current using user
+    path = f"{responses.develop_mode_current_using_user}@Moonafly:"
+    for folder in path_stack:
+        if folder != '~':
+            path += '/'
+        path += folder
+    return path + "$"
 
 
 def get_response_in_develop_mode(message) -> str:

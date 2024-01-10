@@ -1,5 +1,6 @@
 import responses
 import terminal_mode
+import develop_mode
 
 
 from cmd import remote
@@ -112,9 +113,12 @@ async def send_message_in_private(message):
 def init_files():
     load_token()
     check_maintenance()
+    
     responses.load_user_identity_list()
     terminal_mode.load_terminal_mode_directory_structure()
     terminal_mode.load_Moonafly_structure()
+
+    develop_mode.load_develop_mode_directory_structure()
 
 intents = discord.Intents.default()
 intents.message_content = True
