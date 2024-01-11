@@ -3,7 +3,8 @@ config.json
 passwords.json
 user_identity.json
 game_1A2B_ranks.json
-terminal_login_history.json
+terminal_mode_login_history.json
+develop_mode_login_history.json
 vocabulary_items.json
 clipboard.json
 

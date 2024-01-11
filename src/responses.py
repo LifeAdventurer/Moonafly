@@ -33,17 +33,17 @@ def load_user_identity_list():
     special_guests = data['guests']
 
 
-def get_terminal_login_record() -> dict:
+def get_terminal_mode_login_record() -> dict:
     global login_records
-    with open('../data/json/terminal_login_history.json') as file:
+    with open('../data/json/terminal_mode_login_history.json') as file:
         login_records = json.load(file)
 
     return login_records
 
 
-def save_terminal_login_record():
+def save_terminal_mode_login_record():
     # you must get the record every time since the user might enter several times
-    records = get_terminal_login_record()
+    records = get_terminal_mode_login_record()
 
     records['history'].append(
         {
@@ -53,7 +53,31 @@ def save_terminal_login_record():
     )
 
     # save the record to json file
-    with open('../data/json/terminal_login_history.json', 'w') as file:
+    with open('../data/json/terminal_mode_login_history.json', 'w') as file:
+        json.dump(records, file, indent=4)
+
+
+def get_develop_mode_login_record() -> dict:
+    global login_records
+    with open('../data/json/develop_mode_login_history.json') as file:
+        login_records = json.load(file)
+
+    return login_records
+
+
+def save_develop_mode_login_record():
+    # you must get the record every time since the user might enter several times
+    records = get_develop_mode_login_record()
+
+    records['history'].append(
+        {
+            'user': develop_mode_current_using_user,
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+    )
+
+    # save the record to json file
+    with open('../data/json/develop_mode_login_history.json', 'w') as file:
         json.dump(records, file, indent=4)
 
 
@@ -92,10 +116,10 @@ def get_response(message) -> str:
             
             terminal_mode_current_using_user = username
 
-            # call this function after terminal_mode_current_using_user has been assigned
+            # after terminal_mode_current_using_user has been assigned
             # ignore author login
             if terminal_mode_current_using_user != author:
-                save_terminal_login_record()
+                save_terminal_mode_login_record()
             
             # don't use append or it might cause double '~' when using recursion -t -t... command
             terminal_mode.path_stack = ['~']
@@ -131,6 +155,11 @@ def get_response(message) -> str:
             is_develop_mode = True
 
             develop_mode_current_using_user = username
+
+            # after develop_mode_current_using_user has been assigned
+            # ignore author login
+            if develop_mode_current_using_user != author:
+                save_develop_mode_login_record()
             
             develop_mode.path_stack = ['~']
             print('swap to develop mode')
