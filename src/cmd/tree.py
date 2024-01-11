@@ -21,12 +21,12 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
     return tree
 
 
-def visualize_structure(data: dict, mode: str, username: str) -> str:
+def visualize_structure(data: dict, username: str) -> str:
 
     current_path = ''
-    if mode == 'terminal':
+    if responses.is_terminal_mode == True:
         current_path = terminal_mode.current_path()
-    else:
+    elif responses.is_develop_mode == True:
         current_path = develop_mode.current_path()
 
     bypass = []
