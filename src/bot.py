@@ -211,6 +211,19 @@ def run_Moonafly():
                     message.content = '```someone is using the terminal```'
                 await send_message_in_private(message)
             return
+        
+        if responses.is_develop_mode and username != responses.develop_mode_current_using_user:
+            if (
+                user_message[:2] == '-d'
+                or user_message[:11] == 'moonafly -d'
+                or user_message[:11] == 'Moonafly -d'
+            ):
+                if username == responses.author:
+                    message.content = f"```{responses.develop_mode_current_using_user} is using develop mode```"
+                else:
+                    message.content = '```someone is using develop mode```'
+                await send_message_in_private(message)
+            return
 
         if channel[:14] == 'Direct Message' and username != responses.author:
             print(f"WARNING: {username} using bot in Direct Message\n")
