@@ -28,6 +28,12 @@ def load_allowed_paths(data: dict):
 def load_remote_file(msg: str, identity: str) -> str:
 
     global on_remote
+
+    remote_status = ''
+    if identity == 'author':
+        remote_status = terminal_mode.current_path()
+    elif identity == 'developer':
+        remote_status = develop_mode.current_path()
     
     r_file_path = re.compile(r'^([^ ]+)$')
     r_file_path_start_end = re.compile(r'^([^ ]+)\s+(\d+)\.\.(\d+)$')
@@ -44,16 +50,18 @@ def load_remote_file(msg: str, identity: str) -> str:
         file_path = match.group(1)
         start_line = int(match.group(2))
         end_line = int(match.group(3))
+        
+        if end_line < start_line:
+            return textwrap.dedent(f"""
+                ```
+                end line should be large than start line
+                {remote_status}
+                ```
+            """)
 
     else:
         return command_help.load_help_cmd_info('remote_file')
 
-
-    remote_status = ''
-    if identity == 'author':
-        remote_status = terminal_mode.current_path()
-    elif identity == 'developer':
-        remote_status = develop_mode.current_path()
 
     try:
         if identity == 'author':
@@ -74,9 +82,10 @@ def load_remote_file(msg: str, identity: str) -> str:
                 """)
 
         parts = file_path.split('.')
-        global file_language
 
+        global file_language
         file_language = parts[-1] if len(parts) > 1 else ''
+
         indentation = ' ' * 4 * 3
         output = '\n'
         content = content.splitlines()
