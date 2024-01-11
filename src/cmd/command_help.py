@@ -1,4 +1,8 @@
+import responses
+
+
 import terminal_mode
+import develop_mode
 
 
 import textwrap
@@ -17,9 +21,16 @@ def load_help_cmd_info(command: str) -> str:
             for index, line in enumerate(lines)
         ]
     )
+
+    current_path = ''
+    if responses.is_terminal_mode == True:
+        current_path = terminal_mode.current_path()
+    elif responses.is_develop_mode == True:
+        current_path = develop_mode.current_path()
+
     return textwrap.dedent(f"""\
         ```
         {information}
-        {terminal_mode.current_path()}
+        {current_path}
         ```
     """)
