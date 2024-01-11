@@ -2,8 +2,12 @@ import terminal_mode
 import develop_mode
 
 
+from cmd import command_help
+
+
 import textwrap
 import os
+import re
 
 
 on_remote = False
@@ -21,9 +25,29 @@ def load_allowed_paths(data: dict):
         Moonafly_path_stack.pop()
 
 
-def load_remote_file(file_path: str, identity: str) -> str:
+def load_remote_file(msg: str, identity: str) -> str:
 
     global on_remote
+    
+    r_file_path = re.compile(r'^([^ ]+)$')
+    r_file_path_start_end = re.compile(r'^([^ ]+)\s+(\d+)\.\.(\d+)$')
+
+    file_path = ''
+    start_line = 0
+    end_line = 10 ** 9
+
+    if r_file_path.match(msg):
+        file_path = r_file_path.match(msg).group(1)
+
+    elif r_file_path_start_end.match(msg):
+        match = r_file_path_start_end.match(msg)
+        file_path = match.group(1)
+        start_line = int(match.group(2))
+        end_line = int(match.group(3))
+
+    else:
+        return command_help.load_help_cmd_info('remote_file')
+
 
     remote_status = ''
     if identity == 'author':
@@ -59,7 +83,8 @@ def load_remote_file(file_path: str, identity: str) -> str:
         lines_str_len = len(str(len(content)))
 
         for index, line in enumerate(content):
-            output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
+            if start_line <= index + 1 <= end_line:
+                output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
 
         on_remote = True
 
