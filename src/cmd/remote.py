@@ -21,7 +21,7 @@ def load_allowed_paths(data: dict):
         Moonafly_path_stack.pop()
 
 
-def load_remote_file(file_path: str, identity: str, username: str = None) -> str:
+def load_remote_file(file_path: str, identity: str) -> str:
 
     global on_remote
 
@@ -63,7 +63,7 @@ def load_remote_file(file_path: str, identity: str, username: str = None) -> str
 
         on_remote = True
 
-        return textwrap.dedent(f"""
+        return textwrap.dedent(f"""\
             ```
             {file_path}
             ```

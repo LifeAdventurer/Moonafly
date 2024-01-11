@@ -190,7 +190,7 @@ def get_response_in_develop_mode(message) -> str:
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('remote_file')
 
-            return remote.load_remote_file(msg, 'developer', username)
+            return remote.load_remote_file(msg.strip(), 'developer')
     
     else:
         return command_not_found(msg)
