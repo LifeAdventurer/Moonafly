@@ -429,36 +429,6 @@ def get_response_in_terminal_mode(message) -> str:
                     {current_path()}
                     ```
                 """)
-
-        # search for git commands
-        elif len(path_stack) > 2 and path_stack[2] == 'git':
-            # msg = msg[4:]
-            # if msg[:2] == 'ls':
-            #     return textwrap.dedent(f"""\
-            #         ```
-            #         setup              -1
-            #         init               -2
-            #         stage & snapshot   -3  
-            #         branch & merge     -4
-            #         inspect & compare  -5
-            #         share & update     -6
-            #         {current_path()}
-            #         ```
-            #     """)
-
-            # pattern = r'^-(\d+)\s+(\w+)$'
-            # match = re.search(pattern, msg)
-            # if match:
-            #     number = int(match.group(1))
-            #     command = match.group(2)
-
-            # msg = msg[1:]
-            # if msg > '6' or msg < '1':
-            #     return 'no such command'
-            # else:
-                return function_developing()
-            # TO-DO
-            # elif msg == 'setup':
     
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg[:6] == '--help':

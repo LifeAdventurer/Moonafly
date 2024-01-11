@@ -22,7 +22,6 @@
                 }
             },
             "search": {
-                "git": {},
                 "github": {},
                 "online-judge": {}
             },
