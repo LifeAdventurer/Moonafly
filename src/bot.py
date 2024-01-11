@@ -176,6 +176,9 @@ def run_Moonafly():
                 or user_message[:2]  == '-t'
                 or user_message[:11] == 'moonafly -t'
                 or user_message[:11] == 'Moonafly -t'
+                or user_message[:2]  == '-d'
+                or user_message[:11] == 'moonafly -d'
+                or user_message[:11] == 'Moonafly -d'
             )
         ):
             
