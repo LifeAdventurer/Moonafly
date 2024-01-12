@@ -24,7 +24,7 @@ def load_token():
 
 
 # check whether there is maintenance and the duration
-def check_maintenance():
+def load_maintenance():
     global in_maintenance, estimated_end_time, developer
     with open('../data/txt/init_files/maintenance.txt') as file:
         in_maintenance = file.readline().strip() == 'True'
@@ -112,7 +112,7 @@ async def send_message_in_private(message):
 
 def init_files():
     load_token()
-    check_maintenance()
+    load_maintenance()
     
     responses.load_user_identity_list()
     

@@ -1,3 +1,4 @@
+import bot
 import responses
 import develop_mode
 
@@ -25,6 +26,8 @@ def set_maintenance(msg: str) -> str:
 
         with open('../data/txt/init_files/maintenance.txt', 'w') as file:
             file.write('True\n' + str(time) + '\n' + responses.develop_mode_current_using_user)
+
+        bot.load_maintenance()
 
         return textwrap.dedent(f"""
             ```
