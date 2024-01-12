@@ -15,6 +15,14 @@ def set_maintenance(msg: str) -> str:
     try:
         time = datetime.strptime(msg, '%Y-%m-%d %H:%M:%S')
 
+        if time <= datetime.now():
+            return textwrap.dedent(f"""
+                ```
+                the time you entered needs to be later than now
+                {develop_mode.current_path()}
+                ```
+            """)
+
         with open('../data/txt/init_files/maintenance.txt', 'w') as file:
             file.write('True\n' + str(time) + '\n' + responses.develop_mode_current_using_user)
 
