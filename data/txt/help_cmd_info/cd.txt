@@ -6,3 +6,6 @@ cd: cd [dir]
     `..` is processed by removing the immediately
     previous pathname component back to a slash or
     the beginning of DIR.
+    '>' is a special character just like the tab on
+    the terminal that can automatically complete 
+    your current folder name.
