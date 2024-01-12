@@ -143,7 +143,22 @@ def get_response_in_develop_mode(message) -> str:
         current_directory = develop_mode_directory_structure
 
         for folder in temporary_path_stack:
-            if folder in list(current_directory):
+            if folder[-1] == '>':
+                for item in list(current_directory):
+                    if item.startswith(folder[:-1]):
+                        current_directory = current_directory[item]
+                        temporary_path_stack[temporary_path_stack.index(folder)] = item
+                        break
+                
+                else:
+                    return textwrap.dedent(f"""
+                        ```
+                        Moonafly: cd: {msg}: No such file or directory
+                        {current_path()}
+                        ```
+                    """)
+                    
+            elif folder in list(current_directory):
                 current_directory = current_directory[folder]
 
             else:
