@@ -170,6 +170,7 @@ def run_Moonafly():
         if (
             in_maintenance
             and username != responses.author
+            and username != developer
             and len(user_message) > 0
             and (
                 user_message[0]   == '!'

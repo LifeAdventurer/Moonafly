@@ -4,6 +4,7 @@ import responses
 from cmd import remote
 from cmd import command_help
 from cmd import tree
+from cmd import maintenance
 
 
 import textwrap
@@ -77,6 +78,7 @@ def get_response_in_develop_mode(message) -> str:
 
              cd [dir]
              tree [-M]
+             set [time]
             ```
         """)
 
@@ -157,7 +159,7 @@ def get_response_in_develop_mode(message) -> str:
                         {current_path()}
                         ```
                     """)
-                    
+
             elif folder in list(current_directory):
                 current_directory = current_directory[folder]
 
@@ -200,6 +202,11 @@ def get_response_in_develop_mode(message) -> str:
 
         return tree.visualize_structure(current_structure, username)
     
+    elif msg[:3] == 'set':
+        msg = msg[4:].strip()
+
+        return maintenance.set_maintenance(msg)
+
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 
             if msg[:6] == '--help':
