@@ -9,6 +9,7 @@ from cmd import dict
 from cmd import weather
 from cmd import math_calc
 from cmd import random_vocab_test
+from cmd import random_vocab_review
 from cmd import game_1A2B
 from cmd import clipboard
 
@@ -483,6 +484,9 @@ def get_response_in_terminal_mode(message) -> str:
                     return command_help.load_help_cmd_info('random_vocab_test')
 
                 return random_vocab_test.get_random_vocab_test(message)
+            
+            if len(path_stack) > 3 and path_stack[3] == 'review':
+                return random_vocab_review.get_random_vocab_review(message)
 
 
     # return the definition and example of the enter word from a dictionary

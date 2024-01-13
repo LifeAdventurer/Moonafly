@@ -18,7 +18,8 @@
             "random": {
                 "number": {},
                 "vocab": {
-                    "test": {}
+                    "test": {},
+                    "review": {}
                 }
             },
             "search": {
