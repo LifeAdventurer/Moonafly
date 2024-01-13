@@ -77,8 +77,9 @@ def get_response_in_develop_mode(message) -> str:
             - develop mode (current)
 
              cd [dir]
-             tree [-M]
+             end
              set [time]
+             tree [-M]
             ```
         """)
 
@@ -206,6 +207,11 @@ def get_response_in_develop_mode(message) -> str:
         msg = msg[4:].strip()
 
         return maintenance.set_maintenance(msg)
+    
+    elif msg[:3] == 'end':
+        msg = msg[4:].strip()
+
+        return maintenance.end_maintenance(msg)
 
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 

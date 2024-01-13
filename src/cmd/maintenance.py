@@ -50,4 +50,18 @@ def set_maintenance(msg: str) -> str:
             {develop_mode.current_path()}
             ```
         """)
-    
+
+
+def end_maintenance(msg: str) -> str:
+
+    with open('../data/txt/init_files/maintenance.txt', 'w') as file:
+        file.write('False\n' + str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')) + '\n' + responses.develop_mode_current_using_user)
+
+    bot.load_maintenance()
+
+    return textwrap.dedent(f"""
+        ```
+        maintenance ended
+        {develop_mode.current_path()}
+        ```
+    """)
