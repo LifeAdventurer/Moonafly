@@ -54,6 +54,9 @@ def set_maintenance(msg: str) -> str:
 
 def end_maintenance(msg: str) -> str:
 
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('end')
+
     with open('../data/txt/init_files/maintenance.txt', 'w') as file:
         file.write('False\n' + str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')) + '\n' + responses.develop_mode_current_using_user)
 
