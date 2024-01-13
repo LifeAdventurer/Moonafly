@@ -1,7 +1,9 @@
+import terminal_mode
+
+
 import textwrap
 import json
 import random
-import terminal_mode
 
 
 random_vocab_testing = False
@@ -99,4 +101,4 @@ def get_random_vocab_test(message) -> str:
             json.dump(vocabulary_list, file, indent=4, ensure_ascii=False)
 
     else:
-        return command_not_found(msg)
+        return terminal_mode.command_not_found(msg)

@@ -282,4 +282,4 @@ def play_game_1A2B(message) -> str:
             """)
 
     else:
-        return command_not_found(msg)
+        return terminal_mode.command_not_found(msg)
