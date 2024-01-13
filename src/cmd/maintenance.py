@@ -3,6 +3,9 @@ import responses
 import develop_mode
 
 
+from cmd import command_help
+
+
 from datetime import datetime
 import textwrap
 import re
@@ -12,6 +15,9 @@ import json
 def set_maintenance(msg: str) -> str:
 
     # r_time = re.compile(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
+
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('set')
 
     try:
         time = datetime.strptime(msg, '%Y-%m-%d %H:%M:%S')

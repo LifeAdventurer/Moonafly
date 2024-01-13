@@ -1,0 +1,6 @@
+Usage: set [time]
+    start maintenance and set end time
+
+    the TIME format should be like YYYY-MM-DD hh:mm:ss
+
+    only developer can access this command
