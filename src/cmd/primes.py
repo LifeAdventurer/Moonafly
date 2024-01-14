@@ -5,9 +5,10 @@ from cmd import command_help
 
 
 import textwrap
+import random
 
 
-def is_prime(num) -> bool:
+def is_prime(num: int, k: int) -> bool:
     if num < 2:
         return False
     if num == 2 or num == 3:
@@ -15,13 +16,24 @@ def is_prime(num) -> bool:
     if num % 2 == 0 or num % 3 == 0:
         return False
     
-    i = 5
-    a = 2
-    while i * i <= num:
-        if num % i == 0:
+    r = 0
+    d = num - 1
+    while d % 2 == 0:
+        r += 1
+        d //= 2
+
+    for _ in range(k):
+        a = random.randint(2, num - 2)
+        x = pow(a, d, num)
+        if x == 1 or x == num - 1:
+            continue
+        for _ in range(r - 1):
+            x = pow(x, 2, num)
+            if x == num - 1:
+                break
+        
+        else:
             return False
-        i += a
-        a = 6 - a
 
     return True
 
@@ -33,7 +45,7 @@ def check_prime(msg: str) -> str:
     if msg.isdigit() and int(msg) > 0:
         return textwrap.dedent(f"""
             ```
-            {is_prime(int(msg))}
+            {is_prime(int(msg), 100)}
             {terminal_mode.current_path()}
             ```
         """)    
