@@ -6,6 +6,10 @@ import json
 import random
 
 
+vocab_index = 0
+previous_index = -1
+
+
 def get_random_vocab_review(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -28,11 +32,17 @@ def get_random_vocab_review(message) -> str:
                 """)
             else:
                 random_index = random.randint(0, len(vocabulary_list[username]) - 1)
+                while random_index == previous_index:
+                    random_index = random.randint(0, len(vocabulary_list[username]) - 1)
+
+                previous_index = vocab_index
+                vocab_index = random_index
+
 
                 return textwrap.dedent(f"""
                     ```
-                    {vocabulary_list[username][random_index]['word']}
-                    {vocabulary_list[username][random_index]['word_in_zh_TW']}
+                    {vocabulary_list[username][vocab_index]['word']}
+                    {vocabulary_list[username][vocab_index]['word_in_zh_TW']}
                     {terminal_mode.current_path()}
                     ```
                 """)
