@@ -1,0 +1,3 @@
+Usage: [number]
+    return whether the NUMBER is a prime number
+    True / False

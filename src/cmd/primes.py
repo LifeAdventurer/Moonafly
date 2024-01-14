@@ -1,6 +1,9 @@
 import terminal_mode 
 
 
+from cmd import command_help
+
+
 import textwrap
 
 
@@ -19,11 +22,14 @@ def is_prime(num) -> bool:
             return False
         i += a
         a = 6 - a
-        
+
     return True
 
 
 def check_prime(msg: str) -> str:
+    if msg[:6] == '--help':
+        return command_help('primes')
+
     if msg.isdigit() and int(msg) > 0:
         return textwrap.dedent(f"""
             ```
