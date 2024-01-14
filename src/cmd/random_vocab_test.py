@@ -28,7 +28,8 @@ def get_random_vocab_test(message) -> str:
             vocabulary_list = json.load(file)
         
         if username in vocabulary_list:
-            if len(vocabulary_list[username]) == 0:
+            list_len = len(vocabulary_list[username]) 
+            if list_len == 0:
                 return textwrap.dedent(f"""
                     ```
                     You have cleared all the words.
@@ -38,9 +39,9 @@ def get_random_vocab_test(message) -> str:
             else:
                 random_vocab_testing = True
                 
-                random_index = random.randint(0, len(vocabulary_list[username]) - 1)
-                while random_index == previous_index:
-                    random_index = random.randint(0, len(vocabulary_list[username]) - 1)
+                random_index = random.randint(0, list_len - 1)
+                while list_len > 1 and random_index == previous_index:
+                    random_index = random.randint(0, list_len - 1)
 
                 previous_index = vocab_index
                 vocab_index = random_index
