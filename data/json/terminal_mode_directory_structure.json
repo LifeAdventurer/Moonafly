@@ -13,7 +13,8 @@
             },
             "math": {
                 "calc": {},
-                "count": {}
+                "count": {},
+                "primes": {}
             },
             "random": {
                 "number": {},

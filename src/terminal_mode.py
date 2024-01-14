@@ -12,6 +12,7 @@ from cmd import random_vocab_test
 from cmd import random_vocab_review
 from cmd import game_1A2B
 from cmd import clipboard
+from cmd import primes
 
 
 import json
@@ -359,6 +360,9 @@ def get_response_in_terminal_mode(message) -> str:
                 {current_path()}
                 ```
             """)
+
+        elif len(path_stack) > 2 and path_stack[2] == 'primes':
+            return primes.check_prime(msg)
 
 
     elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
