@@ -21,7 +21,7 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
     return tree
 
 
-def visualize_structure(data: dict, username: str) -> str:
+def visualize_structure(data: dict) -> str:
 
     current_path = ''
     if responses.is_terminal_mode == True:
@@ -30,7 +30,7 @@ def visualize_structure(data: dict, username: str) -> str:
         current_path = develop_mode.current_path()
 
     bypass = []
-    if username != responses.author:
+    if is_terminal_mode == True and responses.terminal_mode_current_using_user != responses.author:
         bypass.append('author')
 
     return textwrap.dedent(f"""

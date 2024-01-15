@@ -195,7 +195,7 @@ def get_response_in_develop_mode(message) -> str:
             return command_help.load_help_cmd_info('tree')
 
         if msg[:8] == 'Moonafly':
-            return tree.visualize_structure(Moonafly_structure, username)
+            return tree.visualize_structure(Moonafly_structure)
 
         # copy the directory structure
         current_structure = develop_mode_directory_structure
@@ -203,7 +203,7 @@ def get_response_in_develop_mode(message) -> str:
         for folder in path_stack:
             current_structure = current_structure[folder]
 
-        return tree.visualize_structure(current_structure, username)
+        return tree.visualize_structure(current_structure)
     
     elif msg[:3] == 'set':
         msg = msg[4:].strip()
