@@ -14,7 +14,7 @@ import time
 import psutil
 
 
-Moonafly_version = 'v2.5.0'
+Moonafly_version = 'v2.6.0'
 
 
 # user identity
