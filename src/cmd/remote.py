@@ -29,11 +29,11 @@ def load_remote_file(msg: str, identity: str) -> str:
 
     global on_remote
 
-    remote_status = ''
+    current_path = ''
     if identity == 'author':
-        remote_status = terminal_mode.current_path()
+        current_path = terminal_mode.current_path()
     elif identity == 'developer':
-        remote_status = develop_mode.current_path()
+        current_path = develop_mode.current_path()
     
     r_file_path = re.compile(r'^([^ ]+)$')
     r_file_path_start_end = re.compile(r'^([^ ]+)\s+(\d+)\.\.(\d+)$')
@@ -55,7 +55,7 @@ def load_remote_file(msg: str, identity: str) -> str:
             return textwrap.dedent(f"""
                 ```
                 end line should be large than start line
-                {remote_status}
+                {current_path}
                 ```
             """)
 
@@ -77,7 +77,7 @@ def load_remote_file(msg: str, identity: str) -> str:
                 return textwrap.dedent(f"""
                     ```
                     remote: You don't have permission to access file "{file_path}".
-                    {remote_status}
+                    {current_path}
                     ```
                 """)
 
@@ -105,7 +105,7 @@ def load_remote_file(msg: str, identity: str) -> str:
             {output}
             ```
             ```
-            {remote_status}
+            {current_path}
             ```
         """)
 
@@ -113,6 +113,6 @@ def load_remote_file(msg: str, identity: str) -> str:
         return textwrap.dedent(f"""
             ```
             remote: File "{file_path}" not found.
-            {remote_status}
+            {current_path}
             ```
         """)
