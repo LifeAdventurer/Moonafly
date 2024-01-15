@@ -15,7 +15,7 @@ def traverse(data: dict, target_folder: str, bypass: list) -> bool:
             continue
 
         path_stack.append(key)
-        if key == target_folder:
+        if key == target_folder or (target_folder[-1] == '>' and key.startswith(target_folder[:-1])):
             return True
         if traverse(value, target_folder, bypass) == True:
             return True
