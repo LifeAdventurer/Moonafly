@@ -3,6 +3,9 @@ import terminal_mode
 import develop_mode
 
 
+from cmd import command_help
+
+
 import textwrap
 
 
@@ -26,6 +29,9 @@ def traverse(data: dict, target_folder: str, bypass: list) -> bool:
 
 def jump_to_folder(msg: str) -> str:
 
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('jump')
+        
     global path_stack
 
     current_path = ''
