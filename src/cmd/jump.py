@@ -1,0 +1,75 @@
+import responses
+import terminal_mode
+import develop_mode
+
+
+import textwrap
+
+
+path_stack = []
+def traverse(data: dict, target_folder: str, bypass: list) -> bool:
+    if len(data) == 0:
+        return False
+    for key, value in sorted(data.items()):
+        if key in bypass:
+            continue
+
+        path_stack.append(key)
+        if key == target_folder:
+            return True
+        if traverse(value, target_folder, bypass) == True:
+            return True
+        path_stack.pop()
+    
+    return False
+
+
+def jump_to_folder(msg: str) -> str:
+
+    global path_stack
+
+    current_path = ''
+    bypass = []
+
+    if responses.is_terminal_mode == True:
+        mode = 'terminal'
+        directory = terminal_mode.terminal_mode_directory_structure
+
+        if responses.terminal_mode_current_using_user != responses.author:
+            bypass.append('author')
+
+        if traverse(directory, msg, bypass) == True:
+            terminal_mode.path_stack = path_stack
+            current_path = terminal_mode.current_path()
+        else:
+            path_stack = []
+            return textwrap.dedent(f"""
+                ```
+                jump: {msg}: No such file or directory
+                {terminal_mode.current_path()}
+                ```
+            """)
+
+    elif responses.is_develop_mode == True:
+        mode = 'develop'
+        directory = develop_mode.develop_mode_directory_structure    
+
+        if traverse(directory, msg, bypass) == True:
+            develop_mode.path_stack = path_stack
+
+            current_path = develop_mode.current_path()
+        else:
+            path_stack = []
+            return textwrap.dedent(f"""
+                ```
+                jump: {msg}: No such file or directory
+                {develop_mode.current_path()}
+                ```
+            """)
+
+    path_stack = []
+    return textwrap.dedent(f"""
+        ```
+        {current_path}
+        ```
+    """)

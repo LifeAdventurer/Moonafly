@@ -5,6 +5,7 @@ from cmd import remote
 from cmd import command_help
 from cmd import tree
 from cmd import maintenance
+from cmd import jump
 
 
 import textwrap
@@ -78,6 +79,7 @@ def get_response_in_develop_mode(message) -> str:
 
              cd [dir]
              end
+             jump [folder]
              set [time]
              tree [-M]
             ```
@@ -212,6 +214,11 @@ def get_response_in_develop_mode(message) -> str:
         msg = msg[4:].strip()
 
         return maintenance.end_maintenance(msg)
+    
+    elif msg[:4] == 'jump':
+        msg = msg[4:].strip()
+
+        return jump.jump_to_folder(msg)
 
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 

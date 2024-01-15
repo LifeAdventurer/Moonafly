@@ -13,6 +13,7 @@ from cmd import random_vocab_review
 from cmd import game_1A2B
 from cmd import clipboard
 from cmd import primes
+from cmd import jump
 
 
 import json
@@ -302,6 +303,10 @@ def get_response_in_terminal_mode(message) -> str:
                 current_structure = current_structure[folder]
 
             return tree.visualize_structure(current_structure, username)
+        
+        elif msg[:4] == 'jump':
+            msg = msg[4:].strip()
+            return jump.jump_to_folder(msg)
 
         elif msg[:4] == 'help':
             msg = msg[4:].lstrip()
@@ -320,6 +325,7 @@ def get_response_in_terminal_mode(message) -> str:
 
                  cd [dir]
                  help
+                 jump [folder]
                  ls
                  pwd
                  tree [-M]
