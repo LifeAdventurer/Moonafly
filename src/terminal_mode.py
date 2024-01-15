@@ -128,8 +128,33 @@ def get_response_in_terminal_mode(message) -> str:
     global path_stack
 
     if in_interaction() == False:
+        if msg[:4] == 'help':
+            msg = msg[4:].lstrip()
+            if msg[:6] == '--help':
+                return command_help.load_help_cmd_info('help')
+
+            return textwrap.dedent(f"""
+                ```
+                Moonafly, version {responses.Moonafly_version}
+                
+                - normal mode
+                - terminal mode (current)
+                - develop mode
+
+                a star(*) in front of the command means that it requires the highest authority
+
+                 cd [dir]
+                 help
+                 jump [folder]
+                 ls
+                 pwd
+                 tree [-M]
+                {current_path()}
+                ```
+            """)
+        
         # cd command
-        if msg[:2] == 'cd':
+        elif msg[:2] == 'cd':
             msg = msg[2:].lstrip()
             if msg[:6] == '--help':
                 return command_help.load_help_cmd_info('cd')
@@ -308,30 +333,6 @@ def get_response_in_terminal_mode(message) -> str:
             msg = msg[4:].strip()
             return jump.jump_to_folder(msg)
 
-        elif msg[:4] == 'help':
-            msg = msg[4:].lstrip()
-            if msg[:6] == '--help':
-                return command_help.load_help_cmd_info('help')
-
-            return textwrap.dedent(f"""
-                ```
-                Moonafly, version {responses.Moonafly_version}
-                
-                - normal mode
-                - terminal mode (current)
-                - develop mode
-
-                a star(*) in front of the command means that it requires the highest authority
-
-                 cd [dir]
-                 help
-                 jump [folder]
-                 ls
-                 pwd
-                 tree [-M]
-                {current_path()}
-                ```
-            """)
 
     # only author can access this part
     if len(path_stack) > 1 and path_stack[1] == 'author':
