@@ -36,5 +36,7 @@ def get_response_in_normal_mode(message) -> str:
                         and `moonafly -d` is also fine
               exit      leaving current mode and switch to normal
                         mode
+              status    show in which mode and the server battery
+                        percentage
             ```
         """)
