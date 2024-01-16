@@ -1,6 +1,9 @@
 import responses
 
 
+from cmd import apply
+
+
 import json
 import random
 import requests
@@ -40,3 +43,8 @@ def get_response_in_normal_mode(message) -> str:
                         percentage
             ```
         """)
+    
+    if msg[:5] == 'apply':
+        msg = msg[6:].strip()
+
+        return apply.apply_for_role(msg, username)
