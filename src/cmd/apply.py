@@ -2,6 +2,7 @@ import responses
 
 
 import json
+from datetime import datetime
 
 
 apply_roles = [
@@ -14,9 +15,12 @@ def add_user_to_list(username: str, role: str):
     with open('../data/json/pending_role_list.json') as file:
         pending_role_list = json.load(file)
     
+    current_time = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
     pending_role_list[role].append(
         {
-            "username": username
+            "username": username,
+            "timestamp": current_time
         }
     )
 
