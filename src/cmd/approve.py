@@ -20,10 +20,11 @@ def show_pending_role_list() -> str:
     content = ['pending role list:', ' ']
 
     for role in roles:
-        content.append(role + ':')
+        content.append(role + ':' + ' ' * (32 - len(role)) + 'index')
 
-        for data in pending_role_list[role]:
-            content.append(data['username'])
+        for index, data in enumerate(pending_role_list[role]):
+            # discord usernames must be between 2 and 32
+            content.append(data['username'] + ' ' * (35 - len(data['username'])) + str(index))
 
         content.append(' ')
 
@@ -44,8 +45,6 @@ def approve_pending(msg: str) -> str:
     with open('../data/json/user_identity.json') as file:
         user_identity = json.load(file)
     
-
-
     for role in roles:
         if msg.startswith(role):
             msg = msg[len(role):].strip()
