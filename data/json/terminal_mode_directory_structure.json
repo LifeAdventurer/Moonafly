@@ -2,6 +2,7 @@
     "structure": {
         "~": {
             "author": {
+                "approve": {},
                 "remote": {
                     "file": {}
                 }
@@ -19,8 +20,8 @@
             "random": {
                 "number": {},
                 "vocab": {
-                    "test": {},
-                    "review": {}
+                    "review": {},
+                    "test": {}
                 }
             },
             "search": {

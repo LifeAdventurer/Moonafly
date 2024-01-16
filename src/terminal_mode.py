@@ -3,7 +3,10 @@ import responses
 
 from cmd import remote
 from cmd import tree
+from cmd import jump
 from cmd import command_help
+
+from cmd import approve
 
 from cmd import dict
 from cmd import weather
@@ -13,7 +16,6 @@ from cmd import random_vocab_review
 from cmd import game_1A2B
 from cmd import clipboard
 from cmd import primes
-from cmd import jump
 
 
 import json
@@ -342,6 +344,10 @@ def get_response_in_terminal_mode(message) -> str:
                     return command_help.load_help_cmd_info('remote_file')
 
                 return remote.load_remote_file(msg, 'author')
+        
+        elif len(path_stack) > 2 and path_stack[2] == 'approve':
+            return approve.approve_requests(msg)
+
 
     # commands in certain directory
     if len(path_stack) > 1 and path_stack[1] == 'math':
