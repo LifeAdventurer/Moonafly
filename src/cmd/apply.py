@@ -1,6 +1,9 @@
 import responses
 
 
+from cmd import command_help
+
+
 import json
 from datetime import datetime
 
@@ -29,6 +32,9 @@ def add_user_to_list(username: str, role: str):
         json.dump(pending_role_list, file, indent=4)
 
 def apply_for_role(msg: str, username: str) -> str:
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('apply')
+
     if msg in apply_roles:
         if msg == 'guest':
             if username in responses.special_guests:

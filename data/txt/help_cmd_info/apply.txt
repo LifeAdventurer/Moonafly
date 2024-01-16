@@ -1,0 +1,6 @@
+Usage: apply [role]
+    apply for ROLE 
+
+    current ROLE that can be applied is:
+      developer     use develop mode
+      guest         use terminal mode
