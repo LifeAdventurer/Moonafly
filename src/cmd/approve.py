@@ -20,6 +20,9 @@ def show_pending_role_list() -> str:
     content = ['pending role list:', ' ']
 
     for role in roles:
+        if len(pending_role_list[role]) == 0:
+            continue
+
         content.append(role + ':' + ' ' * (32 - len(role)) + 'index')
 
         for index, data in enumerate(pending_role_list[role]):
@@ -28,7 +31,16 @@ def show_pending_role_list() -> str:
 
         content.append(' ')
 
+    if len(content) == 2:
+        return textwrap.dedent(f"""
+            ```
+            no user pending for roles
+            {terminal_mode.current_path()}
+            ```
+        """)
+
     content = ('\n' + ' ' * 4 * 2).join(content)
+
 
     return textwrap.dedent(f"""
         ```
