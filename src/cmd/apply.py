@@ -17,12 +17,13 @@ def add_user_to_list(username: str, role: str):
     
     current_time = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-    pending_role_list[role].append(
-        {
-            "username": username,
-            "timestamp": current_time
-        }
-    )
+    if all(data['username'] != username for data in pending_role_list[role]):
+        pending_role_list[role].append(
+            {
+                "username": username,
+                "timestamp": current_time
+            }
+        )
 
     with open('../data/json/pending_role_list.json', 'w') as file:
         json.dump(pending_role_list, file, indent=4)
