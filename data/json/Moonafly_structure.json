@@ -4,9 +4,11 @@
             "json": {
                 "clipboard.json": {},
                 "develop_mode_directory_structure.json": {},
+                "develop_mode_login_history.json": {},
                 "game_1A2B_ranks.json": {},
                 "math_calc_allow_names.json": {},
                 "Moonafly_structure.json": {},
+                "pending_role_list.json": {},
                 "terminal_login_history.json": {},
                 "terminal_mode_directory_structure.json": {},
                 "user_identity.json": {},
@@ -21,11 +23,16 @@
         },
         "src": {
             "cmd": {
+                "apply.py": {},
                 "clipboard.py": {},
                 "command_help.py": {},
                 "dict.py": {},
                 "game_1A2B.py": {},
+                "jump.py": {},
+                "maintenance.py": {},
                 "math_calc.py": {},
+                "primes.py": {},
+                "random_vocab_review.py": {},
                 "random_vocab_test.py": {},
                 "remote.py": {},
                 "tree.py": {},
