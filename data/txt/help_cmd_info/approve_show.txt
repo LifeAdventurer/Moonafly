@@ -1,0 +1,2 @@
+Usage: show
+    show the pending role list with username and index

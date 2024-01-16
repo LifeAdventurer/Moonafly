@@ -2,6 +2,9 @@ import responses
 import terminal_mode
 
 
+from cmd import command_help
+
+
 import textwrap
 import json
 
@@ -102,11 +105,25 @@ def approve_pending(msg: str) -> str:
 
 
 def approve_requests(msg: str) -> str:
-    if msg == 'show':
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('approve')
+
+
+    if msg[:4] == 'show':
+        msg = msg[4:].strip()
+        
+        if msg[:6] == '--help':
+            return command_help.load_help_cmd_info('approve_show')
+
         return show_pending_role_list()
 
     elif msg[:7] == 'approve':
-        return approve_pending(msg[7:].strip())
+        msg = msg[7:].strip()
+
+        if msg[:6] == '--help':
+            return command_help.load_help_cmd_info('approve_approve')
+
+        return approve_pending(msg)
     
     else:
         return terminal_mode.command_not_found(msg)

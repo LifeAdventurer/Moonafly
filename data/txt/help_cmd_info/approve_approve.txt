@@ -1,0 +1,5 @@
+Usage: approve [role] [index]
+    approve the user role apply
+    ROLE should be developers and guests
+    use show command to see the list of username
+    and index first
