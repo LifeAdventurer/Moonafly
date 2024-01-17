@@ -24,9 +24,14 @@ def get_random_vocab_test(message) -> str:
     if msg.lower() == 'g':
         global vocabulary_list
 
-        with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
-            vocabulary_list = json.load(file)
-        
+        try:
+            with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
+                vocabulary_list = json.load(file)
+        except FileNotFoundError:
+            vocabulary_list = {}
+            with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                json.dump(vocabulary_list, file, indent=4)
+
         if username in vocabulary_list:
             list_len = len(vocabulary_list[username]) 
             if list_len == 0:

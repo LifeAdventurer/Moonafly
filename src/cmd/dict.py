@@ -34,8 +34,13 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
 
             # save vocabulary
             if zh_TW_definition != 'No definition found':
-                with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
-                    data = json.load(file)
+                try:
+                    with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
+                        data = json.load(file)
+                except FileNotFoundError:
+                    data = {}
+                    with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
+                        json.dump(data, file, indent=4)
 
                 if username in data:
                     word_in_data = False

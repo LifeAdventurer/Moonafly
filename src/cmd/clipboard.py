@@ -11,8 +11,12 @@ import re
 
 def load_clipboard_data() -> dict:
     # clipboard_data
-    with open('../data/json/clipboard.json', 'r', encoding='utf-8') as file:
-        clipboard_data = json.load(file)
+    try:
+        with open('../data/json/clipboard.json', 'r', encoding='utf-8') as file:
+            clipboard_data = json.load(file)
+    except FileNotFoundError:
+        clipboard_data = {}
+        save_clipboard_data(clipboard_data)
 
     return clipboard_data
 

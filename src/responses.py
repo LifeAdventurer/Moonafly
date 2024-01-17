@@ -34,9 +34,15 @@ def load_user_identity_list():
 
 
 def get_terminal_mode_login_record() -> dict:
-    global login_records
-    with open('../data/json/terminal_mode_login_history.json') as file:
-        login_records = json.load(file)
+    try:
+        with open('../data/json/terminal_mode_login_history.json') as file:
+            login_records = json.load(file)
+    except FileNotFoundError:
+        login_records = {
+            "history": []
+        }
+        with open('../data/json/terminal_mode_login_history.json', 'w') as file:
+            json.dump(login_records, file, indent=4)
 
     return login_records
 
@@ -58,9 +64,15 @@ def save_terminal_mode_login_record():
 
 
 def get_develop_mode_login_record() -> dict:
-    global login_records
-    with open('../data/json/develop_mode_login_history.json') as file:
-        login_records = json.load(file)
+    try:
+        with open('../data/json/develop_mode_login_history.json') as file:
+            login_records = json.load(file)
+    except FileNotFoundError:
+        login_records = {
+            "history": []
+        }
+        with open('../data/json/develop_mode_login_history.json', 'w') as file:
+            json.dump(login_records, file, indent=4)
 
     return login_records
 

@@ -15,8 +15,16 @@ apply_roles = [
 
 
 def add_user_to_list(username: str, role: str):
-    with open('../data/json/pending_role_list.json') as file:
-        pending_role_list = json.load(file)
+    try:
+        with open('../data/json/pending_role_list.json') as file:
+            pending_role_list = json.load(file)
+    except FileNotFoundError:
+        pending_role_list = {
+            "developers": [],
+            "guests": []
+        }
+        with open('../data/json/pending_role_list.json', 'w') as file:
+            json.dump(pending_role_list, file)
     
     current_time = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 

@@ -16,9 +16,16 @@ roles = [
 
 
 def show_pending_role_list() -> str:
-
-    with open('../data/json/pending_role_list.json') as file:
-        pending_role_list = json.load(file)
+    try:
+        with open('../data/json/pending_role_list.json') as file:
+            pending_role_list = json.load(file)
+    except FileNotFoundError:
+        pending_role_list = {
+            "developers": [],
+            "guests": []
+        }
+        with open('../data/json/pending_role_list.json', 'w') as file:
+            json.dump(pending_role_list, file)
     
     content = ['pending role list:', ' ']
 
@@ -44,7 +51,6 @@ def show_pending_role_list() -> str:
 
     content = ('\n' + ' ' * 4 * 2).join(content)
 
-
     return textwrap.dedent(f"""
         ```
         {content}
@@ -54,8 +60,16 @@ def show_pending_role_list() -> str:
 
 
 def approve_pending(msg: str) -> str:
-    with open('../data/json/pending_role_list.json') as file:
-        pending_role_list = json.load(file)
+    try:
+        with open('../data/json/pending_role_list.json') as file:
+            pending_role_list = json.load(file)
+    except FileNotFoundError:
+        pending_role_list = {
+            "developers": [],
+            "guests": []
+        }
+        with open('../data/json/pending_role_list.json', 'w') as file:
+            json.dump(pending_role_list, file)
 
     with open('../data/json/user_identity.json') as file:
         user_identity = json.load(file)

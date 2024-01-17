@@ -16,10 +16,22 @@ attempts = 0
 
 
 def load_game_1A2B_ranks() -> dict:
-    global game_1A2B_ranks
-    with open('../data/json/game_1A2B_ranks.json') as file:
-        game_1A2B_ranks = json.load(file)
-    
+    try:
+        with open('../data/json/game_1A2B_ranks.json') as file:
+            game_1A2B_ranks = json.load(file)
+    except FileNotFoundError:
+        game_1A2B_ranks = {
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            "10": []
+        }
+        with open('../data/json/game_1A2B_ranks.json', 'w') as file:
+            json.dump(game_1A2B_ranks, file)
+
     return game_1A2B_ranks
 
 

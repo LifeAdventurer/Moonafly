@@ -26,11 +26,17 @@ def load_token():
 # check whether there is maintenance and the duration
 def load_maintenance():
     global in_maintenance, estimated_end_time, developer
-    with open('../data/txt/init_files/maintenance.txt') as file:
-        in_maintenance = file.readline().strip() == 'True'
-        estimated_end_time = file.readline().strip()
-        developer = file.readline().strip()
-
+    try:
+        with open('../data/txt/init_files/maintenance.txt') as file:
+            in_maintenance = file.readline().strip() == 'True'
+            estimated_end_time = file.readline().strip()
+            developer = file.readline().strip()
+    except FileNotFoundError:
+        in_maintenance = 'False'
+        estimated_end_time = '1970-01-01 00:00:00'
+        developer = 'Moonafly'
+        with open('../data/txt/init_files/maintenance.txt', 'w') as file:
+            file.write('\n'.join([in_maintenance, estimated_end_time, developer]))
 
 async def send_message(message):
     try:
