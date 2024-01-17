@@ -66,6 +66,14 @@ def approve_pending(msg: str) -> str:
             
             list_len = len(pending_role_list[role])
 
+            if list_len == 0:
+                return textwrap.dedent(f"""
+                    ```
+                    no one applying for {role}
+                    {terminal_mode.current_path()}
+                    ```
+                """)
+
             if msg.isdigit() and 0 <= int(msg) <= list_len - 1:
                 index = int(msg)
                 username = pending_role_list[role][index]['username']
