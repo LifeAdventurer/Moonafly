@@ -9,6 +9,7 @@ from cmd import command_help
 from cmd import approve
 
 from cmd import dict
+from cmd import hash
 from cmd import weather
 from cmd import math_calc
 from cmd import random_vocab_test
@@ -380,7 +381,9 @@ def get_response_in_terminal_mode(message) -> str:
 
     elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
         return clipboard.get_clipboard_response(message)
-
+    
+    elif len(path_stack) > 1 and path_stack[1] == 'hash':
+        return hash.get_hash(msg)
     
     elif len(path_stack) > 1 and path_stack[1] == 'search':
         # search for a handle in different online judges
