@@ -7,6 +7,15 @@ import textwrap
 
 def get_hash(msg: str) -> str:
 
+    if msg == 'show':
+        hash_algorithms = ('\n' + ' ' * 4 * 3).join(hashlib.algorithms_available)
+        return textwrap.dedent(f"""
+            ```
+            {hash_algorithms}
+            {terminal_mode.current_path()}
+            ```
+        """)
+
     parts = msg.split(maxsplit=1)
 
     if len(parts) != 2:
