@@ -1,2 +1,2 @@
 Usage: show
-    show the list of hash algorithms
+    show the list of hash algorithms alphabetically
