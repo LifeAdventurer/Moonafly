@@ -215,7 +215,7 @@ def get_response(message) -> str:
                 develop_mode.path_stack.clear()
                 develop_mode_current_using_user = ''
 
-            return 'exited successfully'
+            return '```exited successfully```'
 
         elif msg == 'status':
             mode = ''

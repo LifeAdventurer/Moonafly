@@ -50,19 +50,19 @@ def apply_for_role(msg: str, username: str) -> str:
     if msg in apply_roles:
         if msg == 'guest':
             if username in responses.special_guests:
-                return 'you are already a special guest'
+                return '```you are already a special guest```'
             else:
                 add_user_to_list(username, 'guests')
                 responses.load_user_identity_list()
-                return 'added to pending list'
+                return '```added to pending list```'
 
         elif msg == 'developer':
             if username in responses.developers:
-                return 'you are already a developer'
+                return '```you are already a developer```'
             else:
                 add_user_to_list(username, 'developers')
                 responses.load_user_identity_list()
-                return 'added to pending list'
+                return '```added to pending list```'
         
     else:
-        return f"no role: '{msg}'"
+        return f"```no role: '{msg}'```"
