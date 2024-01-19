@@ -1,13 +1,22 @@
 import terminal_mode
 
 
+from cmd import command_help
+
+
 import hashlib
 import textwrap
 
 
 def get_hash(msg: str) -> str:
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('hash')
 
-    if msg == 'show':
+    if msg[:4] == 'show':
+        msg = msg[4:].strip()
+        if msg[:6] == '--help':
+            return command_help.load_help_cmd_info('hash_show')
+
         hash_algorithms = ('\n' + ' ' * 4 * 3).join(hashlib.algorithms_available)
         return textwrap.dedent(f"""
             ```
@@ -19,12 +28,7 @@ def get_hash(msg: str) -> str:
     parts = msg.split(maxsplit=1)
 
     if len(parts) != 2:
-        return textwrap.dedent(f"""
-            ```
-            Invalid input format. Please provide the hash algorithm and string separated by space.
-            {terminal_mode.current_path()}
-            ```
-        """)
+        return command_help.load_help_cmd_info('hash_algo')
     
     hash_algorithm, user_input = parts[0].lower(), parts[1]
 

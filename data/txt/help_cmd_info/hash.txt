@@ -1,0 +1,5 @@
+Usage: [command]
+
+commands under ~/hash
+ show
+ [hash_algo] [string]
