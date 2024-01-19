@@ -10,6 +10,7 @@ import textwrap
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 def get_hash(msg: str) -> str:
@@ -21,7 +22,7 @@ def get_hash(msg: str) -> str:
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('hash_show')
 
-        hash_algorithms = ('\n' + ' ' * 4 * 3).join(sorted(hashlib.algorithms_available))
+        hash_algorithms = ('\n' + ' ' * TAB_SIZE * 3).join(sorted(hashlib.algorithms_available))
         return textwrap.dedent(f"""
             ```
             {hash_algorithms}

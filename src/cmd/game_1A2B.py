@@ -11,6 +11,7 @@ import json
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 playing_game_1A2B = False
@@ -66,7 +67,7 @@ def save_game_1A2B_result(length: int, attempts: int) -> int:
 
     # save the result to json file
     with open('../data/json/game_1A2B_ranks.json', 'w') as file:
-        json.dump(records, file, indent = 4)
+        json.dump(records, file, indent=4)
 
     return rank
 
@@ -199,7 +200,7 @@ def play_game_1A2B(message) -> str:
                         search_rank_length = int(msg)
                         return textwrap.dedent(f"""
                             ```
-                            {show_1A2B_certain_length_ranking(search_rank_length, 4, 7)}
+                            {show_1A2B_certain_length_ranking(search_rank_length, TAB_SIZE, 7)}
                             {terminal_mode.current_path()}
                             ```
                         """)
@@ -219,7 +220,7 @@ def play_game_1A2B(message) -> str:
                         certain_user = username
                     return textwrap.dedent(f"""
                         ```
-                        {show_1A2B_certain_user_ranking(certain_user, 4, 6)}
+                        {show_1A2B_certain_user_ranking(certain_user, TAB_SIZE, 6)}
                         {terminal_mode.current_path()}
                         ```
                     """)
@@ -227,7 +228,7 @@ def play_game_1A2B(message) -> str:
             # show every length ranking
             return textwrap.dedent(f"""
                 ```
-                {show_1A2B_every_length_ranking(4, 4)}
+                {show_1A2B_every_length_ranking(TAB_SIZE, 4)}
                 {terminal_mode.current_path()}
                 ```
             """)

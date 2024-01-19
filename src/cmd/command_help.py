@@ -8,8 +8,12 @@ import develop_mode
 import textwrap
 
 
+# constants
+TAB_SIZE = 4
+
+
 def load_help_cmd_info(command: str) -> str:
-    space = ' ' * 4 * 2
+    space = ' ' * TAB_SIZE * 2
     path_to_txt = f"../data/txt/help_cmd_info/{command}.txt"
 
     with open(path_to_txt, 'r') as information_file:

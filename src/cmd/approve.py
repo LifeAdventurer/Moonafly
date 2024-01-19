@@ -11,6 +11,7 @@ import json
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 roles = [
@@ -53,7 +54,7 @@ def show_pending_role_list() -> str:
             ```
         """)
 
-    content = ('\n' + ' ' * 4 * 2).join(content)
+    content = ('\n' + ' ' * TAB_SIZE * 2).join(content)
 
     return textwrap.dedent(f"""
         ```

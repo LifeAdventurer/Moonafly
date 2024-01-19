@@ -8,6 +8,10 @@ import develop_mode
 import textwrap
 
 
+# constants
+TAB_SIZE = 4
+
+
 def traverse(data: dict, indent: int, bypass: list) -> str:
     tree = ""
     # just make sure the structure file is always a dict
@@ -15,7 +19,7 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
         if key in bypass:
             continue
         #       structure indentation  folder   output indentation
-        tree += f"{' ' * 4 * indent}\-- {key}\n{' ' * 4 * 2}"
+        tree += f"{' ' * TAB_SIZE * indent}\-- {key}\n{' ' * TAB_SIZE * 2}"
         tree += traverse(value, indent + 1, bypass)
     
     return tree

@@ -31,6 +31,7 @@ import time
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 terminal_mode_directory_structure = []
@@ -50,7 +51,7 @@ def load_Moonafly_structure():
 
 
 def command_not_found(msg: str) -> str:
-    space = ' ' * 4 * 2
+    space = ' ' * TAB_SIZE * 2
     # unify the indentation of multiline
     msg = '\n'.join(
         [
@@ -202,7 +203,7 @@ def get_response_in_terminal_mode(message) -> str:
                     elif temporary_path_stack[0] == '~':
                         # reverse the message to original command by removing the escape character
                         msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                        space = ' ' * 4 * 7
+                        space = ' ' * TAB_SIZE * 7
                         # multi-line adjustment
                         msg = '\n'.join(
                             [
@@ -256,7 +257,7 @@ def get_response_in_terminal_mode(message) -> str:
                 else:
                     # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * 4 * 6
+                    space = ' ' * TAB_SIZE * 6
                     # multi-line adjustment
                     msg = '\n'.join(
                         [
@@ -293,7 +294,7 @@ def get_response_in_terminal_mode(message) -> str:
 
             return textwrap.dedent(f"""
                 ```
-                {get_ls_command_output(files_in_current_directory, 4, 4)}
+                {get_ls_command_output(files_in_current_directory, TAB_SIZE, 4)}
                 {current_path()}
                 ```
             """)
@@ -525,7 +526,7 @@ def get_response_in_terminal_mode(message) -> str:
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
                 return textwrap.dedent(f"""
-                    {dict.search_dict('en', match.group(1), int(match.group(2)), 4, 5)}
+                    {dict.search_dict('en', match.group(1), int(match.group(2)), TAB_SIZE, 5)}
                     ```
                     {current_path()}
                     ```
@@ -539,7 +540,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
             else:
                 return textwrap.dedent(f"""
-                    {dict.search_dict('en', msg, 3, 4, 5)}
+                    {dict.search_dict('en', msg, 3, TAB_SIZE, 5)}
                     ```
                     {current_path()}
                     ```
@@ -554,7 +555,7 @@ def get_response_in_terminal_mode(message) -> str:
             match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
             if match:
                 return textwrap.dedent(f"""
-                    {dict.search_dict('en-zh_TW', match.group(1), int(match.group(2)), 4, 5, username)}
+                    {dict.search_dict('en-zh_TW', match.group(1), int(match.group(2)), TAB_SIZE, 5, username)}
                     ```
                     {current_path()}
                     ```
@@ -568,7 +569,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
             else:
                 return textwrap.dedent(f"""
-                    {dict.search_dict('en-zh_TW', msg, 3, 4, 5, username)}
+                    {dict.search_dict('en-zh_TW', msg, 3, TAB_SIZE, 5, username)}
                     ```
                     {current_path()}
                     ```

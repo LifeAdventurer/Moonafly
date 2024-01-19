@@ -12,6 +12,10 @@ from datetime import datetime
 import textwrap
 
 
+# constants
+TAB_SIZE = 4
+
+
 # token should be encrypted
 token = ""
 
@@ -67,7 +71,7 @@ async def send_message(message):
                     if word_count + len(line) + line_count * 2 + 100 > 2000:
                         word_count = len(line)
                         line_count = 1
-                        content = ('\n' + ' ' * 4 * 7).join(lines)
+                        content = ('\n' + ' ' * TAB_SIZE * 7).join(lines)
                         lines = [line]
                         content = textwrap.dedent(f"""
                             ```{remote.file_language}
@@ -82,7 +86,7 @@ async def send_message(message):
                         lines.append(line)
                 # last part of message
                 if len(lines) > 0:
-                    content = ('\n' + ' ' * 4 * 6).join(lines)
+                    content = ('\n' + ' ' * TAB_SIZE * 6).join(lines)
                     content = textwrap.dedent(f"""
                         ```{remote.file_language}
                         {content}

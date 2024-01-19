@@ -14,6 +14,7 @@ import json
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 develop_mode_directory_structure = []
@@ -46,7 +47,7 @@ def current_path() -> str:
 
 
 def command_not_found(msg: str) -> str:
-    space = ' ' * 4 * 2
+    space = ' ' * TAB_SIZE * 2
     # unify the indentation of multiline
     msg = '\n'.join(
         [
@@ -131,7 +132,7 @@ def get_response_in_develop_mode(message) -> str:
                 elif temporary_path_stack[0] == '~':
                     # reverse the message to original command by removing the escape character
                     msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * 4 * 7
+                    space = ' ' * TAB_SIZE * 7
                     # multi-line adjustment
                     msg = '\n'.join(
                         [
@@ -173,7 +174,7 @@ def get_response_in_develop_mode(message) -> str:
             else:
                 # reverse the message to original command by removing the escape character
                 msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                space = ' ' * 4 * 6
+                space = ' ' * TAB_SIZE * 6
                 # multi-line adjustment
                 msg = '\n'.join(
                     [

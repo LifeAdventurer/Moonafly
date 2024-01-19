@@ -11,6 +11,7 @@ import re
 
 # constants
 HELP_FLAG = '--help'
+TAB_SIZE = 4
 
 
 def load_clipboard_data() -> dict:
@@ -44,7 +45,7 @@ def get_clipboard_data(keyword: str) -> str:
                 ```
             """)
         elif data_type == 'text':
-            content = ('\n' + ' ' * 4 * 4).join(clipboard_data[keyword]['data'].splitlines())
+            content = ('\n' + ' ' * TAB_SIZE * 4).join(clipboard_data[keyword]['data'].splitlines())
             return textwrap.dedent(f"""
                 ```
                 {content}
@@ -164,7 +165,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 """)
 
         else:
-            content = ('\n' + ' ' * 4 * 4).join(data_types)
+            content = ('\n' + ' ' * TAB_SIZE * 4).join(data_types)
             return textwrap.dedent(f"""
                 ```
                 clipboard: save: no such data type

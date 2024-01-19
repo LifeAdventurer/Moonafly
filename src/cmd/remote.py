@@ -10,6 +10,10 @@ import os
 import re
 
 
+# constants
+TAB_SIZE = 4
+
+
 on_remote = False
 allowed_paths = []
 Moonafly_path_stack = []
@@ -86,7 +90,7 @@ def load_remote_file(msg: str, identity: str) -> str:
         global file_language
         file_language = parts[-1] if len(parts) > 1 else ''
 
-        indentation = ' ' * 4 * 3
+        indentation = ' ' * TAB_SIZE * 3
         output = '\n'
         content = content.splitlines()
         lines_str_len = len(str(len(content)))
