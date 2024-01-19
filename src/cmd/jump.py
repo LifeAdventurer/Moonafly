@@ -9,6 +9,10 @@ from cmd import command_help
 import textwrap
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 path_stack = []
 def traverse(data: dict, target_folder: str, bypass: list) -> bool:
     if len(data) == 0:
@@ -29,7 +33,7 @@ def traverse(data: dict, target_folder: str, bypass: list) -> bool:
 
 def jump_to_folder(msg: str) -> str:
 
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('jump')
         
     global path_stack

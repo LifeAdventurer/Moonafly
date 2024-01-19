@@ -29,6 +29,10 @@ import time
 # from typing import Dict
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 terminal_mode_directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_terminal_mode_directory_structure():
@@ -133,7 +137,7 @@ def get_response_in_terminal_mode(message) -> str:
     if in_interaction() == False:
         if msg[:4] == 'help':
             msg = msg[4:].lstrip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('help')
 
             return textwrap.dedent(f"""
@@ -159,7 +163,7 @@ def get_response_in_terminal_mode(message) -> str:
         # cd command
         elif msg[:2] == 'cd':
             msg = msg[2:].lstrip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('cd')
 
             path = msg
@@ -273,7 +277,7 @@ def get_response_in_terminal_mode(message) -> str:
         # ls command
         elif msg[:2] == 'ls':
             msg = msg[3:].lstrip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('ls')
 
             # copy the terminal_mode_directory_structure
@@ -297,7 +301,7 @@ def get_response_in_terminal_mode(message) -> str:
         # return the full pathname of the current working directory
         elif msg[:3] == 'pwd':
             msg = msg[3:].lstrip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('pwd')
 
             # delete the prefix 'Moonafly:' and the suffix '$'
@@ -318,7 +322,7 @@ def get_response_in_terminal_mode(message) -> str:
         # show the terminal_mode_directory_structure
         elif msg[:4] == 'tree':
             msg = msg[4:].lstrip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('tree')
 
             if msg[:8] == 'Moonafly' and username == responses.author:
@@ -341,7 +345,7 @@ def get_response_in_terminal_mode(message) -> str:
     if len(path_stack) > 1 and path_stack[1] == 'author':
         if len(path_stack) > 2 and path_stack[2] == 'remote':
             if len(path_stack) > 3 and path_stack[3] == 'file':
-                if msg[:6] == '--help':
+                if msg.startswith(HELP_FLAG):
                     return command_help.load_help_cmd_info('remote_file')
 
                 return remote.load_remote_file(msg, 'author')
@@ -353,7 +357,7 @@ def get_response_in_terminal_mode(message) -> str:
     # commands in certain directory
     if len(path_stack) > 1 and path_stack[1] == 'math':
         if len(path_stack) > 2 and path_stack[2] == 'calc':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('math_calc')
 
             return textwrap.dedent(f"""
@@ -364,7 +368,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
         elif len(path_stack) > 2 and path_stack[2] == 'count':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('math_count')
 
             words = msg.split()
@@ -467,7 +471,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
     
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('weather')
             
         if msg == 'get':
@@ -479,7 +483,7 @@ def get_response_in_terminal_mode(message) -> str:
     # roll a random number
     elif len(path_stack) > 1 and path_stack[1] == 'random':
         if len(path_stack) > 2 and path_stack[2] == 'number':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('random_number')
 
             if msg.isdigit():
@@ -500,7 +504,7 @@ def get_response_in_terminal_mode(message) -> str:
         
         elif len(path_stack) > 2 and path_stack[2] == 'vocab':
             if len(path_stack) > 3 and path_stack[3] == 'test':
-                if msg[:6] == '--help':
+                if msg.startswith(HELP_FLAG):
                     return command_help.load_help_cmd_info('random_vocab_test')
 
                 return random_vocab_test.get_random_vocab_test(message)
@@ -514,7 +518,7 @@ def get_response_in_terminal_mode(message) -> str:
         # different languages
         # en
         if len(path_stack) > 2 and path_stack[2] == 'en':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('dict_en')
 
             # LIMIT example count
@@ -543,7 +547,7 @@ def get_response_in_terminal_mode(message) -> str:
 
         # en-zh_TW
         elif len(path_stack) > 2 and path_stack[2] == 'en-zh_TW':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('dict_en-zh_TW')
 
             # LIMIT example count
@@ -573,7 +577,7 @@ def get_response_in_terminal_mode(message) -> str:
     # games
     elif len(path_stack) > 1 and path_stack[1] == 'game':
         if len(path_stack) > 2 and path_stack[2] == '1A2B':
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('game_1A2B')
 
             return game_1A2B.play_game_1A2B(message)

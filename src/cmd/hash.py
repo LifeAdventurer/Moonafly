@@ -8,13 +8,17 @@ import hashlib
 import textwrap
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 def get_hash(msg: str) -> str:
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('hash')
 
     if msg[:4] == 'show':
         msg = msg[4:].strip()
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('hash_show')
 
         hash_algorithms = ('\n' + ' ' * 4 * 3).join(sorted(hashlib.algorithms_available))

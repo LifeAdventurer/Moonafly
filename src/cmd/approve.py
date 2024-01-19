@@ -9,6 +9,10 @@ import textwrap
 import json
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 roles = [
     "developers",
     "guests"
@@ -127,14 +131,14 @@ def approve_pending(msg: str) -> str:
 
 
 def approve_requests(msg: str) -> str:
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('approve')
 
 
     if msg[:4] == 'show':
         msg = msg[4:].strip()
         
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('approve_show')
 
         return show_pending_role_list()
@@ -142,7 +146,7 @@ def approve_requests(msg: str) -> str:
     elif msg[:7] == 'approve':
         msg = msg[7:].strip()
 
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('approve_approve')
 
         return approve_pending(msg)

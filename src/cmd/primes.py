@@ -8,6 +8,10 @@ import textwrap
 import random
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 def is_prime(num: int, k: int) -> bool:
     if num < 2:
         return False
@@ -39,7 +43,7 @@ def is_prime(num: int, k: int) -> bool:
 
 
 def check_prime(msg: str) -> str:
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help('primes')
 
     if msg.isdigit() and int(msg) > 0:

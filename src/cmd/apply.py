@@ -8,6 +8,10 @@ import json
 from datetime import datetime
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 apply_roles = [
     "developer",
     "guest"
@@ -40,7 +44,7 @@ def add_user_to_list(username: str, role: str):
         json.dump(pending_role_list, file, indent=4)
 
 def apply_for_role(msg: str, username: str) -> str:
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('apply')
 
     if msg in apply_roles:

@@ -12,11 +12,15 @@ import re
 import json
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 def set_maintenance(msg: str) -> str:
 
     # r_time = re.compile(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
 
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('set')
 
     try:
@@ -54,7 +58,7 @@ def set_maintenance(msg: str) -> str:
 
 def end_maintenance(msg: str) -> str:
 
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('end')
     
     if bot.in_maintenance != True:

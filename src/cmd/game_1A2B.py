@@ -9,6 +9,10 @@ import random
 import json
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 playing_game_1A2B = False
 target_number = ''
 target_number_len = 0
@@ -152,7 +156,7 @@ def play_game_1A2B(message) -> str:
             playing_game_1A2B = True
             attempts = 0
             msg = msg[6:].strip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('game_1A2B_start')
 
             # choose the length you want to start playing
@@ -185,7 +189,7 @@ def play_game_1A2B(message) -> str:
         elif msg[:4] == 'rank' or msg[:4] == 'Rank':
             msg = msg[5:].strip()
 
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('game_1A2B_rank')
 
             # show certain length ranking
@@ -233,7 +237,7 @@ def play_game_1A2B(message) -> str:
         if msg[:4] == 'stop' or msg[:4] == 'Stop':
             playing_game_1A2B = False
             msg = msg[5:].strip()
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('game_1A2B_stop')
 
             # use `stop start` to restart the game if you want

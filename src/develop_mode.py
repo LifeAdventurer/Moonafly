@@ -12,6 +12,10 @@ import textwrap
 import json
 
 
+# constants
+HELP_FLAG = '--help'
+
+
 develop_mode_directory_structure = []
 # initialed when bot started via init_files() in `bot.py`
 def load_develop_mode_directory_structure():
@@ -88,7 +92,7 @@ def get_response_in_develop_mode(message) -> str:
     # cd command
     if msg[:2] == 'cd':
         msg = msg[2:].lstrip()
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('cd')
 
         path = msg
@@ -191,7 +195,7 @@ def get_response_in_develop_mode(message) -> str:
     elif msg[:4] == 'tree':
         msg = msg[4:].lstrip()
 
-        if msg[:6] == '--help':
+        if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('tree')
 
         if msg[:8] == 'Moonafly':
@@ -222,7 +226,7 @@ def get_response_in_develop_mode(message) -> str:
 
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 
-            if msg[:6] == '--help':
+            if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('remote_file')
 
             return remote.load_remote_file(msg.strip(), 'developer')
