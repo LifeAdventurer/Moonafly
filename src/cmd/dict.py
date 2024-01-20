@@ -13,14 +13,17 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
             part_of_speech, en_definition, example_list = result
             # removes the certain trailing char from the string
             en_definition = en_definition.rstrip(': ')
+            
+            information = [
+                f"# {search_word}",
+                part_of_speech,
+                f"### Definition:",
+                f"- {en_definition}",
+                f"### Examples:"
+            ]
+            information += [f"- {sentence}" for sentence in example_list]
 
-            information = f"# {search_word}\n"
-            information += f"{space}{part_of_speech}\n"
-            information += f"{space}### Definition: \n{space}- {en_definition}\n"
-            information += f"{space}### Examples: \n"
-            for sentence in example_list:
-                information += f"{space}- {sentence}\n"
-            return information
+            return ('\n' + space).join(information)
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
 
@@ -69,15 +72,17 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
                 with open('../data/json/vocabulary_items.json', 'w', encoding='utf-8') as file:
                     json.dump(data, file, indent=4, ensure_ascii=False)
 
-            information = f"# {search_word}\n"
-            information += f"{space}{part_of_speech}\n"
-            information += f"{space}### Definition: \n"
-            information += f"{space}- {en_definition}\n"
-            information += f"{space}- {zh_TW_definition}\n"
-            information += f"### Examples: \n"
-            for sentence in example_list:
-                information += f"{space}- {sentence.strip()}\n"
-            return information
+            information = [
+                f"# {search_word}",
+                part_of_speech,
+                f"### Definition:",
+                f"- {en_definition}",
+                f"- {zh_TW_definition}",
+                "### Examples:",
+            ]
+            information += [f"- {sentence.strip()}" for sentence in example_list]
+
+            return ('\n' + space).join(information)
         else:
             return f"Failed to retrieve information for the word '{search_word}'."
 
