@@ -80,7 +80,7 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
                 f"- {zh_TW_definition}",
                 "### Examples:",
             ]
-            information += [f"- {sentence.strip()}" for sentence in example_list]
+            information += [f"- {sentence}" for sentence in example_list]
 
             return ('\n' + space).join(information)
         else:
@@ -190,7 +190,7 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
         )
         for example in examples:
             example_sentence = (
-                example.text.strip() if example else 'No example sentence found'
+                example.text.replace('\n', '').replace('\t', '').strip() if example else 'No example sentence found'
             )
             example_list.append(example_sentence)
             if len(example_list) == limit_example_count:
