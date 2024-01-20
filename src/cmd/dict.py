@@ -10,11 +10,12 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
         result = get_info_in_English(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
-            en_definition, example_list = result
+            part_of_speech, en_definition, example_list = result
             # removes the certain trailing char from the string
             en_definition = en_definition.rstrip(': ')
 
             information = f"# {search_word}\n"
+            information += f"{space}{part_of_speech}\n"
             information += f"{space}### Definition: \n{space}- {en_definition}\n"
             information += f"{space}### Examples: \n"
             for sentence in example_list:
@@ -27,7 +28,7 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
         result = get_info_in_English_Chinese_traditional(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
-            en_definition, zh_TW_definition, example_list = result
+            part_of_speech, en_definition, zh_TW_definition, example_list = result
             # removes the certain trailing char from the string
             en_definition = en_definition.strip(': ')
             zh_TW_definition = zh_TW_definition.strip(': ')
@@ -69,6 +70,7 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
                     json.dump(data, file, indent=4, ensure_ascii=False)
 
             information = f"# {search_word}\n"
+            information += f"{space}{part_of_speech}\n"
             information += f"{space}### Definition: \n"
             information += f"{space}- {en_definition}\n"
             information += f"{space}- {zh_TW_definition}\n"
@@ -99,6 +101,14 @@ def get_info_in_English(word, limit_example_count):
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
+        # Extract part of speech
+        part_of_speech = soup.find(
+            'span', {'class': 'pos dpos'}
+        )
+        part_of_speech = (
+            part_of_speech.text.strip() if part_of_speech else 'No part of speech found'
+        )
+
         # Extract the definition
         en_definition = soup.find(
             'div', {'class': 'def ddef_d db'}
@@ -119,7 +129,7 @@ def get_info_in_English(word, limit_example_count):
             if len(example_list) == limit_example_count:
                 break
 
-        return en_definition_text, example_list
+        return part_of_speech, en_definition_text, example_list
 
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
@@ -144,6 +154,14 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
         response.raise_for_status()  # Raise an HTTPError for bad responses
 
         soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Extract part of speech
+        part_of_speech = soup.find(
+            'span', {'class': 'pos dpos'}
+        )
+        part_of_speech = (
+            part_of_speech.text.strip() if part_of_speech else 'No part of speech found'
+        )
 
         # Extract the definition
         # en
@@ -173,7 +191,7 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
             if len(example_list) == limit_example_count:
                 break
 
-        return en_definition_text, zh_TW_definition_text, example_list
+        return part_of_speech, en_definition_text, zh_TW_definition_text, example_list
 
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
