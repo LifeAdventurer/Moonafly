@@ -18,6 +18,8 @@ def get_random_vocab_review(message) -> str:
     # remove the leading and trailing spaces
     msg = msg.strip()
 
+    global vocab_index, previous_index
+
     if msg.lower() == 'g':
         try:
             with open('../data/json/vocabulary_items.json', 'r', encoding='utf-8') as file:
