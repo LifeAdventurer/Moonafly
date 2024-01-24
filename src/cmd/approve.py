@@ -20,7 +20,7 @@ roles = [
 ]
 
 
-def show_pending_role_list() -> str:
+def load_pending_role_list() -> dict:
     try:
         with open('../data/json/pending_role_list.json') as file:
             pending_role_list = json.load(file)
@@ -31,6 +31,12 @@ def show_pending_role_list() -> str:
         }
         with open('../data/json/pending_role_list.json', 'w') as file:
             json.dump(pending_role_list, file)
+    
+    return pending_role_list
+
+
+def show_pending_role_list() -> str:
+    pending_role_list = load_pending_role_list()
     
     content = ['pending role list:', ' ']
 
@@ -65,16 +71,7 @@ def show_pending_role_list() -> str:
 
 
 def approve_pending(msg: str) -> str:
-    try:
-        with open('../data/json/pending_role_list.json') as file:
-            pending_role_list = json.load(file)
-    except FileNotFoundError:
-        pending_role_list = {
-            "developers": [],
-            "guests": []
-        }
-        with open('../data/json/pending_role_list.json', 'w') as file:
-            json.dump(pending_role_list, file)
+    pending_role_list = load_pending_role_list()
 
     with open('../data/json/user_identity.json') as file:
         user_identity = json.load(file)
