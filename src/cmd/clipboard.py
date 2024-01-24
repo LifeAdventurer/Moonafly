@@ -83,7 +83,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
 
             clipboard[temp_keyword] = {
                 "data": temp_data,
-                "type": data_type,
+                "type": temp_data_type,
                 "user": username
             }
 
