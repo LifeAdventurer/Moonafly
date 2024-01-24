@@ -66,4 +66,4 @@ def get_random_vocab_review(message) -> str:
             """)
     
     else:
-        return command_not_found(msg)
+        return terminal_mode.command_not_found(msg)
