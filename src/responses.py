@@ -152,9 +152,10 @@ def get_response(message) -> str:
                 user_pending = []
 
                 for role in approve.roles:
-                    if len(pending_role_list[role]) > 0:
+                    pending_count = len(pending_role_list[role])
+                    if pending_count > 0:
                         user_pending.append(
-                            f"{len(pending_role_list[role])} users are pending for the role: '{role}'"
+                            f"{pending_count} user{'s are' if pending_count > 1 else ' is'} pending for the role: '{role}'"
                         )
                     
                 space = '\n' + ' ' * TAB_SIZE * 5
