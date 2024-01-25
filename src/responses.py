@@ -6,6 +6,7 @@ import develop_mode
 from cmd import clipboard
 from cmd import random_vocab_test
 from cmd import game_1A2B
+from cmd import approve
 
 
 import json
@@ -15,6 +16,10 @@ import psutil
 
 
 Moonafly_version = 'v2.7.0'
+
+
+# constants
+TAB_SIZE = 4
 
 
 # user identity
@@ -140,6 +145,26 @@ def get_response(message) -> str:
             if len(msg) > 0:
                 message.content = msg
                 return get_response(message)
+
+            if username == author:
+                pending_role_list = approve.load_pending_role_list()
+
+                user_pending = []
+
+                for role in approve.roles:
+                    if len(pending_role_list[role]) > 0:
+                        user_pending.append(
+                            f"{len(pending_role_list[role])} users are pending for the role: '{role}'"
+                        )
+                    
+                space = '\n' + ' ' * TAB_SIZE * 5
+
+                return textwrap.dedent(f"""
+                    ```
+                    {space.join(user_pending)}
+                    {terminal_mode.current_path()}
+                    ```
+                """)
 
             return textwrap.dedent(f"""
                 ```
