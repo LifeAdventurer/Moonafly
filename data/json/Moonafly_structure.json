@@ -24,10 +24,12 @@
         "src": {
             "cmd": {
                 "apply.py": {},
+                "approve.py": {},
                 "clipboard.py": {},
                 "command_help.py": {},
                 "dict.py": {},
                 "game_1A2B.py": {},
+                "hash.py": {},
                 "jump.py": {},
                 "maintenance.py": {},
                 "math_calc.py": {},
