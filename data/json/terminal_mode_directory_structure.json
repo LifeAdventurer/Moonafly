@@ -12,6 +12,9 @@
                 "en": {},
                 "en-zh_TW": {}
             },
+            "game": {
+                "1A2B": {}
+            },
             "hash": {},
             "math": {
                 "calc": {},
@@ -29,10 +32,7 @@
                 "github": {},
                 "online-judge": {}
             },
-            "weather": {},
-            "game": {
-                "1A2B": {}
-            }
+            "weather": {}
         }
     }
 }
