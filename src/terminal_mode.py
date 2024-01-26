@@ -17,6 +17,7 @@ from cmd import random_vocab_review
 from cmd import game_1A2B
 from cmd import clipboard
 from cmd import primes
+from cmd import news
 
 
 import json
@@ -456,6 +457,9 @@ def get_response_in_terminal_mode(message) -> str:
 
         elif len(path_stack) > 2 and path_stack[2] == 'primes':
             return primes.check_prime(msg)
+    
+    elif len(path_stack) > 1 and path_stack[1] == 'news':
+        return news.get_news(msg)
 
     # roll a random number
     elif len(path_stack) > 1 and path_stack[1] == 'random':
