@@ -275,6 +275,10 @@ def get_response_in_terminal_mode(message) -> str:
             path_stack = temporary_path_stack
             return f"```{current_path()}```"
 
+        elif msg[:4] == 'jump':
+            msg = msg[4:].strip()
+            return jump.jump_to_folder(msg)
+
         # ls command
         elif msg[:2] == 'ls':
             msg = msg[3:].lstrip()
@@ -336,185 +340,25 @@ def get_response_in_terminal_mode(message) -> str:
                 current_structure = current_structure[folder]
 
             return tree.visualize_structure(current_structure)
-        
-        elif msg[:4] == 'jump':
-            msg = msg[4:].strip()
-            return jump.jump_to_folder(msg)
-
+    
 
     # only author can access this part
     if len(path_stack) > 1 and path_stack[1] == 'author':
-        if len(path_stack) > 2 and path_stack[2] == 'remote':
+        if len(path_stack) > 2 and path_stack[2] == 'approve':
+            return approve.approve_requests(msg)
+
+        elif len(path_stack) > 2 and path_stack[2] == 'remote':
             if len(path_stack) > 3 and path_stack[3] == 'file':
                 if msg.startswith(HELP_FLAG):
                     return command_help.load_help_cmd_info('remote_file')
 
                 return remote.load_remote_file(msg, 'author')
         
-        elif len(path_stack) > 2 and path_stack[2] == 'approve':
-            return approve.approve_requests(msg)
-
 
     # commands in certain directory
-    if len(path_stack) > 1 and path_stack[1] == 'math':
-        if len(path_stack) > 2 and path_stack[2] == 'calc':
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('math_calc')
-
-            return textwrap.dedent(f"""
-                ```
-                {math_calc.safe_eval(msg)}
-                {current_path()}
-                ```
-            """)
-
-        elif len(path_stack) > 2 and path_stack[2] == 'count':
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('math_count')
-
-            words = msg.split()
-            return textwrap.dedent(f"""
-                ```
-                {str(len(words))}
-                {current_path()}
-                ```
-            """)
-
-        elif len(path_stack) > 2 and path_stack[2] == 'primes':
-            return primes.check_prime(msg)
-
-
-    elif len(path_stack) > 1 and path_stack[1] == 'clipboard':
+    if len(path_stack) > 1 and path_stack[1] == 'clipboard':
         return clipboard.get_clipboard_response(message)
-    
-    elif len(path_stack) > 1 and path_stack[1] == 'hash':
-        return hash.get_hash(msg)
-    
-    elif len(path_stack) > 1 and path_stack[1] == 'search':
-        # search for a handle in different online judges
-        if len(path_stack) > 2 and path_stack[2] == 'online-judge':
-            # -{number} handle
-            # search for certain pattern
-            pattern = r'^-(\d+)\s+(\w+)$'
-            match = re.search(pattern, msg)
 
-            if match:
-                number = int(match.group(1))
-                handle = match.group(2)
-                url = ""
-                # TODO: make this as a file or at least a list
-                if number == 1:
-                    url = "https://atcoder.jp/users/"
-                elif number == 2:
-                    url = "https://www.codechef.com/users/"
-                elif number == 3:
-                    url = "https://codeforces.com/profile/"
-                elif number == 4:
-                    url = "https://csacademy.com/user/"
-                elif number == 5:
-                    url = "https://dmoj.ca/user/"
-                elif number == 6:
-                    url = "https://leetcode.com/"
-                elif number == 7:
-                    url = "https://profiles.topcoder.com/"
-                else:
-                    return textwrap.dedent(f"""
-                        ```
-                        please enter a valid number
-                        {current_path()}
-                        ```
-                    """)
-
-                url += handle
-                response = requests.get(url)
-                if response.status_code == 404:
-                    return textwrap.dedent(f"""
-                        ```
-                        The handle {handle} is not found
-                        {current_path()}
-                        ```
-                    """)
-
-                else:
-                    return textwrap.dedent(f"""
-                        {url}
-                        ```
-                        {current_path()}
-                        ```
-                    """)
-
-            else:
-                return textwrap.dedent(f"""
-                    ```
-                    please type the right command format, using help to see what are the available options
-                    {current_path()}
-                    ```
-                """)
-
-        # search for github repos or profiles -> because url
-        elif len(path_stack) > 2 and path_stack[2] == 'github':
-            github_url = "https://github.com/" + msg
-            response = requests.get(github_url)
-            if response.status_code == 404:
-                return textwrap.dedent(f"""
-                    The url {github_url} is not found (404 Not Found).
-                    ```
-                    {current_path()}
-                    ```
-                """)
-
-            else:
-                return textwrap.dedent(f"""
-                    {github_url}
-                    ```
-                    {current_path()}
-                    ```
-                """)
-    
-    elif len(path_stack) > 1 and path_stack[1] == 'weather':
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('weather')
-            
-        if msg == 'get':
-            return weather.get_weather_info()
-
-        else:
-            return command_not_found(msg)
-
-    # roll a random number
-    elif len(path_stack) > 1 and path_stack[1] == 'random':
-        if len(path_stack) > 2 and path_stack[2] == 'number':
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('random_number')
-
-            if msg.isdigit():
-                return textwrap.dedent(f"""
-                    ```
-                    {random.randint(1, int(msg))}
-                    {current_path()}
-                    ```
-                """)
-
-            else:
-                return textwrap.dedent(f"""
-                    ```
-                    please enter a valid number
-                    {current_path()}
-                    ```
-                """)
-        
-        elif len(path_stack) > 2 and path_stack[2] == 'vocab':
-            if len(path_stack) > 3 and path_stack[3] == 'test':
-                if msg.startswith(HELP_FLAG):
-                    return command_help.load_help_cmd_info('random_vocab_test')
-
-                return random_vocab_test.get_random_vocab_test(message)
-            
-            if len(path_stack) > 3 and path_stack[3] == 'review':
-                return random_vocab_review.get_random_vocab_review(message)
-
-
-    # return the definition and example of the enter word from a dictionary
     elif len(path_stack) > 1 and path_stack[1] == 'dict':
         # different languages
         # en
@@ -582,6 +426,159 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_help.load_help_cmd_info('game_1A2B')
 
             return game_1A2B.play_game_1A2B(message)
+
+    elif len(path_stack) > 1 and path_stack[1] == 'hash':
+        return hash.get_hash(msg)
+
+    elif len(path_stack) > 1 and path_stack[1] == 'math':
+        if len(path_stack) > 2 and path_stack[2] == 'calc':
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('math_calc')
+
+            return textwrap.dedent(f"""
+                ```
+                {math_calc.safe_eval(msg)}
+                {current_path()}
+                ```
+            """)
+
+        elif len(path_stack) > 2 and path_stack[2] == 'count':
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('math_count')
+
+            words = msg.split()
+            return textwrap.dedent(f"""
+                ```
+                {str(len(words))}
+                {current_path()}
+                ```
+            """)
+
+        elif len(path_stack) > 2 and path_stack[2] == 'primes':
+            return primes.check_prime(msg)
+
+    # roll a random number
+    elif len(path_stack) > 1 and path_stack[1] == 'random':
+        if len(path_stack) > 2 and path_stack[2] == 'number':
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('random_number')
+
+            if msg.isdigit():
+                return textwrap.dedent(f"""
+                    ```
+                    {random.randint(1, int(msg))}
+                    {current_path()}
+                    ```
+                """)
+
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    please enter a valid number
+                    {current_path()}
+                    ```
+                """)
+        
+        elif len(path_stack) > 2 and path_stack[2] == 'vocab':
+            if len(path_stack) > 3 and path_stack[3] == 'review':
+                return random_vocab_review.get_random_vocab_review(message)
+
+            elif len(path_stack) > 3 and path_stack[3] == 'test':
+                if msg.startswith(HELP_FLAG):
+                    return command_help.load_help_cmd_info('random_vocab_test')
+
+                return random_vocab_test.get_random_vocab_test(message)
+    
+    elif len(path_stack) > 1 and path_stack[1] == 'search':
+        # search for github repos or profiles -> because url
+        if len(path_stack) > 2 and path_stack[2] == 'github':
+            github_url = "https://github.com/" + msg
+            response = requests.get(github_url)
+            if response.status_code == 404:
+                return textwrap.dedent(f"""
+                    The url {github_url} is not found (404 Not Found).
+                    ```
+                    {current_path()}
+                    ```
+                """)
+
+            else:
+                return textwrap.dedent(f"""
+                    {github_url}
+                    ```
+                    {current_path()}
+                    ```
+                """)
+
+        # search for a handle in different online judges
+        elif len(path_stack) > 2 and path_stack[2] == 'online-judge':
+            # -{number} handle
+            # search for certain pattern
+            pattern = r'^-(\d+)\s+(\w+)$'
+            match = re.search(pattern, msg)
+
+            if match:
+                number = int(match.group(1))
+                handle = match.group(2)
+                url = ""
+                # TODO: make this as a file or at least a list
+                if number == 1:
+                    url = "https://atcoder.jp/users/"
+                elif number == 2:
+                    url = "https://www.codechef.com/users/"
+                elif number == 3:
+                    url = "https://codeforces.com/profile/"
+                elif number == 4:
+                    url = "https://csacademy.com/user/"
+                elif number == 5:
+                    url = "https://dmoj.ca/user/"
+                elif number == 6:
+                    url = "https://leetcode.com/"
+                elif number == 7:
+                    url = "https://profiles.topcoder.com/"
+                else:
+                    return textwrap.dedent(f"""
+                        ```
+                        please enter a valid number
+                        {current_path()}
+                        ```
+                    """)
+
+                url += handle
+                response = requests.get(url)
+                if response.status_code == 404:
+                    return textwrap.dedent(f"""
+                        ```
+                        The handle {handle} is not found
+                        {current_path()}
+                        ```
+                    """)
+
+                else:
+                    return textwrap.dedent(f"""
+                        {url}
+                        ```
+                        {current_path()}
+                        ```
+                    """)
+
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    please type the right command format, using help to see what are the available options
+                    {current_path()}
+                    ```
+                """)
+    
+    elif len(path_stack) > 1 and path_stack[1] == 'weather':
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('weather')
+            
+        if msg == 'get':
+            return weather.get_weather_info()
+
+        else:
+            return command_not_found(msg)
 
     else:
         return command_not_found(msg)
