@@ -1,6 +1,9 @@
 import terminal_mode
 
 
+from cmd import command_help
+
+
 import textwrap
 import requests
 from bs4 import BeautifulSoup
@@ -57,6 +60,9 @@ def get_cnn_news() -> str:
 
 
 def get_news(msg: str) -> str:
+    if msg[:6] == '--help':
+        return command_help.load_help_cmd_info('news')
+
     if msg == 'get':
         return get_cnn_news()
     else:
