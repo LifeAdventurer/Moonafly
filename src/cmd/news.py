@@ -16,7 +16,12 @@ TAB_SIZE = 4
 cnn_root_url = 'https://edition.cnn.com'
 
 
+sending_news = False
+
+
 def get_cnn_news() -> str:
+    global sending_news
+    
     response = requests.get(cnn_root_url + '/world')
 
     if response.status_code == 200:
@@ -41,9 +46,11 @@ def get_cnn_news() -> str:
 
                     news_url_list.append(news_url)
 
+        sending_news = True
+
         space = '\n' + ' ' * TAB_SIZE * 3
         return textwrap.dedent(f"""
-            {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 5))])} 
+            {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 15))])} 
             ```
             {terminal_mode.current_path()}
             ```

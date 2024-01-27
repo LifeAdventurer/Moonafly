@@ -4,6 +4,7 @@ import develop_mode
 
 
 from cmd import remote
+from cmd import news
 
 
 import discord
@@ -97,6 +98,33 @@ async def send_message(message):
                 await message.channel.send(output_suffix)
 
                 remote.on_remote = False
+            
+            elif news.sending_news == True:
+                response = response.splitlines()
+                output_suffix = '\n'.join(response[-3:])
+                response = response[:-4]
+                word_count = 0
+                line_count = 0
+                lines = []
+                for line in response:
+                    if word_count + len(line) + line_count * 2 + 50 > 2000:
+                        word_count = len(line)
+                        line_count = 1
+                        content = '\n'.join(lines)
+                        lines = [line]
+                        await message.channel.send(content)
+                    else:
+                        word_count += len(line)
+                        line_count += 1
+                        lines.append(line)
+                
+                if len(lines) > 0:
+                    content = '\n'.join(lines)
+
+                await message.channel.send(content)
+                # the current path bar
+                await message.channel.send(output_suffix)
+                news.sending_news = False
 
             else:
                 await message.channel.send(response)
