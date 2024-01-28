@@ -2,3 +2,4 @@ Usage: [command]
 
 commands under ~/news
  get
+ show

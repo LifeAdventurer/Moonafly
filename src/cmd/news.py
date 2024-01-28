@@ -114,7 +114,12 @@ def get_news(msg: str) -> str:
                 """)
 
         return get_cnn_news(category)
-    elif msg == 'show':
+    elif msg[:4] == 'show':
+        msg = msg[4:].strip()
+
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('news_show')
+
         return show_news_categories()
     else:
         return terminal_mode.command_not_found(msg)
