@@ -1,5 +1,5 @@
 Usage: [command]
 
 commands under ~/news
- get
+ get [category]
  show

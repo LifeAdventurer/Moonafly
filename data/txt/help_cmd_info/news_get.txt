@@ -1,2 +1,4 @@
-Usage: get
-    get news from news website
+Usage: get [category]
+    get news from the CATEGORY on the news website
+
+    the default of CATEGORY is 'world'
