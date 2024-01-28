@@ -10,8 +10,8 @@ import requests
 
 
 # constants
+TAB_SIZE = 4
 HELP_FLAG = '--help'
-
 
 urls = {
     "atcoder": "https://atcoder.jp/users/",
@@ -22,6 +22,24 @@ urls = {
     "leetcode": "https://leetcode.com/",
     "topcoder": "https://profiles.topcoder.com/"
 }
+
+
+def show_online_judge_list() -> str:
+    
+    # max_oj_len = max(len(key) for key in urls)
+
+    online_judge_list = []
+
+    for index, key in enumerate(urls):
+        online_judge_list.append(f"{key}{' ' * (20 - len(key) - len(str(index + 1)) - 1)}-{str(index + 1)}")
+
+    space = ('\n' + ' ' * TAB_SIZE * 2)
+    return textwrap.dedent(f"""
+        ```
+        {space.join(online_judge_list)}
+        {terminal_mode.current_path()}
+        ```
+    """)
 
 
 def get_profile_from_online_judge(number: int, handle: str) -> str:
@@ -59,6 +77,9 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
 def get_online_judge_info(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('online_judge')
+    
+    if msg == 'show':
+        return show_online_judge_list()
 
     # -{number} {handle}
     pattern = r'^-(\d+)\s+(\w+)$'
