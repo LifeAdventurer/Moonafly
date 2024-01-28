@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 # constants
 TAB_SIZE = 4
-
+HELP_FLAG = '--help'
 
 cnn_root_url = 'https://edition.cnn.com'
 
@@ -67,7 +67,7 @@ def get_cnn_news() -> str:
 
 
 def get_news(msg: str) -> str:
-    if msg[:6] == '--help':
+    if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('news')
 
     if msg == 'get':
