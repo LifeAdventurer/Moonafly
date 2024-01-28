@@ -50,7 +50,7 @@ def get_online_judge_info(msg: str) -> str:
 
         else:
             return textwrap.dedent(f"""
-                {url}
+                <{url}>
                 ```
                 {terminal_mode.current_path()}
                 ```
