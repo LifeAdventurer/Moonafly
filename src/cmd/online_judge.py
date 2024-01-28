@@ -6,6 +6,17 @@ import re
 import requests
 
 
+urls = {
+    "atcoder": "https://atcoder.jp/users/",
+    "codechef": "https://www.codechef.com/users/",
+    "codeforces": "https://codeforces.com/profile/",
+    "csacademy": "https://csacademy.com/user/",
+    "dmoj": "https://dmoj.ca/user/",
+    "leetcode": "https://leetcode.com/",
+    "topcoder": "https://profiles.topcoder.com/"
+}
+
+
 def get_online_judge_info(msg: str) -> str:
     # -{number} {handle}
     pattern = r'^-(\d+)\s+(\w+)$'
@@ -14,32 +25,22 @@ def get_online_judge_info(msg: str) -> str:
     if match:
         number = int(match.group(1))
         handle = match.group(2)
-        url = ""
-        # TODO: make this as a file or at least a list
-        if number == 1:
-            url = "https://atcoder.jp/users/"
-        elif number == 2:
-            url = "https://www.codechef.com/users/"
-        elif number == 3:
-            url = "https://codeforces.com/profile/"
-        elif number == 4:
-            url = "https://csacademy.com/user/"
-        elif number == 5:
-            url = "https://dmoj.ca/user/"
-        elif number == 6:
-            url = "https://leetcode.com/"
-        elif number == 7:
-            url = "https://profiles.topcoder.com/"
-        else:
+        
+        if not 1 <= number <= len(urls):
             return textwrap.dedent(f"""
                 ```
-                please enter a valid number
+                please enter a valid number between 1 and {len(urls)}
                 {terminal_mode.current_path()}
                 ```
             """)
+        
+        for index, (key, value) in enumerate(urls.items()):
+            if index == number - 1:
+                oj_url = value
+                break
 
-        url += handle
-        response = requests.get(url)
+        url = oj_url + handle
+        response = requests.get(url) 
         if response.status_code == 404:
             return textwrap.dedent(f"""
                 ```
