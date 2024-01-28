@@ -1,9 +1,16 @@
 import terminal_mode
 
 
+from cmd import command_help
+
+
 import textwrap
 import re
 import requests
+
+
+# constants
+HELP_FLAG = '--help'
 
 
 urls = {
@@ -50,6 +57,9 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
 
 
 def get_online_judge_info(msg: str) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('online_judge')
+
     # -{number} {handle}
     pattern = r'^-(\d+)\s+(\w+)$'
     match = re.search(pattern, msg)

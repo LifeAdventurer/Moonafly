@@ -1,0 +1,3 @@
+Usage: -[number] [handle]
+    get the user profile page of the {NUMBER}th
+    online judge on the list with the HANDLE
