@@ -1,3 +1,5 @@
-Usage: -[number] [handle]
-    get the user profile page of the {NUMBER}th
-    online judge on the list with the HANDLE
+Usage: [command]
+
+commands under ~/search/online-judge
+ show
+ -[number] [handle]
