@@ -17,6 +17,38 @@ urls = {
 }
 
 
+def get_profile_from_online_judge(number: int, handle: str) -> str:
+    if not 1 <= number <= len(urls):
+        return textwrap.dedent(f"""
+            ```
+            please enter a valid number between 1 and {len(urls)}
+            {terminal_mode.current_path()}
+            ```
+        """)
+    
+    for index, (key, value) in enumerate(urls.items()):
+        if index == number - 1:
+            oj_url = value
+            break
+
+    url = oj_url + handle
+    response = requests.get(url) 
+    if response.status_code == 404:
+        return textwrap.dedent(f"""
+            ```
+            The handle {handle} is not found
+            {terminal_mode.current_path()}
+            ```
+        """)
+    else:
+        return textwrap.dedent(f"""
+            <{url}>
+            ```
+            {terminal_mode.current_path()}
+            ```
+        """)
+
+
 def get_online_judge_info(msg: str) -> str:
     # -{number} {handle}
     pattern = r'^-(\d+)\s+(\w+)$'
@@ -25,38 +57,7 @@ def get_online_judge_info(msg: str) -> str:
     if match:
         number = int(match.group(1))
         handle = match.group(2)
-        
-        if not 1 <= number <= len(urls):
-            return textwrap.dedent(f"""
-                ```
-                please enter a valid number between 1 and {len(urls)}
-                {terminal_mode.current_path()}
-                ```
-            """)
-        
-        for index, (key, value) in enumerate(urls.items()):
-            if index == number - 1:
-                oj_url = value
-                break
-
-        url = oj_url + handle
-        response = requests.get(url) 
-        if response.status_code == 404:
-            return textwrap.dedent(f"""
-                ```
-                The handle {handle} is not found
-                {terminal_mode.current_path()}
-                ```
-            """)
-
-        else:
-            return textwrap.dedent(f"""
-                <{url}>
-                ```
-                {terminal_mode.current_path()}
-                ```
-            """)
-
+        return get_profile_from_online_judge(number, handle)
     else:
         return textwrap.dedent(f"""
             ```
