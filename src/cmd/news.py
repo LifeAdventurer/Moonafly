@@ -102,4 +102,4 @@ def get_news(msg: str) -> str:
 
         return get_cnn_news(category)
     else:
-        return terminal_mode.command_not_found()
+        return terminal_mode.command_not_found(msg)
