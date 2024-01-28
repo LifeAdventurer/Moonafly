@@ -19,10 +19,10 @@ cnn_root_url = 'https://edition.cnn.com'
 sending_news = False
 
 
-def get_cnn_news() -> str:
+def get_cnn_news(category: str) -> str:
     global sending_news
     
-    response = requests.get(cnn_root_url + '/world')
+    response = requests.get(f"{cnn_root_url}/{category}")
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -50,7 +50,7 @@ def get_cnn_news() -> str:
 
         space = '\n' + ' ' * TAB_SIZE * 3
         return textwrap.dedent(f"""
-            {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 15))])} 
+            {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 15))])}
             ```
             {terminal_mode.current_path()}
             ```
@@ -60,17 +60,46 @@ def get_cnn_news() -> str:
         print(f"Failed to retrieve page: '{cnn_root_url}'. Status code: {response.status_code}")
         return textwrap.dedent(f"""
             ```
-            Failed to retrieve news, please try again later. 
+            Failed to retrieve news, please try again later.
             {terminal_mode.current_path()}
             ```
-        """)    
+        """)
+
+
+cnn_news_categories = [
+    "us",
+    "world",
+    "politics",
+    "business",
+    "opinion",
+    "health",
+    "entertainment",
+    "style",
+    "travel",
+    "sports"
+]
 
 
 def get_news(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('news')
 
-    if msg == 'get':
-        return get_cnn_news()
+    if msg[:3] == 'get':
+        msg = msg[3:].strip()
+
+        category = 'world'  # default
+
+        if len(msg) > 0:
+            if msg in cnn_news_categories:
+                category = msg
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    category: '{msg}' not found
+                    {terminal_mode.current_path()}
+                    ```
+                """)
+
+        return get_cnn_news(category)
     else:
         return terminal_mode.command_not_found()
