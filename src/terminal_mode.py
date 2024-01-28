@@ -18,6 +18,7 @@ from cmd import game_1A2B
 from cmd import clipboard
 from cmd import primes
 from cmd import news
+from cmd import online_judge
 
 
 import json
@@ -516,63 +517,7 @@ def get_response_in_terminal_mode(message) -> str:
 
         # search for a handle in different online judges
         elif len(path_stack) > 2 and path_stack[2] == 'online-judge':
-            # -{number} handle
-            # search for certain pattern
-            pattern = r'^-(\d+)\s+(\w+)$'
-            match = re.search(pattern, msg)
-
-            if match:
-                number = int(match.group(1))
-                handle = match.group(2)
-                url = ""
-                # TODO: make this as a file or at least a list
-                if number == 1:
-                    url = "https://atcoder.jp/users/"
-                elif number == 2:
-                    url = "https://www.codechef.com/users/"
-                elif number == 3:
-                    url = "https://codeforces.com/profile/"
-                elif number == 4:
-                    url = "https://csacademy.com/user/"
-                elif number == 5:
-                    url = "https://dmoj.ca/user/"
-                elif number == 6:
-                    url = "https://leetcode.com/"
-                elif number == 7:
-                    url = "https://profiles.topcoder.com/"
-                else:
-                    return textwrap.dedent(f"""
-                        ```
-                        please enter a valid number
-                        {current_path()}
-                        ```
-                    """)
-
-                url += handle
-                response = requests.get(url)
-                if response.status_code == 404:
-                    return textwrap.dedent(f"""
-                        ```
-                        The handle {handle} is not found
-                        {current_path()}
-                        ```
-                    """)
-
-                else:
-                    return textwrap.dedent(f"""
-                        {url}
-                        ```
-                        {current_path()}
-                        ```
-                    """)
-
-            else:
-                return textwrap.dedent(f"""
-                    ```
-                    please type the right command format, using help to see what are the available options
-                    {current_path()}
-                    ```
-                """)
+            return online_judge.get_online_judge_info(msg)
     
     elif len(path_stack) > 1 and path_stack[1] == 'weather':
         if msg.startswith(HELP_FLAG):
