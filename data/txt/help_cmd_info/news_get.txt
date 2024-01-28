@@ -1,0 +1,2 @@
+Usage: get
+    get news from news website

@@ -1,2 +1,4 @@
-Usage: get
-    get news from news website
+Usage: [command]
+
+commands under ~/news
+ get

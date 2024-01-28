@@ -87,6 +87,9 @@ def get_news(msg: str) -> str:
     if msg[:3] == 'get':
         msg = msg[3:].strip()
 
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('news_get')
+
         category = 'world'  # default
 
         if len(msg) > 0:
