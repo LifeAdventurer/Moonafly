@@ -80,6 +80,16 @@ cnn_news_categories = [
 ]
 
 
+def show_news_categories() -> str:
+    space = '\n' + ' ' * TAB_SIZE * 2
+    return textwrap.dedent(f"""
+        ```
+        {space.join(cnn_news_categories)}
+        {terminal_mode.current_path()}
+        ```
+    """)
+
+
 def get_news(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('news')
@@ -104,5 +114,7 @@ def get_news(msg: str) -> str:
                 """)
 
         return get_cnn_news(category)
+    elif msg == 'show':
+        return show_news_categories()
     else:
         return terminal_mode.command_not_found(msg)
