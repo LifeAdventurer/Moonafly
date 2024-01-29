@@ -50,6 +50,8 @@
             "terminal_mode.py": {}
         },
         ".gitignore": {},
+        "init_Moonafly.bat": {},
+        "init_Moonafly.sh": {},
         "poetry.lock": {},
         "pyproject.toml": {},
         "README.md": {},
