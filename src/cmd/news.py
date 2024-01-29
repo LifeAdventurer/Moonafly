@@ -67,16 +67,16 @@ def get_cnn_news(category: str) -> str:
 
 
 cnn_news_categories = [
-    "us",
-    "world",
-    "politics",
-    "business",
-    "opinion",
-    "health",
-    "entertainment",
-    "style",
-    "travel",
-    "sports"
+    'us',
+    'world',
+    'politics',
+    'business',
+    'opinion',
+    'health',
+    'entertainment',
+    'style',
+    'travel',
+    'sports'
 ]
 
 
