@@ -5,5 +5,5 @@ if exist "config.json" (
     cd src
     python main.py
 ) else (
-    echo Please initialize Moonafly first
+    echo Please setup Moonafly first using init_Moonafly script
 )
