@@ -31,10 +31,21 @@ def save_clipboard_data(clipboard_data):
         json.dump(clipboard_data, file, indent=4)
 
 
-def get_clipboard_data(keyword: str) -> str:
+def get_clipboard_data(keyword: str, username: str) -> str:
     clipboard_data = load_clipboard_data()
 
     if keyword in clipboard_data:
+        data_status = clipboard_data[keyword]['status']
+        data_user = clipboard_data[keyword]['user']
+
+        if data_status == 'private' and data_user != username:
+            return textwrap.dedent(f"""
+                ```
+                this keyword directs to private data that you do not have access to get
+                {terminal_mode.current_path()}
+                ```
+            """)
+
         data_type = clipboard_data[keyword]['type']
         
         if data_type == 'link':
@@ -68,12 +79,13 @@ checking_clipboard_keyword_override = False
 temp_keyword = ''
 temp_data_type = ''
 temp_data = ''
+temp_status = ''
 
 def save_data_to_clipboard(msg: str, username: str) -> str:
     lines = msg.splitlines()
 
     global checking_clipboard_keyword_override
-    global temp_keyword, temp_data_type, temp_data
+    global temp_keyword, temp_data_type, temp_data, temp_status
 
     if checking_clipboard_keyword_override == True:
         if msg.lower() == 'yes' or msg.lower() == 'y':
@@ -84,7 +96,8 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             clipboard[temp_keyword] = {
                 "data": temp_data,
                 "type": temp_data_type,
-                "user": username
+                "user": username,
+                "status": temp_status
             }
 
             return textwrap.dedent(f"""
@@ -113,15 +126,26 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 ```
             """)
 
-    pattern = r'^(\w+)\s+(\w+)$'
+    pattern = r'^(\w+)\s+(\w+)(?:\s+(\w+))?$'
 
     match = re.match(pattern, lines[0].strip())
     
     if match:
         data_type = match.group(1)
         keyword = match.group(2)
+        status = match.group(3)
         lines.pop(0)
         data = '\n'.join(lines)
+
+        if status == None:
+            status = 'public'
+        elif status != 'private':
+            return textwrap.dedent(f"""
+                ```
+                no such status option: '{status}'
+                {terminal_mode.current_path()}
+                ```
+            """)
         
         if data_type in data_types:
 
@@ -133,6 +157,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                     temp_keyword = keyword
                     temp_data_type = data_type
                     temp_data = data
+                    temp_status = status
 
                     return textwrap.dedent(f"""
                         ```
@@ -144,7 +169,8 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                     clipboard_data[keyword] = {
                         "data": data,
                         "type": data_type,
-                        "user": username
+                        "user": username,
+                        "status": status
                     }
 
                 save_clipboard_data(clipboard_data)
@@ -180,7 +206,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             clipboard: save: incorrect format
             follow the format below
 
-            save [type] [keyword]
+            save [type] [keyword] [-p]
             [data]
 
             *data can have multiple lines
@@ -210,7 +236,7 @@ def get_clipboard_response(message) -> str:
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_get')
 
-        return get_clipboard_data(msg)
+        return get_clipboard_data(msg, username)
 
     elif msg[:4] == 'save':
         msg = msg[4:].strip()

@@ -1,2 +1,2 @@
 Usage: get [keyword]
-    get previously saved data based on KEYWORD
+    get previously saved public data based on KEYWORD
