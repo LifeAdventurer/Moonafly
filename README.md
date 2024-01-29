@@ -2,6 +2,8 @@
 
 ## Setup Moonafly
 
+setup Moonafly using your discord bot token and discord username
+
 ### Windows
 
 ```bat
