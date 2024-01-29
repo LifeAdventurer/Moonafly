@@ -91,14 +91,16 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
         if msg.lower() == 'yes' or msg.lower() == 'y':
             checking_clipboard_keyword_override = False
 
-            clipboard = load_clipboard_data()
+            clipboard_data = load_clipboard_data()
 
-            clipboard[temp_keyword] = {
+            clipboard_data[temp_keyword] = {
                 "data": temp_data,
                 "type": temp_data_type,
                 "user": username,
                 "status": temp_status
             }
+
+            save_data_to_clipboard(clipboard_data)
 
             return textwrap.dedent(f"""
                 ```
