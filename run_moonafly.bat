@@ -1,5 +1,9 @@
 @echo off
 
-cd src
-
-python main.py
+if exist "config.json" (
+    echo Starting Moonafly...
+    cd src
+    python main.py
+) else (
+    echo Please initialize Moonafly first
+)
