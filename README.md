@@ -1,30 +1,18 @@
 # Moonafly
 
-## Secret files
+## Setup Moonafly
 
-1. Set your token via `config.json`:
+### Windows
 
-    ```json
-    {
-        "token": "{your TOKEN}"
-    }
-    ```
+```bat
+init_Moonafly.bat
+```
 
-2. Set your user identity list via `user_identity.json` including author, developer, guests role:
+### macOS/Linux
 
-    ```json
-    {
-        "author": [
-            
-        ],
-        "developers": [
-
-        ],
-        "guests": [
-
-        ]
-    }
-    ```
+```bat
+init_Moonafly.sh
+```
 
 ## Run Moonafly
 
