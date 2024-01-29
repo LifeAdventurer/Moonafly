@@ -108,6 +108,18 @@ is_terminal_mode = False
 is_develop_mode = False
 
 
+enter_terminal_mode_cmd = [
+    '-t',
+    'moonafly -t',
+    'Moonafly -t'
+]
+enter_develop_mode_cmd = [
+    '-d',
+    'moonafly -d',
+    'Moonafly -d'
+]
+
+
 def get_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -118,14 +130,11 @@ def get_response(message) -> str:
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user
+    global enter_terminal_mode_cmd, enter_develop_mode_cmd
 
     if (
         is_normal_mode == True
-        and (
-            msg[:2] == '-t'
-            or msg[:11] == 'moonafly -t'
-            or msg[:11] == 'Moonafly -t'
-        )
+        and any(msg.startswith(cmd) for cmd in enter_terminal_mode_cmd)
     ):
         if username in special_guests:
             is_normal_mode = False
@@ -182,11 +191,7 @@ def get_response(message) -> str:
     
     elif (
         is_normal_mode == True
-        and (
-            msg[:2] == '-d'
-            or msg[:11] == 'moonafly -d'
-            or msg[:11] == 'Moonafly -d'
-        )
+        and any(msg.startswith(cmd) for cmd in enter_develop_mode_cmd)
     ):
         if username in developers:
             is_normal_mode = False

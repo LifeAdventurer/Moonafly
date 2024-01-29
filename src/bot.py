@@ -211,13 +211,8 @@ def run_Moonafly():
             and username != developer
             and len(user_message) > 0
             and (
-                user_message[0]   == '!'
-                or user_message[:2]  == '-t'
-                or user_message[:11] == 'moonafly -t'
-                or user_message[:11] == 'Moonafly -t'
-                or user_message[:2]  == '-d'
-                or user_message[:11] == 'moonafly -d'
-                or user_message[:11] == 'Moonafly -d'
+                any(user_message.startswith(cmd) for cmd in responses.enter_terminal_mode_cmd)
+                or any(user_message.startswith(cmd) for cmd in responses.enter_develop_mode_cmd)
             )
         ):
             
@@ -242,11 +237,7 @@ def run_Moonafly():
         # when someone else wants to use terminal
         # send private message to notice the user
         if responses.is_terminal_mode and username != responses.terminal_mode_current_using_user:
-            if (
-                user_message[:2] == '-t'
-                or user_message[:11] == 'moonafly -t'
-                or user_message[:11] == 'Moonafly -t'
-            ):
+            if any(user_message.startswith(cmd) for cmd in responses.enter_terminal_mode_cmd):
                 if username == responses.author:
                     message.content = f"```{responses.terminal_mode_current_using_user} is using the terminal```"
                 else:
@@ -255,11 +246,7 @@ def run_Moonafly():
             return
         
         if responses.is_develop_mode and username != responses.develop_mode_current_using_user:
-            if (
-                user_message[:2] == '-d'
-                or user_message[:11] == 'moonafly -d'
-                or user_message[:11] == 'Moonafly -d'
-            ):
+            if any(user_message.startswith(cmd) for cmd in responses.enter_develop_mode_cmd):
                 if username == responses.author:
                     message.content = f"```{responses.develop_mode_current_using_user} is using develop mode```"
                 else:
