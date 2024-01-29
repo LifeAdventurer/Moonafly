@@ -33,7 +33,7 @@ def load_user_identity_list():
         data = json.load(file)
     # author has the highest authority
     # only one author
-    author = data['author'][0] 
+    author = data['author']
     developers = data['developers']
     special_guests = data['guests']
 
