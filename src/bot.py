@@ -1,10 +1,7 @@
 import responses
 import terminal_mode
 import develop_mode
-
-
-from cmd import remote
-from cmd import news
+import split_message
 
 
 import discord
@@ -50,81 +47,10 @@ async def send_message(message):
         if response != None and len(response) > 0:
             # large output split
             # discord limits each message to a maximum of 2000 characters
-            if remote.on_remote == True:
-                # current message group total word count
-                word_count = 0
-                # calculate the count of '\n' it takes 1 space
-                line_count = 0
-                response = response.splitlines()
-                # the filename bar
-                output_prefix = '\n'.join(response[:3])
-                await message.channel.send(output_prefix)
-                # the current path bar
-                output_suffix = '\n'.join(response[-3:])
-                # cut the prefix and suffix
-                response = response[4:-4]
-                lines = []
-                for line in response:
-                    # prevent backticks breaking the code block
-                    # TODO: find a escape backticks method
-                    line = line.replace('```', '` ` `')
-
-                    if word_count + len(line) + line_count * 2 + 100 > 2000:
-                        word_count = len(line)
-                        line_count = 1
-                        content = ('\n' + ' ' * TAB_SIZE * 7).join(lines)
-                        lines = [line]
-                        content = textwrap.dedent(f"""
-                            ```{remote.file_language}
-                            {content}
-                            ```
-                        """)
-                        await message.channel.send(content)
-
-                    else:
-                        word_count += len(line)
-                        line_count += 1
-                        lines.append(line)
-                # last part of message
-                if len(lines) > 0:
-                    content = ('\n' + ' ' * TAB_SIZE * 6).join(lines)
-                    content = textwrap.dedent(f"""
-                        ```{remote.file_language}
-                        {content}
-                        ```
-                    """)
-                await message.channel.send(content)
-                # the current path bar
-                await message.channel.send(output_suffix)
-
-                remote.on_remote = False
-            
-            elif news.sending_news == True:
-                response = response.splitlines()
-                output_suffix = '\n'.join(response[-3:])
-                response = response[:-4]
-                word_count = 0
-                line_count = 0
-                lines = []
-                for line in response:
-                    if word_count + len(line) + line_count * 2 + 50 > 2000:
-                        word_count = len(line)
-                        line_count = 1
-                        content = '\n'.join(lines)
-                        lines = [line]
-                        await message.channel.send(content)
-                    else:
-                        word_count += len(line)
-                        line_count += 1
-                        lines.append(line)
-                
-                if len(lines) > 0:
-                    content = '\n'.join(lines)
-
-                await message.channel.send(content)
-                # the current path bar
-                await message.channel.send(output_suffix)
-                news.sending_news = False
+            if len(response) > 2000:
+                split_response = split_message.split_message(response)
+                for item in split_response:
+                    await message.channel.send(item)
 
             else:
                 await message.channel.send(response)
