@@ -135,6 +135,7 @@ def get_response(message) -> str:
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user
     global enter_terminal_mode_cmd, enter_develop_mode_cmd
+    global mouseX, mouseY
 
     if (
         is_normal_mode == True
