@@ -260,11 +260,28 @@ def get_response(message) -> str:
             percent = battery.percent
             is_charging = battery.power_plugged
 
+            cpu_core_usages = []
+            if username == author:
+                cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
+
+                for i in range(0, len(cpu_usage_per_core), 2):
+                    usage_l = cpu_usage_per_core[i]
+                    usage_r = cpu_usage_per_core[i + 1]
+
+                    core1 = f"Core {i + 1}: {usage_l}%"
+                    core2 = f"Core {i + 2}: {usage_r}%"
+                    cpu_core_usages.append(
+                        f"{core1}{' ' * (20 - len(core1))}{core2}"
+                    )
+                
+            cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(cpu_core_usages)
+
             return textwrap.dedent(f"""
                 ```
                 Moonafly {Moonafly_version}
                 {mode}
                 server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
+                {cpu_core_usages}
                 ```
             """)
 
