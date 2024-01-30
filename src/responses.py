@@ -248,7 +248,9 @@ def get_response(message) -> str:
 
             return '```exited successfully```'
 
-        elif msg == 'status':
+        elif msg[:6] == 'status':
+            msg = msg[6:].strip()
+
             mode = ''
             if is_terminal_mode:
                 mode = 'terminal_mode'
@@ -261,7 +263,8 @@ def get_response(message) -> str:
             is_charging = battery.power_plugged
 
             cpu_core_usages = []
-            if username == author:
+            # network_connections = []
+            if username == author and msg[:6] == 'detail':
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 
                 for i in range(0, len(cpu_usage_per_core), 4):
@@ -279,7 +282,16 @@ def get_response(message) -> str:
                         f"{core1}{' ' * (16 - len(core1))}{core2}{' ' * (16 - len(core2))}{core3}{' ' * (16 - len(core3))}{core4}{' ' * (16 - len(core4))}"
                     )
                 
+                # net_connections = psutil.net_connections()
+
+                # for conn in net_connections:
+                #     network_connections.append(
+                #         f"{conn.laddr} -> {conn.raddr}, Status: {conn.status}"
+                #     )
+                #     print(f"{conn.laddr} -> {conn.raddr}, Status: {conn.status}")
+
             cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(cpu_core_usages)
+            # network_connections = ('\n' + ' ' * TAB_SIZE * 4).join(network_connections)
 
             return textwrap.dedent(f"""
                 ```

@@ -88,4 +88,7 @@ def split_message(response: str) -> list:
         split_response.append(output_suffix)
         news.sending_news = False
     
+    else:
+        split_response.append('```response message too long```')
+    
     return split_response
