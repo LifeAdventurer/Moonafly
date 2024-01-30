@@ -13,6 +13,7 @@ import json
 import textwrap
 import time
 import psutil
+import pyautogui
 
 
 Moonafly_version = 'v2.8.1'
@@ -118,6 +119,9 @@ enter_develop_mode_cmd = [
     'moonafly -d',
     'Moonafly -d'
 ]
+
+
+mouseX, mouseY = pyautogui.position()
 
 
 def get_response(message) -> str:
@@ -258,9 +262,16 @@ def get_response(message) -> str:
                 mode = 'develop_mode'
             else:
                 mode = 'normal_mode'
+            
             battery = psutil.sensors_battery()
             percent = battery.percent
             is_charging = battery.power_plugged
+
+            mouse_moved = False
+            new_mouseX, new_mouseY = pyautogui.position()
+            if new_mouseX != mouseX or new_mouseY != mouseY:
+                mouse_moved = True
+                mouseX, mouseY = new_mouseX, new_mouseY
 
             cpu_core_usages = []
             # network_connections = []
@@ -298,6 +309,7 @@ def get_response(message) -> str:
                 Moonafly {Moonafly_version}
                 {mode}
                 server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
+                {'mouse moved' if mouse_moved else ''}
                 {cpu_core_usages}
                 ```
             """)
