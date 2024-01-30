@@ -125,6 +125,8 @@ def run_Moonafly():
         if username == responses.author:
             if user_message == 'Moonafly --stop':
                 print('Moonafly stopped by command')
+                message.content = '```Moonafly stopped by command```'
+                await send_message_without_response(message)
                 await stop_Moonafly()
                 return
             
