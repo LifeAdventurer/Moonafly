@@ -3,3 +3,4 @@ Usage: [command]
 commands under ~/clipboard
  get [keyword]
  save [type] [keyword] [-p] [data]
+ show
