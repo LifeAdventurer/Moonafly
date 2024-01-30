@@ -8,6 +8,9 @@ import discord
 import json
 from datetime import datetime
 import textwrap
+import os
+import sys
+import subprocess
 
 
 # constants
@@ -95,6 +98,13 @@ async def stop_Moonafly():
     await client.close()
 
 
+def restart_Moonafly(message):
+    python_executable = sys.executable
+    # script_path = os.path.abspath("main.py")
+    subprocess.Popen([python_executable, "main.py"])
+    os._exit(0)
+
+
 def run_Moonafly():
     init_files()
 
@@ -116,6 +126,13 @@ def run_Moonafly():
             if user_message == 'Moonafly --stop':
                 print('Moonafly stopped by command')
                 await stop_Moonafly()
+                return
+            
+            elif user_message == 'Moonafly --restart':
+                print('Restarting Moonafly...')
+                message.content = '```Restarting Moonafly...```'
+                await send_message_without_response(message)
+                restart_Moonafly(message)
                 return
             
             elif user_message == 'exit --force':
