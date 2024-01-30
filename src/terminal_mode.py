@@ -1,24 +1,24 @@
 import responses
 
 
-from cmd import remote
-from cmd import tree
-from cmd import jump
-from cmd import command_help
+from command import remote
+from command import tree
+from command import jump
+from command import command_help
 
-from cmd import approve
+from command import approve
 
-from cmd import dict
-from cmd import hash
-from cmd import weather
-from cmd import math_calc
-from cmd import random_vocab_test
-from cmd import random_vocab_review
-from cmd import game_1A2B
-from cmd import clipboard
-from cmd import primes
-from cmd import news
-from cmd import online_judge
+from command import dict
+from command import hash
+from command import weather
+from command import math_calc
+from command import random_vocab_test
+from command import random_vocab_review
+from command import game_1A2B
+from command import clipboard
+from command import primes
+from command import news
+from command import online_judge
 
 
 import json

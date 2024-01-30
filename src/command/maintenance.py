@@ -3,7 +3,7 @@ import responses
 import develop_mode
 
 
-from cmd import command_help
+from command import command_help
 
 
 from datetime import datetime

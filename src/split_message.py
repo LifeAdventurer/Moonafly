@@ -1,5 +1,5 @@
-from cmd import remote
-from cmd import news
+from command import remote
+from command import news
 
 
 import textwrap

@@ -1,11 +1,11 @@
 import responses
 
 
-from cmd import remote
-from cmd import command_help
-from cmd import tree
-from cmd import maintenance
-from cmd import jump
+from command import remote
+from command import command_help
+from command import tree
+from command import maintenance
+from command import jump
 
 
 import textwrap

@@ -3,7 +3,7 @@ import terminal_mode
 import develop_mode
 
 
-from cmd import command_help
+from command import command_help
 
 
 import textwrap

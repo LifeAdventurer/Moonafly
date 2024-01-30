@@ -22,7 +22,7 @@
             }
         },
         "src": {
-            "cmd": {
+            "command": {
                 "apply.py": {},
                 "approve.py": {},
                 "clipboard.py": {},
@@ -47,6 +47,7 @@
             "main.py": {},
             "normal_mode.py": {},
             "responses.py": {},
+            "split_message.py": {},
             "terminal_mode.py": {}
         },
         ".gitignore": {},

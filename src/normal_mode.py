@@ -1,7 +1,7 @@
 import responses
 
 
-from cmd import apply
+from command import apply
 
 
 import json

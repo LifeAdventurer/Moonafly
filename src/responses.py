@@ -3,10 +3,10 @@ import terminal_mode
 import develop_mode
 
 
-from cmd import clipboard
-from cmd import random_vocab_test
-from cmd import game_1A2B
-from cmd import approve
+from command import clipboard
+from command import random_vocab_test
+from command import game_1A2B
+from command import approve
 
 
 import json

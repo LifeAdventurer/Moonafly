@@ -1,7 +1,7 @@
 import terminal_mode
 
 
-from cmd import command_help
+from command import command_help
 
 
 import hashlib
