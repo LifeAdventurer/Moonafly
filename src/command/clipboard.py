@@ -154,19 +154,27 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             if len(data) > 0:
                 clipboard_data = load_clipboard_data()
                 if keyword in clipboard_data:
-                    
-                    checking_clipboard_keyword_override = True
-                    temp_keyword = keyword
-                    temp_data_type = data_type
-                    temp_data = data
-                    temp_status = status
+                    if clipboard_data[keyword]['user'] == username:
+                        checking_clipboard_keyword_override = True
+                        temp_keyword = keyword
+                        temp_data_type = data_type
+                        temp_data = data
+                        temp_status = status
 
-                    return textwrap.dedent(f"""
-                        ```
-                        keyword already in use, do you want to override it? (y/n)
-                        {terminal_mode.current_path()}
-                        ```
-                    """)
+                        return textwrap.dedent(f"""
+                            ```
+                            keyword already in use, do you want to override it? (y/n)
+                            {terminal_mode.current_path()}
+                            ```
+                        """)
+
+                    else:
+                        return textwrap.dedent(f"""
+                            ```
+                            this keyword: '{keyword}' has been used by another user
+                            {terminal_mode.current_path()}
+                            ```
+                        """)
                 else:
                     clipboard_data[keyword] = {
                         "data": data,
