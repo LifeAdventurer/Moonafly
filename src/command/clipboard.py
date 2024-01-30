@@ -217,6 +217,25 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
         """)
 
 
+def show_user_keyword(username: str) -> str:
+    clipboard_data = load_clipboard_data()
+
+    keywords = []
+
+    for key, value in clipboard_data.items():
+        if value['user'] == username:
+            keywords.append(key)
+    
+    keywords = ('\n' + ' ' * TAB_SIZE * 2).join(keywords)
+
+    return textwrap.dedent(f"""
+        ```
+        {keywords}
+        {terminal_mode.current_path()}
+        ```
+    """)
+
+
 def get_clipboard_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -246,6 +265,11 @@ def get_clipboard_response(message) -> str:
             return command_help.load_help_cmd_info('clipboard_save')
 
         return save_data_to_clipboard(msg, username)
+    
+    elif msg[:4] == 'show':
+        msg = msg[4:].strip()
+
+        return show_user_keyword(username)
 
     else: 
         return terminal_mode.command_not_found(msg)
