@@ -264,14 +264,19 @@ def get_response(message) -> str:
             if username == author:
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 
-                for i in range(0, len(cpu_usage_per_core), 2):
-                    usage_l = cpu_usage_per_core[i]
-                    usage_r = cpu_usage_per_core[i + 1]
+                for i in range(0, len(cpu_usage_per_core), 4):
+                    usage1 = cpu_usage_per_core[i]
+                    usage2 = cpu_usage_per_core[i + 1]
+                    usage3 = cpu_usage_per_core[i + 2]
+                    usage4 = cpu_usage_per_core[i + 3]
 
-                    core1 = f"Core {i + 1}: {usage_l}%"
-                    core2 = f"Core {i + 2}: {usage_r}%"
+                    core1 = f"Core {i + 1}: {usage1}%"
+                    core2 = f"Core {i + 2}: {usage2}%"
+                    core3 = f"Core {i + 3}: {usage3}%"
+                    core4 = f"Core {i + 4}: {usage4}%"
+                    
                     cpu_core_usages.append(
-                        f"{core1}{' ' * (20 - len(core1))}{core2}"
+                        f"{core1}{' ' * (16 - len(core1))}{core2}{' ' * (16 - len(core2))}{core3}{' ' * (16 - len(core3))}{core4}{' ' * (16 - len(core4))}"
                     )
                 
             cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(cpu_core_usages)
