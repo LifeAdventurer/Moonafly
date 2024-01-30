@@ -236,6 +236,38 @@ def show_user_keyword(username: str) -> str:
     """)
 
 
+def delete_data_with_keyword(keyword: str, username: str) -> str:
+    clipboard_data = load_clipboard_data()
+
+    for key, value in clipboard_data.items():
+        if key == keyword:
+            if value['user'] == username:
+                del clipboard_data[keyword]
+                save_clipboard_data(clipboard_data)
+
+                return textwrap.dedent(f"""
+                    ```
+                    keyword: '{keyword}' has been deleted
+                    {terminal_mode.current_path()}
+                    ```
+                """)
+            else:
+                return textwrap.dedent(f"""
+                    ```
+                    you cannot access this data as it has been saved by another user
+                    {terminal_mode.current_path()}
+                    ```
+                """)
+
+        
+    return textwrap.dedent(f"""
+        ```
+        no such keyword: '{keyword}'
+        {terminal_mode.current_path()}
+        ```
+    """)
+
+
 def get_clipboard_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -272,6 +304,13 @@ def get_clipboard_response(message) -> str:
             return command_help.load_help_cmd_info('clipboard_show')
 
         return show_user_keyword(username)
+    
+    elif msg[:3] == 'del':
+        msg = msg[3:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('clipboard_del')
+        
+        return delete_data_with_keyword(msg, username)
 
     else: 
         return terminal_mode.command_not_found(msg)
