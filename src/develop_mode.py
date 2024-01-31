@@ -6,6 +6,7 @@ from command import command_help
 from command import tree
 from command import maintenance
 from command import jump
+from command import issue
 
 
 import textwrap
@@ -231,6 +232,12 @@ def get_response_in_develop_mode(message) -> str:
                 return command_help.load_help_cmd_info('remote_file')
 
             return remote.load_remote_file(msg.strip(), 'developer')
+    
+    elif len(path_stack) > 1 and path_stack[1] == 'issue':
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('issue')
+
+        return issue.get_issues(msg)
     
     else:
         return command_not_found(msg)
