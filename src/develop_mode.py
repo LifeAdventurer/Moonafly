@@ -194,37 +194,12 @@ def get_response_in_develop_mode(message) -> str:
         path_stack = temporary_path_stack
         return f"```{current_path()}```"
 
-    # tree command
-    elif msg[:4] == 'tree':
-        msg = msg[4:].lstrip()
-
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('tree')
-
-        if msg[:8] == 'Moonafly':
-            return tree.visualize_structure(Moonafly_structure)
-
-        # copy the directory structure
-        current_structure = develop_mode_directory_structure
-        # and move it to the current directory
-        for folder in path_stack:
-            current_structure = current_structure[folder]
-
-        return tree.visualize_structure(current_structure)
-    
-    elif msg[:3] == 'set':
-        msg = msg[4:].strip()
-
-        return maintenance.set_maintenance(msg)
-    
     elif msg[:3] == 'end':
         msg = msg[4:].strip()
-
         return maintenance.end_maintenance(msg)
-    
+
     elif msg[:4] == 'jump':
         msg = msg[4:].strip()
-
         return jump.jump_to_folder(msg)
 
     elif msg[:3] == 'pwd':
@@ -246,6 +221,28 @@ def get_response_in_develop_mode(message) -> str:
             {current_path()}
             ```
         """)
+
+    elif msg[:3] == 'set':
+        msg = msg[4:].strip()
+        return maintenance.set_maintenance(msg)
+
+    # tree command
+    elif msg[:4] == 'tree':
+        msg = msg[4:].lstrip()
+
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('tree')
+
+        if msg[:8] == 'Moonafly':
+            return tree.visualize_structure(Moonafly_structure)
+
+        # copy the directory structure
+        current_structure = develop_mode_directory_structure
+        # and move it to the current directory
+        for folder in path_stack:
+            current_structure = current_structure[folder]
+
+        return tree.visualize_structure(current_structure)
 
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 
