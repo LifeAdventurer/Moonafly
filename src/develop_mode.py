@@ -86,6 +86,7 @@ def get_response_in_develop_mode(message) -> str:
              cd [dir]
              end
              jump [folder]
+             pwd
              set [time]
              tree [-M]
             ```
@@ -225,6 +226,26 @@ def get_response_in_develop_mode(message) -> str:
         msg = msg[4:].strip()
 
         return jump.jump_to_folder(msg)
+
+    elif msg[:3] == 'pwd':
+        msg = msg[3:].lstrip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('pwd')
+
+        # delete the prefix 'Moonafly:' and the suffix '$'
+        path = current_path()[(10 + len(username)):-1]
+        # delete the prefix no matter it is '~' or '/' path_stack still has the data
+        path = path[1:]
+        
+        if path_stack[0] == '~':
+            path = 'home/Moonafly' + path
+
+        return textwrap.dedent(f"""
+            ```
+            /{path}
+            {current_path()}
+            ```
+        """)
 
     if len(path_stack) > 1 and path_stack[1] == 'remote':
         if len(path_stack) > 2 and path_stack[2] == 'file': 
