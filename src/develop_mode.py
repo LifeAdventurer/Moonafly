@@ -35,6 +35,11 @@ def load_Moonafly_structure():
 
 
 path_stack = []
+def path_stack_match(index: int, cur_dir_name) -> bool:
+    global path_stack
+    return len(path_stack) > index and path_stack[index] == cur_dir_name
+
+
 # generating the current working directory
 def current_path() -> str:
     global path_stack
@@ -244,14 +249,14 @@ def get_response_in_develop_mode(message) -> str:
 
         return tree.visualize_structure(current_structure)
 
-    if len(path_stack) > 1 and path_stack[1] == 'remote':
-        if len(path_stack) > 2 and path_stack[2] == 'file': 
+    if path_stack_match(1, 'remote'):
+        if path_stack_match(2, 'file'): 
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('remote_file')
 
             return remote.load_remote_file(msg.strip(), 'developer')
     
-    elif len(path_stack) > 1 and path_stack[1] == 'issue':
+    elif path_stack_match(1, 'issue'):
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('issue')
 

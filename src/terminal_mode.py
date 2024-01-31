@@ -105,6 +105,11 @@ def get_ls_command_output(files: dict, tab_size: int, tab_count: int) -> str:
 
 
 path_stack = []
+def path_stack_match(index: int, cur_dir_name) -> bool:
+    global path_stack
+    return len(path_stack) > index and path_stack[index] == cur_dir_name
+
+
 # generating the current working directory
 def current_path() -> str:
     global path_stack
@@ -343,14 +348,13 @@ def get_response_in_terminal_mode(message) -> str:
 
             return tree.visualize_structure(current_structure)
     
-
     # only author can access this part
-    if len(path_stack) > 1 and path_stack[1] == 'author':
-        if len(path_stack) > 2 and path_stack[2] == 'approve':
+    if path_stack_match(1, 'author'):
+        if path_stack_match(2, 'approve'):
             return approve.approve_requests(msg)
 
-        elif len(path_stack) > 2 and path_stack[2] == 'remote':
-            if len(path_stack) > 3 and path_stack[3] == 'file':
+        elif path_stack_match(2, 'remote'):
+            if path_stack_match(3, 'file'):
                 if msg.startswith(HELP_FLAG):
                     return command_help.load_help_cmd_info('remote_file')
 
@@ -358,13 +362,13 @@ def get_response_in_terminal_mode(message) -> str:
         
 
     # commands in certain directory
-    if len(path_stack) > 1 and path_stack[1] == 'clipboard':
+    if path_stack_match(1, 'clipboard'):
         return clipboard.get_clipboard_response(message)
 
-    elif len(path_stack) > 1 and path_stack[1] == 'dict':
+    elif path_stack_match(1, 'dict'):
         # different languages
         # en
-        if len(path_stack) > 2 and path_stack[2] == 'en':
+        if path_stack_match(2, 'en'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('dict_en')
 
@@ -393,7 +397,7 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         # en-zh_TW
-        elif len(path_stack) > 2 and path_stack[2] == 'en-zh_TW':
+        elif path_stack_match(2, 'en-zh_TW'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('dict_en-zh_TW')
 
@@ -422,18 +426,18 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
     
     # games
-    elif len(path_stack) > 1 and path_stack[1] == 'game':
-        if len(path_stack) > 2 and path_stack[2] == '1A2B':
+    elif path_stack_match(1, 'game'):
+        if path_stack_match(2, '1A2B'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('game_1A2B')
 
             return game_1A2B.play_game_1A2B(message)
 
-    elif len(path_stack) > 1 and path_stack[1] == 'hash':
+    elif path_stack_match(1, 'hash'):
         return hash.get_hash(msg)
 
-    elif len(path_stack) > 1 and path_stack[1] == 'math':
-        if len(path_stack) > 2 and path_stack[2] == 'calc':
+    elif path_stack_match(1, 'math'):
+        if path_stack_match(2, 'calc'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('math_calc')
 
@@ -444,7 +448,7 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-        elif len(path_stack) > 2 and path_stack[2] == 'count':
+        elif path_stack_match(2, 'count'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('math_count')
 
@@ -456,15 +460,15 @@ def get_response_in_terminal_mode(message) -> str:
                 ```
             """)
 
-        elif len(path_stack) > 2 and path_stack[2] == 'primes':
+        elif path_stack_match(2, 'primes'):
             return primes.check_prime(msg)
     
-    elif len(path_stack) > 1 and path_stack[1] == 'news':
+    elif path_stack_match(1, 'news'):
         return news.get_news(msg)
 
     # roll a random number
-    elif len(path_stack) > 1 and path_stack[1] == 'random':
-        if len(path_stack) > 2 and path_stack[2] == 'number':
+    elif path_stack_match(1, 'random'):
+        if path_stack_match(2, 'number'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('random_number')
 
@@ -484,19 +488,19 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                 """)
         
-        elif len(path_stack) > 2 and path_stack[2] == 'vocab':
-            if len(path_stack) > 3 and path_stack[3] == 'review':
+        elif path_stack_match(2, 'vocab'):
+            if path_stack_match(3, 'review'):
                 return random_vocab_review.get_random_vocab_review(message)
 
-            elif len(path_stack) > 3 and path_stack[3] == 'test':
+            elif path_stack_match(3, 'test'):
                 if msg.startswith(HELP_FLAG):
                     return command_help.load_help_cmd_info('random_vocab_test')
 
                 return random_vocab_test.get_random_vocab_test(message)
     
-    elif len(path_stack) > 1 and path_stack[1] == 'search':
+    elif path_stack_match(1, 'search'):
         # search for github repos or profiles -> because url
-        if len(path_stack) > 2 and path_stack[2] == 'github':
+        if path_stack_match(2, 'github'):
             github_url = "https://github.com/" + msg
             response = requests.get(github_url)
             if response.status_code == 404:
@@ -516,10 +520,10 @@ def get_response_in_terminal_mode(message) -> str:
                 """)
 
         # search for a handle in different online judges
-        elif len(path_stack) > 2 and path_stack[2] == 'online-judge':
+        elif path_stack_match(2, 'online-judge'):
             return online_judge.get_online_judge_info(msg)
     
-    elif len(path_stack) > 1 and path_stack[1] == 'weather':
+    elif path_stack_match(1, 'weather'):
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('weather')
             
