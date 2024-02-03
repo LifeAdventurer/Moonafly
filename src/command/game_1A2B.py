@@ -238,7 +238,10 @@ def play_game_1A2B(message) -> str:
                 ```
             """)
 
-    elif playing_game_1A2B:
+        else:
+            return terminal_mode.command_not_found(msg)
+
+    else:
         # stop the game if you want
         if msg[:4] == 'stop' or msg[:4] == 'Stop':
             playing_game_1A2B = False
@@ -302,6 +305,3 @@ def play_game_1A2B(message) -> str:
                 please enter a valid input with only numbers and the correct length
                 ```
             """)
-
-    else:
-        return terminal_mode.command_not_found(msg)
