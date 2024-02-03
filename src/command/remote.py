@@ -90,14 +90,15 @@ def load_remote_file(msg: str, identity: str) -> str:
         global file_language
         file_language = parts[-1] if len(parts) > 1 else ''
 
-        indentation = ' ' * TAB_SIZE * 3
-        output = '\n'
+        output = []
         content = content.splitlines()
         lines_str_len = len(str(len(content)))
 
         for index, line in enumerate(content):
             if start_line <= index + 1 <= end_line:
-                output += f"{indentation}{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}\n"
+                output.append(f"{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}")
+
+        output = ('\n' + ' ' * TAB_SIZE * 3).join(output)
 
         on_remote = True
 

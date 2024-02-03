@@ -75,16 +75,18 @@ def save_game_1A2B_result(length: int, attempts: int) -> int:
 def show_1A2B_every_length_ranking(tab_size: int, tab_count: int) -> str:
     records = load_game_1A2B_ranks()
 
-    indentation = ' ' * tab_size * tab_count
-    ranking = 'length | attempts | user\n' + indentation
-    ranking += '------------------------\n'
+    ranking = ['length | attempts | user']
+    ranking.append('-------------------------')
     for length in range(4, 11):
-        ranking += indentation + f"  {(' ' + str(length))[-2:]}"
+        len_str = '  ' + (' ' + str(length))[-2:]
         if len(records[str(length)]) == 0:
-            ranking += '   | no data  | no data\n'
-            continue
+            ranking.append(f"{len_str}   | no data  | no data")
+        else:
+            attempts = ('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]
+            user = records[str(length)][0]['user']
+            ranking.append(f"{len_str}   |    {attempts}   | {user}")
 
-        ranking += f"   |    {('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]}   | {records[str(length)][0]['user']}\n"
+    ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
     
     return ranking
 
@@ -93,42 +95,45 @@ def show_1A2B_certain_length_ranking(length: int, tab_size: int, tab_count: int)
     records = load_game_1A2B_ranks()[str(length)]
     
     indentation = ' ' * tab_size * tab_count
-    ranking = f"length - {length}\n{indentation}"
+    ranking = [f"length - {length}"]
     if len(records) == 0:
-        ranking += 'no data'
-        return ranking
-    
-    ranking += 'attempts | user\n' + indentation
-    ranking += '----------------\n'
-    for index, record in enumerate(records):
-        if index >= 10:
-            break
+        ranking.append('no data')
+    else:
+        ranking.append('attempts | user')
+        ranking.append('----------------')
+        for index, record in enumerate(records):
+            if index >= 10:
+                break
 
-        ranking += indentation + f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}\n"
+            ranking.append(f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}")
     
+    ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
+
     return ranking
 
 
 def show_1A2B_certain_user_ranking(username : str, tab_size: int, tab_count: int) -> str:
     records = load_game_1A2B_ranks()
 
-    indentation = ' ' * tab_size * tab_count
-    ranking = f"user - {username}\n{indentation}"
-    ranking += 'length | attempts\n' + indentation
-    ranking += '-------------------\n'
+    ranking = [f"user - {username}"]
+    ranking.append(' length | attempts')
+    ranking.append('-------------------')
     for length in range(4, 11):
-        ranking += indentation + f"  {(' ' + str(length))[-2:]}"
+        len_str = f"  {(' ' + str(length))[-2:]}"
         
         no_data = True
         for index, record in enumerate(records[str(length)]):
             if record['user'] == username:
                 no_data = False
-                ranking += f"   | {('  ' + str(record['attempts']))[-max(3, len(str(length))):]} (rank {index + 1})\n"
+                attempts = ('  ' + str(record['attempts']))[-max(3, len(str(length))):]
+                ranking.append(f"{len_str}   | {attempts} (rank {index + 1})")
                 break
         
         if no_data:
-            ranking += '   |  no data\n'
+            ranking.append(f"{len_str}   |  no data")
             continue
+        
+    ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
 
     return ranking
 
