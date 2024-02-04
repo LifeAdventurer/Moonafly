@@ -461,7 +461,7 @@ def get_response_in_terminal_mode(message) -> str:
             """)
 
         elif path_stack_match(2, 'primes'):
-            return primes.check_prime(msg)
+            return primes.get_primes_response(msg)
     
     elif path_stack_match(1, 'news'):
         return news.get_news(msg)

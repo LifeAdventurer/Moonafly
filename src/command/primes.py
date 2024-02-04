@@ -8,11 +8,21 @@ import textwrap
 import random
 
 
-# constants
+# Constants
 HELP_FLAG = '--help'
 
 
 def is_prime(num: int, k: int) -> bool:
+    """
+    Check if a given number is a prime number using the Miller-Rabin primality test.
+
+    Args:
+        num (int): The number to be checked for primality.
+        k (int): The number of iterations for the Miller-Rabin test.
+
+    Returns:
+        bool: True if the number is likely prime, False otherwise.
+    """
     if num < 2:
         return False
     if num == 2 or num == 3:
@@ -20,12 +30,10 @@ def is_prime(num: int, k: int) -> bool:
     if num % 2 == 0 or num % 3 == 0:
         return False
     
-    r = 0
-    d = num - 1
+    r, d = 0, num - 1
     while d % 2 == 0:
-        r += 1
-        d //= 2
-
+        r, d = r + 1, d // 2
+        
     for _ in range(k):
         a = random.randint(2, num - 2)
         x = pow(a, d, num)
@@ -43,9 +51,15 @@ def is_prime(num: int, k: int) -> bool:
 
 
 def check_prime(msg: str) -> str:
-    if msg.startswith(HELP_FLAG):
-        return command_help('primes')
+    """
+    Check if a given message represents a positive integer and whether it is a prime number.
 
+    Args:
+        msg (str): The input message.
+
+    Returns:
+        str: A formatted string with the result of primality test and current terminal path.
+    """
     if msg.isdigit() and int(msg) > 0:
         return textwrap.dedent(f"""
             ```
@@ -54,10 +68,32 @@ def check_prime(msg: str) -> str:
             ```
         """)    
 
-    else:
-        return textwrap.dedent(f"""
-            ```
-            please enter a positive integer
-            {terminal_mode.current_path()}
-            ```
-        """)
+    return textwrap.dedent(f"""
+        ```
+        please enter a positive integer
+        {terminal_mode.current_path()}
+        ```
+    """)
+
+
+def get_primes_response(msg: str) -> str:
+    """
+    Get the response for prime-related commands.
+
+    Args:
+        msg (str): The input message.
+
+    Returns:
+        str: The formatted response based on the command and current terminal path.
+    """
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('primes')
+    
+    if msg[:5] == 'check':
+        msg = msg[5:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('primes_check')
+        
+        return check_prime(msg)
+    
+    return terminal_mode.command_not_found(msg)
