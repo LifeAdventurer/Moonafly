@@ -1,0 +1,3 @@
+Usage: [text]
+    translate input TEXT from language A to language B
+    the default language of A and B are English and Traditional Chinese

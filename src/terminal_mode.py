@@ -19,6 +19,7 @@ from command import clipboard
 from command import primes
 from command import news
 from command import online_judge
+from command import translate
 
 
 import json
@@ -522,6 +523,9 @@ def get_response_in_terminal_mode(message) -> str:
         # search for a handle in different online judges
         elif path_stack_match(2, 'online-judge'):
             return online_judge.get_online_judge_info(msg)
+    
+    elif path_stack_match(1, 'translate'):
+        return translate.get_translated_text(msg)
     
     elif path_stack_match(1, 'weather'):
         if msg.startswith(HELP_FLAG):
