@@ -8,9 +8,6 @@ import discord
 import json
 from datetime import datetime
 import textwrap
-import os
-import sys
-import subprocess
 
 
 # constants
@@ -95,15 +92,10 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 
-async def stop_Moonafly():
+async def stop_Moonafly(message):
+    message.content = '```Moonafly stopped by command```'
+    await send_message_without_response(message)
     await client.close()
-
-
-def restart_Moonafly(message):
-    python_executable = sys.executable
-    # script_path = os.path.abspath("main.py")
-    subprocess.Popen([python_executable, "main.py"])
-    os._exit(0)
 
 
 def run_Moonafly():
@@ -126,16 +118,14 @@ def run_Moonafly():
         if username == responses.author:
             if user_message == 'Moonafly --stop':
                 print('Moonafly stopped by command')
-                message.content = '```Moonafly stopped by command```'
-                await send_message_without_response(message)
-                await stop_Moonafly()
+                await stop_Moonafly(message)
                 return
             
             elif user_message == 'Moonafly --restart':
                 print('Restarting Moonafly...')
                 message.content = '```Restarting Moonafly...```'
                 await send_message_without_response(message)
-                restart_Moonafly(message)
+                await stop_Moonafly(message)
                 return
             
             elif user_message == 'exit --force':
@@ -214,3 +204,7 @@ def run_Moonafly():
 
     # start discord client
     client.run(token)
+
+
+if __name__ == '__main__':
+    run_Moonafly()
