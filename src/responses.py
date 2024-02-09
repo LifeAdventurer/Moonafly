@@ -16,7 +16,7 @@ import psutil
 import pyautogui
 
 
-Moonafly_version = 'v2.9.1'
+Moonafly_version = 'v2.10.0'
 
 
 # constants
