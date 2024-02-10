@@ -2,7 +2,6 @@
     "structure": {
         "data": {
             "json": {
-                "clipboard.json": {},
                 "develop_mode_directory_structure.json": {},
                 "develop_mode_login_history.json": {},
                 "game_1A2B_ranks.json": {},
@@ -11,8 +10,7 @@
                 "pending_role_list.json": {},
                 "terminal_login_history.json": {},
                 "terminal_mode_directory_structure.json": {},
-                "user_identity.json": {},
-                "vocabulary_items.json": {}
+                "user_identity.json": {}
             },
             "txt": {
                 "help_cmd_info": {},
@@ -30,6 +28,7 @@
                 "dict.py": {},
                 "game_1A2B.py": {},
                 "hash.py": {},
+                "issue.py": {},
                 "jump.py": {},
                 "maintenance.py": {},
                 "math_calc.py": {},
@@ -39,6 +38,7 @@
                 "random_vocab_review.py": {},
                 "random_vocab_test.py": {},
                 "remote.py": {},
+                "translate.py": {},
                 "tree.py": {},
                 "weather.py": {}
             },
