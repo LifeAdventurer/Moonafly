@@ -10,18 +10,20 @@ def search_dict(dictionary: str, search_word: str, limit: int, tab_size: int, ta
         result = get_info_in_English(search_word, limit)
         space = ' ' * tab_size * tab_count
         if result:
-            part_of_speech, en_definition, example_list = result
-            # removes the certain trailing char from the string
-            en_definition = en_definition.rstrip(': ')
+            information = [f"# {search_word}"]
+            for index, item in enumerate(result):
+                part_of_speech, en_definition, example_list = item
+                # removes the certain trailing char from the string
+                en_definition = en_definition.rstrip(': ')
             
-            information = [
-                f"# {search_word}",
-                part_of_speech,
-                f"### Definition:",
-                f"- {en_definition}",
-                f"### Examples:"
-            ]
-            information += [f"- {sentence}" for sentence in example_list]
+                information += [
+                    f"## {index + 1}.",
+                    part_of_speech,
+                    f"### Definition:",
+                    f"- {en_definition}",
+                    f"### Examples:"
+                ]
+                information += [f"- {sentence}" for sentence in example_list]
 
             return ('\n' + space).join(information)
         else:
@@ -98,7 +100,7 @@ def get_info_in_English(word, limit_example_count):
         'Connection': 'keep-alive',
     }
 
-    example_list = []
+    result = []
 
     try:
         response = requests.get(url, headers=headers)
@@ -106,35 +108,33 @@ def get_info_in_English(word, limit_example_count):
 
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Extract part of speech
-        part_of_speech = soup.find(
-            'span', {'class': 'pos dpos'}
-        )
-        part_of_speech = (
-            part_of_speech.text.strip() if part_of_speech else 'No part of speech found'
-        )
+        entries = soup.find_all('div', {'class': 'entry'})
 
-        # Extract the definition
-        en_definition = soup.find(
-            'div', {'class': 'def ddef_d db'}
-        )
-        en_definition_text = (
-            en_definition.text.strip() if en_definition else 'No definition found'
-        )
-
-        # Extract example sentence
-        examples = soup.find_all(
-            'div', {'class': 'examp dexamp'}
-        )
-        for example in examples:
-            example_sentence = (
-                example.text.strip() if example else 'No example sentence found'
+        for entry in entries:
+            part_of_speech = entry.find('span', {'class': 'pos dpos'})
+            part_of_speech = (
+                part_of_speech.text.strip() if part_of_speech else 'No part of speech found'
             )
-            example_list.append(example_sentence)
-            if len(example_list) == limit_example_count:
-                break
 
-        return part_of_speech, en_definition_text, example_list
+            en_definition = entry.find('div', {'class': 'def ddef_d db'})
+            en_definition_text = (
+                en_definition.text.strip() if en_definition else 'No definition found'
+            )
+
+            # Extract example sentence
+            examples = entry.find_all('div', {'class': 'examp dexamp'})
+            example_list = []
+            for example in examples:
+                example_sentence = (
+                    example.text.strip() if example else 'No example sentence found'
+                )
+                example_list.append(example_sentence)
+                if len(example_list) == limit_example_count:
+                    break
+            
+            result.append((part_of_speech, en_definition_text, example_list))
+
+        return result
 
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
