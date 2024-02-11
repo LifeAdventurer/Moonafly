@@ -16,11 +16,16 @@ googletrans-py = "^4.0.0"
 httpx = "^0.26.0"
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.1.1"
+isort = "^5.13.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
+line-length = 80
 skip-string-normalization = true
 
 [tool.isort]
