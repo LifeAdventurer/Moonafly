@@ -1,12 +1,8 @@
-import responses
-
-
-import terminal_mode
-import develop_mode
-
-
 import textwrap
 
+import develop_mode
+import responses
+import terminal_mode
 
 # constants
 TAB_SIZE = 4
@@ -21,7 +17,7 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
         #       structure indentation  folder   output indentation
         tree += f"{' ' * TAB_SIZE * indent}\-- {key}\n{' ' * TAB_SIZE * 2}"
         tree += traverse(value, indent + 1, bypass)
-    
+
     return tree
 
 
@@ -34,12 +30,17 @@ def visualize_structure(data: dict) -> str:
         current_path = develop_mode.current_path()
 
     bypass = []
-    if responses.is_terminal_mode == True and responses.terminal_mode_current_using_user != responses.author:
+    if (
+        responses.is_terminal_mode == True
+        and responses.terminal_mode_current_using_user != responses.author
+    ):
         bypass.append('author')
 
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         {traverse(data, 0, bypass)}
         {current_path}
         ```
-    """) 
+    """
+    )

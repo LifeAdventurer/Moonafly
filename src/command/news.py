@@ -1,13 +1,10 @@
-import terminal_mode
-
-
-from command import command_help
-
-
 import textwrap
+
 import requests
 from bs4 import BeautifulSoup
 
+import terminal_mode
+from command import command_help
 
 # constants
 TAB_SIZE = 4
@@ -21,23 +18,27 @@ sending_news = False
 
 def get_cnn_news(category: str) -> str:
     global sending_news
-    
+
     response = requests.get(f"{cnn_root_url}/{category}")
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        container_field_links = soup.find_all('div', {'class': 'container__field-links'})
-        
+        container_field_links = soup.find_all(
+            'div', {'class': 'container__field-links'}
+        )
+
         headline_list = []
         news_url_list = []
         for container_field_link in container_field_links:
             news_urls = container_field_link.find_all('a')
 
-            news_headlines = container_field_link.find_all('span', {'class': 'container__headline-text'})
+            news_headlines = container_field_link.find_all(
+                'span', {'class': 'container__headline-text'}
+            )
             for headline in news_headlines:
                 headline_list.append(headline.text)
-            
+
             for data in news_urls:
                 news_url = data.get('href')
                 if news_url not in news_url_list:
@@ -49,21 +50,27 @@ def get_cnn_news(category: str) -> str:
         sending_news = True
 
         space = '\n' + ' ' * TAB_SIZE * 3
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 15))])}
             ```
             {terminal_mode.current_path()}
             ```
-        """)
-        
+        """
+        )
+
     else:
-        print(f"Failed to retrieve page: '{cnn_root_url}'. Status code: {response.status_code}")
-        return textwrap.dedent(f"""
+        print(
+            f"Failed to retrieve page: '{cnn_root_url}'. Status code: {response.status_code}"
+        )
+        return textwrap.dedent(
+            f"""
             ```
             Failed to retrieve news, please try again later.
             {terminal_mode.current_path()}
             ```
-        """)
+        """
+        )
 
 
 cnn_news_categories = [
@@ -76,18 +83,20 @@ cnn_news_categories = [
     'entertainment',
     'style',
     'travel',
-    'sports'
+    'sports',
 ]
 
 
 def show_news_categories() -> str:
     space = '\n' + ' ' * TAB_SIZE * 2
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         {space.join(cnn_news_categories)}
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )
 
 
 def get_news(msg: str) -> str:
@@ -106,12 +115,14 @@ def get_news(msg: str) -> str:
             if msg in cnn_news_categories:
                 category = msg
             else:
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     category: '{msg}' not found
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
 
         return get_cnn_news(category)
     elif msg[:4] == 'show':

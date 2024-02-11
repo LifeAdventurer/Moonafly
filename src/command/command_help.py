@@ -1,12 +1,8 @@
-import responses
-
-
-import terminal_mode
-import develop_mode
-
-
 import textwrap
 
+import develop_mode
+import responses
+import terminal_mode
 
 # constants
 TAB_SIZE = 4
@@ -21,7 +17,7 @@ def load_help_cmd_info(command: str) -> str:
 
     information = '\n'.join(
         [
-            space + line.rstrip() if index > 0 else line.rstrip() 
+            space + line.rstrip() if index > 0 else line.rstrip()
             for index, line in enumerate(lines)
         ]
     )
@@ -32,9 +28,11 @@ def load_help_cmd_info(command: str) -> str:
     elif responses.is_develop_mode == True:
         current_path = develop_mode.current_path()
 
-    return textwrap.dedent(f"""\
+    return textwrap.dedent(
+        f"""\
         ```
         {information}
         {current_path}
         ```
-    """)
+    """
+    )

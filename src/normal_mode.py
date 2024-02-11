@@ -1,16 +1,13 @@
-import responses
-
-
-from command import apply
-
-
 import json
-import random
-import requests
 import os
+import random
 import re
 import textwrap
 
+import requests
+
+import responses
+from command import apply
 
 Chinese_pattern = re.compile('[\u4e00-\u9fff]')
 
@@ -24,7 +21,8 @@ def get_response_in_normal_mode(message) -> str:
     msg = msg.strip()
 
     if msg == 'help':
-        return textwrap.dedent(f"""\
+        return textwrap.dedent(
+            f"""\
             ```
             Moonafly {responses.Moonafly_version}
             
@@ -44,8 +42,9 @@ def get_response_in_normal_mode(message) -> str:
               apply     apply for roles to use terminal mode and
                         develop mode
             ```
-        """)
-    
+        """
+        )
+
     if msg[:5] == 'apply':
         msg = msg[6:].strip()
 

@@ -1,13 +1,12 @@
 import textwrap
 
-
 # constants
 TAB_SIZE = 4
 
 
 def split_message(response: str) -> list:
     split_response = []
-    
+
     response = response.splitlines()
     word_count = 0
     line_count = 0
@@ -40,5 +39,5 @@ def split_message(response: str) -> list:
     if len(lines) > 0:
         content = '\n'.join(lines)
         split_response.append(content)
-    
+
     return split_response

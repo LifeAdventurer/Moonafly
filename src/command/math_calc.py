@@ -1,10 +1,11 @@
 import ast
-import math
 import json
-
+import math
 
 # define the whitelist of allowed commands
 math_calc_allow_names = []
+
+
 def load_math_calc_allow_names():
     global math_calc_allow_names
     with open('../data/json/math_calc_allow_names.json') as file:

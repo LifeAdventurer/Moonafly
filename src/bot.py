@@ -1,21 +1,20 @@
-import responses
-import terminal_mode
-import develop_mode
-import split_message
-
+import json
+import textwrap
+from datetime import datetime
 
 import discord
-import json
-from datetime import datetime
-import textwrap
 
+import develop_mode
+import responses
+import split_message
+import terminal_mode
 
 # constants
 TAB_SIZE = 4
 
 
 # token should be encrypted
-token = ""
+token = ''
 
 
 # open token JSON file
@@ -38,7 +37,10 @@ def load_maintenance():
         estimated_end_time = '1970-01-01 00:00:00'
         developer = 'Moonafly'
         with open('../data/txt/init_files/maintenance.txt', 'w') as file:
-            file.write('\n'.join([in_maintenance, estimated_end_time, developer]))
+            file.write(
+                '\n'.join([in_maintenance, estimated_end_time, developer])
+            )
+
 
 async def send_message(message):
     try:
@@ -66,6 +68,7 @@ async def send_message_without_response(message):
     except Exception as e:
         print(e)
 
+
 # send message in private
 async def send_message_in_private(message):
     try:
@@ -78,7 +81,7 @@ def init_files():
     load_token()
     load_maintenance()
     responses.load_user_identity_list()
-    
+
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -106,21 +109,21 @@ def run_Moonafly():
         username = str(message.author)
         user_message = str(message.content)
         channel = str(message.channel)
-        
+
         # commands only author can trigger
         if username == responses.author:
             if user_message == 'Moonafly --stop':
                 print('Moonafly stopped by command')
                 await stop_Moonafly(message)
                 return
-            
+
             elif user_message == 'Moonafly --restart':
                 print('Restarting Moonafly...')
                 message.content = '```Restarting Moonafly...```'
                 await send_message_without_response(message)
                 await stop_Moonafly(message)
                 return
-            
+
             elif user_message == 'exit --force':
                 message.content = 'exit'
                 await send_message(message)
@@ -133,20 +136,28 @@ def run_Moonafly():
                 return
 
         # if in maintenance and user using command
-        # announce the maintenance time 
+        # announce the maintenance time
         if (
             in_maintenance
             and username != responses.author
             and username != developer
             and len(user_message) > 0
             and (
-                any(user_message.startswith(cmd) for cmd in responses.enter_terminal_mode_cmd)
-                or any(user_message.startswith(cmd) for cmd in responses.enter_develop_mode_cmd)
+                any(
+                    user_message.startswith(cmd)
+                    for cmd in responses.enter_terminal_mode_cmd
+                )
+                or any(
+                    user_message.startswith(cmd)
+                    for cmd in responses.enter_develop_mode_cmd
+                )
             )
         ):
-            
+
             current_time = datetime.now()
-            end_time = datetime.strptime(estimated_end_time, '%Y-%m-%d %H:%M:%S')
+            end_time = datetime.strptime(
+                estimated_end_time, '%Y-%m-%d %H:%M:%S'
+            )
 
             seconds = int((end_time - current_time).total_seconds())
             announce = ''
@@ -165,17 +176,29 @@ def run_Moonafly():
 
         # when someone else wants to use terminal
         # send private message to notice the user
-        if responses.is_terminal_mode and username != responses.terminal_mode_current_using_user:
-            if any(user_message.startswith(cmd) for cmd in responses.enter_terminal_mode_cmd):
+        if (
+            responses.is_terminal_mode
+            and username != responses.terminal_mode_current_using_user
+        ):
+            if any(
+                user_message.startswith(cmd)
+                for cmd in responses.enter_terminal_mode_cmd
+            ):
                 if username == responses.author:
                     message.content = f"```{responses.terminal_mode_current_using_user} is using the terminal```"
                 else:
                     message.content = '```someone is using the terminal```'
                 await send_message_in_private(message)
             return
-        
-        if responses.is_develop_mode and username != responses.develop_mode_current_using_user:
-            if any(user_message.startswith(cmd) for cmd in responses.enter_develop_mode_cmd):
+
+        if (
+            responses.is_develop_mode
+            and username != responses.develop_mode_current_using_user
+        ):
+            if any(
+                user_message.startswith(cmd)
+                for cmd in responses.enter_develop_mode_cmd
+            ):
                 if username == responses.author:
                     message.content = f"```{responses.develop_mode_current_using_user} is using develop mode```"
                 else:

@@ -1,12 +1,9 @@
-import terminal_mode
-
-
-from command import command_help
-
-
 import textwrap
-from googletrans import Translator, LANGUAGES
 
+from googletrans import LANGUAGES, Translator
+
+import terminal_mode
+from command import command_help
 
 # Constants
 TAB_SIZE = 4
@@ -18,7 +15,8 @@ def show_languages(line_length=80, columns=3) -> str:
 
     for index, (code, language) in enumerate(LANGUAGES.items()):
         column_width[index % columns] = max(
-            column_width[index % columns], len(f"{code}: {language}  "))
+            column_width[index % columns], len(f"{code}: {language}  ")
+        )
 
     lang_lines = []
     line = ""
@@ -26,20 +24,23 @@ def show_languages(line_length=80, columns=3) -> str:
         if index % columns == 0:
             lang_lines.append(line)
             line = ""
-        
+
         code_lang_str = f"{code}: {language}"
         line += code_lang_str + ' ' * (
-            column_width[index % columns] - len(code_lang_str))
-    
+            column_width[index % columns] - len(code_lang_str)
+        )
+
     lang_lines.append(line)
     lang_lines = ('\n' + ' ' * TAB_SIZE * 2).join(lang_lines)
-    
-    return textwrap.dedent(f"""\
+
+    return textwrap.dedent(
+        f"""\
         ```
         {lang_lines}
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )
 
 
 def get_translated_text(msg: str) -> str:
@@ -53,10 +54,12 @@ def get_translated_text(msg: str) -> str:
             return command_help.load_help_cmd_info('translate_show')
 
         return show_languages()
-    
-    return textwrap.dedent(f"""
+
+    return textwrap.dedent(
+        f"""
         ```
         {Translator().translate(msg, src='en', dest='zh-tw').text}
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )

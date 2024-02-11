@@ -1,14 +1,10 @@
-import terminal_mode
-import develop_mode
-
-
-from command import command_help
-
-
-import textwrap
 import os
 import re
+import textwrap
 
+import develop_mode
+import terminal_mode
+from command import command_help
 
 # constants
 TAB_SIZE = 4
@@ -24,6 +20,8 @@ def load_Moonafly_structure() -> dict:
 
 allowed_paths = []
 Moonafly_path_stack = []
+
+
 def load_allowed_paths(data: dict):
     # just make sure the structure file is always a dict
     if len(data) == 0:
@@ -43,13 +41,13 @@ def load_remote_file(msg: str, identity: str) -> str:
         current_path = terminal_mode.current_path()
     elif identity == 'developer':
         current_path = develop_mode.current_path()
-    
+
     r_file_path = re.compile(r'^([^ ]+)$')
     r_file_path_start_end = re.compile(r'^([^ ]+)\s+(\d+)\.\.(\d+)$')
 
     file_path = ''
     start_line = 0
-    end_line = 10 ** 9
+    end_line = 10**9
 
     if r_file_path.match(msg):
         file_path = r_file_path.match(msg).group(1)
@@ -59,18 +57,19 @@ def load_remote_file(msg: str, identity: str) -> str:
         file_path = match.group(1)
         start_line = int(match.group(2))
         end_line = int(match.group(3))
-        
+
         if end_line < start_line:
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 end line should be large than start line
                 {current_path}
                 ```
-            """)
+            """
+            )
 
     else:
         return command_help.load_help_cmd_info('remote_file')
-
 
     try:
         if identity == 'author':
@@ -83,12 +82,14 @@ def load_remote_file(msg: str, identity: str) -> str:
                 with open('../' + file_path, 'r', encoding='utf-8') as file:
                     content = file.read()
             else:
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     remote: You don't have permission to access file "{file_path}".
                     {current_path}
                     ```
-                """)
+                """
+                )
 
         parts = file_path.split('.')
 
@@ -101,13 +102,16 @@ def load_remote_file(msg: str, identity: str) -> str:
 
         for index, line in enumerate(content):
             if start_line <= index + 1 <= end_line:
-                output.append(f"{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}")
+                output.append(
+                    f"{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}"
+                )
 
         output = ('\n' + ' ' * TAB_SIZE * 3).join(output)
 
         on_remote = True
 
-        return textwrap.dedent(f"""\
+        return textwrap.dedent(
+            f"""\
             ```
             {file_path}
             ```
@@ -117,12 +121,15 @@ def load_remote_file(msg: str, identity: str) -> str:
             ```
             {current_path}
             ```
-        """)
+        """
+        )
 
     except FileNotFoundError:
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             ```
             remote: File "{file_path}" not found.
             {current_path}
             ```
-        """)
+        """
+        )

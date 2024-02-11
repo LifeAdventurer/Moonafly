@@ -1,12 +1,8 @@
-import terminal_mode 
-
-
-from command import command_help
-
-
-import textwrap
 import random
+import textwrap
 
+import terminal_mode
+from command import command_help
 
 # Constants
 HELP_FLAG = '--help'
@@ -29,11 +25,11 @@ def is_prime(num: int, k: int) -> bool:
         return True
     if num % 2 == 0 or num % 3 == 0:
         return False
-    
+
     r, d = 0, num - 1
     while d % 2 == 0:
         r, d = r + 1, d // 2
-        
+
     for _ in range(k):
         a = random.randint(2, num - 2)
         x = pow(a, d, num)
@@ -43,7 +39,7 @@ def is_prime(num: int, k: int) -> bool:
             x = pow(x, 2, num)
             if x == num - 1:
                 break
-        
+
         else:
             return False
 
@@ -61,19 +57,23 @@ def check_prime(msg: str) -> str:
         str: A formatted string with the result of primality test and current terminal path.
     """
     if msg.isdigit() and int(msg) > 0:
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             ```
             {is_prime(int(msg), 100)}
             {terminal_mode.current_path()}
             ```
-        """)    
+        """
+        )
 
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         please enter a positive integer
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )
 
 
 def get_primes_response(msg: str) -> str:
@@ -88,12 +88,12 @@ def get_primes_response(msg: str) -> str:
     """
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('primes')
-    
+
     if msg[:5] == 'check':
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('primes_check')
-        
+
         return check_prime(msg)
-    
+
     return terminal_mode.command_not_found(msg)

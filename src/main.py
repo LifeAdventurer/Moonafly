@@ -1,6 +1,5 @@
-import subprocess
 import os
-
+import subprocess
 
 EXEC_PATH = ["python", "bot.py"]
 

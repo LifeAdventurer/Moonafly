@@ -1,21 +1,14 @@
-import responses
-
-
-from command import command_help
-
-
 import json
 from datetime import datetime
 
+import responses
+from command import command_help
 
 # constants
 HELP_FLAG = '--help'
 
 
-apply_roles = [
-    "developer",
-    "guest"
-]
+apply_roles = ["developer", "guest"]
 
 
 def add_user_to_list(username: str, role: str):
@@ -23,25 +16,20 @@ def add_user_to_list(username: str, role: str):
         with open('../data/json/pending_role_list.json') as file:
             pending_role_list = json.load(file)
     except FileNotFoundError:
-        pending_role_list = {
-            "developers": [],
-            "guests": []
-        }
+        pending_role_list = {"developers": [], "guests": []}
         with open('../data/json/pending_role_list.json', 'w') as file:
             json.dump(pending_role_list, file)
-    
+
     current_time = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
     if all(data['username'] != username for data in pending_role_list[role]):
         pending_role_list[role].append(
-            {
-                "username": username,
-                "timestamp": current_time
-            }
+            {"username": username, "timestamp": current_time}
         )
 
     with open('../data/json/pending_role_list.json', 'w') as file:
         json.dump(pending_role_list, file, indent=4)
+
 
 def apply_for_role(msg: str, username: str) -> str:
     if msg.startswith(HELP_FLAG):
@@ -63,6 +51,6 @@ def apply_for_role(msg: str, username: str) -> str:
                 add_user_to_list(username, 'developers')
                 responses.load_user_identity_list()
                 return '```added to pending list```'
-        
+
     else:
         return f"```no role: '{msg}'```"

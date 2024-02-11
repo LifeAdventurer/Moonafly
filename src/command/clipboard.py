@@ -1,13 +1,9 @@
-import terminal_mode 
-
-
-from command import command_help
-
-
-import textwrap
 import json
 import re
+import textwrap
 
+import terminal_mode
+from command import command_help
 
 # constants
 HELP_FLAG = '--help'
@@ -39,38 +35,48 @@ def get_clipboard_data(keyword: str, username: str) -> str:
         data_user = clipboard_data[keyword]['user']
 
         if data_status == 'private' and data_user != username:
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 this keyword directs to private data that you do not have access to get
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
 
         data_type = clipboard_data[keyword]['type']
-        
+
         if data_type == 'link':
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 {clipboard_data[keyword]['data']}
                 ```
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
         elif data_type == 'text':
-            content = ('\n' + ' ' * TAB_SIZE * 4).join(clipboard_data[keyword]['data'].splitlines())
-            return textwrap.dedent(f"""
+            content = ('\n' + ' ' * TAB_SIZE * 4).join(
+                clipboard_data[keyword]['data'].splitlines()
+            )
+            return textwrap.dedent(
+                f"""
                 ```
                 {content}
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
 
     else:
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             ```
             clipboard: no such keyword '{keyword}'
             {terminal_mode.current_path()}
             ```
-        """)
+        """
+        )
 
 
 data_types = ['link', 'text']
@@ -80,6 +86,7 @@ temp_keyword = ''
 temp_data_type = ''
 temp_data = ''
 temp_status = ''
+
 
 def save_data_to_clipboard(msg: str, username: str) -> str:
     lines = msg.splitlines()
@@ -97,41 +104,47 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 "data": temp_data,
                 "type": temp_data_type,
                 "user": username,
-                "status": temp_status
+                "status": temp_status,
             }
 
             save_data_to_clipboard(clipboard_data)
 
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 Keyword: {temp_keyword} overrode successfully
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
         elif msg.lower() == 'no' or msg.lower() == 'n':
             checking_clipboard_keyword_override = False
 
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 if you still want to save your data, change your keyword and try again
                 {terminal_mode.current_path()}
                 ```
-            """)
-        
-        else: 
-            # do you want to override the original data by {keyword}? 
-            
-            return textwrap.dedent(f"""
+            """
+            )
+
+        else:
+            # do you want to override the original data by {keyword}?
+
+            return textwrap.dedent(
+                f"""
                 ```
                 please type yes/no (y/n)
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
 
     pattern = r'^(\w+)\s+(\w+)(?:\s+(\w+))?$'
 
     match = re.match(pattern, lines[0].strip())
-    
+
     if match:
         data_type = match.group(1)
         keyword = match.group(2)
@@ -142,13 +155,15 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
         if status == None:
             status = 'public'
         elif status != 'private':
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 no such status option: '{status}'
                 {terminal_mode.current_path()}
                 ```
-            """)
-        
+            """
+            )
+
         if data_type in data_types:
 
             if len(data) > 0:
@@ -161,57 +176,68 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                         temp_data = data
                         temp_status = status
 
-                        return textwrap.dedent(f"""
+                        return textwrap.dedent(
+                            f"""
                             ```
                             keyword already in use, do you want to override it? (y/n)
                             {terminal_mode.current_path()}
                             ```
-                        """)
+                        """
+                        )
 
                     else:
-                        return textwrap.dedent(f"""
+                        return textwrap.dedent(
+                            f"""
                             ```
                             this keyword: '{keyword}' has been used by another user
                             {terminal_mode.current_path()}
                             ```
-                        """)
+                        """
+                        )
                 else:
                     clipboard_data[keyword] = {
                         "data": data,
                         "type": data_type,
                         "user": username,
-                        "status": status
+                        "status": status,
                     }
 
                 save_clipboard_data(clipboard_data)
 
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     Saved successfully
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
 
             else:
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     clipboard: save: data is empty
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
 
         else:
             content = ('\n' + ' ' * TAB_SIZE * 4).join(data_types)
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 clipboard: save: no such data type
                 {content}
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
 
     else:
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             ```
             clipboard: save: incorrect format
             follow the format below
@@ -222,7 +248,8 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             *data can have multiple lines
             {terminal_mode.current_path()}
             ```
-        """)
+        """
+        )
 
 
 def show_user_keyword(username: str) -> str:
@@ -233,15 +260,17 @@ def show_user_keyword(username: str) -> str:
     for key, value in clipboard_data.items():
         if value['user'] == username:
             keywords.append(key)
-    
+
     keywords = ('\n' + ' ' * TAB_SIZE * 2).join(keywords)
 
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         {keywords}
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )
 
 
 def delete_data_with_keyword(keyword: str, username: str) -> str:
@@ -253,27 +282,32 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
                 del clipboard_data[keyword]
                 save_clipboard_data(clipboard_data)
 
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     keyword: '{keyword}' has been deleted
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
             else:
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     you cannot access this data as it has been saved by another user
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
 
-        
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         no such keyword: '{keyword}'
         {terminal_mode.current_path()}
         ```
-    """)
+    """
+    )
 
 
 def get_clipboard_response(message) -> str:
@@ -305,20 +339,20 @@ def get_clipboard_response(message) -> str:
             return command_help.load_help_cmd_info('clipboard_save')
 
         return save_data_to_clipboard(msg, username)
-    
+
     elif msg[:4] == 'show':
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_show')
 
         return show_user_keyword(username)
-    
+
     elif msg[:3] == 'del':
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_del')
-        
+
         return delete_data_with_keyword(msg, username)
 
-    else: 
+    else:
         return terminal_mode.command_not_found(msg)

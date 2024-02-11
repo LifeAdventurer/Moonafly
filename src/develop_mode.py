@@ -1,17 +1,8 @@
-import responses
-
-
-from command import remote
-from command import command_help
-from command import tree
-from command import maintenance
-from command import jump
-from command import issue
-
-
-import textwrap
 import json
+import textwrap
 
+import responses
+from command import command_help, issue, jump, maintenance, remote, tree
 
 # constants
 HELP_FLAG = '--help'
@@ -29,6 +20,8 @@ def load_Moonafly_structure() -> dict:
 
 
 path_stack = []
+
+
 def path_stack_match(index: int, cur_dir_name) -> bool:
     global path_stack
     return len(path_stack) > index and path_stack[index] == cur_dir_name
@@ -55,12 +48,14 @@ def command_not_found(msg: str) -> str:
             for index, line in enumerate(msg.split('\n'))
         ]
     )
-    return textwrap.dedent(f"""
+    return textwrap.dedent(
+        f"""
         ```
         {msg}: command not found
         {current_path()}
         ```
-    """)
+    """
+    )
 
 
 def get_response_in_develop_mode(message) -> str:
@@ -74,7 +69,8 @@ def get_response_in_develop_mode(message) -> str:
     global path_stack
 
     if msg == 'help':
-        return textwrap.dedent(f"""\
+        return textwrap.dedent(
+            f"""\
             ```
             Moonafly {responses.Moonafly_version}
             
@@ -89,7 +85,8 @@ def get_response_in_develop_mode(message) -> str:
              set [time]
              tree [-M]
             ```
-        """)
+        """
+        )
 
     # cd command
     if msg[:2] == 'cd':
@@ -106,13 +103,15 @@ def get_response_in_develop_mode(message) -> str:
 
         # go to the root directory
         if path[0] == '/' and username != responses.author:
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 permission denied
                 * this command requires the highest authority
                 {current_path()}
                 ```
-            """)
+            """
+            )
 
         # skip all the '\' and split the path into a folder list
         path = path.replace('\\', '').split('/')
@@ -141,12 +140,14 @@ def get_response_in_develop_mode(message) -> str:
                             for index, line in enumerate(msg.split('\n'))
                         ]
                     )
-                    return textwrap.dedent(f"""
+                    return textwrap.dedent(
+                        f"""
                         ```
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
-                    """)
+                    """
+                    )
 
             else:
                 temporary_path_stack.append(folder)
@@ -158,16 +159,20 @@ def get_response_in_develop_mode(message) -> str:
                 for item in list(current_directory):
                     if item.startswith(folder[:-1]):
                         current_directory = current_directory[item]
-                        temporary_path_stack[temporary_path_stack.index(folder)] = item
+                        temporary_path_stack[
+                            temporary_path_stack.index(folder)
+                        ] = item
                         break
-                
+
                 else:
-                    return textwrap.dedent(f"""
+                    return textwrap.dedent(
+                        f"""
                         ```
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
-                    """)
+                    """
+                    )
 
             elif folder in list(current_directory):
                 current_directory = current_directory[folder]
@@ -183,12 +188,14 @@ def get_response_in_develop_mode(message) -> str:
                         for index, line in enumerate(msg.split('\n'))
                     ]
                 )
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     Moonafly: cd: {msg}: No such file or directory
                     {current_path()}
                     ```
-                """)
+                """
+                )
 
         path_stack = temporary_path_stack
         return f"```{current_path()}```"
@@ -207,19 +214,21 @@ def get_response_in_develop_mode(message) -> str:
             return command_help.load_help_cmd_info('pwd')
 
         # delete the prefix 'Moonafly:' and the suffix '$'
-        path = current_path()[(10 + len(username)):-1]
+        path = current_path()[(10 + len(username)) : -1]
         # delete the prefix no matter it is '~' or '/' path_stack still has the data
         path = path[1:]
-        
+
         if path_stack[0] == '~':
             path = 'home/Moonafly' + path
 
-        return textwrap.dedent(f"""
+        return textwrap.dedent(
+            f"""
             ```
             /{path}
             {current_path()}
             ```
-        """)
+        """
+        )
 
     elif msg[:3] == 'set':
         msg = msg[4:].strip()
@@ -244,17 +253,17 @@ def get_response_in_develop_mode(message) -> str:
         return tree.visualize_structure(current_structure)
 
     if path_stack_match(1, 'remote'):
-        if path_stack_match(2, 'file'): 
+        if path_stack_match(2, 'file'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('remote_file')
 
             return remote.load_remote_file(msg.strip(), 'developer')
-    
+
     elif path_stack_match(1, 'issue'):
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('issue')
 
         return issue.get_issues(msg)
-    
+
     else:
         return command_not_found(msg)

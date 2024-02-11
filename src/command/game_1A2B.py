@@ -1,13 +1,9 @@
-import terminal_mode
-
-
-from command import command_help
-
-
-import textwrap
-import random
 import json
+import random
+import textwrap
 
+import terminal_mode
+from command import command_help
 
 # constants
 HELP_FLAG = '--help'
@@ -32,7 +28,7 @@ def load_game_1A2B_ranks() -> dict:
             "7": [],
             "8": [],
             "9": [],
-            "10": []
+            "10": [],
         }
         with open('../data/json/game_1A2B_ranks.json', 'w') as file:
             json.dump(game_1A2B_ranks, file)
@@ -45,13 +41,13 @@ def save_game_1A2B_result(length: int, attempts: int) -> int:
     records = load_game_1A2B_ranks()
     # set the group if there isn't one in the data
     records.setdefault(str(length), [])
-    
+
     # save the record data including attempts, user, timestamp
     records[str(length)].append(
         {
             'attempts': attempts,
             'user': responses.terminal_mode_current_using_user,
-            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
         }
     )
     # sort the rank by attempts first then timestamp
@@ -82,18 +78,22 @@ def show_1A2B_every_length_ranking(tab_size: int, tab_count: int) -> str:
         if len(records[str(length)]) == 0:
             ranking.append(f"{len_str}   | no data  | no data")
         else:
-            attempts = ('  ' + str(records[str(length)][0]['attempts']))[-max(3, len(str(length))):]
+            attempts = ('  ' + str(records[str(length)][0]['attempts']))[
+                -max(3, len(str(length))) :
+            ]
             user = records[str(length)][0]['user']
             ranking.append(f"{len_str}   |    {attempts}   | {user}")
 
     ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
-    
+
     return ranking
 
 
-def show_1A2B_certain_length_ranking(length: int, tab_size: int, tab_count: int) -> str:
+def show_1A2B_certain_length_ranking(
+    length: int, tab_size: int, tab_count: int
+) -> str:
     records = load_game_1A2B_ranks()[str(length)]
-    
+
     indentation = ' ' * tab_size * tab_count
     ranking = [f"length - {length}"]
     if len(records) == 0:
@@ -105,14 +105,18 @@ def show_1A2B_certain_length_ranking(length: int, tab_size: int, tab_count: int)
             if index >= 10:
                 break
 
-            ranking.append(f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}")
-    
+            ranking.append(
+                f"  {('  ' + str(record['attempts']))[-max(3, len(str(length))):]}    | {record['user']}"
+            )
+
     ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
 
     return ranking
 
 
-def show_1A2B_certain_user_ranking(username : str, tab_size: int, tab_count: int) -> str:
+def show_1A2B_certain_user_ranking(
+    username: str, tab_size: int, tab_count: int
+) -> str:
     records = load_game_1A2B_ranks()
 
     ranking = [f"user - {username}"]
@@ -120,19 +124,21 @@ def show_1A2B_certain_user_ranking(username : str, tab_size: int, tab_count: int
     ranking.append('-------------------')
     for length in range(4, 11):
         len_str = f"  {(' ' + str(length))[-2:]}"
-        
+
         no_data = True
         for index, record in enumerate(records[str(length)]):
             if record['user'] == username:
                 no_data = False
-                attempts = ('  ' + str(record['attempts']))[-max(3, len(str(length))):]
+                attempts = ('  ' + str(record['attempts']))[
+                    -max(3, len(str(length))) :
+                ]
                 ranking.append(f"{len_str}   | {attempts} (rank {index + 1})")
                 break
-        
+
         if no_data:
             ranking.append(f"{len_str}   |  no data")
             continue
-        
+
     ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
 
     return ranking
@@ -170,27 +176,35 @@ def play_game_1A2B(message) -> str:
                 if msg.isdigit() and 4 <= int(msg) <= 10:
                     target_number_len = int(msg)
                     # the numbers won't be duplicated
-                    target_number = ''.join(random.sample('0123456789', target_number_len))
+                    target_number = ''.join(
+                        random.sample('0123456789', target_number_len)
+                    )
 
                 else:
-                    return textwrap.dedent(f"""
+                    return textwrap.dedent(
+                        f"""
                         ```
                         please enter a valid number between 4 to 10
                         {terminal_mode.current_path()}
                         ```
-                    """)
+                    """
+                    )
 
             else:
                 # the default length for this game
                 target_number_len = 4
                 # the numbers won't be duplicated
-                target_number = ''.join(random.sample('123456', target_number_len))
+                target_number = ''.join(
+                    random.sample('123456', target_number_len)
+                )
             print(target_number)
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 {target_number_len}-digit number generated.
                 ```
-            """)
+            """
+            )
 
         elif msg[:4] == 'rank' or msg[:4] == 'Rank':
             msg = msg[5:].strip()
@@ -203,40 +217,48 @@ def play_game_1A2B(message) -> str:
                 if msg.isdigit():
                     if 4 <= int(msg) <= 10:
                         search_rank_length = int(msg)
-                        return textwrap.dedent(f"""
+                        return textwrap.dedent(
+                            f"""
                             ```
                             {show_1A2B_certain_length_ranking(search_rank_length, TAB_SIZE, 7)}
                             {terminal_mode.current_path()}
                             ```
-                        """)
+                        """
+                        )
 
                     else:
-                        return textwrap.dedent(f"""
+                        return textwrap.dedent(
+                            f"""
                             ```
                             please enter a valid number between 4 to 10
                             {terminal_mode.current_path()}
                             ```
-                        """)
-                
+                        """
+                        )
+
                 # search user ranking
                 else:
                     certain_user = msg
                     if msg == '-p':
                         certain_user = username
-                    return textwrap.dedent(f"""
+                    return textwrap.dedent(
+                        f"""
                         ```
                         {show_1A2B_certain_user_ranking(certain_user, TAB_SIZE, 6)}
                         {terminal_mode.current_path()}
                         ```
-                    """)
+                    """
+                    )
 
             # show every length ranking
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 {show_1A2B_every_length_ranking(TAB_SIZE, 4)}
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
 
         else:
             return terminal_mode.command_not_found(msg)
@@ -255,12 +277,14 @@ def play_game_1A2B(message) -> str:
                 message.content = msg
                 return responses.get_response(message)
 
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 Game ended.
                 {terminal_mode.current_path()}
                 ```
-            """)
+            """
+            )
         guess = msg
 
         if len(guess) == target_number_len and guess.isdigit():
@@ -272,7 +296,8 @@ def play_game_1A2B(message) -> str:
                 sum(
                     min(target_number.count(digit), guess.count(digit))
                     for digit in target_number
-                ) - A_cnt
+                )
+                - A_cnt
             )
 
             attempts += 1
@@ -280,28 +305,34 @@ def play_game_1A2B(message) -> str:
             # User got the target number
             if A_cnt == target_number_len:
                 playing_game_1A2B = False
-                
+
                 # save game records for the rank board
                 user_rank = save_game_1A2B_result(target_number_len, attempts)
 
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     Congratulations! You guessed the target number {target_number} in {attempts} attempts.
                     Your got rank {user_rank} in length {target_number_len} !!!
                     {terminal_mode.current_path()}
                     ```
-                """)
+                """
+                )
 
             else:
-                return textwrap.dedent(f"""
+                return textwrap.dedent(
+                    f"""
                     ```
                     {A_cnt}A{B_cnt}B
                     ```
-                """)
+                """
+                )
 
         else:
-            return textwrap.dedent(f"""
+            return textwrap.dedent(
+                f"""
                 ```
                 please enter a valid input with only numbers and the correct length
                 ```
-            """)
+            """
+            )
