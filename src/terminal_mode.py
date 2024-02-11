@@ -37,12 +37,9 @@ HELP_FLAG = '--help'
 TAB_SIZE = 4
 
 
-terminal_mode_directory_structure = []
-# initialed when bot started via init_files() in `bot.py`
-def load_terminal_mode_directory_structure():
-    global terminal_mode_directory_structure
+def load_terminal_mode_directory_structure() -> dict:
     with open('../data/json/terminal_mode_directory_structure.json') as file:
-        terminal_mode_directory_structure = json.load(file)['structure']
+        return json.load(file)['structure']
 
 
 def load_Moonafly_structure() -> dict:
@@ -226,7 +223,7 @@ def get_response_in_terminal_mode(message) -> str:
                 else:
                     temporary_path_stack.append(folder)
 
-            current_directory = terminal_mode_directory_structure
+            current_directory = load_terminal_mode_directory_structure()
 
             for folder in temporary_path_stack:
                 if folder[-1] == '>':
@@ -290,8 +287,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('ls')
 
-            # copy the terminal_mode_directory_structure
-            current_directory = terminal_mode_directory_structure
+            current_directory = load_terminal_mode_directory_structure()
             # and move it to the current directory
             for folder in path_stack:
                 current_directory = current_directory[folder]
@@ -338,8 +334,7 @@ def get_response_in_terminal_mode(message) -> str:
             if msg[:8] == 'Moonafly' and username == responses.author:
                 return tree.visualize_structure(load_Moonafly_structure())
 
-            # copy the directory structure
-            current_structure = terminal_mode_directory_structure
+            current_structure = load_terminal_mode_directory_structure()
             # and move it to the current directory
             for folder in path_stack:
                 current_structure = current_structure[folder]

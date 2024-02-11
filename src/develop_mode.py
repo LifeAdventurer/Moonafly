@@ -18,12 +18,9 @@ HELP_FLAG = '--help'
 TAB_SIZE = 4
 
 
-develop_mode_directory_structure = []
-# initialed when bot started via init_files() in `bot.py`
 def load_develop_mode_directory_structure():
-    global develop_mode_directory_structure
     with open('../data/json/develop_mode_directory_structure.json') as file:
-        develop_mode_directory_structure = json.load(file)['structure']
+        return json.load(file)['structure']
 
 
 def load_Moonafly_structure() -> dict:
@@ -154,7 +151,7 @@ def get_response_in_develop_mode(message) -> str:
             else:
                 temporary_path_stack.append(folder)
 
-        current_directory = develop_mode_directory_structure
+        current_directory = load_develop_mode_directory_structure()
 
         for folder in temporary_path_stack:
             if folder[-1] == '>':
@@ -239,7 +236,7 @@ def get_response_in_develop_mode(message) -> str:
             return tree.visualize_structure(load_Moonafly_structure())
 
         # copy the directory structure
-        current_structure = develop_mode_directory_structure
+        current_structure = load_develop_mode_directory_structure()
         # and move it to the current directory
         for folder in path_stack:
             current_structure = current_structure[folder]
