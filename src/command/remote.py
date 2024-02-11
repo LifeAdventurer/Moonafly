@@ -15,10 +15,15 @@ TAB_SIZE = 4
 
 
 on_remote = False
+
+
+def load_Moonafly_structure() -> dict:
+    with open('../data/json/Moonafly_structure.json') as file:
+        return json.load(file)['structure']
+
+
 allowed_paths = []
 Moonafly_path_stack = []
-
-
 def load_allowed_paths(data: dict):
     # just make sure the structure file is always a dict
     if len(data) == 0:
@@ -72,7 +77,7 @@ def load_remote_file(msg: str, identity: str) -> str:
             with open('../' + file_path, 'r', encoding='utf-8') as file:
                 content = file.read()
         elif identity == 'developer':
-            load_allowed_paths(terminal_mode.Moonafly_structure)
+            load_allowed_paths(load_Moonafly_structure())
 
             if file_path in allowed_paths:
                 with open('../' + file_path, 'r', encoding='utf-8') as file:

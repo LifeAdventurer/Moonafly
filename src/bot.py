@@ -77,14 +77,9 @@ async def send_message_in_private(message):
 def init_files():
     load_token()
     load_maintenance()
-    
     responses.load_user_identity_list()
-    
     terminal_mode.load_terminal_mode_directory_structure()
-    terminal_mode.load_Moonafly_structure()
-
     develop_mode.load_develop_mode_directory_structure()
-    develop_mode.load_Moonafly_structure()
     
 
 intents = discord.Intents.default()

@@ -26,12 +26,9 @@ def load_develop_mode_directory_structure():
         develop_mode_directory_structure = json.load(file)['structure']
 
 
-Moonafly_structure = []
-# initialed when bot started via init_files() in `bot.py`
-def load_Moonafly_structure():
-    global Moonafly_structure
+def load_Moonafly_structure() -> dict:
     with open('../data/json/Moonafly_structure.json') as file:
-        Moonafly_structure = json.load(file)['structure']
+        return json.load(file)['structure']
 
 
 path_stack = []
@@ -239,7 +236,7 @@ def get_response_in_develop_mode(message) -> str:
             return command_help.load_help_cmd_info('tree')
 
         if msg[:8] == 'Moonafly':
-            return tree.visualize_structure(Moonafly_structure)
+            return tree.visualize_structure(load_Moonafly_structure())
 
         # copy the directory structure
         current_structure = develop_mode_directory_structure

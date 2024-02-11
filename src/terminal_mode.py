@@ -45,12 +45,9 @@ def load_terminal_mode_directory_structure():
         terminal_mode_directory_structure = json.load(file)['structure']
 
 
-Moonafly_structure = []
-# initialed when bot started via init_files() in `bot.py`
-def load_Moonafly_structure():
-    global Moonafly_structure
+def load_Moonafly_structure() -> dict:
     with open('../data/json/Moonafly_structure.json') as file:
-        Moonafly_structure = json.load(file)['structure']
+        return json.load(file)['structure']
 
 
 def command_not_found(msg: str) -> str:
@@ -106,7 +103,7 @@ def get_ls_command_output(files: dict, tab_size: int, tab_count: int) -> str:
 
 
 path_stack = []
-def path_stack_match(index: int, cur_dir_name) -> bool:
+def path_stack_match(index: int, cur_dir_name: str) -> bool:
     global path_stack
     return len(path_stack) > index and path_stack[index] == cur_dir_name
 
@@ -339,7 +336,7 @@ def get_response_in_terminal_mode(message) -> str:
                 return command_help.load_help_cmd_info('tree')
 
             if msg[:8] == 'Moonafly' and username == responses.author:
-                return tree.visualize_structure(Moonafly_structure)
+                return tree.visualize_structure(load_Moonafly_structure())
 
             # copy the directory structure
             current_structure = terminal_mode_directory_structure
