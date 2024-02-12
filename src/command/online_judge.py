@@ -39,7 +39,7 @@ def show_online_judge_list() -> str:
         {space.join(online_judge_list)}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 
@@ -51,7 +51,7 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
             please enter a valid number between 1 and {len(urls)}
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     for index, (key, value) in enumerate(urls.items()):
@@ -68,7 +68,7 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
             The handle {handle} is not found
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
     else:
         return textwrap.dedent(
@@ -77,7 +77,7 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
             ```
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
 

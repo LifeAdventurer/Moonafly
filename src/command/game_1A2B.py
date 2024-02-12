@@ -187,7 +187,7 @@ def play_game_1A2B(message) -> str:
                         please enter a valid number between 4 to 10
                         {terminal_mode.current_path()}
                         ```
-                    """
+                        """
                     )
 
             else:
@@ -203,7 +203,7 @@ def play_game_1A2B(message) -> str:
                 ```
                 {target_number_len}-digit number generated.
                 ```
-            """
+                """
             )
 
         elif msg[:4] == 'rank' or msg[:4] == 'Rank':
@@ -223,7 +223,7 @@ def play_game_1A2B(message) -> str:
                             {show_1A2B_certain_length_ranking(search_rank_length, TAB_SIZE, 7)}
                             {terminal_mode.current_path()}
                             ```
-                        """
+                            """
                         )
 
                     else:
@@ -233,7 +233,7 @@ def play_game_1A2B(message) -> str:
                             please enter a valid number between 4 to 10
                             {terminal_mode.current_path()}
                             ```
-                        """
+                            """
                         )
 
                 # search user ranking
@@ -247,7 +247,7 @@ def play_game_1A2B(message) -> str:
                         {show_1A2B_certain_user_ranking(certain_user, TAB_SIZE, 6)}
                         {terminal_mode.current_path()}
                         ```
-                    """
+                        """
                     )
 
             # show every length ranking
@@ -257,7 +257,7 @@ def play_game_1A2B(message) -> str:
                 {show_1A2B_every_length_ranking(TAB_SIZE, 4)}
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         else:
@@ -283,7 +283,7 @@ def play_game_1A2B(message) -> str:
                 Game ended.
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
         guess = msg
 
@@ -316,7 +316,7 @@ def play_game_1A2B(message) -> str:
                     Your got rank {user_rank} in length {target_number_len} !!!
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
             else:
@@ -325,7 +325,7 @@ def play_game_1A2B(message) -> str:
                     ```
                     {A_cnt}A{B_cnt}B
                     ```
-                """
+                    """
                 )
 
         else:
@@ -334,5 +334,5 @@ def play_game_1A2B(message) -> str:
                 ```
                 please enter a valid input with only numbers and the correct length
                 ```
-            """
+                """
             )

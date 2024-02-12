@@ -63,7 +63,7 @@ def check_prime(msg: str) -> str:
             {is_prime(int(msg), 100)}
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     return textwrap.dedent(
@@ -72,7 +72,7 @@ def check_prime(msg: str) -> str:
         please enter a positive integer
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 

@@ -29,7 +29,7 @@ def set_maintenance(msg: str) -> str:
                 the time you entered needs to be later than now
                 {develop_mode.current_path()}
                 ```
-            """
+                """
             )
 
         with open('../data/txt/init_files/maintenance.txt', 'w') as file:
@@ -48,7 +48,7 @@ def set_maintenance(msg: str) -> str:
             maintenance set up successfully
             {develop_mode.current_path()}
             ```
-        """
+            """
         )
 
     except ValueError:
@@ -59,7 +59,7 @@ def set_maintenance(msg: str) -> str:
             YYYY:MM:DD hh:mm:ss
             {develop_mode.current_path()}
             ```
-        """
+            """
         )
 
 
@@ -75,7 +75,7 @@ def end_maintenance(msg: str) -> str:
             Moonafly is not under maintenance
             {develop_mode.current_path()}
             ```
-        """
+            """
         )
 
     with open('../data/txt/init_files/maintenance.txt', 'w') as file:
@@ -94,5 +94,5 @@ def end_maintenance(msg: str) -> str:
         maintenance ended
         {develop_mode.current_path()}
         ```
-    """
+        """
     )

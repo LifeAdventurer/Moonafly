@@ -34,12 +34,12 @@ def show_languages(line_length=80, columns=3) -> str:
     lang_lines = ('\n' + ' ' * TAB_SIZE * 2).join(lang_lines)
 
     return textwrap.dedent(
-        f"""\
+        f"""
         ```
         {lang_lines}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 
@@ -61,5 +61,5 @@ def get_translated_text(msg: str) -> str:
         {Translator().translate(msg, src='en', dest='zh-tw').text}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )

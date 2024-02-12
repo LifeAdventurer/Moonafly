@@ -65,7 +65,7 @@ def load_remote_file(msg: str, identity: str) -> str:
                 end line should be large than start line
                 {current_path}
                 ```
-            """
+                """
             )
 
     else:
@@ -88,7 +88,7 @@ def load_remote_file(msg: str, identity: str) -> str:
                     remote: You don't have permission to access file "{file_path}".
                     {current_path}
                     ```
-                """
+                    """
                 )
 
         parts = file_path.split('.')
@@ -111,7 +111,7 @@ def load_remote_file(msg: str, identity: str) -> str:
         on_remote = True
 
         return textwrap.dedent(
-            f"""\
+            f"""
             ```
             {file_path}
             ```
@@ -121,7 +121,7 @@ def load_remote_file(msg: str, identity: str) -> str:
             ```
             {current_path}
             ```
-        """
+            """
         )
 
     except FileNotFoundError:
@@ -131,5 +131,5 @@ def load_remote_file(msg: str, identity: str) -> str:
             remote: File "{file_path}" not found.
             {current_path}
             ```
-        """
+            """
         )

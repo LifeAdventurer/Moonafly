@@ -54,7 +54,7 @@ def command_not_found(msg: str) -> str:
         {msg}: command not found
         {current_path()}
         ```
-    """
+        """
     )
 
 
@@ -70,7 +70,7 @@ def get_response_in_develop_mode(message) -> str:
 
     if msg == 'help':
         return textwrap.dedent(
-            f"""\
+            f"""
             ```
             Moonafly {responses.Moonafly_version}
             
@@ -85,7 +85,7 @@ def get_response_in_develop_mode(message) -> str:
              set [time]
              tree [-M]
             ```
-        """
+            """
         )
 
     # cd command
@@ -110,7 +110,7 @@ def get_response_in_develop_mode(message) -> str:
                 * this command requires the highest authority
                 {current_path()}
                 ```
-            """
+                """
             )
 
         # skip all the '\' and split the path into a folder list
@@ -146,7 +146,7 @@ def get_response_in_develop_mode(message) -> str:
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
-                    """
+                        """
                     )
 
             else:
@@ -171,7 +171,7 @@ def get_response_in_develop_mode(message) -> str:
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
-                    """
+                        """
                     )
 
             elif folder in list(current_directory):
@@ -194,7 +194,7 @@ def get_response_in_develop_mode(message) -> str:
                     Moonafly: cd: {msg}: No such file or directory
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
         path_stack = temporary_path_stack
@@ -227,7 +227,7 @@ def get_response_in_develop_mode(message) -> str:
             /{path}
             {current_path()}
             ```
-        """
+            """
         )
 
     elif msg[:3] == 'set':

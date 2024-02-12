@@ -41,7 +41,7 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 this keyword directs to private data that you do not have access to get
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         data_type = clipboard_data[keyword]['type']
@@ -53,7 +53,7 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 ```
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
         elif data_type == 'text':
             content = ('\n' + ' ' * TAB_SIZE * 4).join(
@@ -65,7 +65,7 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 {content}
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     else:
@@ -75,7 +75,7 @@ def get_clipboard_data(keyword: str, username: str) -> str:
             clipboard: no such keyword '{keyword}'
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
 
@@ -115,7 +115,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 Keyword: {temp_keyword} overrode successfully
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
         elif msg.lower() == 'no' or msg.lower() == 'n':
             checking_clipboard_keyword_override = False
@@ -126,7 +126,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 if you still want to save your data, change your keyword and try again
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         else:
@@ -138,7 +138,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 please type yes/no (y/n)
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     pattern = r'^(\w+)\s+(\w+)(?:\s+(\w+))?$'
@@ -161,7 +161,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 no such status option: '{status}'
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         if data_type in data_types:
@@ -182,7 +182,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                             keyword already in use, do you want to override it? (y/n)
                             {terminal_mode.current_path()}
                             ```
-                        """
+                            """
                         )
 
                     else:
@@ -192,7 +192,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                             this keyword: '{keyword}' has been used by another user
                             {terminal_mode.current_path()}
                             ```
-                        """
+                            """
                         )
                 else:
                     clipboard_data[keyword] = {
@@ -210,7 +210,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                     Saved successfully
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
             else:
@@ -220,7 +220,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                     clipboard: save: data is empty
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
         else:
@@ -232,7 +232,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 {content}
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     else:
@@ -248,7 +248,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             *data can have multiple lines
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
 
@@ -269,7 +269,7 @@ def show_user_keyword(username: str) -> str:
         {keywords}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 
@@ -288,7 +288,7 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
                     keyword: '{keyword}' has been deleted
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
             else:
                 return textwrap.dedent(
@@ -297,7 +297,7 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
                     you cannot access this data as it has been saved by another user
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
     return textwrap.dedent(
@@ -306,7 +306,7 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
         no such keyword: '{keyword}'
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 

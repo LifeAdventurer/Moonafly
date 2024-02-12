@@ -43,7 +43,7 @@ def get_random_vocab_test(message) -> str:
                     You have cleared all the words.
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
             else:
                 random_vocab_testing = True
@@ -60,7 +60,7 @@ def get_random_vocab_test(message) -> str:
                     ```
                     {vocabulary_list[username][vocab_index]['word']}
                     ```
-                """
+                    """
                 )
 
         else:
@@ -72,7 +72,7 @@ def get_random_vocab_test(message) -> str:
                 use ~/random/vocab/test to examine yourself
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     elif random_vocab_testing:
@@ -96,7 +96,7 @@ def get_random_vocab_test(message) -> str:
                 {word_in_zh_TW}
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         else:
@@ -115,7 +115,7 @@ def get_random_vocab_test(message) -> str:
                 {word_in_zh_TW}
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         # update data

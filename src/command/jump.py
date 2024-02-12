@@ -59,7 +59,7 @@ def jump_to_folder(msg: str) -> str:
                 jump: {msg}: No such file or directory
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     elif responses.is_develop_mode == True:
@@ -78,7 +78,7 @@ def jump_to_folder(msg: str) -> str:
                 jump: {msg}: No such file or directory
                 {develop_mode.current_path()}
                 ```
-            """
+                """
             )
 
     path_stack = []
@@ -87,5 +87,5 @@ def jump_to_folder(msg: str) -> str:
         ```
         {current_path}
         ```
-    """
+        """
     )

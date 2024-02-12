@@ -42,5 +42,5 @@ def visualize_structure(data: dict) -> str:
         {traverse(data, 0, bypass)}
         {current_path}
         ```
-    """
+        """
     )

@@ -61,7 +61,7 @@ def command_not_found(msg: str) -> str:
         {msg}: command not found
         {current_path()}
         ```
-    """
+        """
     )
 
 
@@ -72,7 +72,7 @@ def function_developing() -> str:
         sorry, this function is still developing
         {current_path()}
         ```
-    """
+        """
     )
 
 
@@ -168,7 +168,7 @@ def get_response_in_terminal_mode(message) -> str:
                  tree [-M]
                 {current_path()}
                 ```
-            """
+                """
             )
 
         # cd command
@@ -193,7 +193,7 @@ def get_response_in_terminal_mode(message) -> str:
                     * this command requires the highest authority
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
             # skip all the '\' and split the path into a folder list
@@ -229,7 +229,7 @@ def get_response_in_terminal_mode(message) -> str:
                             Moonafly: cd: {msg}: No such file or directory
                             {current_path()}
                             ```
-                        """
+                            """
                         )
 
                 else:
@@ -254,7 +254,7 @@ def get_response_in_terminal_mode(message) -> str:
                             Moonafly: cd: {msg}: No such file or directory
                             {current_path()}
                             ```
-                        """
+                            """
                         )
 
                 elif folder in list(current_directory):
@@ -269,7 +269,7 @@ def get_response_in_terminal_mode(message) -> str:
                                 your command path contains certain directory that requires the highest authority
                                 {current_path()}
                                 ```
-                            """
+                                """
                             )
                     else:
                         current_directory = current_directory[folder]
@@ -291,7 +291,7 @@ def get_response_in_terminal_mode(message) -> str:
                         Moonafly: cd: {msg}: No such file or directory
                         {current_path()}
                         ```
-                    """
+                        """
                     )
 
             path_stack = temporary_path_stack
@@ -326,7 +326,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {get_ls_command_output(files_in_current_directory, TAB_SIZE, 4)}
                 {current_path()}
                 ```
-            """
+                """
             )
 
         # return the full pathname of the current working directory
@@ -349,7 +349,7 @@ def get_response_in_terminal_mode(message) -> str:
                 /{path}
                 {current_path()}
                 ```
-            """
+                """
             )
 
         # show the terminal_mode_directory_structure
@@ -400,7 +400,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
             elif 'LIMIT' in msg:
                 return textwrap.dedent(
@@ -409,7 +409,7 @@ def get_response_in_terminal_mode(message) -> str:
                     please type a number after the command LIMIT
                     {current_path()}
                     ```
-                """
+                    """
                 )
             else:
                 return textwrap.dedent(
@@ -418,7 +418,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
         # en-zh_TW
@@ -435,7 +435,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
             elif 'LIMIT' in msg:
                 return textwrap.dedent(
@@ -444,7 +444,7 @@ def get_response_in_terminal_mode(message) -> str:
                     please type a number after the command LIMIT
                     {current_path()}
                     ```
-                """
+                    """
                 )
             else:
                 return textwrap.dedent(
@@ -453,7 +453,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
     # games
@@ -478,7 +478,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {math_calc.safe_eval(msg)}
                 {current_path()}
                 ```
-            """
+                """
             )
 
         elif path_stack_match(2, 'count'):
@@ -492,7 +492,7 @@ def get_response_in_terminal_mode(message) -> str:
                 {str(len(words))}
                 {current_path()}
                 ```
-            """
+                """
             )
 
         elif path_stack_match(2, 'primes'):
@@ -514,7 +514,7 @@ def get_response_in_terminal_mode(message) -> str:
                     {random.randint(1, int(msg))}
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
             else:
@@ -524,7 +524,7 @@ def get_response_in_terminal_mode(message) -> str:
                     please enter a valid number
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
         elif path_stack_match(2, 'vocab'):
@@ -549,7 +549,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
             else:
@@ -559,7 +559,7 @@ def get_response_in_terminal_mode(message) -> str:
                     ```
                     {current_path()}
                     ```
-                """
+                    """
                 )
 
         # search for a handle in different online judges

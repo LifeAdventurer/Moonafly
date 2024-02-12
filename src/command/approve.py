@@ -53,7 +53,7 @@ def show_pending_role_list() -> str:
             no user pending for roles
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     content = ('\n' + ' ' * TAB_SIZE * 2).join(content)
@@ -64,7 +64,7 @@ def show_pending_role_list() -> str:
         {content}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 
@@ -87,7 +87,7 @@ def approve_pending(msg: str) -> str:
                     no one applying for {role}
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
             if msg.isdigit() and 0 <= int(msg) <= list_len - 1:
@@ -111,7 +111,7 @@ def approve_pending(msg: str) -> str:
                     {username} has been added to role '{role}'
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
             else:
@@ -121,7 +121,7 @@ def approve_pending(msg: str) -> str:
                     enter a integer between 0 and {list_len - 1}
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
     return textwrap.dedent(
@@ -130,7 +130,7 @@ def approve_pending(msg: str) -> str:
         no role: {msg.split()[0]}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 

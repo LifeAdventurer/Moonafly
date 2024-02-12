@@ -18,11 +18,11 @@ def get_weather_info() -> str:
     current_temperature = data['current']['temperature_2m']
     wind_speed = data['current']['wind_speed_10m']
     return textwrap.dedent(
-        f"""\
+        f"""
         ```
         Current Temperature: {current_temperature}°C
         Wind Speed: {wind_speed} km/h
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )

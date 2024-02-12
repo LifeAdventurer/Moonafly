@@ -38,7 +38,7 @@ def get_issues_on_github() -> str:
             {issue_list}
             {develop_mode.current_path()}
             ```
-        """
+            """
         )
 
     else:
@@ -48,7 +48,7 @@ def get_issues_on_github() -> str:
             failed to fetch GitHub issues. Status code: {response.status_code}
             {develop_mode.current_path()}
             ```
-        """
+            """
         )
 
 

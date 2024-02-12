@@ -163,7 +163,7 @@ def get_response(message) -> str:
                     {space.join(user_pending)}
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
             return textwrap.dedent(
@@ -171,7 +171,7 @@ def get_response(message) -> str:
                 ```
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
         else:
@@ -180,7 +180,7 @@ def get_response(message) -> str:
                 ```
                 you don't have the permission to access terminal mode
                 ```
-            """
+                """
             )
 
     elif is_normal_mode == True and any(
@@ -210,7 +210,7 @@ def get_response(message) -> str:
                 Welcome, developer {username}!
                 {develop_mode.current_path()}
                 ```
-            """
+                """
             )
 
         else:
@@ -219,7 +219,7 @@ def get_response(message) -> str:
                 ```
                 you don't have the permission to access develop mode
                 ```
-            """
+                """
             )
 
     else:
@@ -306,7 +306,7 @@ def get_response(message) -> str:
                 {'mouse moved' if mouse_moved else ''}
                 {cpu_core_usages}
                 ```
-            """
+                """
             )
 
         else:

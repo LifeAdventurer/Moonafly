@@ -22,7 +22,7 @@ def get_response_in_normal_mode(message) -> str:
 
     if msg == 'help':
         return textwrap.dedent(
-            f"""\
+            f"""
             ```
             Moonafly {responses.Moonafly_version}
             
@@ -42,7 +42,7 @@ def get_response_in_normal_mode(message) -> str:
               apply     apply for roles to use terminal mode and
                         develop mode
             ```
-        """
+            """
         )
 
     if msg[:5] == 'apply':

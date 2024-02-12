@@ -29,10 +29,10 @@ def load_help_cmd_info(command: str) -> str:
         current_path = develop_mode.current_path()
 
     return textwrap.dedent(
-        f"""\
+        f"""
         ```
         {information}
         {current_path}
         ```
-    """
+        """
     )

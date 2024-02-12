@@ -27,7 +27,7 @@ def get_hash(msg: str) -> str:
             {hash_algorithms}
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     parts = msg.split(maxsplit=1)
@@ -44,7 +44,7 @@ def get_hash(msg: str) -> str:
             Invalid hash algorithm.
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     hash_object = hashlib.new(hash_algorithm)
@@ -56,5 +56,5 @@ def get_hash(msg: str) -> str:
         {hash_object.hexdigest()}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )

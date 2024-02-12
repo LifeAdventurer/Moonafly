@@ -40,7 +40,7 @@ def get_random_vocab_review(message) -> str:
                     You have cleared all the words.
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
             else:
                 random_index = random.randint(0, list_len - 1)
@@ -57,7 +57,7 @@ def get_random_vocab_review(message) -> str:
                     {vocabulary_list[username][vocab_index]['word_in_zh_TW']}
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
         else:
@@ -70,7 +70,7 @@ def get_random_vocab_review(message) -> str:
                 ~/random/vocab/review to review the words.
                 {terminal_mode.current_path()}
                 ```
-            """
+                """
             )
 
     else:

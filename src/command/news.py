@@ -56,7 +56,7 @@ def get_cnn_news(category: str) -> str:
             ```
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
     else:
@@ -69,7 +69,7 @@ def get_cnn_news(category: str) -> str:
             Failed to retrieve news, please try again later.
             {terminal_mode.current_path()}
             ```
-        """
+            """
         )
 
 
@@ -95,7 +95,7 @@ def show_news_categories() -> str:
         {space.join(cnn_news_categories)}
         {terminal_mode.current_path()}
         ```
-    """
+        """
     )
 
 
@@ -121,7 +121,7 @@ def get_news(msg: str) -> str:
                     category: '{msg}' not found
                     {terminal_mode.current_path()}
                     ```
-                """
+                    """
                 )
 
         return get_cnn_news(category)
