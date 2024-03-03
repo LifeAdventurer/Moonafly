@@ -4,4 +4,5 @@ commands under ~/translate
  [text] (default)       translate input TEXT from language A to language B
                         the default language of A and B are English and 
                         Traditional Chinese
+ set
  show

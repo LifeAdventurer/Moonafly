@@ -49,6 +49,7 @@ to_language = 'zh-tw'
 
 language_codes = []
 
+
 def set_language(msg: str):
     parts = msg.split(' ')
     if len(parts) != 3 or parts[1] != 'to':
@@ -60,11 +61,11 @@ def set_language(msg: str):
             ```
             """
         )
-    
+
     if len(language_codes) == 0:
-        for (code, language) in LANGUAGES.items():
+        for code, language in LANGUAGES.items():
             language_codes.append(code)
-    
+
     for i in {0, 2}:
         if parts[i] not in language_codes:
             return textwrap.dedent(
@@ -88,6 +89,7 @@ def set_language(msg: str):
         """
     )
 
+
 def get_translated_text(msg: str) -> str:
 
     if msg.startswith(HELP_FLAG):
@@ -99,10 +101,12 @@ def get_translated_text(msg: str) -> str:
             return command_help.load_help_cmd_info('translate_show')
 
         return show_languages()
-    
+
     elif msg[:3] == 'set':
         msg = msg[3:].strip()
-        
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('translate_set')
+
         return set_language(msg)
 
     return textwrap.dedent(
