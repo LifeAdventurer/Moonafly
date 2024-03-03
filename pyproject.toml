@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "moonafly"
-version = "2.10.0"
+version = "2.11.0"
 description = "Moonafly isn't just a discord bot."
 authors = ["LifeAdventurer <life0adventurer@gmail.com>"]
 readme = "README.md"
