@@ -1,2 +1,2 @@
 Usage: show
-    show usable languages with short code and whole language name
+    show usable languages with IETF language tag and whole language name
