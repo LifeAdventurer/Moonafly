@@ -90,24 +90,41 @@ def set_language(msg: str):
     )
 
 
+def swap_languages():
+    global from_language, to_language
+    from_language, to_language = to_language, from_language
+    return textwrap.dedent(
+        f"""
+        ```
+        language swapped to '{from_language} to {to_language}' successfully
+        {terminal_mode.current_path()}
+        ```
+        """
+    )
+
+
 def get_translated_text(msg: str) -> str:
 
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('translate')
 
-    if msg[:4] == 'show':
-        msg = msg[4:].strip()
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('translate_show')
-
-        return show_languages()
-
-    elif msg[:3] == 'set':
+    if msg[:3] == 'set':
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('translate_set')
-
         return set_language(msg)
+
+    elif msg[:4] == 'show':
+        msg = msg[4:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('translate_show')
+        return show_languages()
+
+    elif msg[:4] == 'swap':
+        msg = msg[4:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('translate_swap')
+        return swap_languages()
 
     return textwrap.dedent(
         f"""

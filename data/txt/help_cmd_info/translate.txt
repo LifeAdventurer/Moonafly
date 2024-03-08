@@ -6,3 +6,4 @@ commands under ~/translate
                         Traditional Chinese
  set
  show
+ swap
