@@ -1,4 +1,5 @@
 import json
+import sys
 import textwrap
 from datetime import datetime
 
@@ -223,4 +224,9 @@ def run_Moonafly():
 
 
 if __name__ == '__main__':
+
+    # this is a hack method
+    # we force stdout redirect to stderr because bot manager cannot read message from stdout
+    sys.stdout = sys.stderr
+
     run_Moonafly()
