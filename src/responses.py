@@ -266,24 +266,25 @@ def get_response(message) -> str:
                 mouse_moved = True
                 mouseX, mouseY = new_mouseX, new_mouseY
 
-            cpu_core_usages = []
+            aligned_cpu_core_usages = []
             # network_connections = []
             if username == author and msg[:6] == 'detail':
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 
-                for i in range(0, len(cpu_usage_per_core), 4):
-                    usage1 = cpu_usage_per_core[i]
-                    usage2 = cpu_usage_per_core[i + 1]
-                    usage3 = cpu_usage_per_core[i + 2]
-                    usage4 = cpu_usage_per_core[i + 3]
-
-                    core1 = f"Core {i + 1}: {usage1}%"
-                    core2 = f"Core {i + 2}: {usage2}%"
-                    core3 = f"Core {i + 3}: {usage3}%"
-                    core4 = f"Core {i + 4}: {usage4}%"
-
+                cpu_core_usages = []
+                for i, usage in enumerate(cpu_usage_per_core):
                     cpu_core_usages.append(
-                        f"{core1}{' ' * (16 - len(core1))}{core2}{' ' * (16 - len(core2))}{core3}{' ' * (16 - len(core3))}{core4}{' ' * (16 - len(core4))}"
+                        f"Core {(' ' + str(i + 1))[-2:]}: {usage}%"
+                    )
+
+                for i in range(0, len(cpu_core_usages), 4):
+                    aligned_cpu_core_usages.append(
+                        ''.join(
+                            [
+                                core.ljust(16)
+                                for core in cpu_core_usages[i : i + 4]
+                            ]
+                        )
                     )
 
                 # net_connections = psutil.net_connections()
@@ -294,7 +295,9 @@ def get_response(message) -> str:
                 #     )
                 #     print(f"{conn.laddr} -> {conn.raddr}, Status: {conn.status}")
 
-            cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(cpu_core_usages)
+            aligned_cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(
+                aligned_cpu_core_usages
+            )
             # network_connections = ('\n' + ' ' * TAB_SIZE * 4).join(network_connections)
 
             return textwrap.dedent(
@@ -304,7 +307,7 @@ def get_response(message) -> str:
                 {mode}
                 server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
                 {'mouse moved' if mouse_moved else ''}
-                {cpu_core_usages}
+                {aligned_cpu_core_usages}
                 ```
                 """
             )

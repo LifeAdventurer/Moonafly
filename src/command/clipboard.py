@@ -107,7 +107,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 "status": temp_status,
             }
 
-            save_data_to_clipboard(clipboard_data)
+            save_clipboard_data(clipboard_data)
 
             return textwrap.dedent(
                 f"""
