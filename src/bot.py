@@ -1,4 +1,5 @@
 import json
+import sys
 import textwrap
 from datetime import datetime
 
@@ -69,7 +70,7 @@ async def send_message_without_response(message):
         print(e)
 
 
-# send message in private
+# send the message in private
 async def send_message_in_private(message):
     try:
         await message.author.send(message.content)
@@ -174,8 +175,8 @@ def run_Moonafly():
             message.content = announce
             await send_message_without_response(message)
 
-        # when someone else wants to use terminal
-        # send private message to notice the user
+        # when someone else wants to use the terminal
+        # send a private message to notify the user
         if (
             responses.is_terminal_mode
             and username != responses.terminal_mode_current_using_user
@@ -213,9 +214,6 @@ def run_Moonafly():
         if not user_message:
             return
 
-        # uncomment this line only for debug
-        # print(f"user: {username} \nmessage: '{user_message}'\nchannel: {channel}")
-
         await send_message(message)
 
     # start discord client
@@ -223,4 +221,9 @@ def run_Moonafly():
 
 
 if __name__ == '__main__':
+
+    # This is a hack method
+    # We force stdout redirect to stderr because the bot manager cannot read messages from stdout
+    sys.stdout = sys.stderr
+
     run_Moonafly()

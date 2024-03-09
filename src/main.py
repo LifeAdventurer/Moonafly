@@ -1,33 +1,26 @@
 import os
 import subprocess
+import time
 
 EXEC_PATH = ["python", "bot.py"]
 
 subprocess_args = {
-    "stdin": subprocess.PIPE,
-    "stdout": subprocess.PIPE,
     "stderr": subprocess.PIPE,
     "encoding": "utf-8",
+    "bufsize": 0,
 }
 
 pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
 
-prev_stderr = ""
-
 while True:
-    stdout, stderr = pipe.communicate()
-
-    if "Restarting Moonafly..." in stdout:
+    stderr = pipe.stderr.readline().strip()
+    if stderr:
+        print(stderr)
+    if "Restarting Moonafly..." in stderr:
         pipe.kill()
         pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
-
-    elif "Moonafly stopped by command" in stdout:
-        print("Moonafly stopped by command")
+        continue
+    elif "Moonafly stopped by command" in stderr:
         os._exit(0)
-
-    if stdout:
-        print(stdout)
-
-    if stderr and stderr != prev_stderr:
-        print(stderr)
-        prev_stderr = stderr
+    # Introduce a short sleep to avoid busy-waiting
+    time.sleep(0.1)
