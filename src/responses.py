@@ -8,7 +8,7 @@ import pyautogui
 import develop_mode
 import normal_mode
 import terminal_mode
-from command import approve, clipboard, game_1A2B, random_vocab_test
+from command import approve, clipboard, game_1A2B, random_vocab_test, translate
 
 Moonafly_version = 'v2.11.0'
 
@@ -232,6 +232,8 @@ def get_response(message) -> str:
                 clipboard.checking_clipboard_keyword_override = False
                 game_1A2B.playing_game_1A2B = False
                 random_vocab_test.random_vocab_testing = False
+                translate.from_language = 'en'
+                translate.to_language = 'zh-tw'
 
                 terminal_mode.path_stack.clear()
                 terminal_mode_current_using_user = ''
