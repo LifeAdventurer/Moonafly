@@ -1,6 +1,6 @@
 import os
-import select
 import subprocess
+import time
 
 EXEC_PATH = ["python", "bot.py"]
 
@@ -12,20 +12,15 @@ subprocess_args = {
 
 pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
 
-# code from https://juejin.cn/s/python%20popen%20communicate%20non%20blocking
 while True:
-    reads, _, _ = select.select([pipe.stderr], [], [])
-    for fd in reads:
-        if fd == pipe.stderr:
-            stderr = pipe.stderr.readline().strip()
-            if "Restarting Moonafly..." in stderr:
-                pipe.kill()
-                pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
-                break
-
-            elif "Moonafly stopped by command" in stderr:
-                print("Moonafly stopped by command")
-                os._exit(0)
-
-            if stderr:
-                print(stderr)
+    stderr = pipe.stderr.readline().strip()
+    if stderr:
+        print(stderr)
+    if "Restarting Moonafly..." in stderr:
+        pipe.kill()
+        pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
+        continue
+    elif "Moonafly stopped by command" in stderr:
+        os._exit(0)
+    # Introduce a short sleep to avoid busy-waiting
+    time.sleep(0.1)
