@@ -1,0 +1,37 @@
+name: Auto Assign Reviewer
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  auto_assign_reviewer:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Assign Reviewer
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const pull_number = context.payload.pull_request.number;
+            const reviewer = LifeAdventurer;
+            
+            const { data: pullRequest } = await github.pulls.get({
+              owner,
+              repo,
+              pull_number
+            });
+            
+            if (!pullRequest.requested_reviewers.some(user => user.login === reviewer)) {
+              await github.pulls.createReviewRequest({
+                owner,
+                repo,
+                pull_number,
+                reviewers: [reviewer]
+              });
+            } else {
+              console.log(`Reviewer ${reviewer} is already assigned.`);
+            }
