@@ -216,8 +216,12 @@ def run_Moonafly():
 
         await send_message(message)
 
+    # this is a hacking method
+    # we use our formatter to avoid tty check in discord.py
+    formatter = discord.utils._ColourFormatter()
+
     # start discord client
-    client.run(token)
+    client.run(token, log_formatter=formatter)
 
 
 if __name__ == '__main__':
