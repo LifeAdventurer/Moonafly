@@ -44,20 +44,17 @@
             },
             "bot.py": {},
             "develop_mode.py": {},
-            "main.py": {},
             "normal_mode.py": {},
             "responses.py": {},
             "split_message.py": {},
             "terminal_mode.py": {}
         },
         ".gitignore": {},
-        "init_Moonafly.bat": {},
-        "init_Moonafly.sh": {},
+        "LICENSE": {},
+        "main.py": {},
         "poetry.lock": {},
         "pyproject.toml": {},
         "README.md": {},
-        "requirements.txt": {},
-        "run_moonafly.bat": {},
-        "run_moonafly.sh": {}
+        "requirements.txt": {}
     }
 }
