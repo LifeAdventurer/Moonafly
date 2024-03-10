@@ -1,0 +1,22 @@
+name: Auto Assign PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  auto_assign:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+      
+    - name: Assign PR to reviewer
+      run: |
+        # Extract PR number
+        PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        # Assign PR to specific user
+        gh pr edit $PR_NUMBER --assignee LifeAdventurer
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
