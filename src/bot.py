@@ -122,7 +122,6 @@ def run_Moonafly():
                 print('Restarting Moonafly...')
                 message.content = '```Restarting Moonafly...```'
                 await send_message_without_response(message)
-                await stop_Moonafly(message)
                 return
 
             elif user_message == 'exit --force':

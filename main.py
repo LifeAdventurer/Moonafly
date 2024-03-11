@@ -15,7 +15,7 @@ if not os.path.isfile("config.json"):
     print('"config.json" not found')
     bot_token = input("Enter your Discord bot token: ")
     with open('config.json', 'w') as f:
-        json.dump({"token": bot_token}, f)
+        json.dump({"token": bot_token}, f, indent=4)
     print('"config.json" created with the provided bot token.')
 
 # Check if "user_identity.json" exists in the "data/json" directory
@@ -29,7 +29,7 @@ if not os.path.isfile("./data/json/user_identity.json"):
         "guests": [discord_username],
     }
     with open('./data/json/user_identity.json', 'w') as f:
-        json.dump(user_identity_data, f)
+        json.dump(user_identity_data, f, indent=4)
     print('"user_identity.json" created with the provided Discord username.')
 
 if init:
