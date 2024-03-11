@@ -19,18 +19,16 @@ def show_languages(line_length=80, columns=3) -> str:
         )
 
     lang_lines = []
-    line = ""
+    line = []
     for index, (code, language) in enumerate(LANGUAGES.items()):
         if index % columns == 0:
-            lang_lines.append(line)
-            line = ""
+            lang_lines.append(''.join(line))
+            line = []
 
         code_lang_str = f"{code}: {language}"
-        line += code_lang_str + ' ' * (
-            column_width[index % columns] - len(code_lang_str)
-        )
+        line.append(code_lang_str.ljust(column_width[index % columns]))
 
-    lang_lines.append(line)
+    lang_lines.append(''.join(line))
     lang_lines = ('\n' + ' ' * TAB_SIZE * 2).join(lang_lines)
 
     return textwrap.dedent(

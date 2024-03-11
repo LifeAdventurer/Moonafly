@@ -34,15 +34,11 @@ def show_pending_role_list() -> str:
         if len(pending_role_list[role]) == 0:
             continue
 
-        content.append(role + ':' + ' ' * (32 - len(role)) + 'index')
+        content.append(f"{(role + ':').ljust(32)}index")
 
         for index, data in enumerate(pending_role_list[role]):
             # discord usernames must be between 2 and 32
-            content.append(
-                data['username']
-                + ' ' * (35 - len(data['username']))
-                + str(index)
-            )
+            content.append(data['username'].ljust(35) + str(index))
 
         content.append(' ')
 

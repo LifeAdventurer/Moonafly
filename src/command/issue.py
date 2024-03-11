@@ -22,9 +22,14 @@ def get_issues_on_github() -> str:
     if response.status_code == 200:
         issues = response.json()
 
+        # issue number is sorted in descending order
+        max_issue_len = len(str(issues[0]['number']))
+
         issue_list = []
         for issue in issues:
-            issue_title = f"#{issue['number']} {issue['title']}"
+            issue_title = (
+                f"#{str(issue['number']).rjust(max_issue_len)} {issue['title']}"
+            )
             if len(issue_title) > 80:
                 issue_title = issue_title[:79] + '>'
 
@@ -36,6 +41,7 @@ def get_issues_on_github() -> str:
             f"""
             ```
             {issue_list}
+            
             {develop_mode.current_path()}
             ```
             """

@@ -29,7 +29,7 @@ def show_online_judge_list() -> str:
 
     for index, key in enumerate(urls):
         online_judge_list.append(
-            f"{key}{' ' * (20 - len(key) - len(str(index + 1)) - 1)}-{str(index + 1)}"
+            f"{key.ljust(20 - len(str(index + 1)))}-{str(index + 1)}"
         )
 
     space = '\n' + ' ' * TAB_SIZE * 2

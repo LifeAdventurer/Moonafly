@@ -102,9 +102,7 @@ def load_remote_file(msg: str, identity: str) -> str:
 
         for index, line in enumerate(content):
             if start_line <= index + 1 <= end_line:
-                output.append(
-                    f"{(' ' * lines_str_len + str(index + 1))[-lines_str_len:]}│ {line}"
-                )
+                output.append(f"{str(index + 1).rjust(lines_str_len)}│ {line}")
 
         output = ('\n' + ' ' * TAB_SIZE * 3).join(output)
 
