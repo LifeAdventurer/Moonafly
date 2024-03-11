@@ -1,5 +1,7 @@
 # Moonafly
 
+Moonafly uses Poetry for dependency management and includes pre-configured tools such as black, isort for linting.
+
 ## Run Moonafly
 
 ```bash
