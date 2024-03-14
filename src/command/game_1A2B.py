@@ -2,6 +2,7 @@ import json
 import random
 import textwrap
 
+import responses
 import terminal_mode
 from command import command_help
 
@@ -120,7 +121,7 @@ def show_1A2B_certain_user_ranking(
     records = load_game_1A2B_ranks()
 
     ranking = [f"user - {username}"]
-    ranking.append(' length | attempts')
+    ranking.append('length | attempts')
     ranking.append('-------------------')
     for length in range(4, 11):
         len_str = f"  {(' ' + str(length))[-2:]}"
