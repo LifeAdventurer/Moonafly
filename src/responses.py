@@ -10,7 +10,7 @@ import normal_mode
 import terminal_mode
 from command import approve, clipboard, game_1A2B, random_vocab_test, translate
 
-Moonafly_version = 'v2.11.0'
+Moonafly_version = 'v2.12.0'
 
 
 # constants
