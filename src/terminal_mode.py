@@ -15,6 +15,7 @@ from command import (
     dict,
     game_1A2B,
     hash,
+    issues,
     jump,
     math_calc,
     news,
@@ -540,6 +541,9 @@ def get_response_in_terminal_mode(message) -> str:
     elif path_stack_match(1, 'search'):
         # search for github repos or profiles -> because url
         if path_stack_match(2, 'github'):
+            if path_stack_match(3, 'issues'):
+                return issues.get_issues(msg)
+
             github_url = "https://github.com/" + msg
             response = requests.get(github_url)
             if response.status_code == 404:

@@ -30,7 +30,9 @@
                 }
             },
             "search": {
-                "github": {},
+                "github": {
+                    "issues": {}
+                },
                 "online-judge": {}
             },
             "translate": {},

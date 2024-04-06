@@ -3,6 +3,8 @@ import textwrap
 import requests
 
 import develop_mode
+import responses
+import terminal_mode
 from command import command_help
 
 # constants
@@ -10,12 +12,14 @@ TAB_SIZE = 4
 HELP_FLAG = '--help'
 
 
-github_api_url = 'https://api.github.com'
-github_repo = 'lifeadventurer/Moonafly'
+def get_issues_on_github(github_repo: str = 'Lifeadventurer/Moonafly') -> str:
+    current_path = ''
+    if responses.is_terminal_mode == True:
+        current_path = terminal_mode.current_path()
+    elif responses.is_develop_mode == True:
+        current_path = develop_mode.current_path()
 
-
-def get_issues_on_github() -> str:
-    url = f"{github_api_url}/repos/{github_repo}/issues"
+    url = f"https://api.github.com/repos/{github_repo}/issues"
 
     response = requests.get(url)
 
@@ -42,7 +46,7 @@ def get_issues_on_github() -> str:
             ```
             {issue_list}
             
-            {develop_mode.current_path()}
+            {current_path}
             ```
             """
         )
@@ -52,20 +56,29 @@ def get_issues_on_github() -> str:
             f"""
             ```
             failed to fetch GitHub issues. Status code: {response.status_code}
-            {develop_mode.current_path()}
+            {current_path}
             ```
             """
         )
 
 
 def get_issues(msg: str) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('issues')
+
     if msg[:4] == 'list':
         msg = msg[4:].strip()
 
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('issue_list')
+            return command_help.load_help_cmd_info('issues_list')
+
+        if len(msg) > 0:
+            return get_issues_on_github(msg)
 
         return get_issues_on_github()
 
     else:
-        return develop_mode.command_not_found(msg)
+        if responses.is_terminal_mode == True:
+            return terminal.command_not_found(msg)
+        elif responses.is_develop_mode == True:
+            return develop_mode.command_not_found(msg)

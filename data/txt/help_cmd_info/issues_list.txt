@@ -1,0 +1,5 @@
+Usage: list [repo]
+    list the issues on GitHub repositories
+
+    Options:
+      [repo]    GitHub repo name, default is 'LifeAdventurer/Moonafly'

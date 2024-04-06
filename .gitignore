@@ -21,3 +21,5 @@ maintenance.txt
 
 # poetry Packages
 /dist/*
+
+.vscode/

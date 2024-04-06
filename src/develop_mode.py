@@ -2,7 +2,7 @@ import json
 import textwrap
 
 import responses
-from command import command_help, issue, jump, maintenance, remote, tree
+from command import command_help, issues, jump, maintenance, remote, tree
 
 # constants
 HELP_FLAG = '--help'
@@ -259,11 +259,8 @@ def get_response_in_develop_mode(message) -> str:
 
             return remote.load_remote_file(msg.strip(), 'developer')
 
-    elif path_stack_match(1, 'issue'):
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('issue')
-
-        return issue.get_issues(msg)
+    elif path_stack_match(1, 'issues'):
+        return issues.get_issues(msg)
 
     else:
         return command_not_found(msg)

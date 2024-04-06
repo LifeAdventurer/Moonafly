@@ -1,4 +1,0 @@
-Usage: [command]
-
-commands under ~/issue in develop mode
- list

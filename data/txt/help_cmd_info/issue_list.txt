@@ -1,2 +1,0 @@
-Usage: list
-    list the issues on GitHub Moonafly repository
