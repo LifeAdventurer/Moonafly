@@ -258,19 +258,19 @@ def get_response(message) -> str:
             else:
                 mode = 'normal_mode'
 
+            # battery
             battery = psutil.sensors_battery()
             percent = battery.percent
             is_charging = battery.power_plugged
 
-            mouse_moved = False
-            new_mouseX, new_mouseY = pyautogui.position()
-            if new_mouseX != mouseX or new_mouseY != mouseY:
-                mouse_moved = True
-                mouseX, mouseY = new_mouseX, new_mouseY
+            # mouse move
+            mouse_moved = ''
 
+            # cpu core usages
             aligned_cpu_core_usages = []
             # network_connections = []
             if username == author and msg[:6] == 'detail':
+                # cpu usage per core
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 
                 cpu_core_usages = []
@@ -288,6 +288,12 @@ def get_response(message) -> str:
                             ]
                         )
                     )
+
+                # mouse move
+                new_mouseX, new_mouseY = pyautogui.position()
+                if new_mouseX != mouseX or new_mouseY != mouseY:
+                    mouse_moved = 'mouse moved'
+                    mouseX, mouseY = new_mouseX, new_mouseY
 
                 # net_connections = psutil.net_connections()
 
