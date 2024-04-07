@@ -100,9 +100,11 @@ is_normal_mode = True
 is_terminal_mode = False
 is_develop_mode = False
 
+ignore_capitalization = False
 
 enter_terminal_mode_cmd = ['-t', 'moonafly -t', 'Moonafly -t']
 enter_develop_mode_cmd = ['-d', 'moonafly -d', 'Moonafly -d']
+ignore_capitalization_option = ['--ic', '--ignore-capitalization']
 
 
 mouseX, mouseY = pyautogui.position()
@@ -118,7 +120,7 @@ def get_response(message) -> str:
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user
-    global enter_terminal_mode_cmd, enter_develop_mode_cmd
+    global enter_terminal_mode_cmd, enter_develop_mode_cmd, ignore_capitalization
     global mouseX, mouseY
 
     if is_normal_mode == True and any(
@@ -139,36 +141,32 @@ def get_response(message) -> str:
             terminal_mode.path_stack = ['~']
             print('swap to terminal mode')
             msg = msg[(2 if msg[:2] == '-t' else 11) :].strip()
+
+            for cmd in ignore_capitalization_option:
+                if msg.startswith(cmd):
+                    msg = msg[len(cmd) :].strip()
+                    ignore_capitalization = True
+                    break
+
             if len(msg) > 0:
                 message.content = msg
                 return get_response(message)
 
             if username == author:
                 pending_role_list = approve.load_pending_role_list()
-
                 user_pending = []
-
                 for role in approve.roles:
                     pending_count = len(pending_role_list[role])
                     if pending_count > 0:
                         user_pending.append(
                             f"{pending_count} user{'s are' if pending_count > 1 else ' is'} pending for the role: '{role}'"
                         )
-
-                space = '\n' + ' ' * TAB_SIZE * 5
-
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    {space.join(user_pending)}
-                    {terminal_mode.current_path()}
-                    ```
-                    """
-                )
+                space = '\n' + ' ' * TAB_SIZE * 4
 
             return textwrap.dedent(
                 f"""
                 ```
+                {space.join(user_pending)}
                 {terminal_mode.current_path()}
                 ```
                 """
@@ -200,6 +198,13 @@ def get_response(message) -> str:
             develop_mode.path_stack = ['~']
             print('swap to develop mode')
             msg = msg[(2 if msg[:2] == '-d' else 11) :].strip()
+
+            for cmd in ignore_capitalization_option:
+                if msg.startswith(cmd):
+                    msg = msg[len(cmd) :].strip()
+                    ignore_capitalization = True
+                    break
+
             if len(msg) > 0:
                 message.content = msg
                 return get_response(message)
@@ -244,6 +249,9 @@ def get_response(message) -> str:
 
                 develop_mode.path_stack.clear()
                 develop_mode_current_using_user = ''
+
+            # global variables that affect all modes
+            ignore_capitalization = False
 
             return '```exited successfully```'
 
@@ -321,6 +329,9 @@ def get_response(message) -> str:
             )
 
         else:
+            if ignore_capitalization:
+                message.content = msg[0].lower() + msg[1:]
+
             if is_terminal_mode:
                 return terminal_mode.get_response_in_terminal_mode(message)
             elif is_develop_mode:
