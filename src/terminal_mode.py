@@ -145,7 +145,7 @@ def get_response_in_terminal_mode(message) -> str:
     global path_stack
 
     if in_interaction() == False:
-        if msg[:4] == 'help':
+        if msg.startswith('help'):
             msg = msg[4:].lstrip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('help')
@@ -173,7 +173,7 @@ def get_response_in_terminal_mode(message) -> str:
             )
 
         # cd command
-        elif msg[:2] == 'cd':
+        elif msg.startswith('cd'):
             msg = msg[2:].lstrip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('cd')
@@ -298,12 +298,12 @@ def get_response_in_terminal_mode(message) -> str:
             path_stack = temporary_path_stack
             return f"```{current_path()}```"
 
-        elif msg[:4] == 'jump':
+        elif msg.startswith('jump'):
             msg = msg[4:].strip()
             return jump.jump_to_folder(msg)
 
         # ls command
-        elif msg[:2] == 'ls':
+        elif msg.startswith('ls'):
             msg = msg[3:].lstrip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('ls')
@@ -331,7 +331,7 @@ def get_response_in_terminal_mode(message) -> str:
             )
 
         # return the full pathname of the current working directory
-        elif msg[:3] == 'pwd':
+        elif msg.startswith('pwd'):
             msg = msg[3:].lstrip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('pwd')
@@ -354,12 +354,12 @@ def get_response_in_terminal_mode(message) -> str:
             )
 
         # show the terminal_mode_directory_structure
-        elif msg[:4] == 'tree':
+        elif msg.startswith('tree'):
             msg = msg[4:].lstrip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('tree')
 
-            if msg[:8] == 'Moonafly' and username == responses.author:
+            if msg.startswith('Moonafly') and username == responses.author:
                 return tree.visualize_structure(load_Moonafly_structure())
 
             current_structure = load_terminal_mode_directory_structure()

@@ -134,7 +134,7 @@ def approve_requests(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('approve')
 
-    if msg[:4] == 'show':
+    if msg.startswith('show'):
         msg = msg[4:].strip()
 
         if msg.startswith(HELP_FLAG):
@@ -142,7 +142,7 @@ def approve_requests(msg: str) -> str:
 
         return show_pending_role_list()
 
-    elif msg[:7] == 'approve':
+    elif msg.startswith('approve'):
         msg = msg[7:].strip()
 
         if msg.startswith(HELP_FLAG):

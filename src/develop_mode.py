@@ -89,7 +89,7 @@ def get_response_in_develop_mode(message) -> str:
         )
 
     # cd command
-    if msg[:2] == 'cd':
+    if msg.startswith('cd'):
         msg = msg[2:].lstrip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('cd')
@@ -200,15 +200,15 @@ def get_response_in_develop_mode(message) -> str:
         path_stack = temporary_path_stack
         return f"```{current_path()}```"
 
-    elif msg[:3] == 'end':
+    elif msg.startswith('end'):
         msg = msg[4:].strip()
         return maintenance.end_maintenance(msg)
 
-    elif msg[:4] == 'jump':
+    elif msg.startswith('jump'):
         msg = msg[4:].strip()
         return jump.jump_to_folder(msg)
 
-    elif msg[:3] == 'pwd':
+    elif msg.startswith('pwd'):
         msg = msg[3:].lstrip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('pwd')
@@ -230,18 +230,18 @@ def get_response_in_develop_mode(message) -> str:
             """
         )
 
-    elif msg[:3] == 'set':
+    elif msg.startswith('set'):
         msg = msg[4:].strip()
         return maintenance.set_maintenance(msg)
 
     # tree command
-    elif msg[:4] == 'tree':
+    elif msg.startswith('tree'):
         msg = msg[4:].lstrip()
 
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('tree')
 
-        if msg[:8] == 'Moonafly':
+        if msg.startswith('Moonafly'):
             return tree.visualize_structure(load_Moonafly_structure())
 
         # copy the directory structure

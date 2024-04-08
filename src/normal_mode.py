@@ -42,7 +42,7 @@ def get_response_in_normal_mode(message) -> str:
             """
         )
 
-    if msg[:5] == 'apply':
+    if msg.startswith('apply'):
         msg = msg[6:].strip()
 
         return apply.apply_for_role(msg, username)

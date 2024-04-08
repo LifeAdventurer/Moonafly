@@ -66,7 +66,7 @@ def get_issues(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('issues')
 
-    if msg[:4] == 'list':
+    if msg.startswith('list'):
         msg = msg[4:].strip()
 
         if msg.startswith(HELP_FLAG):

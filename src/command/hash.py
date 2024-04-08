@@ -13,7 +13,7 @@ def get_hash(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('hash')
 
-    if msg[:4] == 'show':
+    if msg.startswith('show'):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('hash_show')

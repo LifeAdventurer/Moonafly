@@ -89,7 +89,7 @@ def get_primes_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('primes')
 
-    if msg[:5] == 'check':
+    if msg.startswith('check'):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('primes_check')

@@ -156,16 +156,13 @@ def play_game_1A2B(message) -> str:
     global playing_game_1A2B, target_number, target_number_len, attempts
 
     # comment or chat during game
-    if playing_game_1A2B:
-        if (
-            msg[:4] != 'stop'
-            and msg[:4] != 'Stop'
-            and not all(char.isdigit() for char in msg)
-        ):
-            return ''
+    if playing_game_1A2B and not (
+        msg.startswith('stop') or not all(char.isdigit() for char in msg)
+    ):
+        return ''
 
     if not playing_game_1A2B:
-        if msg[:5] == 'start' or msg[:5] == 'Start':
+        if msg.startswith('start'):
             playing_game_1A2B = True
             attempts = 0
             msg = msg[6:].strip()
@@ -207,7 +204,7 @@ def play_game_1A2B(message) -> str:
                 """
             )
 
-        elif msg[:4] == 'rank' or msg[:4] == 'Rank':
+        elif msg.startswith('rank'):
             msg = msg[5:].strip()
 
             if msg.startswith(HELP_FLAG):
@@ -266,7 +263,7 @@ def play_game_1A2B(message) -> str:
 
     else:
         # stop the game if you want
-        if msg[:4] == 'stop' or msg[:4] == 'Stop':
+        if msg.startswith('stop'):
             playing_game_1A2B = False
             msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):

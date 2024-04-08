@@ -206,7 +206,10 @@ def run_Moonafly():
                 await send_message_in_private(message)
             return
 
-        if channel[:14] == 'Direct Message' and username != responses.author:
+        if (
+            channel.startswith('Direct Message')
+            and username != responses.author
+        ):
             print(f"WARNING: {username} using bot in Direct Message\n")
 
         # avoid endless loops

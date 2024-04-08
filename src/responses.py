@@ -140,7 +140,7 @@ def get_response(message) -> str:
             # don't use append or it might cause double '~' when using recursion -t -t... command
             terminal_mode.path_stack = ['~']
             print('swap to terminal mode')
-            msg = msg[(2 if msg[:2] == '-t' else 11) :].strip()
+            msg = msg[(2 if msg.startswith('-t') else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
                 if msg.startswith(cmd):
@@ -197,7 +197,7 @@ def get_response(message) -> str:
 
             develop_mode.path_stack = ['~']
             print('swap to develop mode')
-            msg = msg[(2 if msg[:2] == '-d' else 11) :].strip()
+            msg = msg[(2 if msg.startswith('-d') else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
                 if msg.startswith(cmd):
@@ -255,7 +255,7 @@ def get_response(message) -> str:
 
             return '```exited successfully```'
 
-        elif msg[:6] == 'status':
+        elif msg.startswith('status'):
             msg = msg[6:].strip()
 
             mode = ''
@@ -277,7 +277,7 @@ def get_response(message) -> str:
             # cpu core usages
             aligned_cpu_core_usages = []
             # network_connections = []
-            if username == author and msg[:6] == 'detail':
+            if username == author and msg.startswith('detail'):
                 # cpu usage per core
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 

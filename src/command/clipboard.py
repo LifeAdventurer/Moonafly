@@ -326,28 +326,28 @@ def get_clipboard_response(message) -> str:
     if checking_clipboard_keyword_override == True:
         return save_data_to_clipboard(msg, username)
 
-    if msg[:3] == 'get':
+    if msg.startswith('get'):
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_get')
 
         return get_clipboard_data(msg, username)
 
-    elif msg[:4] == 'save':
+    elif msg.startswith('save'):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_save')
 
         return save_data_to_clipboard(msg, username)
 
-    elif msg[:4] == 'show':
+    elif msg.startswith('show'):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_show')
 
         return show_user_keyword(username)
 
-    elif msg[:3] == 'del':
+    elif msg.startswith('del'):
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_del')
