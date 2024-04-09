@@ -1,0 +1,2 @@
+Usage: add [todo_item]
+    add TODO_ITEM to todo list

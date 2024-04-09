@@ -1,0 +1,2 @@
+Usage: check [number]
+    marks the item on the todo list as completed, indicated by NUMBER

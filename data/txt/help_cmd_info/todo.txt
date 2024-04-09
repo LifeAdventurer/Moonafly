@@ -1,0 +1,6 @@
+Usage: [command]
+
+commands under ~/todo
+ add
+ check
+ list

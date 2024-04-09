@@ -1,0 +1,2 @@
+Usage: list
+    list your uncompleted todo items with number

@@ -24,6 +24,7 @@ from command import (
     random_vocab_review,
     random_vocab_test,
     remote,
+    todo,
     translate,
     tree,
     weather,
@@ -569,6 +570,9 @@ def get_response_in_terminal_mode(message) -> str:
         # search for a handle in different online judges
         elif path_stack_match(2, 'online-judge'):
             return online_judge.get_online_judge_info(msg)
+
+    elif path_stack_match(1, 'todo'):
+        return todo.get_todo_response(msg)
 
     elif path_stack_match(1, 'translate'):
         return translate.get_translated_text(msg)
