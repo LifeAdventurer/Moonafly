@@ -1,9 +1,7 @@
 import json
-import os
 import random
 import re
 import textwrap
-import time
 
 import requests
 

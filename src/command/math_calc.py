@@ -1,6 +1,5 @@
 import ast
 import json
-import math
 
 # define the whitelist of allowed commands
 math_calc_allow_names = []

@@ -1,10 +1,5 @@
-import json
-import os
-import random
 import re
 import textwrap
-
-import requests
 
 import responses
 from command import apply

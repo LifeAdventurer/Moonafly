@@ -1,6 +1,7 @@
 import json
 import random
 import textwrap
+import time
 
 import responses
 import terminal_mode

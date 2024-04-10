@@ -1,9 +1,3 @@
-import textwrap
-
-# constants
-TAB_SIZE = 4
-
-
 def split_message(response: str) -> list:
     split_response = []
 

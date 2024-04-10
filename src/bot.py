@@ -1,14 +1,11 @@
 import json
 import sys
-import textwrap
 from datetime import datetime
 
 import discord
 
-import develop_mode
 import responses
 import split_message
-import terminal_mode
 
 # constants
 TAB_SIZE = 4

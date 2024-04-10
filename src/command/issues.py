@@ -79,6 +79,6 @@ def get_issues(msg: str) -> str:
 
     else:
         if responses.is_terminal_mode == True:
-            return terminal.command_not_found(msg)
+            return terminal_mode.command_not_found(msg)
         elif responses.is_develop_mode == True:
             return develop_mode.command_not_found(msg)
