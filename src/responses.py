@@ -156,16 +156,17 @@ async def get_response(message) -> str:
                 message.content = msg
                 return await get_response(message)
 
+            user_pending = []
             if username == author:
                 pending_role_list = approve.load_pending_role_list()
-                user_pending = []
                 for role in approve.roles:
                     pending_count = len(pending_role_list[role])
                     if pending_count > 0:
                         user_pending.append(
                             f"{pending_count} user{'s are' if pending_count > 1 else ' is'} pending for the role: '{role}'"
                         )
-                space = '\n' + ' ' * TAB_SIZE * 4
+
+            space = '\n' + ' ' * TAB_SIZE * 4
 
             return textwrap.dedent(
                 f"""
