@@ -5,6 +5,7 @@ import textwrap
 
 import requests
 
+import bot
 import responses
 from command import (
     approve,
@@ -132,7 +133,7 @@ def in_interaction() -> bool:
     return any(directory_statuses) == True
 
 
-def get_response_in_terminal_mode(message) -> str:
+async def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
     # prevent ' and " separating the string
@@ -161,6 +162,7 @@ def get_response_in_terminal_mode(message) -> str:
                 a star(*) in front of the command means that it requires the highest authority
 
                  cd [dir]
+                 clear
                  help
                  jump [folder]
                  ls
@@ -295,6 +297,14 @@ def get_response_in_terminal_mode(message) -> str:
                     )
 
             path_stack = temporary_path_stack
+            return f"```{current_path()}```"
+
+        elif msg.startswith('clear'):
+            msg = msg[5:].strip()
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('clear')
+            
+            await bot.clear_msgs(message, responses.start_using_timestamp)
             return f"```{current_path()}```"
 
         elif msg.startswith('jump'):

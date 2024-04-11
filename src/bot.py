@@ -43,7 +43,7 @@ def load_maintenance():
 async def send_message(message):
     try:
         # get response from `responses.py`
-        response = responses.get_response(message)
+        response = await responses.get_response(message)
         if response != None and len(response) > 0:
             # large output split
             # discord limits each message to a maximum of 2000 characters
@@ -75,6 +75,14 @@ async def send_message_in_private(message):
         print(e)
 
 
+async def clear_msgs(message, timestamp):
+    with open('../config.json', 'r') as file:
+        Moonafly_id = json.load(file)['bot_id']
+    async for msg in message.channel.history(limit=None, after=timestamp):
+        if msg.author.id in [message.author.id, Moonafly_id]:
+            await msg.delete()
+
+
 def init_files():
     load_token()
     load_maintenance()
@@ -98,6 +106,11 @@ def run_Moonafly():
     @client.event
     async def on_ready():
         print(f'Moonafly is now running!')
+        with open('../config.json', 'r') as file:
+            config_file = json.load(file)
+        config_file['bot_id'] = client.user.id
+        with open('../config.json', 'w') as file:
+            json.dump(config_file, file, indent=4)
 
     @client.event
     async def on_message(message):

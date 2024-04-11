@@ -1,0 +1,2 @@
+Usage: clear
+    removes all previous messages from the entering command

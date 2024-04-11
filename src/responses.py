@@ -1,7 +1,7 @@
 import json
 import textwrap
 import time
-
+from datetime import timedelta
 import psutil
 import pyautogui
 
@@ -94,6 +94,7 @@ def save_develop_mode_login_record():
 # prevent multiple user using terminal or develop mode at the same time
 terminal_mode_current_using_user = ''
 develop_mode_current_using_user = ''
+start_using_timestamp = None
 
 # in which mode status
 is_normal_mode = True
@@ -110,7 +111,7 @@ ignore_capitalization_option = ['--ic', '--ignore-capitalization']
 mouseX, mouseY = pyautogui.position()
 
 
-def get_response(message) -> str:
+async def get_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
     # prevent ' and " separating the string
@@ -119,7 +120,7 @@ def get_response(message) -> str:
     msg = msg.strip()
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
-    global terminal_mode_current_using_user, develop_mode_current_using_user
+    global terminal_mode_current_using_user, develop_mode_current_using_user, start_using_timestamp
     global enter_terminal_mode_cmd, enter_develop_mode_cmd, ignore_capitalization
     global mouseX, mouseY
 
@@ -131,6 +132,7 @@ def get_response(message) -> str:
             is_terminal_mode = True
 
             terminal_mode_current_using_user = username
+            start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after terminal_mode_current_using_user has been assigned
             # ignore author login
@@ -150,7 +152,7 @@ def get_response(message) -> str:
 
             if len(msg) > 0:
                 message.content = msg
-                return get_response(message)
+                return await get_response(message)
 
             if username == author:
                 pending_role_list = approve.load_pending_role_list()
@@ -189,6 +191,7 @@ def get_response(message) -> str:
             is_develop_mode = True
 
             develop_mode_current_using_user = username
+            start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after develop_mode_current_using_user has been assigned
             # ignore author login
@@ -207,7 +210,7 @@ def get_response(message) -> str:
 
             if len(msg) > 0:
                 message.content = msg
-                return get_response(message)
+                return await get_response(message)
 
             return textwrap.dedent(
                 f"""
@@ -252,6 +255,7 @@ def get_response(message) -> str:
 
             # global variables that affect all modes
             ignore_capitalization = False
+            start_using_timestamp = None
 
             return '```exited successfully```'
 
@@ -333,8 +337,10 @@ def get_response(message) -> str:
                 message.content = msg[0].lower() + msg[1:]
 
             if is_terminal_mode:
-                return terminal_mode.get_response_in_terminal_mode(message)
+                return await terminal_mode.get_response_in_terminal_mode(
+                    message
+                )
             elif is_develop_mode:
-                return develop_mode.get_response_in_develop_mode(message)
+                return await develop_mode.get_response_in_develop_mode(message)
             else:
                 return normal_mode.get_response_in_normal_mode(message)
