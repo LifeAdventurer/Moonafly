@@ -2,9 +2,11 @@ import json
 import textwrap
 import time
 from datetime import timedelta
+
 import psutil
 import pyautogui
 
+import bot
 import develop_mode
 import normal_mode
 import terminal_mode
@@ -252,6 +254,9 @@ async def get_response(message) -> str:
 
                 develop_mode.path_stack.clear()
                 develop_mode_current_using_user = ''
+
+            # Before setting `start_using_timestamp` back to None
+            await bot.clear_msgs(message, start_using_timestamp)
 
             # global variables that affect all modes
             ignore_capitalization = False

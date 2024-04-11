@@ -206,7 +206,7 @@ async def get_response_in_develop_mode(message) -> str:
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clear')
-        
+
         await bot.clear_msgs(message, responses.start_using_timestamp)
         return f"```{current_path()}```"
 
