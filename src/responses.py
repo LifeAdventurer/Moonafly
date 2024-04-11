@@ -235,7 +235,12 @@ async def get_response(message) -> str:
 
     else:
         # make sure no other user can exit the terminal
-        if msg == 'exit':
+        if msg == 'exit' and not is_normal_mode:
+            # Ensure that `start_using_timestamp` is not set back to None
+            # unless in a specific mode to avoid unintentional message deletion
+            if not is_normal_mode:
+                await bot.clear_msgs(message, start_using_timestamp)
+
             if is_terminal_mode:
                 is_terminal_mode = False
                 is_normal_mode = True
@@ -255,9 +260,6 @@ async def get_response(message) -> str:
 
                 develop_mode.path_stack.clear()
                 develop_mode_current_using_user = ''
-
-            # Before setting `start_using_timestamp` back to None
-            await bot.clear_msgs(message, start_using_timestamp)
 
             # global variables that affect all modes
             ignore_capitalization = False

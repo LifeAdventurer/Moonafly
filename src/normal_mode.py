@@ -35,7 +35,6 @@ def get_response_in_normal_mode(message) -> str:
                         also fine
               apply     apply for roles to use terminal mode or develop
                         mode
-              exit      leaving current mode and switch to normal mode
               status    show using mode and server battery percentage
             ```
             """
