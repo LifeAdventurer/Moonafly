@@ -26,13 +26,17 @@ def get_response_in_normal_mode(message) -> str:
             - develop mode
 
             commands to switch mode
-              -t        switch to terminal mode, `Moonafly -t` and `moonafly -t` is also fine
-              -d        switch to develop mode, `Moonafly -d` and `moonafly -d` is also fine
-              --ic      use it after `-t` or `-d` to lower first character of your command
-                        `--ignore-capitalization` is also fine
+              -t        switch to terminal mode, `Moonafly -t` and
+                        `moonafly -t` is also fine
+              -d        switch to develop mode, `Moonafly -d` and
+                        `moonafly -d` is also fine
+              --ic      use after `-t` or `-d` to lower first character
+                        of your command `--ignore-capitalization` is
+                        also fine
+              apply     apply for roles to use terminal mode or develop
+                        mode
               exit      leaving current mode and switch to normal mode
-              status    show in which mode and the server battery percentage
-              apply     apply for roles to use terminal mode and develop mode
+              status    show using mode and server battery percentage
             ```
             """
         )
