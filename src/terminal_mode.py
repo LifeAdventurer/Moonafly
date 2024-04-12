@@ -18,11 +18,12 @@ from command import (
     jump,
     math_calc,
     news,
-    online_judge,
     primes,
     random_vocab_review,
     random_vocab_test,
     remote,
+    search_github,
+    search_online_judge,
     todo,
     translate,
     tree,
@@ -547,31 +548,10 @@ async def get_response_in_terminal_mode(message) -> str:
             if path_stack_match(3, 'issues'):
                 return issues.get_issues(msg)
 
-            github_url = "https://github.com/" + msg
-            response = requests.get(github_url)
-            if response.status_code == 404:
-                return textwrap.dedent(
-                    f"""
-                    The url {github_url} is not found (404 Not Found).
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
+            return search_github.get_search_github_response(msg)
 
-            else:
-                return textwrap.dedent(
-                    f"""
-                    {github_url}
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
-
-        # search for a handle in different online judges
         elif path_stack_match(2, 'online-judge'):
-            return online_judge.get_online_judge_info(msg)
+            return search_online_judge.get_online_judge_info(msg)
 
     elif path_stack_match(1, 'todo'):
         return todo.get_todo_response(msg)
