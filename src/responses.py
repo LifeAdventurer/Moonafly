@@ -179,7 +179,7 @@ async def get_response(message) -> str:
 
         else:
             return textwrap.dedent(
-                f"""
+                """
                 ```
                 you don't have the permission to access terminal mode
                 ```
@@ -226,7 +226,7 @@ async def get_response(message) -> str:
 
         else:
             return textwrap.dedent(
-                f"""
+                """
                 ```
                 you don't have the permission to access develop mode
                 ```

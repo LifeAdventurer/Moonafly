@@ -27,9 +27,9 @@ def search_dict(
                 information += [
                     f"## {index + 1}.",
                     part_of_speech,
-                    f"### Definition:",
+                    '### Definition:',
                     f"- {en_definition}",
-                    f"### Examples:",
+                    '### Examples:',
                 ]
                 information += [f"- {sentence}" for sentence in example_list]
 
@@ -99,10 +99,10 @@ def search_dict(
             information = [
                 f"# {search_word}",
                 part_of_speech,
-                f"### Definition:",
+                '### Definition:',
                 f"- {en_definition}",
                 f"- {zh_TW_definition}",
-                "### Examples:",
+                '### Examples:',
             ]
             information += [f"- {sentence}" for sentence in example_list]
 

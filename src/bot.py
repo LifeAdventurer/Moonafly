@@ -105,7 +105,7 @@ def run_Moonafly():
 
     @client.event
     async def on_ready():
-        print(f'Moonafly is now running!')
+        print('Moonafly is now running!')
         with open('../config.json', 'r') as file:
             config_file = json.load(file)
         config_file['bot_id'] = client.user.id

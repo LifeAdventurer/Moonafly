@@ -329,7 +329,7 @@ def play_game_1A2B(message) -> str:
 
         else:
             return textwrap.dedent(
-                f"""
+                """
                 ```
                 please enter a valid input with only numbers and the correct length
                 ```
