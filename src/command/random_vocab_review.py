@@ -2,37 +2,52 @@ import json
 import random
 import textwrap
 
+import responses
 import terminal_mode
+from command import command_help
+
+# Constants
+HELP_FLAG = '--help'
 
 vocab_index = 0
 previous_index = -1
 
 
-def get_random_vocab_review(message) -> str:
-    username = str(message.author)
-    msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
+def load_vocabulary_items() -> dict:
+    try:
+        with open(
+            '../data/json/vocabulary_items.json', 'r', encoding='utf-8'
+        ) as file:
+            vocabulary_items = json.load(file)
+    except FileNotFoundError:
+        vocabulary_items = {}
+        with open(
+            '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
+        ) as file:
+            json.dump(vocabulary_items, file, indent=4)
+
+    return vocabulary_items
+
+
+def write_vocabulary_items(vocabulary_items):
+    with open(
+        '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
+    ) as file:
+        json.dump(vocabulary_items, file, indent=4, ensure_ascii=False)
+
+
+def get_random_vocab_review(msg) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('random_vocab_review')
 
     global vocab_index, previous_index
 
     if msg.lower() == 'g':
-        try:
-            with open(
-                '../data/json/vocabulary_items.json', 'r', encoding='utf-8'
-            ) as file:
-                vocabulary_list = json.load(file)
-        except FileNotFoundError:
-            vocabulary_list = {}
-            with open(
-                '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
-            ) as file:
-                json.dump(vocabulary_list, file, indent=4)
+        vocabulary_items = load_vocabulary_items()
+        username = responses.terminal_mode_current_using_user
 
-        if username in vocabulary_list:
-            list_len = len(vocabulary_list[username])
+        if username in vocabulary_items:
+            list_len = len(vocabulary_items[username])
             if list_len == 0:
                 return textwrap.dedent(
                     f"""
@@ -53,8 +68,8 @@ def get_random_vocab_review(message) -> str:
                 return textwrap.dedent(
                     f"""
                     ```
-                    {vocabulary_list[username][vocab_index]['word']}
-                    {vocabulary_list[username][vocab_index]['word_in_zh_TW']}
+                    {vocabulary_items[username][vocab_index]['word']}
+                    {vocabulary_items[username][vocab_index]['word_in_zh_TW']}
                     {terminal_mode.current_path()}
                     ```
                     """

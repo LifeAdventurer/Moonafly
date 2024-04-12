@@ -537,16 +537,12 @@ async def get_response_in_terminal_mode(message) -> str:
 
         elif path_stack_match(2, 'vocab'):
             if path_stack_match(3, 'review'):
-                return random_vocab_review.get_random_vocab_review(message)
+                return random_vocab_review.get_random_vocab_review(msg)
 
             elif path_stack_match(3, 'test'):
-                if msg.startswith(HELP_FLAG):
-                    return command_help.load_help_cmd_info('random_vocab_test')
-
-                return random_vocab_test.get_random_vocab_test(message)
+                return random_vocab_test.get_random_vocab_test(msg)
 
     elif path_stack_match(1, 'search'):
-        # search for github repos or profiles -> because url
         if path_stack_match(2, 'github'):
             if path_stack_match(3, 'issues'):
                 return issues.get_issues(msg)
@@ -584,14 +580,7 @@ async def get_response_in_terminal_mode(message) -> str:
         return translate.get_translated_text(msg)
 
     elif path_stack_match(1, 'weather'):
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('weather')
-
-        if msg == 'get':
-            return weather.get_weather_info()
-
-        else:
-            return command_not_found(msg)
+        return weather.get_weather_response(msg)
 
     else:
         return command_not_found(msg)

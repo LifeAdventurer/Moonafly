@@ -3,11 +3,13 @@ import textwrap
 import requests
 
 import terminal_mode
+from command import command_help
+
+# Constants
+HELP_FLAG = '--help'
 
 
 def get_weather_info() -> str:
-
-    # TODO: search the input place and get the latitude and longitude
     latitude = 23.0
     longitude = 120.2
 
@@ -26,3 +28,13 @@ def get_weather_info() -> str:
         ```
         """
     )
+
+
+def get_weather_response(msg: str) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('weather')
+
+    if msg == 'get':
+        return get_weather_info()
+    else:
+        return terminal_mode.command_not_found(msg)
