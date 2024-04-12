@@ -29,8 +29,6 @@ from command import (
     weather,
 )
 
-# from typing import Dict
-
 
 # constants
 HELP_FLAG = '--help'
@@ -77,7 +75,7 @@ def function_developing() -> str:
     )
 
 
-def get_ls_command_output(files: dict, tab_size: int, tab_count: int) -> str:
+def get_ls_command_output(files: list, tab_size: int, tab_count: int) -> str:
     output = ""
     columns = 3
     column_len = [0] * columns

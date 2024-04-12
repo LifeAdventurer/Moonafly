@@ -11,9 +11,6 @@ HELP_FLAG = '--help'
 
 
 def set_maintenance(msg: str) -> str:
-
-    # r_time = re.compile(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
-
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('set')
 

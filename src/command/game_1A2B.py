@@ -96,7 +96,6 @@ def show_1A2B_certain_length_ranking(
 ) -> str:
     records = load_game_1A2B_ranks()[str(length)]
 
-    indentation = ' ' * tab_size * tab_count
     ranking = [f"length - {length}"]
     if len(records) == 0:
         ranking.append('no data')
@@ -139,7 +138,6 @@ def show_1A2B_certain_user_ranking(
 
         if no_data:
             ranking.append(f"{len_str}   |  no data")
-            continue
 
     ranking = ('\n' + ' ' * tab_size * tab_count).join(ranking)
 

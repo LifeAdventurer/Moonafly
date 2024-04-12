@@ -42,7 +42,6 @@ def jump_to_folder(msg: str) -> str:
     bypass = []
 
     if responses.is_terminal_mode == True:
-        mode = 'terminal'
         directory = terminal_mode.load_terminal_mode_directory_structure()
 
         if responses.terminal_mode_current_using_user != responses.author:
@@ -63,7 +62,6 @@ def jump_to_folder(msg: str) -> str:
             )
 
     elif responses.is_develop_mode == True:
-        mode = 'develop'
         directory = develop_mode.load_develop_mode_directory_structure()
 
         if traverse(directory, msg, bypass) == True:

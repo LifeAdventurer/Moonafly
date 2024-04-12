@@ -22,9 +22,6 @@ urls = {
 
 
 def show_online_judge_list() -> str:
-
-    # max_oj_len = max(len(key) for key in urls)
-
     online_judge_list = []
 
     for index, key in enumerate(urls):

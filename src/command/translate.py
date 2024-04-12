@@ -10,7 +10,7 @@ TAB_SIZE = 4
 HELP_FLAG = '--help'
 
 
-def show_languages(line_length=80, columns=3) -> str:
+def show_languages(columns=3) -> str:
     column_width = [0] * columns
 
     for index, (code, language) in enumerate(LANGUAGES.items()):
