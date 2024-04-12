@@ -5,10 +5,7 @@ import requests
 
 import terminal_mode
 from command import command_help
-
-# constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
+from constants import HELP_FLAG, TAB_SIZE
 
 urls = {
     "atcoder": "https://atcoder.jp/users/",

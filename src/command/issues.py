@@ -6,10 +6,7 @@ import develop_mode
 import responses
 import terminal_mode
 from command import command_help
-
-# constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
+from constants import HELP_FLAG, TAB_SIZE
 
 
 def get_issues_on_github(github_repo: str = 'Lifeadventurer/Moonafly') -> str:

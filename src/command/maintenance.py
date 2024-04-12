@@ -5,9 +5,7 @@ import bot
 import develop_mode
 import responses
 from command import command_help
-
-# constants
-HELP_FLAG = '--help'
+from constants import HELP_FLAG
 
 
 def set_maintenance(msg: str) -> str:

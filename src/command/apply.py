@@ -3,10 +3,7 @@ from datetime import datetime
 
 import responses
 from command import command_help
-
-# constants
-HELP_FLAG = '--help'
-
+from constants import HELP_FLAG
 
 apply_roles = ["developer", "guest"]
 

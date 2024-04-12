@@ -4,8 +4,6 @@ import textwrap
 import responses
 from command import apply
 
-Chinese_pattern = re.compile('[\u4e00-\u9fff]')
-
 
 def get_response_in_normal_mode(message) -> str:
     username = str(message.author)

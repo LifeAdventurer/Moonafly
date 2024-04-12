@@ -3,9 +3,7 @@ import textwrap
 import develop_mode
 import responses
 import terminal_mode
-
-# constants
-TAB_SIZE = 4
+from constants import TAB_SIZE
 
 
 def load_help_cmd_info(command: str) -> str:

@@ -3,9 +3,7 @@ import textwrap
 import develop_mode
 import responses
 import terminal_mode
-
-# constants
-TAB_SIZE = 4
+from constants import TAB_SIZE
 
 
 def traverse(data: dict, indent: int, bypass: list) -> str:

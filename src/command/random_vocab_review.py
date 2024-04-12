@@ -5,9 +5,7 @@ import textwrap
 import responses
 import terminal_mode
 from command import command_help
-
-# Constants
-HELP_FLAG = '--help'
+from constants import HELP_FLAG
 
 vocab_index = 0
 previous_index = -1

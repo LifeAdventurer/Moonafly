@@ -5,9 +5,7 @@ import textwrap
 import responses
 import terminal_mode
 from command import command_help
-
-# Constants
-HELP_FLAG = '--help'
+from constants import HELP_FLAG
 
 random_vocab_testing = False
 vocab_index = 0

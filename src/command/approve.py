@@ -4,11 +4,7 @@ import textwrap
 import responses
 import terminal_mode
 from command import command_help
-
-# constants
-HELP_FLAG = '--help'
-TAB_SIZE = 4
-
+from constants import HELP_FLAG, TAB_SIZE
 
 roles = ["developers", "guests"]
 

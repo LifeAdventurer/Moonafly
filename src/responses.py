@@ -17,13 +17,9 @@ from command import (
     random_vocab_test,
     translate,
 )
+from constants import HELP_FLAG, TAB_SIZE
 
 Moonafly_version = 'v2.12.1'
-
-
-# constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
 
 
 # user identity

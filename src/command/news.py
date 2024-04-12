@@ -5,10 +5,7 @@ from bs4 import BeautifulSoup
 
 import terminal_mode
 from command import command_help
-
-# constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
+from constants import HELP_FLAG, TAB_SIZE
 
 cnn_root_url = 'https://edition.cnn.com'
 

@@ -4,10 +4,7 @@ import textwrap
 import bot
 import responses
 from command import command_help, issues, jump, maintenance, remote, tree
-
-# constants
-HELP_FLAG = '--help'
-TAB_SIZE = 4
+from constants import HELP_FLAG, TAB_SIZE
 
 
 def load_develop_mode_directory_structure():

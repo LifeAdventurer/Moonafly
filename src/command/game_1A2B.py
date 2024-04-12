@@ -6,11 +6,7 @@ import time
 import responses
 import terminal_mode
 from command import command_help
-
-# constants
-HELP_FLAG = '--help'
-TAB_SIZE = 4
-
+from constants import HELP_FLAG, TAB_SIZE
 
 playing_game_1A2B = False
 target_number = ''

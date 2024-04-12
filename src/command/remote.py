@@ -5,10 +5,7 @@ import textwrap
 import develop_mode
 import terminal_mode
 from command import command_help
-
-# constants
-TAB_SIZE = 4
-
+from constants import TAB_SIZE
 
 on_remote = False
 

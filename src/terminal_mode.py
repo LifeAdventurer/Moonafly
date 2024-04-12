@@ -30,10 +30,7 @@ from command import (
     tree,
     weather,
 )
-
-# constants
-HELP_FLAG = '--help'
-TAB_SIZE = 4
+from constants import HELP_FLAG, TAB_SIZE
 
 
 def load_terminal_mode_directory_structure() -> dict:

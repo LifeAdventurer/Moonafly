@@ -4,10 +4,7 @@ import textwrap
 import responses
 import terminal_mode
 from command import command_help
-
-# Constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
+from constants import HELP_FLAG, TAB_SIZE
 
 
 def load_todo_list() -> dict:

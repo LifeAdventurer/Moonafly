@@ -4,10 +4,7 @@ import develop_mode
 import responses
 import terminal_mode
 from command import command_help
-
-# constants
-HELP_FLAG = '--help'
-
+from constants import HELP_FLAG
 
 path_stack = []
 

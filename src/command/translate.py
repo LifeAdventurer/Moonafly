@@ -4,10 +4,7 @@ from googletrans import LANGUAGES, Translator
 
 import terminal_mode
 from command import command_help
-
-# Constants
-TAB_SIZE = 4
-HELP_FLAG = '--help'
+from constants import HELP_FLAG, TAB_SIZE
 
 
 def show_languages(columns=3) -> str:

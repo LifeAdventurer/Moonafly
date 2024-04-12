@@ -3,9 +3,7 @@ import textwrap
 
 import terminal_mode
 from command import command_help
-
-# Constants
-HELP_FLAG = '--help'
+from constants import HELP_FLAG
 
 
 def get_random_number_response(msg: str) -> str:
