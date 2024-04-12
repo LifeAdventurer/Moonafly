@@ -4,7 +4,6 @@ import time
 from datetime import timedelta
 
 import psutil
-import pyautogui
 
 import bot
 import develop_mode
@@ -118,9 +117,6 @@ enter_develop_mode_cmd = ['-d', 'moonafly -d', 'Moonafly -d']
 ignore_capitalization_option = ['--ic', '--ignore-capitalization']
 
 
-mouseX, mouseY = pyautogui.position()
-
-
 async def get_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -132,7 +128,6 @@ async def get_response(message) -> str:
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user, start_using_timestamp
     global enter_terminal_mode_cmd, enter_develop_mode_cmd, ignore_capitalization
-    global mouseX, mouseY
 
     if is_normal_mode == True and any(
         msg.startswith(cmd) for cmd in enter_terminal_mode_cmd
@@ -298,12 +293,8 @@ async def get_response(message) -> str:
             percent = battery.percent
             is_charging = battery.power_plugged
 
-            # mouse move
-            mouse_moved = ''
-
             # cpu core usages
             aligned_cpu_core_usages = []
-            # network_connections = []
             if username == author and msg.startswith('detail'):
                 # cpu usage per core
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
@@ -324,24 +315,9 @@ async def get_response(message) -> str:
                         )
                     )
 
-                # mouse move
-                new_mouseX, new_mouseY = pyautogui.position()
-                if new_mouseX != mouseX or new_mouseY != mouseY:
-                    mouse_moved = 'mouse moved'
-                    mouseX, mouseY = new_mouseX, new_mouseY
-
-                # net_connections = psutil.net_connections()
-
-                # for conn in net_connections:
-                #     network_connections.append(
-                #         f"{conn.laddr} -> {conn.raddr}, Status: {conn.status}"
-                #     )
-                #     print(f"{conn.laddr} -> {conn.raddr}, Status: {conn.status}")
-
             aligned_cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(
                 aligned_cpu_core_usages
             )
-            # network_connections = ('\n' + ' ' * TAB_SIZE * 4).join(network_connections)
 
             return textwrap.dedent(
                 f"""
@@ -349,7 +325,6 @@ async def get_response(message) -> str:
                 Moonafly {Moonafly_version}
                 {mode}
                 server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
-                {'mouse moved' if mouse_moved else ''}
                 {aligned_cpu_core_usages}
                 ```
                 """
