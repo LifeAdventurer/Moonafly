@@ -2,6 +2,7 @@ import json
 import re
 import textwrap
 
+import responses
 import terminal_mode
 from command import command_help
 
@@ -63,6 +64,8 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 f"""
                 ```
                 {content}
+                ```
+                ```
                 {terminal_mode.current_path()}
                 ```
                 """
@@ -310,18 +313,13 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
     )
 
 
-def get_clipboard_response(message) -> str:
-    username = str(message.author)
-    msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
+def get_clipboard_response(msg) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('clipboard')
 
     global checking_clipboard_keyword_override
 
-    if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('clipboard')
+    username = responses.terminal_mode_current_using_user
 
     if checking_clipboard_keyword_override == True:
         return save_data_to_clipboard(msg, username)

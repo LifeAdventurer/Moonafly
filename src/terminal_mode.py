@@ -392,7 +392,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
     # commands in certain directory
     if path_stack_match(1, 'clipboard'):
-        return clipboard.get_clipboard_response(message)
+        return clipboard.get_clipboard_response(msg)
 
     elif path_stack_match(1, 'dict'):
         # different languages
