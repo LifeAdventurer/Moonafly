@@ -3,4 +3,4 @@ Usage: [command]
 commands under ~/todo
  add
  check
- list
+ list [-c]

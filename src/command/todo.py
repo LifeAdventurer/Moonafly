@@ -87,15 +87,15 @@ def check_todo_item(todo_item_number: str) -> str:
         )
 
 
-def list_todo_items() -> str:
+def list_todo_items(task_status: str = 'uncompleted_items') -> str:
     todo_list = load_todo_list()
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
     user_todo_list = []
-    mx_index_len = len(str(len(todo_list[username]['uncompleted_items']) + 1))
-    for index, todo_item in enumerate(todo_list[username]['uncompleted_items']):
+    mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
+    for index, todo_item in enumerate(todo_list[username][task_status]):
         user_todo_item = f"{str(index + 1).rjust(mx_index_len)}. {todo_item}"
         if len(user_todo_item) > 80:
             user_todo_item = user_todo_item[:79] + '>'
@@ -132,7 +132,8 @@ def get_todo_response(msg: str) -> str:
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_list')
+        if msg.startswith('-c'):
+            return list_todo_items('completed_items')
         return list_todo_items()
-
     else:
         return terminal_mode.command_not_found(msg)

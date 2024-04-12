@@ -1,2 +1,5 @@
-Usage: list
+Usage: list [-c]
     list your uncompleted todo items with number
+
+    Options:
+      -c        list completed todo items with number
