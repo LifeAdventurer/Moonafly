@@ -19,6 +19,7 @@ from command import (
     math_calc,
     news,
     primes,
+    random_number,
     random_vocab_review,
     random_vocab_test,
     remote,
@@ -510,31 +511,9 @@ async def get_response_in_terminal_mode(message) -> str:
     elif path_stack_match(1, 'news'):
         return news.get_news(msg)
 
-    # roll a random number
     elif path_stack_match(1, 'random'):
         if path_stack_match(2, 'number'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('random_number')
-
-            if msg.isdigit():
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    {random.randint(1, int(msg))}
-                    {current_path()}
-                    ```
-                    """
-                )
-
-            else:
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    please enter a valid number
-                    {current_path()}
-                    ```
-                    """
-                )
+            return random_number.get_random_number_response(msg)
 
         elif path_stack_match(2, 'vocab'):
             if path_stack_match(3, 'review'):
