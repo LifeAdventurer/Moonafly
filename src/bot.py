@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 from datetime import datetime
 
 import discord
@@ -114,6 +115,9 @@ def run_Moonafly():
 
     @client.event
     async def on_message(message):
+        if message.content == '```exited successfully```':
+            time.sleep(0.5)
+            await message.delete()
         if message.author == client.user:
             return
 

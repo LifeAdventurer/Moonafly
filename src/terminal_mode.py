@@ -29,7 +29,6 @@ from command import (
     weather,
 )
 
-
 # constants
 HELP_FLAG = '--help'
 TAB_SIZE = 4
