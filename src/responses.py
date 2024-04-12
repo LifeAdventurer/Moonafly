@@ -10,13 +10,21 @@ import bot
 import develop_mode
 import normal_mode
 import terminal_mode
-from command import approve, clipboard, game_1A2B, random_vocab_test, translate
+from command import (
+    approve,
+    clipboard,
+    command_help,
+    game_1A2B,
+    random_vocab_test,
+    translate,
+)
 
 Moonafly_version = 'v2.12.1'
 
 
 # constants
 TAB_SIZE = 4
+HELP_FLAG = '--help'
 
 
 # user identity
@@ -235,10 +243,14 @@ async def get_response(message) -> str:
 
     else:
         # make sure no other user can exit the terminal
-        if msg == 'exit' and not is_normal_mode:
-            # Ensure that `start_using_timestamp` is not set back to None
-            # unless in a specific mode to avoid unintentional message deletion
-            if not is_normal_mode:
+        if msg.startswith('exit') and not is_normal_mode:
+            msg = msg[4:].strip()
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('exit')
+
+            if not msg.startswith('--save'):
+                # Ensure that `start_using_timestamp` is not set back to None
+                # unless in a specific mode to avoid unintentional message deletion
                 await bot.clear_msgs(message, start_using_timestamp)
 
             if is_terminal_mode:
@@ -265,7 +277,10 @@ async def get_response(message) -> str:
             ignore_capitalization = False
             start_using_timestamp = None
 
-            return '```exited successfully```'
+            if msg.startswith('--save'):
+                return "```exited successfully without clearing messages```"
+            else:
+                return "```exited successfully```"
 
         elif msg.startswith('status'):
             msg = msg[6:].strip()

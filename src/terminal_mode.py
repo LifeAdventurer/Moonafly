@@ -160,6 +160,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
                  cd [dir]
                  clear
+                 exit [--save]
                  help
                  jump [folder]
                  ls

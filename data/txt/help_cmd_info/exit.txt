@@ -1,0 +1,5 @@
+Usage: exit [--save]
+    exit terminal or develop mode and clear messages
+
+    Options:
+      --save        exit without clearing messages

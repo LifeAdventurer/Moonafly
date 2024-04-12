@@ -81,6 +81,7 @@ async def get_response_in_develop_mode(message) -> str:
 
              cd [dir]
              clear
+             exit [--save]
              end
              jump [folder]
              pwd
