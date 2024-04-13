@@ -141,11 +141,11 @@ def show_1A2B_certain_user_ranking(
 
 
 def play_game_1A2B(message) -> str:
-    if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('game_1A2B')
-
     username = str(message.author)
     msg = str(message.content)
+
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('game_1A2B')
 
     global playing_game_1A2B, target_number, target_number_len, attempts
 
