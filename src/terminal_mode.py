@@ -17,6 +17,7 @@ from command import (
     issues,
     jump,
     math_calc,
+    math_count,
     news,
     primes,
     random_number,
@@ -458,7 +459,6 @@ async def get_response_in_terminal_mode(message) -> str:
                     """
                 )
 
-    # games
     elif path_stack_match(1, 'game'):
         if path_stack_match(2, '1A2B'):
             return game_1A2B.play_game_1A2B(message)
@@ -471,18 +471,7 @@ async def get_response_in_terminal_mode(message) -> str:
             return math_calc.get_math_calc_response(msg)
 
         elif path_stack_match(2, 'count'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('math_count')
-
-            words = msg.split()
-            return textwrap.dedent(
-                f"""
-                ```
-                {str(len(words))}
-                {current_path()}
-                ```
-                """
-            )
+            return math_count.get_math_count_response(msg)
 
         elif path_stack_match(2, 'primes'):
             return primes.get_primes_response(msg)
