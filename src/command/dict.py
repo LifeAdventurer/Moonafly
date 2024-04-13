@@ -1,22 +1,53 @@
 import json
+import re
+import textwrap
 
 import requests
 from bs4 import BeautifulSoup
+
+import responses
+import terminal_mode
+from command import command_help
+from constants import HELP_FLAG, TAB_SIZE
+
+
+def load_vocabulary_items() -> dict:
+    try:
+        with open(
+            '../data/json/vocabulary_items.json',
+            'r',
+            encoding='utf-8',
+        ) as file:
+            vocabulary_items = json.load(file)
+    except FileNotFoundError:
+        vocabulary_items = {}
+        with open(
+            '../data/json/vocabulary_items.json',
+            'w',
+            encoding='utf-8',
+        ) as file:
+            json.dump(vocabulary_items, file, indent=4)
+    return vocabulary_items
+
+
+def write_vocabulary_items(vocabulary_items: dict):
+    with open(
+        '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
+    ) as file:
+        json.dump(vocabulary_items, file, indent=4, ensure_ascii=False)
 
 
 def search_dict(
     dictionary: str,
     search_word: str,
     limit: int,
-    tab_size: int,
     tab_count: int,
-    username: str = None,
 ) -> str:
+    username = responses.terminal_mode_current_using_user
     search_word = search_word.lower()
 
     if dictionary == 'en':
         result = get_info_in_English(search_word, limit)
-        space = ' ' * tab_size * tab_count
         if result:
             information = [f"# {search_word}"]
             for index, item in enumerate(result):
@@ -32,8 +63,7 @@ def search_dict(
                     '### Examples:',
                 ]
                 information += [f"- {sentence}" for sentence in example_list]
-
-            return ('\n' + space).join(information)
+            return ('\n' + ' ' * TAB_SIZE * tab_count).join(information)
         else:
             return (
                 f"Failed to retrieve information for the word '{search_word}'."
@@ -41,7 +71,6 @@ def search_dict(
 
     elif dictionary == 'en-zh_TW':
         result = get_info_in_English_Chinese_traditional(search_word, limit)
-        space = ' ' * tab_size * tab_count
         if result:
             part_of_speech, en_definition, zh_TW_definition, example_list = (
                 result
@@ -52,30 +81,16 @@ def search_dict(
 
             # save vocabulary
             if zh_TW_definition != 'No definition found':
-                try:
-                    with open(
-                        '../data/json/vocabulary_items.json',
-                        'r',
-                        encoding='utf-8',
-                    ) as file:
-                        data = json.load(file)
-                except FileNotFoundError:
-                    data = {}
-                    with open(
-                        '../data/json/vocabulary_items.json',
-                        'w',
-                        encoding='utf-8',
-                    ) as file:
-                        json.dump(data, file, indent=4)
+                vocabulary_items = load_vocabulary_items()
 
-                if username in data:
+                if username in vocabulary_items:
                     word_in_data = False
-                    for word in data[username]:
+                    for word in vocabulary_items[username]:
                         if search_word == word['word']:
                             word_in_data = True
                             word['count'] += 1
                     if not word_in_data:
-                        data[username].append(
+                        vocabulary_items[username].append(
                             {
                                 'word': search_word,
                                 'word_in_zh_TW': zh_TW_definition,
@@ -83,7 +98,7 @@ def search_dict(
                             }
                         )
                 else:
-                    data[username] = [
+                    vocabulary_items[username] = [
                         {
                             'word': search_word,
                             'word_in_zh_TW': zh_TW_definition,
@@ -91,10 +106,7 @@ def search_dict(
                         }
                     ]
 
-                with open(
-                    '../data/json/vocabulary_items.json', 'w', encoding='utf-8'
-                ) as file:
-                    json.dump(data, file, indent=4, ensure_ascii=False)
+                write_vocabulary_items(vocabulary_items)
 
             information = [
                 f"# {search_word}",
@@ -106,7 +118,7 @@ def search_dict(
             ]
             information += [f"- {sentence}" for sentence in example_list]
 
-            return ('\n' + space).join(information)
+            return ('\n' + ' ' * TAB_SIZE * tab_count).join(information)
         else:
             return (
                 f"Failed to retrieve information for the word '{search_word}'."
@@ -238,3 +250,38 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return None
+
+
+def get_dict_response(msg: str, dictionary: str):
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info(f"dict_{dictionary}")
+
+    # LIMIT example count
+    match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
+    if match:
+        return textwrap.dedent(
+            f"""
+            {search_dict(dictionary, match.group(1), int(match.group(2)), 3)}
+            ```
+            {terminal_mode.current_path()}
+            ```
+            """
+        )
+    elif 'LIMIT' in msg:
+        return textwrap.dedent(
+            f"""
+            ```
+            please type a number after the command LIMIT
+            {terminal_mode.current_path()}
+            ```
+            """
+        )
+    else:
+        return textwrap.dedent(
+            f"""
+            {search_dict(dictionary, msg, 3, 3)}
+            ```
+            {terminal_mode.current_path()}
+            ```
+            """
+        )

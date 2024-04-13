@@ -391,73 +391,10 @@ async def get_response_in_terminal_mode(message) -> str:
 
     elif path_stack_match(1, 'dict'):
         if path_stack_match(2, 'en'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('dict_en')
+            return dict.get_dict_response(msg, 'en')
 
-            # LIMIT example count
-            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
-            if match:
-                return textwrap.dedent(
-                    f"""
-                    {dict.search_dict('en', match.group(1), int(match.group(2)), TAB_SIZE, 5)}
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
-            elif 'LIMIT' in msg:
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    please type a number after the command LIMIT
-                    {current_path()}
-                    ```
-                    """
-                )
-            else:
-                return textwrap.dedent(
-                    f"""
-                    {dict.search_dict('en', msg, 3, TAB_SIZE, 5)}
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
-
-        # en-zh_TW
         elif path_stack_match(2, 'en-zh_TW'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('dict_en-zh_TW')
-
-            # LIMIT example count
-            match = re.search(r'^(\w+)\s+LIMIT\s+(\d+)$', msg)
-            if match:
-                return textwrap.dedent(
-                    f"""
-                    {dict.search_dict('en-zh_TW', match.group(1), int(match.group(2)), TAB_SIZE, 5, username)}
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
-            elif 'LIMIT' in msg:
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    please type a number after the command LIMIT
-                    {current_path()}
-                    ```
-                    """
-                )
-            else:
-                return textwrap.dedent(
-                    f"""
-                    {dict.search_dict('en-zh_TW', msg, 3, TAB_SIZE, 5, username)}
-                    ```
-                    {current_path()}
-                    ```
-                    """
-                )
+            return dict.get_dict_response(msg, 'en-zh_TW')
 
     elif path_stack_match(1, 'game'):
         if path_stack_match(2, '1A2B'):
