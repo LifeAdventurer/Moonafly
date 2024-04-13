@@ -5,7 +5,7 @@ import textwrap
 import develop_mode
 import terminal_mode
 from command import command_help
-from constants import TAB_SIZE
+from constants import HELP_FLAG, TAB_SIZE
 
 on_remote = False
 
@@ -30,6 +30,8 @@ def load_allowed_paths(data: dict):
 
 
 def load_remote_file(msg: str, identity: str) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('remote_file')
 
     global on_remote
 

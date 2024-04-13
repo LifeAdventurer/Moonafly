@@ -3,7 +3,7 @@ import textwrap
 
 import bot
 import responses
-from command import command_help, issues, jump, maintenance, remote, tree
+from command import command_help, issues, jump, maintenance, remote_file, tree
 from constants import HELP_FLAG, TAB_SIZE
 
 
@@ -265,7 +265,7 @@ async def get_response_in_develop_mode(message) -> str:
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('remote_file')
 
-            return remote.load_remote_file(msg.strip(), 'developer')
+            return remote_file.load_remote_file(msg.strip(), 'developer')
 
     elif path_stack_match(1, 'issues'):
         return issues.get_issues(msg)

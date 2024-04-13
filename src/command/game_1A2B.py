@@ -141,12 +141,11 @@ def show_1A2B_certain_user_ranking(
 
 
 def play_game_1A2B(message) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('game_1A2B')
+
     username = str(message.author)
     msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
 
     global playing_game_1A2B, target_number, target_number_len, attempts
 

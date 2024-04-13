@@ -22,7 +22,7 @@ from command import (
     random_number,
     random_vocab_review,
     random_vocab_test,
-    remote,
+    remote_file,
     search_github,
     search_online_judge,
     todo,
@@ -382,18 +382,13 @@ async def get_response_in_terminal_mode(message) -> str:
 
         elif path_stack_match(2, 'remote'):
             if path_stack_match(3, 'file'):
-                if msg.startswith(HELP_FLAG):
-                    return command_help.load_help_cmd_info('remote_file')
-
-                return remote.load_remote_file(msg, 'author')
+                return remote_file.load_remote_file(msg, 'author')
 
     # commands in certain directory
     if path_stack_match(1, 'clipboard'):
         return clipboard.get_clipboard_response(msg)
 
     elif path_stack_match(1, 'dict'):
-        # different languages
-        # en
         if path_stack_match(2, 'en'):
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('dict_en')
@@ -466,9 +461,6 @@ async def get_response_in_terminal_mode(message) -> str:
     # games
     elif path_stack_match(1, 'game'):
         if path_stack_match(2, '1A2B'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('game_1A2B')
-
             return game_1A2B.play_game_1A2B(message)
 
     elif path_stack_match(1, 'hash'):
@@ -476,17 +468,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
     elif path_stack_match(1, 'math'):
         if path_stack_match(2, 'calc'):
-            if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('math_calc')
-
-            return textwrap.dedent(
-                f"""
-                ```
-                {math_calc.safe_eval(msg)}
-                {current_path()}
-                ```
-                """
-            )
+            return math_calc.get_math_calc_response(msg)
 
         elif path_stack_match(2, 'count'):
             if msg.startswith(HELP_FLAG):

@@ -1,5 +1,10 @@
 import ast
 import json
+import textwrap
+
+import terminal_mode
+from command import command_help
+from constants import HELP_FLAG
 
 # define the whitelist of allowed commands
 math_calc_allow_names = []
@@ -35,3 +40,17 @@ def safe_eval(msg: str) -> str:
         return str(result)
     except (SyntaxError, ValueError) as e:
         return f"Error during evaluation: {e}"
+
+
+def get_math_calc_response(msg: str) -> str:
+    if msg.startswith(HELP_FLAG):
+        return command_help.load_help_cmd_info('math_calc')
+
+    return textwrap.dedent(
+        f"""
+        ```
+        {safe_eval(msg)}
+        {terminal_mode.current_path()}
+        ```
+        """
+    )
