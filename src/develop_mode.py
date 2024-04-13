@@ -38,6 +38,7 @@ def current_path() -> str:
 
 
 def command_not_found(msg: str) -> str:
+    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
     space = ' ' * TAB_SIZE * 2
     # unify the indentation of multiline
     msg = '\n'.join(
