@@ -56,6 +56,36 @@ def command_not_found(msg: str) -> str:
     )
 
 
+def permission_denied() -> str:
+    return textwrap.dedent(
+        f"""
+        ```
+        permission denied: requires highest authority
+        {current_path()}
+        ```
+        """
+    )
+
+
+def handle_cd_error(msg: str) -> str:
+    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+    space = ' ' * TAB_SIZE * 2
+    msg = '\n'.join(
+        [
+            space + line if index > 0 else line
+            for index, line in enumerate(msg.split('\n'))
+        ]
+    )
+    return textwrap.dedent(
+        f"""
+        ```
+        Moonafly: cd: {msg}: No such file or directory
+        {current_path()}
+        ```
+        """
+    )
+
+
 async def get_response_in_develop_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
@@ -103,15 +133,7 @@ async def get_response_in_develop_mode(message) -> str:
 
         # go to the root directory
         if path[0] == '/' and username != responses.author:
-            return textwrap.dedent(
-                f"""
-                ```
-                permission denied
-                * this command requires the highest authority
-                {current_path()}
-                ```
-                """
-            )
+            return permission_denied()
 
         # skip all the '\' and split the path into a folder list
         path = path.replace('\\', '').split('/')
@@ -130,24 +152,7 @@ async def get_response_in_develop_mode(message) -> str:
                     temporary_path_stack.pop()
 
                 elif temporary_path_stack[0] == '~':
-                    # reverse the message to original command by removing the escape character
-                    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * TAB_SIZE * 7
-                    # multi-line adjustment
-                    msg = '\n'.join(
-                        [
-                            space + line if index > 0 else line
-                            for index, line in enumerate(msg.split('\n'))
-                        ]
-                    )
-                    return textwrap.dedent(
-                        f"""
-                        ```
-                        Moonafly: cd: {msg}: No such file or directory
-                        {current_path()}
-                        ```
-                        """
-                    )
+                    return handle_cd_error(msg)
 
             else:
                 temporary_path_stack.append(folder)
@@ -165,37 +170,13 @@ async def get_response_in_develop_mode(message) -> str:
                         break
 
                 else:
-                    return textwrap.dedent(
-                        f"""
-                        ```
-                        Moonafly: cd: {msg}: No such file or directory
-                        {current_path()}
-                        ```
-                        """
-                    )
+                    return handle_cd_error(msg)
 
             elif folder in list(current_directory):
                 current_directory = current_directory[folder]
 
             else:
-                # reverse the message to original command by removing the escape character
-                msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                space = ' ' * TAB_SIZE * 6
-                # multi-line adjustment
-                msg = '\n'.join(
-                    [
-                        space + line if index > 0 else line
-                        for index, line in enumerate(msg.split('\n'))
-                    ]
-                )
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    Moonafly: cd: {msg}: No such file or directory
-                    {current_path()}
-                    ```
-                    """
-                )
+                return handle_cd_error(msg)
 
         path_stack = temporary_path_stack
         return f"```{current_path()}```"

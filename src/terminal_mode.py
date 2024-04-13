@@ -74,6 +74,36 @@ def function_developing() -> str:
     )
 
 
+def permission_denied() -> str:
+    return textwrap.dedent(
+        f"""
+        ```
+        permission denied: requires highest authority
+        {current_path()}
+        ```
+        """
+    )
+
+
+def handle_cd_error(msg: str) -> str:
+    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+    space = ' ' * TAB_SIZE * 2
+    msg = '\n'.join(
+        [
+            space + line if index > 0 else line
+            for index, line in enumerate(msg.split('\n'))
+        ]
+    )
+    return textwrap.dedent(
+        f"""
+        ```
+        Moonafly: cd: {msg}: No such file or directory
+        {current_path()}
+        ```
+        """
+    )
+
+
 def get_ls_command_output(files: list, tab_size: int, tab_count: int) -> str:
     output = ""
     columns = 3
@@ -173,7 +203,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
         # cd command
         elif msg.startswith('cd'):
-            msg = msg[2:].lstrip()
+            msg = msg[2:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('cd')
 
@@ -186,15 +216,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
             # go to the root directory
             if path[0] == '/' and username != responses.author:
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    permission denied
-                    * this command requires the highest authority
-                    {current_path()}
-                    ```
-                    """
-                )
+                return permission_denied()
 
             # skip all the '\' and split the path into a folder list
             path = path.replace('\\', '').split('/')
@@ -203,7 +225,6 @@ async def get_response_in_terminal_mode(message) -> str:
             temporary_path_stack = path_stack[:]
 
             for folder in path:
-                # if the folder is empty or . then nothing happens with the
                 if folder == '' or folder == '.':
                     continue
 
@@ -213,24 +234,7 @@ async def get_response_in_terminal_mode(message) -> str:
                         temporary_path_stack.pop()
 
                     elif temporary_path_stack[0] == '~':
-                        # reverse the message to original command by removing the escape character
-                        msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                        space = ' ' * TAB_SIZE * 7
-                        # multi-line adjustment
-                        msg = '\n'.join(
-                            [
-                                space + line if index > 0 else line
-                                for index, line in enumerate(msg.split('\n'))
-                            ]
-                        )
-                        return textwrap.dedent(
-                            f"""
-                            ```
-                            Moonafly: cd: {msg}: No such file or directory
-                            {current_path()}
-                            ```
-                            """
-                        )
+                        return handle_cd_error(msg)
 
                 else:
                     temporary_path_stack.append(folder)
@@ -248,51 +252,19 @@ async def get_response_in_terminal_mode(message) -> str:
                             break
 
                     else:
-                        return textwrap.dedent(
-                            f"""
-                            ```
-                            Moonafly: cd: {msg}: No such file or directory
-                            {current_path()}
-                            ```
-                            """
-                        )
+                        return handle_cd_error(msg)
 
                 elif folder in list(current_directory):
                     if folder == 'author':
                         if username == responses.author:
                             current_directory = current_directory[folder]
                         else:
-                            return textwrap.dedent(
-                                f"""
-                                ```
-                                permission denied
-                                your command path contains certain directory that requires the highest authority
-                                {current_path()}
-                                ```
-                                """
-                            )
+                            return permission_denied()
                     else:
                         current_directory = current_directory[folder]
 
                 else:
-                    # reverse the message to original command by removing the escape character
-                    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-                    space = ' ' * TAB_SIZE * 6
-                    # multi-line adjustment
-                    msg = '\n'.join(
-                        [
-                            space + line if index > 0 else line
-                            for index, line in enumerate(msg.split('\n'))
-                        ]
-                    )
-                    return textwrap.dedent(
-                        f"""
-                        ```
-                        Moonafly: cd: {msg}: No such file or directory
-                        {current_path()}
-                        ```
-                        """
-                    )
+                    return handle_cd_error(msg)
 
             path_stack = temporary_path_stack
             return f"```{current_path()}```"
