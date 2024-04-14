@@ -46,7 +46,10 @@ subprocess_args = {
 pipe = subprocess.Popen(EXEC_PATH, **subprocess_args)
 
 while True:
-    stderr = pipe.stderr.readline().strip()
+    try:
+        stderr = pipe.stderr.readline().strip()
+    except UnicodeDecodeError:
+        stderr = "Unable to decode stderr"
     if stderr:
         print(stderr)
     if "Restarting Moonafly..." in stderr:
