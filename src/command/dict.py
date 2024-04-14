@@ -142,7 +142,7 @@ def get_info_in_English(word, limit_example_count):
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Raise an HTTPError for bad responses
 
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text.replace('\n', ''), 'html.parser')
 
         entries = soup.find_all('div', {'class': 'entry'})
 
@@ -200,7 +200,7 @@ def get_info_in_English_Chinese_traditional(word, limit_example_count):
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Raise an HTTPError for bad responses
 
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text.replace('\n', ''), 'html.parser')
 
         # Extract part of speech
         part_of_speech = soup.find('span', {'class': 'pos dpos'})
