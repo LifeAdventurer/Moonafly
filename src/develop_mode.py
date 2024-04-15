@@ -17,6 +17,33 @@ def load_Moonafly_structure() -> dict:
         return json.load(file)['structure']
 
 
+def get_ls_command_output(files: list, tab_size: int, tab_count: int) -> str:
+    output = ""
+    columns = 3
+    column_len = [0] * columns
+    for column_index in range(min(columns, len(files))):
+        # group the files with vertical lines and {columns} groups
+        grouped_files = [
+            file
+            for index, file in enumerate(files)
+            if index % columns == column_index
+        ]
+        column_len[column_index] = max(
+            len(file_name) for file_name in grouped_files
+        )
+
+    for index, file in enumerate(files):
+        output += file + ' ' * (
+            column_len[index % columns] - len(file) + 2
+            if index % columns != columns - 1
+            else 0
+        )
+        if index % columns == columns - 1 and index != len(files) - 1:
+            output += '\n' + ' ' * tab_size * tab_count
+
+    return output
+
+
 path_stack = []
 
 
@@ -197,6 +224,33 @@ async def get_response_in_develop_mode(message) -> str:
     elif msg.startswith('jump'):
         msg = msg[4:].strip()
         return jump.jump_to_folder(msg)
+
+    elif msg.startswith('ls'):
+        msg = msg[3:].lstrip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('ls')
+
+        current_directory = load_develop_mode_directory_structure()
+        # and move it to the current directory
+        for folder in path_stack:
+            current_directory = current_directory[folder]
+
+        # sort the folders alphabetically
+        files_in_current_directory = sorted(list(current_directory))
+        if (
+            username != responses.author
+            and 'author' in files_in_current_directory
+        ):
+            files_in_current_directory.remove('author')
+
+        return textwrap.dedent(
+            f"""
+            ```
+            {get_ls_command_output(files_in_current_directory, TAB_SIZE, 4)}
+            {current_path()}
+            ```
+            """
+        )
 
     elif msg.startswith('pwd'):
         msg = msg[3:].lstrip()
