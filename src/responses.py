@@ -99,6 +99,7 @@ def save_develop_mode_login_record():
 # prevent multiple user using terminal or develop mode at the same time
 terminal_mode_current_using_user = ''
 develop_mode_current_using_user = ''
+current_using_channel = ''
 start_using_timestamp = None
 
 # in which mode status
@@ -122,7 +123,7 @@ async def get_response(message) -> str:
     msg = msg.strip()
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
-    global terminal_mode_current_using_user, develop_mode_current_using_user, start_using_timestamp
+    global terminal_mode_current_using_user, develop_mode_current_using_user, current_using_channel, start_using_timestamp
     global enter_terminal_mode_cmd, enter_develop_mode_cmd, ignore_capitalization
 
     if is_normal_mode == True and any(
@@ -133,6 +134,7 @@ async def get_response(message) -> str:
             is_terminal_mode = True
 
             terminal_mode_current_using_user = username
+            current_using_channel = str(message.channel)
             start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after terminal_mode_current_using_user has been assigned
@@ -193,6 +195,7 @@ async def get_response(message) -> str:
             is_develop_mode = True
 
             develop_mode_current_using_user = username
+            current_using_channel = str(message.channel)
             start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after develop_mode_current_using_user has been assigned
@@ -266,6 +269,8 @@ async def get_response(message) -> str:
 
             # global variables that affect all modes
             ignore_capitalization = False
+
+            current_using_channel = ''
             start_using_timestamp = None
 
             if msg.startswith('--save'):
@@ -278,11 +283,11 @@ async def get_response(message) -> str:
 
             mode = ''
             if is_terminal_mode:
-                mode = 'terminal_mode'
+                mode = 'terminal mode'
             elif is_develop_mode:
-                mode = 'develop_mode'
+                mode = 'develop mode'
             else:
-                mode = 'normal_mode'
+                mode = 'normal mode'
 
             # battery
             battery = psutil.sensors_battery()

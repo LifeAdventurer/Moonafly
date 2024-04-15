@@ -230,6 +230,12 @@ def run_Moonafly():
         if not user_message:
             return
 
+        if (
+            not responses.is_normal_mode
+            and channel != responses.current_using_channel
+        ):
+            return
+
         await send_message(message)
 
     # this is a hacking method
