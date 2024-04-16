@@ -30,9 +30,7 @@ def visualize_structure(data: dict) -> str:
         username = responses.develop_mode_current_using_user
         user_cloak = develop_mode.load_user_cloak()['develop_mode']
 
-    if username not in user_cloak:
-        user_cloak[username] = []
-    bypass = user_cloak[username]
+    bypass = user_cloak.get(username, [])
     if (
         responses.is_terminal_mode == True
         and responses.terminal_mode_current_using_user != responses.author

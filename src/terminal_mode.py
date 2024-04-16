@@ -374,29 +374,23 @@ async def get_response_in_terminal_mode(message) -> str:
                     else:
                         return handle_cloak_error(msg, 'path')
 
+
                 folder_name = temporary_path_stack[-1]
-
                 user_cloak = load_user_cloak()
-                if username not in user_cloak['terminal_mode']:
-                    user_cloak['terminal_mode'][username] = []
-
+                user_terminal_mode_cloak = user_cloak[
+                    'terminal_mode'
+                ].setdefault(username, [])
                 if operation == '+':
-                    if folder_name not in user_cloak['terminal_mode'][username]:
-                        user_cloak['terminal_mode'][username].append(
-                            folder_name
-                        )
+                    if folder_name not in user_terminal_mode_cloak:
+                        user_terminal_mode_cloak.append(folder_name)
                 else:
-                    if folder_name in user_cloak['terminal_mode'][username]:
-                        user_cloak['terminal_mode'][username].remove(
-                            folder_name
-                        )
-
+                    user_terminal_mode_cloak.remove(folder_name)
                 write_user_cloak(user_cloak)
 
                 return textwrap.dedent(
                     f"""
                     ```
-                    folder '{folder_name}' has been successfully {'un' if operation == '-' else ''}hidden.
+                    folder '{folder_name}' has been successfully {'un' if operation == '-' else ''}hidden
                     {current_path()}
                     ```
                     """
@@ -427,11 +421,8 @@ async def get_response_in_terminal_mode(message) -> str:
                 files_in_current_directory.remove('author')
 
             user_cloak = load_user_cloak()
-            if username not in user_cloak['terminal_mode']:
-                user_cloak['terminal_mode'][username] = []
-            for folder in user_cloak['terminal_mode'][username]:
-                if folder in files_in_current_directory:
-                    files_in_current_directory.remove(folder)
+            for folder in user_cloak['terminal_mode'].get(username, []):
+                files_in_current_directory.remove(folder)
 
             return textwrap.dedent(
                 f"""
