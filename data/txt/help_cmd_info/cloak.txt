@@ -1,0 +1,6 @@
+Usage: cloak [+-]h [dir]
+    hide or unhide the specified folder
+
+    Options:
+      +h        hide the folder
+      -h        unhide the folder

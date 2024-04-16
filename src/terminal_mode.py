@@ -1,9 +1,6 @@
 import json
-import random
 import re
 import textwrap
-
-import requests
 
 import bot
 import responses
@@ -42,6 +39,22 @@ def load_terminal_mode_directory_structure() -> dict:
 def load_Moonafly_structure() -> dict:
     with open('../data/json/Moonafly_structure.json') as file:
         return json.load(file)['structure']
+
+
+def load_user_cloak() -> dict:
+    try:
+        with open('../data/json/user_cloak.json', 'r') as file:
+            user_cloak = json.load(file)
+    except FileNotFoundError:
+        user_cloak = {'terminal_mode': {}, 'develop_mode': {}}
+        with open('../data/json/user_cloak.json', 'w') as file:
+            json.dump(user_cloak, file, indent=4)
+    return user_cloak
+
+
+def write_user_cloak(user_cloak: dict):
+    with open('../data/json/user_cloak.json', 'w') as file:
+        json.dump(user_cloak, file, indent=4)
 
 
 def command_not_found(msg: str) -> str:
@@ -99,6 +112,30 @@ def handle_cd_error(msg: str) -> str:
         f"""
         ```
         Moonafly: cd: {msg}: No such file or directory
+        {current_path()}
+        ```
+        """
+    )
+
+
+def handle_cloak_error(msg: str, error_type: str) -> str:
+    error = ''
+    if error_type == 'format':
+        error = 'format error'
+    elif error_type == 'path':
+        msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+        space = ' ' * TAB_SIZE * 2
+        msg = '\n'.join(
+            [
+                space + line if index > 0 else line
+                for index, line in enumerate(msg.split('\n'))
+            ]
+        )
+        error = f"{msg}: No such file or directory"
+    return textwrap.dedent(
+        f"""
+        ```
+        cloak: {error}
         {current_path()}
         ```
         """
@@ -191,6 +228,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
                  cd [dir]
                  clear
+                 cloak {{+-}}h [dir]
                  exit [--save]
                  help
                  jump [folder]
@@ -202,7 +240,6 @@ async def get_response_in_terminal_mode(message) -> str:
                 """
             )
 
-        # cd command
         elif msg.startswith('cd'):
             msg = msg[2:].strip()
             if msg.startswith(HELP_FLAG):
@@ -278,11 +315,99 @@ async def get_response_in_terminal_mode(message) -> str:
             await bot.clear_msgs(message, responses.start_using_timestamp)
             return f"```{current_path()}```"
 
+        elif msg.startswith('cloak'):
+            msg = msg[5:].strip()
+            if msg.startswith(HELP_FLAG):
+                return command_help.load_help_cmd_info('cloak')
+
+            pattern = r'^([+-])[h]\s*(.*)$'
+            match = re.match(pattern, msg)
+            if match:
+                operation = match.group(1)
+                path = match.group(2)
+
+                # skip all the '\' and split the path into a folder list
+                path = path.replace('\\', '').split('/')
+
+                # using [:] to prevent temporary_path_stack and path_stack affecting each other
+                temporary_path_stack = path_stack[:]
+
+                for folder in path:
+                    if folder == '' or folder == '.':
+                        continue
+
+                    # move up one directory
+                    elif folder == '..':
+                        if len(temporary_path_stack) > 1:
+                            temporary_path_stack.pop()
+
+                        elif temporary_path_stack[0] == '~':
+                            return handle_cloak_error(msg, 'path')
+
+                    else:
+                        temporary_path_stack.append(folder)
+
+                current_directory = load_terminal_mode_directory_structure()
+
+                for folder in temporary_path_stack:
+                    if folder[-1] == '>':
+                        for item in list(current_directory):
+                            if item.startswith(folder[:-1]):
+                                current_directory = current_directory[item]
+                                temporary_path_stack[
+                                    temporary_path_stack.index(folder)
+                                ] = item
+                                break
+
+                        else:
+                            return handle_cloak_error(msg, 'path')
+
+                    elif folder in list(current_directory):
+                        if folder == 'author':
+                            if username == responses.author:
+                                current_directory = current_directory[folder]
+                            else:
+                                return permission_denied()
+                        else:
+                            current_directory = current_directory[folder]
+
+                    else:
+                        return handle_cloak_error(msg, 'path')
+
+                folder_name = temporary_path_stack[-1]
+
+                user_cloak = load_user_cloak()
+                if username not in user_cloak['terminal_mode']:
+                    user_cloak['terminal_mode'][username] = []
+
+                if operation == '+':
+                    if folder_name not in user_cloak['terminal_mode'][username]:
+                        user_cloak['terminal_mode'][username].append(
+                            folder_name
+                        )
+                else:
+                    if folder_name in user_cloak['terminal_mode'][username]:
+                        user_cloak['terminal_mode'][username].remove(
+                            folder_name
+                        )
+
+                write_user_cloak(user_cloak)
+
+                return textwrap.dedent(
+                    f"""
+                    ```
+                    folder '{folder_name}' has been successfully {'un' if operation == '-' else ''}hidden.
+                    {current_path()}
+                    ```
+                    """
+                )
+            else:
+                return handle_cloak_error(msg, 'format')
+
         elif msg.startswith('jump'):
             msg = msg[4:].strip()
             return jump.jump_to_folder(msg)
 
-        # ls command
         elif msg.startswith('ls'):
             msg = msg[3:].lstrip()
             if msg.startswith(HELP_FLAG):
@@ -300,6 +425,13 @@ async def get_response_in_terminal_mode(message) -> str:
                 and 'author' in files_in_current_directory
             ):
                 files_in_current_directory.remove('author')
+
+            user_cloak = load_user_cloak()
+            if username not in user_cloak['terminal_mode']:
+                user_cloak['terminal_mode'][username] = []
+            for folder in user_cloak['terminal_mode'][username]:
+                if folder in files_in_current_directory:
+                    files_in_current_directory.remove(folder)
 
             return textwrap.dedent(
                 f"""

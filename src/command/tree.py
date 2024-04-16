@@ -21,13 +21,18 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
 
 def visualize_structure(data: dict) -> str:
 
-    current_path = ''
     if responses.is_terminal_mode == True:
         current_path = terminal_mode.current_path()
+        username = responses.terminal_mode_current_using_user
+        user_cloak = terminal_mode.load_user_cloak()['terminal_mode']
     elif responses.is_develop_mode == True:
         current_path = develop_mode.current_path()
+        username = responses.develop_mode_current_using_user
+        user_cloak = develop_mode.load_user_cloak()['develop_mode']
 
-    bypass = []
+    if username not in user_cloak:
+        user_cloak[username] = []
+    bypass = user_cloak[username]
     if (
         responses.is_terminal_mode == True
         and responses.terminal_mode_current_using_user != responses.author
