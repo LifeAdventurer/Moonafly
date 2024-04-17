@@ -240,8 +240,8 @@ async def get_response_in_terminal_mode(message) -> str:
             # skip all the '\' and split the path into a folder list
             path = path.replace('\\', '').split('/')
 
-            # using [:] to prevent temporary_path_stack and path_stack affecting each other
-            temporary_path_stack = path_stack[:]
+            # Shallow copy
+            temporary_path_stack = path_stack.copy()
 
             for folder in path:
                 if folder == '' or folder == '.':
@@ -310,8 +310,8 @@ async def get_response_in_terminal_mode(message) -> str:
                 # skip all the '\' and split the path into a folder list
                 path = path.replace('\\', '').split('/')
 
-                # using [:] to prevent temporary_path_stack and path_stack affecting each other
-                temporary_path_stack = path_stack[:]
+                # Shallow copy
+                temporary_path_stack = path_stack.copy()
 
                 for folder in path:
                     if folder == '' or folder == '.':
