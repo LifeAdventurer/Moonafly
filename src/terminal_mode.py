@@ -150,6 +150,12 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
     for folder in temporary_path_stack:
         if folder[-1] == '>':
             for item in list(current_directory):
+                if (
+                    item == 'author'
+                    and responses.terminal_mode_current_using_user
+                    != responses.author
+                ):
+                    continue
                 if item.startswith(folder[:-1]):
                     current_directory = current_directory[item]
                     temporary_path_stack[temporary_path_stack.index(folder)] = (
