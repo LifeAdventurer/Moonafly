@@ -6,7 +6,7 @@ authors = ["LifeAdventurer <life0adventurer@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 beautifulsoup4 = "^4.12.2"
 discord-py = "^2.3.2"
 requests = "^2.31.0"

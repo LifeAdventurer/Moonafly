@@ -24,8 +24,7 @@ def load_token():
 
 
 # check whether there is maintenance and the duration
-def load_maintenance():
-    global in_maintenance, estimated_end_time, developer
+def load_maintenance() -> tuple[str, str, str]:
     try:
         with open('../data/txt/init_files/maintenance.txt') as file:
             in_maintenance = file.readline().strip() == 'True'
@@ -39,6 +38,8 @@ def load_maintenance():
             file.write(
                 '\n'.join([in_maintenance, estimated_end_time, developer])
             )
+
+    return in_maintenance, estimated_end_time, developer
 
 
 async def send_message(message):
@@ -86,7 +87,6 @@ async def clear_msgs(message, timestamp):
 
 def init_files():
     load_token()
-    load_maintenance()
     responses.load_user_identity_list()
 
 
@@ -151,6 +151,7 @@ def run_Moonafly():
 
         # if in maintenance and user using command
         # announce the maintenance time
+        in_maintenance, estimated_end_time, developer = load_maintenance()
         if (
             in_maintenance
             and username != responses.author

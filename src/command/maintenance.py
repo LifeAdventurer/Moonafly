@@ -33,8 +33,6 @@ def set_maintenance(msg: str) -> str:
                 + responses.develop_mode_current_using_user
             )
 
-        bot.load_maintenance()
-
         return textwrap.dedent(
             f"""
             ```
@@ -57,11 +55,12 @@ def set_maintenance(msg: str) -> str:
 
 
 def end_maintenance(msg: str) -> str:
-
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('end')
 
-    if bot.in_maintenance != True:
+    in_maintenance = bot.load_maintenance()[0]
+
+    if in_maintenance != True:
         return textwrap.dedent(
             f"""
             ```
@@ -78,8 +77,6 @@ def end_maintenance(msg: str) -> str:
             + '\n'
             + responses.develop_mode_current_using_user
         )
-
-    bot.load_maintenance()
 
     return textwrap.dedent(
         f"""
