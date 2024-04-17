@@ -104,15 +104,15 @@ def handle_command_error(command: str, error_type: str, msg: str) -> str:
     if error_type == 'format':
         error = 'format error'
     elif error_type == 'path':
-        msg = msg.replace("\\'", "'").replace("\\\"", "\"")
+        path = msg.replace("\\'", "'").replace("\\\"", "\"")
         space = ' ' * TAB_SIZE * 2
-        msg = '\n'.join(
+        path = '\n'.join(
             [
                 space + line if index > 0 else line
-                for index, line in enumerate(msg.split('\n'))
+                for index, line in enumerate(path.split('\n'))
             ]
         )
-        error = f"{msg}: No such file or directory"
+        error = f"{path}: No such file or directory"
     return textwrap.dedent(
         f"""
         ```
@@ -121,6 +121,61 @@ def handle_command_error(command: str, error_type: str, msg: str) -> str:
         ```
         """
     )
+
+
+def check_path_exists(command: str, path: str) -> tuple[bool, list]:
+    # Skip all the '\' and split the path into a folder list
+    path = path.replace('\\', '').split('/')
+
+    # Create a copy of the current path stack
+    temporary_path_stack = path_stack.copy()
+
+    for folder in path:
+        if folder == '' or folder == '.':
+            continue
+
+        # move up one directory
+        elif folder == '..':
+            if len(temporary_path_stack) > 1:
+                temporary_path_stack.pop()
+
+            elif temporary_path_stack[0] == '~':
+                return False, handle_command_error(command, 'path', path)
+
+        else:
+            temporary_path_stack.append(folder)
+
+    current_directory = load_terminal_mode_directory_structure()
+
+    for folder in temporary_path_stack:
+        if folder[-1] == '>':
+            for item in list(current_directory):
+                if item.startswith(folder[:-1]):
+                    current_directory = current_directory[item]
+                    temporary_path_stack[temporary_path_stack.index(folder)] = (
+                        item
+                    )
+                    break
+
+            else:
+                return False, handle_command_error(command, 'path', path)
+
+        elif folder in list(current_directory):
+            if folder == 'author':
+                if (
+                    responses.terminal_mode_current_using_user
+                    == responses.author
+                ):
+                    current_directory = current_directory[folder]
+                else:
+                    return permission_denied()
+            else:
+                current_directory = current_directory[folder]
+
+        else:
+            return False, handle_command_error(command, 'path', path)
+
+    return True, temporary_path_stack
 
 
 def get_ls_command_output(files: list, tab_size: int, tab_count: int) -> str:
@@ -237,53 +292,10 @@ async def get_response_in_terminal_mode(message) -> str:
             if path[0] == '/' and username != responses.author:
                 return permission_denied()
 
-            # skip all the '\' and split the path into a folder list
-            path = path.replace('\\', '').split('/')
+            exists, temporary_path_stack = check_path_exists('cd', path)
 
-            # Shallow copy
-            temporary_path_stack = path_stack.copy()
-
-            for folder in path:
-                if folder == '' or folder == '.':
-                    continue
-
-                # move up one directory
-                elif folder == '..':
-                    if len(temporary_path_stack) > 1:
-                        temporary_path_stack.pop()
-
-                    elif temporary_path_stack[0] == '~':
-                        return handle_command_error('cd', 'path', msg)
-
-                else:
-                    temporary_path_stack.append(folder)
-
-            current_directory = load_terminal_mode_directory_structure()
-
-            for folder in temporary_path_stack:
-                if folder[-1] == '>':
-                    for item in list(current_directory):
-                        if item.startswith(folder[:-1]):
-                            current_directory = current_directory[item]
-                            temporary_path_stack[
-                                temporary_path_stack.index(folder)
-                            ] = item
-                            break
-
-                    else:
-                        return handle_command_error('cd', 'path', msg)
-
-                elif folder in list(current_directory):
-                    if folder == 'author':
-                        if username == responses.author:
-                            current_directory = current_directory[folder]
-                        else:
-                            return permission_denied()
-                    else:
-                        current_directory = current_directory[folder]
-
-                else:
-                    return handle_command_error('cd', 'path', msg)
+            if not exists:
+                return temporary_path_stack
 
             path_stack = temporary_path_stack
             return f"```{current_path()}```"
@@ -307,53 +319,10 @@ async def get_response_in_terminal_mode(message) -> str:
                 operation = match.group(1)
                 path = match.group(2)
 
-                # skip all the '\' and split the path into a folder list
-                path = path.replace('\\', '').split('/')
+                exists, temporary_path_stack = check_path_exists('cloak', path)
 
-                # Shallow copy
-                temporary_path_stack = path_stack.copy()
-
-                for folder in path:
-                    if folder == '' or folder == '.':
-                        continue
-
-                    # move up one directory
-                    elif folder == '..':
-                        if len(temporary_path_stack) > 1:
-                            temporary_path_stack.pop()
-
-                        elif temporary_path_stack[0] == '~':
-                            return handle_command_error('cloak', 'path', msg)
-
-                    else:
-                        temporary_path_stack.append(folder)
-
-                current_directory = load_terminal_mode_directory_structure()
-
-                for folder in temporary_path_stack:
-                    if folder[-1] == '>':
-                        for item in list(current_directory):
-                            if item.startswith(folder[:-1]):
-                                current_directory = current_directory[item]
-                                temporary_path_stack[
-                                    temporary_path_stack.index(folder)
-                                ] = item
-                                break
-
-                        else:
-                            return handle_command_error('cloak', 'path', msg)
-
-                    elif folder in list(current_directory):
-                        if folder == 'author':
-                            if username == responses.author:
-                                current_directory = current_directory[folder]
-                            else:
-                                return permission_denied()
-                        else:
-                            current_directory = current_directory[folder]
-
-                    else:
-                        return handle_command_error('cloak', 'path', msg)
+                if not exists:
+                    return temporary_path_stack
 
                 folder_name = temporary_path_stack[-1]
                 user_cloak = load_user_cloak()
@@ -364,7 +333,8 @@ async def get_response_in_terminal_mode(message) -> str:
                     if folder_name not in user_terminal_mode_cloak:
                         user_terminal_mode_cloak.append(folder_name)
                 else:
-                    user_terminal_mode_cloak.remove(folder_name)
+                    if folder_name in user_terminal_mode_cloak:
+                        user_terminal_mode_cloak.remove(folder_name)
                 write_user_cloak(user_cloak)
 
                 return textwrap.dedent(
@@ -402,7 +372,8 @@ async def get_response_in_terminal_mode(message) -> str:
 
             user_cloak = load_user_cloak()
             for folder in user_cloak['terminal_mode'].get(username, []):
-                files_in_current_directory.remove(folder)
+                if folder in files_in_current_directory:
+                    files_in_current_directory.remove(folder)
 
             return textwrap.dedent(
                 f"""
