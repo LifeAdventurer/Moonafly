@@ -214,9 +214,11 @@ async def get_response_in_develop_mode(message) -> str:
              cd [dir]
              clear
              cloak {{+-}}h [dir]
-             exit [--save]
              end
+             exit [--save]
+             help
              jump [folder]
+             ls
              pwd
              set [time]
              tree [-M]
