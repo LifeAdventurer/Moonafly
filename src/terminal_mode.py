@@ -99,26 +99,7 @@ def permission_denied() -> str:
     )
 
 
-def handle_cd_error(msg: str) -> str:
-    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
-    space = ' ' * TAB_SIZE * 2
-    msg = '\n'.join(
-        [
-            space + line if index > 0 else line
-            for index, line in enumerate(msg.split('\n'))
-        ]
-    )
-    return textwrap.dedent(
-        f"""
-        ```
-        Moonafly: cd: {msg}: No such file or directory
-        {current_path()}
-        ```
-        """
-    )
-
-
-def handle_cloak_error(msg: str, error_type: str) -> str:
+def handle_command_error(command: str, error_type: str, msg: str) -> str:
     error = ''
     if error_type == 'format':
         error = 'format error'
@@ -135,7 +116,7 @@ def handle_cloak_error(msg: str, error_type: str) -> str:
     return textwrap.dedent(
         f"""
         ```
-        cloak: {error}
+        {command}: {error}
         {current_path()}
         ```
         """
@@ -272,7 +253,7 @@ async def get_response_in_terminal_mode(message) -> str:
                         temporary_path_stack.pop()
 
                     elif temporary_path_stack[0] == '~':
-                        return handle_cd_error(msg)
+                        return handle_command_error('cd', 'path', msg)
 
                 else:
                     temporary_path_stack.append(folder)
@@ -290,7 +271,7 @@ async def get_response_in_terminal_mode(message) -> str:
                             break
 
                     else:
-                        return handle_cd_error(msg)
+                        return handle_command_error('cd', 'path', msg)
 
                 elif folder in list(current_directory):
                     if folder == 'author':
@@ -302,7 +283,7 @@ async def get_response_in_terminal_mode(message) -> str:
                         current_directory = current_directory[folder]
 
                 else:
-                    return handle_cd_error(msg)
+                    return handle_command_error('cd', 'path', msg)
 
             path_stack = temporary_path_stack
             return f"```{current_path()}```"
@@ -342,7 +323,7 @@ async def get_response_in_terminal_mode(message) -> str:
                             temporary_path_stack.pop()
 
                         elif temporary_path_stack[0] == '~':
-                            return handle_cloak_error(msg, 'path')
+                            return handle_command_error('cloak', 'path', msg)
 
                     else:
                         temporary_path_stack.append(folder)
@@ -360,7 +341,7 @@ async def get_response_in_terminal_mode(message) -> str:
                                 break
 
                         else:
-                            return handle_cloak_error(msg, 'path')
+                            return handle_command_error('cloak', 'path', msg)
 
                     elif folder in list(current_directory):
                         if folder == 'author':
@@ -372,8 +353,7 @@ async def get_response_in_terminal_mode(message) -> str:
                             current_directory = current_directory[folder]
 
                     else:
-                        return handle_cloak_error(msg, 'path')
-
+                        return handle_command_error('cloak', 'path', msg)
 
                 folder_name = temporary_path_stack[-1]
                 user_cloak = load_user_cloak()
@@ -396,7 +376,7 @@ async def get_response_in_terminal_mode(message) -> str:
                     """
                 )
             else:
-                return handle_cloak_error(msg, 'format')
+                return handle_command_error('cloak', 'format', msg)
 
         elif msg.startswith('jump'):
             msg = msg[4:].strip()
