@@ -274,9 +274,9 @@ async def get_response_in_terminal_mode(message) -> str:
                  exit [--save]
                  help
                  jump [folder]
-                 ls
+                 ls [-a]
                  pwd
-                 tree [-M]
+                 tree [-aM]
                 {current_path()}
                 ```
                 """
@@ -376,10 +376,11 @@ async def get_response_in_terminal_mode(message) -> str:
             ):
                 files_in_current_directory.remove('author')
 
-            user_cloak = load_user_cloak()
-            for folder in user_cloak['terminal_mode'].get(username, []):
-                if folder in files_in_current_directory:
-                    files_in_current_directory.remove(folder)
+            if not msg.startswith("-a") and not msg.startswith("--all"):
+                user_cloak = load_user_cloak()
+                for folder in user_cloak['terminal_mode'].get(username, []):
+                    if folder in files_in_current_directory:
+                        files_in_current_directory.remove(folder)
 
             return textwrap.dedent(
                 f"""
@@ -426,6 +427,9 @@ async def get_response_in_terminal_mode(message) -> str:
             # and move it to the current directory
             for folder in path_stack:
                 current_structure = current_structure[folder]
+
+            if msg.startswith("-a") or msg.startswith("--all"):
+                return tree.visualize_structure(current_structure, False)
 
             return tree.visualize_structure(current_structure)
 

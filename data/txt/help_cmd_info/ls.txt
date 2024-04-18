@@ -1,4 +1,6 @@
-Usage: ls
-    List information about the FILEs in the current
-    directory
-    Sort entries alphabetically
+Usage: ls [-a]
+    lists folders in the current directory, sorting them
+    alphabetically
+
+    Options:
+      -a, --all     lists hidden folders too

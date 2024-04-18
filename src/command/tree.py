@@ -19,7 +19,7 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
     return tree
 
 
-def visualize_structure(data: dict) -> str:
+def visualize_structure(data: dict, bypass: bool = True) -> str:
 
     if responses.is_terminal_mode == True:
         current_path = terminal_mode.current_path()
@@ -30,17 +30,20 @@ def visualize_structure(data: dict) -> str:
         username = responses.develop_mode_current_using_user
         user_cloak = develop_mode.load_user_cloak()['develop_mode']
 
-    bypass = user_cloak.get(username, [])
+    if bypass:
+        bypass_folders = user_cloak.get(username, [])
+    else:
+        bypass_folders = []
     if (
         responses.is_terminal_mode == True
         and responses.terminal_mode_current_using_user != responses.author
     ):
-        bypass.append('author')
+        bypass_folders.append('author')
 
     return textwrap.dedent(
         f"""
         ```
-        {traverse(data, 0, bypass)}
+        {traverse(data, 0, bypass_folders)}
         {current_path}
         ```
         """
