@@ -184,29 +184,23 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
     return True, temporary_path_stack
 
 
-def get_ls_command_output(files: list, tab_size: int, tab_count: int) -> str:
+def get_ls_command_output(files: list, tab_count: int) -> str:
     output = ""
-    columns = 3
-    column_len = [0] * columns
-    for column_index in range(min(columns, len(files))):
-        # group the files with vertical lines and {columns} groups
-        grouped_files = [
-            file
-            for index, file in enumerate(files)
-            if index % columns == column_index
-        ]
-        column_len[column_index] = max(
-            len(file_name) for file_name in grouped_files
-        )
+    max_file_length = max(len(file) for file in files)
+    terminal_width = 79
+    min_column_width = max_file_length + 2
+
+    columns = max(1, terminal_width // min_column_width)
+    column_groups = [files[i : len(files) : columns] for i in range(columns)]
+    column_widths = [
+        max(len(file) for file in group) + 2 for group in column_groups
+    ]
 
     for index, file in enumerate(files):
-        output += file + ' ' * (
-            column_len[index % columns] - len(file) + 2
-            if index % columns != columns - 1
-            else 0
-        )
-        if index % columns == columns - 1 and index != len(files) - 1:
-            output += '\n' + ' ' * tab_size * tab_count
+        group_index = index % columns
+        output += file.ljust(column_widths[group_index])
+        if group_index == columns - 1 and index != len(files) - 1:
+            output += '\n' + ' ' * TAB_SIZE * tab_count
 
     return output
 
@@ -385,7 +379,7 @@ async def get_response_in_terminal_mode(message) -> str:
             return textwrap.dedent(
                 f"""
                 ```
-                {get_ls_command_output(files_in_current_directory, TAB_SIZE, 4)}
+                {get_ls_command_output(files_in_current_directory, 4)}
                 {current_path()}
                 ```
                 """
