@@ -140,7 +140,9 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
                 temporary_path_stack.pop()
 
             elif temporary_path_stack[0] == '~':
-                return False, handle_command_error(command, 'path', path)
+                return False, handle_command_error(
+                    command, 'path', '/'.join(path)
+                )
 
         else:
             temporary_path_stack.append(folder)
@@ -164,7 +166,9 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
                     break
 
             else:
-                return False, handle_command_error(command, 'path', path)
+                return False, handle_command_error(
+                    command, 'path', '/'.join(path)
+                )
 
         elif folder in list(current_directory):
             if folder == 'author':
@@ -179,7 +183,7 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
                 current_directory = current_directory[folder]
 
         else:
-            return False, handle_command_error(command, 'path', path)
+            return False, handle_command_error(command, 'path', '/'.join(path))
 
     return True, temporary_path_stack
 
