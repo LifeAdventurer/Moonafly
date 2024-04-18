@@ -178,7 +178,7 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
                 ):
                     current_directory = current_directory[folder]
                 else:
-                    return permission_denied()
+                    return False, permission_denied()
             else:
                 current_directory = current_directory[folder]
 
