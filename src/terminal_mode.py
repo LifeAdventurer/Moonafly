@@ -88,18 +88,7 @@ def function_developing() -> str:
     )
 
 
-def permission_denied() -> str:
-    return textwrap.dedent(
-        f"""
-        ```
-        permission denied: requires highest authority
-        {current_path()}
-        ```
-        """
-    )
-
-
-def handle_command_error(command: str, error_type: str, msg: str) -> str:
+def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
     error = ''
     if error_type == 'format':
         error = 'format error'
@@ -113,6 +102,8 @@ def handle_command_error(command: str, error_type: str, msg: str) -> str:
             ]
         )
         error = f"{path}: No such file or directory"
+    elif error_type == 'permission':
+        error = 'permission denied: requires highest authority'
     return textwrap.dedent(
         f"""
         ```
@@ -178,7 +169,7 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
                 ):
                     current_directory = current_directory[folder]
                 else:
-                    return False, permission_denied()
+                    return False, handle_command_error(command, 'permission')
             else:
                 current_directory = current_directory[folder]
 
@@ -294,7 +285,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
             # go to the root directory
             if path[0] == '/' and username != responses.author:
-                return permission_denied()
+                return handle_command_error('cd', 'permission')
 
             exists, temporary_path_stack = check_path_exists('cd', path)
 
@@ -350,7 +341,7 @@ async def get_response_in_terminal_mode(message) -> str:
                     """
                 )
             else:
-                return handle_command_error('cloak', 'format', msg)
+                return handle_command_error('cloak', 'format')
 
         elif msg.startswith('jump'):
             msg = msg[4:].strip()
