@@ -5,5 +5,6 @@ Usage: tree [-aM]
     Options:
       -a, --all     show all folders, including hidden
                     ones
-      -M            show the structure tree of project
-                    Moonafly by using `tree Moonafly`
+      -M,
+      --Moonafly    show the structure tree of project
+                    Moonafly by using

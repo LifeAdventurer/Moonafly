@@ -369,7 +369,7 @@ async def get_response_in_develop_mode(message) -> str:
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('tree')
 
-        if msg.startswith('Moonafly'):
+        if msg.startswith('-M') or msg.startswith('--Moonafly'):
             return tree.visualize_structure(load_Moonafly_structure())
 
         # copy the directory structure

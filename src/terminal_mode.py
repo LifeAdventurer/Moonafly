@@ -418,7 +418,9 @@ async def get_response_in_terminal_mode(message) -> str:
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('tree')
 
-            if msg.startswith('Moonafly') and username == responses.author:
+            if (
+                msg.startswith('-M') or msg.startswith('--Moonafly')
+            ) and username == responses.author:
                 return tree.visualize_structure(load_Moonafly_structure())
 
             current_structure = load_terminal_mode_directory_structure()
