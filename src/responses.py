@@ -96,6 +96,23 @@ def save_develop_mode_login_record():
         json.dump(records, file, indent=4)
 
 
+async def create_thread(
+    message: bot.discord.Message, mode: str
+) -> bot.discord.Thread:
+    user = message.author
+    channel = message.channel
+    if isinstance(channel, bot.discord.Thread):
+        channel = channel.parent
+    thread = await channel.create_thread(
+        name=f"{user}'s {mode} thread",
+        type=bot.discord.ChannelType.private_thread,
+        invitable=True,  # Allow the user to invite others if needed
+    )
+    await thread.send(f"{user.mention}")
+
+    return thread
+
+
 # prevent multiple user using terminal or develop mode at the same time
 terminal_mode_current_using_user = ''
 develop_mode_current_using_user = ''
@@ -137,16 +154,8 @@ async def get_response(message) -> str:
 
             # Delete '-t' message
             await message.delete()
-            user = message.author
-            channel = message.channel
-            if isinstance(channel, bot.discord.Thread):
-                channel = channel.parent
-            thread = await channel.create_thread(
-                name=f"{user}'s terminal thread",
-                type=bot.discord.ChannelType.private_thread,
-                invitable=True,  # Allow the user to invite others if needed
-            )
-            await thread.send(f"{user.mention}")
+            # Create private thread
+            thread = await create_thread(message, 'terminal')
 
             current_using_channel = str(thread)
 
@@ -216,16 +225,8 @@ async def get_response(message) -> str:
 
             # Delete '-d' message
             await message.delete()
-            user = message.author
-            channel = message.channel
-            if isinstance(channel, bot.discord.Thread):
-                channel = channel.parent
-            thread = await channel.create_thread(
-                name=f"{user}'s develop thread",
-                type=bot.discord.ChannelType.private_thread,
-                invitable=True,  # Allow the user to invite others if needed
-            )
-            await thread.send(f"{user.mention}")
+            # Create private thread
+            thread = await create_thread(message, 'develop')
 
             current_using_channel = str(thread)
 
