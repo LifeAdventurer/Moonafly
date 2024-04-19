@@ -134,7 +134,22 @@ async def get_response(message) -> str:
             is_terminal_mode = True
 
             terminal_mode_current_using_user = username
-            current_using_channel = str(message.channel)
+
+            # Delete '-t' message
+            await message.delete()
+            user = message.author
+            channel = message.channel
+            if isinstance(channel, bot.discord.Thread):
+                channel = channel.parent
+            thread = await channel.create_thread(
+                name=f"{user}'s terminal thread",
+                type=bot.discord.ChannelType.private_thread,
+                invitable=True,  # Allow the user to invite others if needed
+            )
+            await thread.send(f"{user.mention}")
+
+            current_using_channel = str(thread)
+
             start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after terminal_mode_current_using_user has been assigned
@@ -144,7 +159,6 @@ async def get_response(message) -> str:
 
             # don't use append or it might cause double '~' when using recursion -t -t... command
             terminal_mode.path_stack = ['~']
-            print('swap to terminal mode')
             msg = msg[(2 if msg.startswith('-t') else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
@@ -155,7 +169,8 @@ async def get_response(message) -> str:
 
             if len(msg) > 0:
                 message.content = msg
-                return await get_response(message)
+                await thread.send(get_response(message))
+                return
 
             user_pending = []
             if username == author:
@@ -167,16 +182,19 @@ async def get_response(message) -> str:
                             f"{pending_count} user{'s are' if pending_count > 1 else ' is'} pending for the role: '{role}'"
                         )
 
-            space = '\n' + ' ' * TAB_SIZE * 4
+            space = '\n' + ' ' * TAB_SIZE * 5
 
-            return textwrap.dedent(
-                f"""
-                ```
-                {space.join(user_pending)}
-                {terminal_mode.current_path()}
-                ```
-                """
+            await thread.send(
+                textwrap.dedent(
+                    f"""
+                    ```
+                    {space.join(user_pending)}
+                    {terminal_mode.current_path()}
+                    ```
+                    """
+                )
             )
+            return
 
         else:
             return textwrap.dedent(
@@ -195,7 +213,22 @@ async def get_response(message) -> str:
             is_develop_mode = True
 
             develop_mode_current_using_user = username
-            current_using_channel = str(message.channel)
+
+            # Delete '-d' message
+            await message.delete()
+            user = message.author
+            channel = message.channel
+            if isinstance(channel, bot.discord.Thread):
+                channel = channel.parent
+            thread = await channel.create_thread(
+                name=f"{user}'s develop thread",
+                type=bot.discord.ChannelType.private_thread,
+                invitable=True,  # Allow the user to invite others if needed
+            )
+            await thread.send(f"{user.mention}")
+
+            current_using_channel = str(thread)
+
             start_using_timestamp = message.created_at - timedelta(seconds=0.1)
 
             # after develop_mode_current_using_user has been assigned
@@ -204,7 +237,6 @@ async def get_response(message) -> str:
                 save_develop_mode_login_record()
 
             develop_mode.path_stack = ['~']
-            print('swap to develop mode')
             msg = msg[(2 if msg.startswith('-d') else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
@@ -215,16 +247,20 @@ async def get_response(message) -> str:
 
             if len(msg) > 0:
                 message.content = msg
-                return await get_response(message)
+                await thread.send(get_response(message))
+                return
 
-            return textwrap.dedent(
-                f"""
+            await thread.send(
+                textwrap.dedent(
+                    f"""
                 ```
                 Welcome, developer {username}!
                 {develop_mode.current_path()}
                 ```
                 """
+                )
             )
+            return
 
         else:
             return textwrap.dedent(
@@ -243,9 +279,7 @@ async def get_response(message) -> str:
                 return command_help.load_help_cmd_info('exit')
 
             if not msg.startswith('--save'):
-                # Ensure that `start_using_timestamp` is not set back to None
-                # unless in a specific mode to avoid unintentional message deletion
-                await bot.clear_msgs(message, start_using_timestamp)
+                await message.channel.delete()
 
             if is_terminal_mode:
                 is_terminal_mode = False
