@@ -176,9 +176,19 @@ async def get_response(message) -> str:
                     ignore_capitalization = True
                     break
 
+            # Only developers can use `--test` option
+            if username in developers and msg.startswith('--test'):
+                msg = msg[6:].strip()
+                for developer_username in developers:
+                    developer = bot.get_user_id_by_username(
+                        message, developer_username
+                    )
+                    if developer != None:
+                        await thread.add_user(developer)
+
             if len(msg) > 0:
                 message.content = msg
-                await thread.send(get_response(message))
+                await thread.send(await get_response(message))
                 return
 
             user_pending = []
@@ -246,9 +256,18 @@ async def get_response(message) -> str:
                     ignore_capitalization = True
                     break
 
+            if msg.startswith('--test'):
+                msg = msg[6:].strip()
+                for developer_username in developers:
+                    developer = bot.get_user_id_by_username(
+                        message, developer_username
+                    )
+                    if developer != None:
+                        await thread.add_user(developer)
+
             if len(msg) > 0:
                 message.content = msg
-                await thread.send(get_response(message))
+                await thread.send(await get_response(message))
                 return
 
             await thread.send(

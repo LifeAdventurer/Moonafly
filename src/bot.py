@@ -42,6 +42,17 @@ def load_maintenance() -> tuple[str, str, str]:
     return in_maintenance, estimated_end_time, developer
 
 
+def get_user_id_by_username(
+    message: discord.Message, username: str
+) -> discord.Member:
+    guild: discord.Guild = message.guild
+    if guild:
+        member = guild.get_member_named(username)
+        if member:
+            return member
+    return None
+
+
 async def send_message(message):
     try:
         # get response from `responses.py`
@@ -92,6 +103,7 @@ def init_files():
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 client = discord.Client(intents=intents)
 
 

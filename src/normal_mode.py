@@ -31,6 +31,9 @@ def get_response_in_normal_mode(message) -> str:
               --ic      use after `-t` or `-d` to lower first character
                         of your command `--ignore-capitalization` is
                         also fine
+              --test    user after `-t` or `-d` for adding developers in
+                        the thread for review the testing process, only
+                        developers can access this option
               apply     apply for roles to use terminal mode or develop
                         mode
               status    show using mode and server battery percentage
