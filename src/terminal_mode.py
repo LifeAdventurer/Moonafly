@@ -180,12 +180,14 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
 
 
 def get_ls_command_output(files: list, tab_count: int) -> str:
-    output = ""
+    if len(files) == 0:
+        return ''
+    output = ''
     max_file_length = max(len(file) for file in files)
     terminal_width = 79
     min_column_width = max_file_length + 2
 
-    columns = max(1, terminal_width // min_column_width)
+    columns = min(len(files), terminal_width // min_column_width)
     column_groups = [files[i : len(files) : columns] for i in range(columns)]
     column_widths = [
         max(len(file) for file in group) + 2 for group in column_groups
