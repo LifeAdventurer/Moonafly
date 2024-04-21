@@ -152,10 +152,13 @@ async def get_response(message) -> str:
 
             terminal_mode_current_using_user = username
 
-            # Delete '-t' message
-            await message.delete()
-            # Create private thread
-            thread = await create_thread(message, 'terminal')
+            if isinstance(message.channel, bot.discord.DMChannel):
+                thread = message.channel
+            else:
+                # Delete '-t' message
+                await message.delete()
+                # Create private thread
+                thread = await create_thread(message, 'terminal')
 
             current_using_channel = str(thread)
 
@@ -177,7 +180,11 @@ async def get_response(message) -> str:
                     break
 
             # Only developers can use `--test` option
-            if username in developers and msg.startswith('--test'):
+            if (
+                not isinstance(thread, bot.discord.DMChannel)
+                and username in developers
+                and msg.startswith('--test')
+            ):
                 msg = msg[6:].strip()
                 for developer_username in developers:
                     developer = bot.get_user_id_by_username(
@@ -233,10 +240,13 @@ async def get_response(message) -> str:
 
             develop_mode_current_using_user = username
 
-            # Delete '-d' message
-            await message.delete()
-            # Create private thread
-            thread = await create_thread(message, 'develop')
+            if isinstance(message.channel, bot.discord.DMChannel):
+                thread = message.channel
+            else:
+                # Delete '-d' message
+                await message.delete()
+                # Create private thread
+                thread = await create_thread(message, 'develop')
 
             current_using_channel = str(thread)
 
@@ -256,7 +266,9 @@ async def get_response(message) -> str:
                     ignore_capitalization = True
                     break
 
-            if msg.startswith('--test'):
+            if not isinstance(thread, bot.discord.DMChannel) and msg.startswith(
+                '--test'
+            ):
                 msg = msg[6:].strip()
                 for developer_username in developers:
                     developer = bot.get_user_id_by_username(
@@ -273,11 +285,11 @@ async def get_response(message) -> str:
             await thread.send(
                 textwrap.dedent(
                     f"""
-                ```
-                Welcome, developer {username}!
-                {develop_mode.current_path()}
-                ```
-                """
+                    ```
+                    Welcome, developer {username}!
+                    {develop_mode.current_path()}
+                    ```
+                    """
                 )
             )
             return
@@ -298,7 +310,9 @@ async def get_response(message) -> str:
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('exit')
 
-            if not msg.startswith('--save'):
+            if not msg.startswith('--save') and isinstance(
+                message.channel, bot.discord.Thread
+            ):
                 await message.channel.delete()
 
             if is_terminal_mode:
@@ -328,9 +342,11 @@ async def get_response(message) -> str:
             start_using_timestamp = None
 
             if msg.startswith('--save'):
-                return "```exited successfully without clearing messages```"
+                return '```exited successfully without deleting thread```'
+            elif isinstance(message.channel, bot.discord.DMChannel):
+                return '```exited successfully```'
             else:
-                return "```exited successfully```"
+                return ''
 
         elif msg.startswith('status'):
             msg = msg[6:].strip()

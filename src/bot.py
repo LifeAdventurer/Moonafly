@@ -1,6 +1,5 @@
 import json
 import sys
-import time
 from datetime import datetime
 
 import discord
@@ -65,7 +64,7 @@ async def send_message(message):
                 for item in split_response:
                     await message.channel.send(item)
 
-            else:
+            elif response:
                 await message.channel.send(response)
 
     except Exception as e:
@@ -127,9 +126,6 @@ def run_Moonafly():
 
     @client.event
     async def on_message(message):
-        if message.content == '```exited successfully```':
-            time.sleep(0.5)
-            await message.delete()
         if message.author == client.user:
             return
 
