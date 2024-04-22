@@ -8,8 +8,9 @@
                 "math_calc_allow_names.json": {},
                 "Moonafly_structure.json": {},
                 "pending_role_list.json": {},
-                "terminal_login_history.json": {},
+                "terminal_mode_login_history.json": {},
                 "terminal_mode_directory_structure.json": {},
+                "user_cloak.json": {},
                 "user_identity.json": {}
             },
             "txt": {
@@ -47,12 +48,14 @@
                 "weather.py": {}
             },
             "bot.py": {},
+            "constants.py": {},
             "develop_mode.py": {},
             "normal_mode.py": {},
             "responses.py": {},
             "split_message.py": {},
             "terminal_mode.py": {}
         },
+        ".gitattributes": {},
         ".gitignore": {},
         "LICENSE": {},
         "main.py": {},
