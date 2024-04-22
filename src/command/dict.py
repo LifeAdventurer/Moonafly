@@ -65,6 +65,9 @@ def search_dict(
                 information += [f"- {sentence}" for sentence in example_list]
             return ('\n' + ' ' * TAB_SIZE * tab_count).join(information)
         else:
+            search_word = ('\n' + ' ' * TAB_SIZE * tab_count).join(
+                search_word.split('\n')
+            )
             return (
                 f"Failed to retrieve information for the word '{search_word}'."
             )
