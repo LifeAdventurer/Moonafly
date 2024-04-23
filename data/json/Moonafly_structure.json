@@ -11,7 +11,8 @@
                 "terminal_mode_login_history.json": {},
                 "terminal_mode_directory_structure.json": {},
                 "user_cloak.json": {},
-                "user_identity.json": {}
+                "user_identity.json": {},
+                "user_shortcuts.json": {}
             },
             "txt": {
                 "help_cmd_info": {},
@@ -43,6 +44,7 @@
                 "remote_file.py": {},
                 "search_github.py": {},
                 "search_online_judge.py": {},
+                "shortcut.py": {},
                 "todo.py": {},
                 "translate.py": {},
                 "tree.py": {},

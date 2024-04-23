@@ -1,0 +1,4 @@
+Usage: [command]
+
+commands under ~/shortcut
+ set "{replace string}" to "{shortcut string}"

@@ -24,6 +24,7 @@ from command import (
     remote_file,
     search_github,
     search_online_judge,
+    shortcut,
     todo,
     translate,
     tree,
@@ -235,10 +236,8 @@ def in_interaction() -> bool:
 async def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
+    user_shortcuts = shortcut.load_user_shortcuts()
+    msg = user_shortcuts[username].get(msg, msg)
 
     # for directory
     global path_stack
@@ -490,6 +489,9 @@ async def get_response_in_terminal_mode(message) -> str:
 
         elif path_stack_match(2, 'online-judge'):
             return search_online_judge.get_online_judge_info(msg)
+
+    elif path_stack_match(1, 'shortcut'):
+        return shortcut.get_shortcut_response(msg)
 
     elif path_stack_match(1, 'todo'):
         return todo.get_todo_response(msg)

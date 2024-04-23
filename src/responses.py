@@ -19,7 +19,7 @@ from command import (
 )
 from constants import HELP_FLAG, TAB_SIZE
 
-Moonafly_version = 'v2.14.1'
+Moonafly_version = 'v2.15.0'
 
 
 # user identity
@@ -134,10 +134,6 @@ ignore_capitalization_option = ['--ic', '--ignore-capitalization']
 async def get_response(message) -> str:
     username = str(message.author)
     msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user, current_using_channel, start_using_timestamp

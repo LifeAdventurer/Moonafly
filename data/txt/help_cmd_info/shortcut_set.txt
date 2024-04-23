@@ -1,0 +1,2 @@
+Usage: set "{replace string}" to "{shortcut string}"
+    replace your message to REPLACE STRING when message equals to SHORTCUT STRING
