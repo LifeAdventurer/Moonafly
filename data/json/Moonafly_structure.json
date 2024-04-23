@@ -24,6 +24,7 @@
             "command": {
                 "apply.py": {},
                 "approve.py": {},
+                "calendar.py": {},
                 "clipboard.py": {},
                 "command_help.py": {},
                 "dict.py": {},

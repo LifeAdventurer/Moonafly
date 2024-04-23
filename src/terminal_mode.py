@@ -6,6 +6,7 @@ import bot
 import responses
 from command import (
     approve,
+    calendar,
     clipboard,
     command_help,
     dict,
@@ -436,7 +437,10 @@ async def get_response_in_terminal_mode(message) -> str:
                 return remote_file.load_remote_file(msg, 'author')
 
     # commands in certain directory
-    if path_stack_match(1, 'clipboard'):
+    if path_stack_match(1, 'calendar'):
+        return calendar.get_calendar_response(msg)
+
+    elif path_stack_match(1, 'clipboard'):
         return clipboard.get_clipboard_response(msg)
 
     elif path_stack_match(1, 'dict'):

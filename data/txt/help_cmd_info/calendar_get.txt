@@ -1,0 +1,2 @@
+Usage: get YYYY/MM
+    load the calendar of YYYY/MM

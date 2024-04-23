@@ -1,0 +1,4 @@
+Usage: [command]
+
+commands under ~/calendar
+ get YYYY/MM
