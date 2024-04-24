@@ -1,0 +1,2 @@
+Usage: list
+    list user shortcuts with index
