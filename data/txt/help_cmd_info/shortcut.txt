@@ -1,4 +1,5 @@
 Usage: [command]
 
 commands under ~/shortcut
+ list
  set "{replace string}" to "{shortcut string}"
