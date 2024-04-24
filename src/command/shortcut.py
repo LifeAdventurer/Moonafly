@@ -53,7 +53,7 @@ def set_shortcut(msg: str) -> str:
 
 def get_shortcut_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        command_help.load_help_cmd_info('shortcut')
+        return command_help.load_help_cmd_info('shortcut')
 
     if msg.startswith('set'):
         msg = msg[4:].strip()
@@ -62,4 +62,4 @@ def get_shortcut_response(msg: str) -> str:
 
         return set_shortcut(msg)
 
-    return terminal_mode.command_not_found()
+    return terminal_mode.command_not_found(msg)

@@ -235,7 +235,7 @@ async def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content).strip()
     user_shortcuts = shortcut.load_user_shortcuts()
-    msg = user_shortcuts[username].get(msg, msg)
+    msg = user_shortcuts.get(username, {}).get(msg, msg)
 
     # for directory
     global path_stack
