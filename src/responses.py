@@ -133,7 +133,7 @@ ignore_capitalization_option = ['--ic', '--ignore-capitalization']
 
 async def get_response(message) -> str:
     username = str(message.author)
-    msg = str(message.content)
+    msg = str(message.content).strip()
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
     global terminal_mode_current_using_user, develop_mode_current_using_user, current_using_channel, start_using_timestamp

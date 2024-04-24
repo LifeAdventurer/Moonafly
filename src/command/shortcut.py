@@ -26,7 +26,6 @@ def write_user_shortcuts(user_shortcuts: dict):
 
 
 def set_shortcut(msg: str) -> str:
-    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
     pattern = r'^"(.+?)"\s+to\s+"(.+?)"$'
 
     match = re.match(pattern, msg)

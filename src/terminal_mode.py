@@ -60,7 +60,6 @@ def write_user_cloak(user_cloak: dict):
 
 
 def command_not_found(msg: str) -> str:
-    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
     space = ' ' * TAB_SIZE * 2
     # unify the indentation of multiline
     msg = '\n'.join(
@@ -95,12 +94,11 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
     if error_type == 'format':
         error = 'format error'
     elif error_type == 'path':
-        path = msg.replace("\\'", "'").replace("\\\"", "\"")
         space = ' ' * TAB_SIZE * 2
         path = '\n'.join(
             [
                 space + line if index > 0 else line
-                for index, line in enumerate(path.split('\n'))
+                for index, line in enumerate(msg.split('\n'))
             ]
         )
         error = f"{path}: No such file or directory"
@@ -235,7 +233,7 @@ def in_interaction() -> bool:
 
 async def get_response_in_terminal_mode(message) -> str:
     username = str(message.author)
-    msg = str(message.content)
+    msg = str(message.content).strip()
     user_shortcuts = shortcut.load_user_shortcuts()
     msg = user_shortcuts[username].get(msg, msg)
 

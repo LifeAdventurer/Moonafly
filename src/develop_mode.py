@@ -78,7 +78,6 @@ def current_path() -> str:
 
 
 def command_not_found(msg: str) -> str:
-    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
     space = ' ' * TAB_SIZE * 2
     # unify the indentation of multiline
     msg = '\n'.join(
@@ -102,12 +101,11 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
     if error_type == 'format':
         error = 'format error'
     elif error_type == 'path':
-        path = msg.replace("\\'", "'").replace("\\\"", "\"")
         space = ' ' * TAB_SIZE * 2
         path = '\n'.join(
             [
                 space + line if index > 0 else line
-                for index, line in enumerate(path.split('\n'))
+                for index, line in enumerate(msg.split('\n'))
             ]
         )
         error = f"{path}: No such file or directory"
@@ -184,11 +182,7 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
 
 async def get_response_in_develop_mode(message) -> str:
     username = str(message.author)
-    msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
+    msg = str(message.content).strip()
 
     global path_stack
 

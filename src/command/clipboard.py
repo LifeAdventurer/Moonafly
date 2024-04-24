@@ -317,7 +317,6 @@ def get_clipboard_response(msg) -> str:
     global checking_clipboard_keyword_override
 
     username = responses.terminal_mode_current_using_user
-    msg = msg.replace("\\'", "'").replace("\\\"", "\"")
 
     if checking_clipboard_keyword_override == True:
         return save_data_to_clipboard(msg, username)

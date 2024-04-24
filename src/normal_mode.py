@@ -7,11 +7,7 @@ from command import apply
 
 def get_response_in_normal_mode(message) -> str:
     username = str(message.author)
-    msg = str(message.content)
-    # prevent ' and " separating the string
-    msg = msg.replace("'", "\\'").replace("\"", "\\\"")
-    # remove the leading and trailing spaces
-    msg = msg.strip()
+    msg = str(message.content).strip()
 
     if msg == 'help':
         return textwrap.dedent(
