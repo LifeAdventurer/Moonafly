@@ -99,9 +99,9 @@ def load_remote_file(msg: str, identity: str) -> str:
         content = content.splitlines()
         lines_str_len = len(str(len(content)))
 
-        for index, line in enumerate(content):
-            if start_line <= index + 1 <= end_line:
-                output.append(f"{str(index + 1).rjust(lines_str_len)}│ {line}")
+        for index, line in enumerate(content, start=1):
+            if start_line <= index <= end_line:
+                output.append(f"{str(index).rjust(lines_str_len)}│ {line}")
 
         output = ('\n' + ' ' * TAB_SIZE * 3).join(output)
 

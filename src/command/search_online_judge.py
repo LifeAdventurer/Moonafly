@@ -21,9 +21,9 @@ urls = {
 def show_online_judge_list() -> str:
     online_judge_list = []
 
-    for index, key in enumerate(urls):
+    for index, key in enumerate(urls, start=1):
         online_judge_list.append(
-            f"{key.ljust(20 - len(str(index + 1)))}-{str(index + 1)}"
+            f"{key.ljust(20 - len(str(index)))}-{str(index)}"
         )
 
     space = '\n' + ' ' * TAB_SIZE * 2
@@ -48,8 +48,8 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
             """
         )
 
-    for index, (key, value) in enumerate(urls.items()):
-        if index == number - 1:
+    for index, (key, value) in enumerate(urls.items(), start=1):
+        if index == number:
             oj_url = value
             break
 

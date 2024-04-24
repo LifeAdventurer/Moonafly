@@ -50,13 +50,13 @@ def search_dict(
         result = get_info_in_English(search_word, limit)
         if result:
             information = [f"# {search_word}"]
-            for index, item in enumerate(result):
+            for index, item in enumerate(result, start=1):
                 part_of_speech, en_definition, example_list = item
                 # removes the certain trailing char from the string
                 en_definition = en_definition.strip(': ')
 
                 information += [
-                    f"## {index + 1}.",
+                    f"## {index}.",
                     part_of_speech,
                     '### Definition:',
                     f"- {en_definition}",

@@ -123,13 +123,13 @@ def show_1A2B_certain_user_ranking(
         len_str = f"  {(' ' + str(length))[-2:]}"
 
         no_data = True
-        for index, record in enumerate(records[str(length)]):
+        for index, record in enumerate(records[str(length)], start=1):
             if record['user'] == username:
                 no_data = False
                 attempts = ('  ' + str(record['attempts']))[
                     -max(3, len(str(length))) :
                 ]
-                ranking.append(f"{len_str}   | {attempts} (rank {index + 1})")
+                ranking.append(f"{len_str}   | {attempts} (rank {index})")
                 break
 
         if no_data:
