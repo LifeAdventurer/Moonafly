@@ -55,12 +55,10 @@ def list_user_shortcuts() -> str:
     user_shortcuts = load_user_shortcuts()
     username = responses.terminal_mode_current_using_user
     shortcuts_count_strlen = len(
-        str(len(user_shortcuts.setdefault(username, {})))
+        str(len(user_shortcuts.setdefault(username, {})) - 1)
     )
     shortcuts = []
-    for index, (key, value) in enumerate(
-        user_shortcuts[username].items(), start=1
-    ):
+    for index, (key, value) in enumerate(user_shortcuts[username].items()):
         shortcuts.append(
             f"{str(index).ljust(shortcuts_count_strlen)} \"{key}\" -> \"{value}\""
         )

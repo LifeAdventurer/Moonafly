@@ -92,7 +92,9 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
 
     user_todo_list = []
     mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
-    for index, todo_item in enumerate(todo_list[username][task_status], start=1):
+    for index, todo_item in enumerate(
+        todo_list[username][task_status], start=1
+    ):
         user_todo_item = f"{str(index).rjust(mx_index_len)}. {todo_item}"
         if len(user_todo_item) > 80:
             user_todo_item = user_todo_item[:79] + '>'
