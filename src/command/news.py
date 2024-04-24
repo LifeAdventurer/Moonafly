@@ -101,7 +101,7 @@ def get_news(msg: str) -> str:
         return command_help.load_help_cmd_info('news')
 
     if msg.startswith('get'):
-        msg = msg[3:].strip()
+        msg = msg[4:].strip()
 
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('news_get')
@@ -123,7 +123,7 @@ def get_news(msg: str) -> str:
 
         return get_cnn_news(category)
     elif msg.startswith('show'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
 
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('news_show')

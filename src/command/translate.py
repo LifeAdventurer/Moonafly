@@ -104,19 +104,19 @@ def get_translated_text(msg: str) -> str:
         return command_help.load_help_cmd_info('translate')
 
     if msg.startswith('set'):
-        msg = msg[3:].strip()
+        msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('translate_set')
         return set_language(msg)
 
     elif msg.startswith('show'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('translate_show')
         return show_languages()
 
     elif msg.startswith('swap'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('translate_swap')
         return swap_languages()

@@ -15,7 +15,7 @@ def load_help_cmd_info(command: str) -> str:
 
     information = '\n'.join(
         [
-            space + line.rstrip() if index > 0 else line.rstrip()
+            space + line.strip() if index > 0 else line.strip()
             for index, line in enumerate(lines)
         ]
     )

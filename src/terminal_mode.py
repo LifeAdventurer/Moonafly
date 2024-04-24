@@ -242,7 +242,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
     if in_interaction() == False:
         if msg.startswith('help'):
-            msg = msg[4:].lstrip()
+            msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('help')
 
@@ -272,7 +272,7 @@ async def get_response_in_terminal_mode(message) -> str:
             )
 
         elif msg.startswith('cd'):
-            msg = msg[2:].strip()
+            msg = msg[3:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('cd')
 
@@ -296,7 +296,7 @@ async def get_response_in_terminal_mode(message) -> str:
             return f"```{current_path()}```"
 
         elif msg.startswith('clear'):
-            msg = msg[5:].strip()
+            msg = msg[6:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('clear')
 
@@ -304,7 +304,7 @@ async def get_response_in_terminal_mode(message) -> str:
             return f"```{current_path()}```"
 
         elif msg.startswith('cloak'):
-            msg = msg[5:].strip()
+            msg = msg[6:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('cloak')
 
@@ -344,11 +344,11 @@ async def get_response_in_terminal_mode(message) -> str:
                 return handle_command_error('cloak', 'format')
 
         elif msg.startswith('jump'):
-            msg = msg[4:].strip()
+            msg = msg[5:].strip()
             return jump.jump_to_folder(msg)
 
         elif msg.startswith('ls'):
-            msg = msg[3:].lstrip()
+            msg = msg[3:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('ls')
 
@@ -382,7 +382,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
         # return the full pathname of the current working directory
         elif msg.startswith('pwd'):
-            msg = msg[3:].lstrip()
+            msg = msg[4:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('pwd')
 
@@ -405,7 +405,7 @@ async def get_response_in_terminal_mode(message) -> str:
 
         # show the terminal_mode_directory_structure
         elif msg.startswith('tree'):
-            msg = msg[4:].lstrip()
+            msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('tree')
 

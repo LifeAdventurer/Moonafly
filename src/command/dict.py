@@ -53,7 +53,7 @@ def search_dict(
             for index, item in enumerate(result):
                 part_of_speech, en_definition, example_list = item
                 # removes the certain trailing char from the string
-                en_definition = en_definition.rstrip(': ')
+                en_definition = en_definition.strip(': ')
 
                 information += [
                     f"## {index + 1}.",

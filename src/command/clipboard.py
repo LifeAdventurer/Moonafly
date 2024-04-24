@@ -322,28 +322,28 @@ def get_clipboard_response(msg) -> str:
         return save_data_to_clipboard(msg, username)
 
     if msg.startswith('get'):
-        msg = msg[3:].strip()
+        msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_get')
 
         return get_clipboard_data(msg, username)
 
     elif msg.startswith('save'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_save')
 
         return save_data_to_clipboard(msg, username)
 
     elif msg.startswith('show'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_show')
 
         return show_user_keyword(username)
 
     elif msg.startswith('del'):
-        msg = msg[3:].strip()
+        msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('clipboard_del')
 

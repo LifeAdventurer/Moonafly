@@ -181,7 +181,7 @@ async def get_response(message) -> str:
                 and username in developers
                 and msg.startswith('--test')
             ):
-                msg = msg[6:].strip()
+                msg = msg[7:].strip()
                 for developer_username in developers:
                     developer = bot.get_user_id_by_username(
                         message, developer_username
@@ -265,7 +265,7 @@ async def get_response(message) -> str:
             if not isinstance(thread, bot.discord.DMChannel) and msg.startswith(
                 '--test'
             ):
-                msg = msg[6:].strip()
+                msg = msg[7:].strip()
                 for developer_username in developers:
                     developer = bot.get_user_id_by_username(
                         message, developer_username
@@ -302,7 +302,7 @@ async def get_response(message) -> str:
     else:
         # make sure no other user can exit the terminal
         if msg.startswith('exit') and not is_normal_mode:
-            msg = msg[4:].strip()
+            msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):
                 return command_help.load_help_cmd_info('exit')
 
@@ -345,7 +345,7 @@ async def get_response(message) -> str:
                 return ''
 
         elif msg.startswith('status'):
-            msg = msg[6:].strip()
+            msg = msg[7:].strip()
 
             mode = ''
             if is_terminal_mode:

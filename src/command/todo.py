@@ -114,19 +114,19 @@ def get_todo_response(msg: str) -> str:
         return command_help.load_help_cmd_info('todo')
 
     if msg.startswith('add'):
-        msg = msg[3:].strip()
+        msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_add')
         return add_todo_item(msg)
 
     elif msg.startswith('check'):
-        msg = msg[5:].strip()
+        msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_check')
         return check_todo_item(msg)
 
     elif msg.startswith('list'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_list')
         if msg.startswith('-c'):

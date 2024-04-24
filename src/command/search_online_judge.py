@@ -80,7 +80,7 @@ def get_online_judge_info(msg: str) -> str:
         return command_help.load_help_cmd_info('online_judge')
 
     if msg.startswith('show'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('online_judge_show')
 

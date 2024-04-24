@@ -131,7 +131,7 @@ def approve_requests(msg: str) -> str:
         return command_help.load_help_cmd_info('approve')
 
     if msg.startswith('show'):
-        msg = msg[4:].strip()
+        msg = msg[5:].strip()
 
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('approve_show')
