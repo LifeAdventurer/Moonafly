@@ -75,11 +75,54 @@ def list_user_shortcuts() -> str:
     )
 
 
+def delete_user_shortcut(msg: str) -> str:
+    if not msg:
+        return terminal_mode.handle_command_error('del', 'format')
+
+    try:
+        index = int(msg)
+    except ValueError:
+        return terminal_mode.handle_command_error('del', 'format')
+
+    user_shortcuts = load_user_shortcuts()
+    username = responses.terminal_mode_current_using_user
+    shortcuts_count = len(user_shortcuts.setdefault(username, {}))
+    if 0 <= index < shortcuts_count:
+        key_to_delete = list(user_shortcuts[username].keys())[index]
+        del user_shortcuts[username][key_to_delete]
+        write_user_shortcuts(user_shortcuts)
+
+        return textwrap.dedent(
+            f"""
+            ```
+            deleted successfully
+            {terminal_mode.current_path()}
+            ```
+            """
+        )
+    else:
+        return textwrap.dedent(
+            f"""
+            ```
+            del: index out of range
+            {terminal_mode.current_path()}
+            ```
+            """
+        )
+
+
 def get_shortcut_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('shortcut')
 
-    if msg.startswith('list'):
+    if msg.startswith('del'):
+        msg = msg[4:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('shortcut_del')
+
+        return delete_user_shortcut(msg)
+
+    elif msg.startswith('list'):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('shortcut_list')

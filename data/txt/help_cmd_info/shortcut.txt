@@ -1,5 +1,6 @@
 Usage: [command]
 
 commands under ~/shortcut
+ del
  list
  set "{replace string}" to "{shortcut string}"
