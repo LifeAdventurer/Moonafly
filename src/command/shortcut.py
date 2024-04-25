@@ -39,14 +39,7 @@ def set_shortcut(msg: str) -> str:
         user_shortcuts[username][shortcut_string] = replace_string
         write_user_shortcuts(user_shortcuts)
 
-        return textwrap.dedent(
-            f"""
-            ```
-            set successfully
-            {terminal_mode.current_path()}
-            ```
-            """
-        )
+        return terminal_mode.handle_command_success('set')
     else:
         return terminal_mode.handle_command_error('set', 'format')
 
@@ -92,14 +85,7 @@ def delete_user_shortcut(msg: str) -> str:
         del user_shortcuts[username][key_to_delete]
         write_user_shortcuts(user_shortcuts)
 
-        return textwrap.dedent(
-            f"""
-            ```
-            deleted successfully
-            {terminal_mode.current_path()}
-            ```
-            """
-        )
+        return terminal_mode.handle_command_success('deleted')
     else:
         return terminal_mode.handle_command_error('del', 'index')
 

@@ -75,27 +75,13 @@ def set_language(msg: str):
     global from_language, to_language
     from_language = parts[0]
     to_language = parts[2]
-    return textwrap.dedent(
-        f"""
-        ```
-        language set to '{msg}' successfully
-        {terminal_mode.current_path()}
-        ```
-        """
-    )
+    return terminal_mode.handle_command_success('set')
 
 
 def swap_languages():
     global from_language, to_language
     from_language, to_language = to_language, from_language
-    return textwrap.dedent(
-        f"""
-        ```
-        language swapped to '{from_language} to {to_language}' successfully
-        {terminal_mode.current_path()}
-        ```
-        """
-    )
+    return terminal_mode.handle_command_success('swapped')
 
 
 def get_translated_text(msg: str) -> str:

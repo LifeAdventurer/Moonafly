@@ -89,6 +89,17 @@ def function_developing() -> str:
     )
 
 
+def handle_command_success(command: str) -> str:
+    return textwrap.dedent(
+        f"""
+        ```
+        {command} successfully
+        {current_path()}
+        ```
+        """
+    )
+
+
 def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
     error = ''
     if error_type == 'format':

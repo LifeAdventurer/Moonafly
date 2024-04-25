@@ -109,13 +109,8 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
 
             save_clipboard_data(clipboard_data)
 
-            return textwrap.dedent(
-                f"""
-                ```
-                Keyword: {temp_keyword} overrode successfully
-                {terminal_mode.current_path()}
-                ```
-                """
+            return terminal_mode.handle_command_success(
+                f"keyword: '{temp_keyword}' overrode"
             )
         elif msg.lower() == 'no' or msg.lower() == 'n':
             checking_clipboard_keyword_override = False
@@ -204,14 +199,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
 
                 save_clipboard_data(clipboard_data)
 
-                return textwrap.dedent(
-                    f"""
-                    ```
-                    Saved successfully
-                    {terminal_mode.current_path()}
-                    ```
-                    """
-                )
+                return terminal_mode.handle_command_success('saved')
 
             else:
                 return textwrap.dedent(
