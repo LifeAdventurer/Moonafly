@@ -101,14 +101,7 @@ def delete_user_shortcut(msg: str) -> str:
             """
         )
     else:
-        return textwrap.dedent(
-            f"""
-            ```
-            del: index out of range
-            {terminal_mode.current_path()}
-            ```
-            """
-        )
+        return terminal_mode.handle_command_error('del', 'index')
 
 
 def get_shortcut_response(msg: str) -> str:

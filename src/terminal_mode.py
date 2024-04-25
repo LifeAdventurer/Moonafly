@@ -104,6 +104,9 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
         error = f"{path}: No such file or directory"
     elif error_type == 'permission':
         error = 'permission denied: requires highest authority'
+    elif error_type == 'index':
+        error = 'index out of range'
+
     return textwrap.dedent(
         f"""
         ```
