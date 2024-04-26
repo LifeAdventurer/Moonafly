@@ -1,0 +1,2 @@
+Usage: [command]
+    executes the COMMAND in the server's terminal and return the output

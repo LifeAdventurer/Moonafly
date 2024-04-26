@@ -42,6 +42,7 @@
                 "random_vocab_review.py": {},
                 "random_vocab_test.py": {},
                 "remote_file.py": {},
+                "remote_terminal.py": {},
                 "search_github.py": {},
                 "search_online_judge.py": {},
                 "shortcut.py": {},

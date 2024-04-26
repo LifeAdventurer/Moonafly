@@ -4,7 +4,8 @@
             "author": {
                 "approve": {},
                 "remote": {
-                    "file": {}
+                    "file": {},
+                    "terminal": {}
                 }
             },
             "calendar": {},

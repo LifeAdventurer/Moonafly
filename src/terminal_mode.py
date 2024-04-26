@@ -22,6 +22,7 @@ from command import (
     random_vocab_review,
     random_vocab_test,
     remote_file,
+    remote_terminal,
     search_github,
     search_online_judge,
     shortcut,
@@ -446,6 +447,8 @@ async def get_response_in_terminal_mode(message) -> str:
         elif path_stack_match(2, 'remote'):
             if path_stack_match(3, 'file'):
                 return remote_file.load_remote_file(msg, 'author')
+            elif path_stack_match(3, 'terminal'):
+                return remote_terminal.get_remote_terminal_response(msg)
 
     # commands in certain directory
     if path_stack_match(1, 'calendar'):
