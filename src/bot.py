@@ -59,13 +59,10 @@ async def send_message(message):
         if response != None and len(response) > 0:
             # large output split
             # discord limits each message to a maximum of 2000 characters
-            if len(response) > 2000:
+            if len(response) > 0:
                 split_response = split_message.split_message(response)
                 for item in split_response:
                     await message.channel.send(item)
-
-            elif response:
-                await message.channel.send(response)
 
     except Exception as e:
         print(e)
