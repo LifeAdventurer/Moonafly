@@ -90,6 +90,8 @@ def show_news_categories() -> str:
         f"""
         ```
         {space.join(cnn_news_categories)}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

@@ -22,6 +22,8 @@ def get_hash(msg: str) -> str:
             f"""
             ```
             {hash_algorithms}
+            ```
+            ```
             {terminal_mode.current_path()}
             ```
             """
@@ -51,6 +53,8 @@ def get_hash(msg: str) -> str:
         f"""
         ```
         {hash_object.hexdigest()}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

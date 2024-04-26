@@ -13,7 +13,8 @@ def load_calendar(year: int, month: int) -> str:
         f"""
         ```
         {space.join(cal.splitlines())}
-
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

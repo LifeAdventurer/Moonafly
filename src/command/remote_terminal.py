@@ -28,6 +28,8 @@ def get_remote_terminal_response(msg: str) -> str:
             f"""
             ```{language_code}
             {result}
+            ```
+            ```
             {terminal_mode.current_path()}
             ```
             """
@@ -39,6 +41,8 @@ def get_remote_terminal_response(msg: str) -> str:
             f"""
             ```diff
             - {error}
+            ```
+            ```
             {terminal_mode.current_path()}
             ```
             """

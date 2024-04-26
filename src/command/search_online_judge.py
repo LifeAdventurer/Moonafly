@@ -31,6 +31,8 @@ def show_online_judge_list() -> str:
         f"""
         ```
         {space.join(online_judge_list)}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

@@ -62,6 +62,8 @@ def list_user_shortcuts() -> str:
         f"""
         ```
         {shortcuts}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

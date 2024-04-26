@@ -42,7 +42,8 @@ def get_issues_on_github(github_repo: str = 'Lifeadventurer/Moonafly') -> str:
             f"""
             ```
             {issue_list}
-            
+            ```
+            ```
             {current_path}
             ```
             """

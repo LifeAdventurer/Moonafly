@@ -255,6 +255,8 @@ def show_user_keyword(username: str) -> str:
         f"""
         ```
         {keywords}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

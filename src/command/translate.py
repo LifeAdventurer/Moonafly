@@ -111,7 +111,11 @@ def get_translated_text(msg: str) -> str:
         f"""
         ```
         {LANGUAGES.get(from_language)} to {LANGUAGES.get(to_language)}
+        ```
+        ```
         {Translator().translate(msg, src=from_language, dest=to_language).text}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

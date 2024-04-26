@@ -105,6 +105,8 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
         f"""
         ```
         {space.join(user_todo_list)}
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """

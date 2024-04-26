@@ -22,6 +22,8 @@ def get_weather_info() -> str:
         ```
         Current Temperature: {current_temperature}°C
         Wind Speed: {wind_speed} km/h
+        ```
+        ```
         {terminal_mode.current_path()}
         ```
         """
