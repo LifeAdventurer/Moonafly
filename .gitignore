@@ -1,17 +1,13 @@
-# some secret json files
+# token and bot_id
 config.json
-passwords.json
-user_identity.json
-game_1A2B_ranks.json
-terminal_mode_login_history.json
-develop_mode_login_history.json
-vocabulary_items.json
-clipboard.json
-pending_role_list.json
-todo_list.json
-user_cloak.json
-user_shortcuts.json
 
+# hide all json files under /data/json
+/data/json/*
+# except these files
+!/data/json/terminal_mode_directory_structure.json
+!/data/json/develop_mode_directory_structure.json
+!/data/json/Moonafly_structure.json
+!/data/json/math_calc_allow_names.json
 
 # txt files
 maintenance.txt
