@@ -51,9 +51,12 @@ def list_user_shortcuts() -> str:
         str(len(user_shortcuts.setdefault(username, {})) - 1)
     )
     shortcuts = []
+    max_key_len = len(max(user_shortcuts[username].keys(), key=len))
     for index, (key, value) in enumerate(user_shortcuts[username].items()):
+        input_str = f"\"{key}\"".ljust(max_key_len + 2)
+        command = f"\"{value}\""
         shortcuts.append(
-            f"{str(index).ljust(shortcuts_count_strlen)} \"{key}\" -> \"{value}\""
+            f"{str(index).rjust(shortcuts_count_strlen)} {input_str} -> {command}"
         )
 
     space = '\n' + ' ' * TAB_SIZE * 2
