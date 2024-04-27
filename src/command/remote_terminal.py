@@ -23,12 +23,12 @@ def get_remote_terminal_response(msg: str) -> str:
             msg, shell=True, stderr=subprocess.STDOUT, universal_newlines=True
         )
         language_code = get_syntax_highlighting_language_code(result)
-        result = space.join(result.splitlines())
+        if result:
+            result = space.join(result.splitlines())
+            result = f"```{language_code}{space}{result}{space}```"
         return textwrap.dedent(
             f"""
-            ```{language_code}
             {result}
-            ```
             ```
             {terminal_mode.current_path()}
             ```
