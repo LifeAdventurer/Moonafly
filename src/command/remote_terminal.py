@@ -17,6 +17,8 @@ def get_remote_terminal_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('remote_terminal')
 
+    if msg.startswith('\\'):
+        msg = msg[1:]
     space = '\n' + ' ' * TAB_SIZE * 3
     try:
         result = subprocess.check_output(
