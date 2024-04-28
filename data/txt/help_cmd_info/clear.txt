@@ -1,2 +1,4 @@
 Usage: clear
-    removes all previous messages from the entering command
+    removes all previous messages from the beginning of
+    the conversation in the thread
+    this command is only available in thread

@@ -1,5 +1,5 @@
 remote: [file] [S..E]
-    Open and output the FILE after remote command
+    open and output the FILE after the remote command
     
     must be used under remote/file
 

@@ -1,5 +1,5 @@
 Usage: [word] [-L [count]]
-    get both the English and the Chinese definition 
+    get both the English and the Chinese definition
     and examples of the word.
     the default example count is 3
     this command is under ~/dict/en-zh_TW 

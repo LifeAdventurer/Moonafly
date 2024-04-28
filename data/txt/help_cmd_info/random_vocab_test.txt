@@ -1,6 +1,7 @@
 Usage: g
-    random pick a word in the vocabulary items list
+    random pick a word from the vocabulary items list
 	that you have searched in dict, and check your
 	response to the Chinese meaning
-	*only ~/dict/en-zh_TW will save the words
-    this command is under ~/random/vocab/test
+	note: only ~/dict/en-zh_TW will save the words
+    
+	this command is under ~/random/vocab/test

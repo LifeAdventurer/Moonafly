@@ -1,6 +1,4 @@
 jump: jump [folder]
     jump to FOLDER in the directory
 
-    '>' is a special character just like the tab on
-    the terminal that can automatically complete 
-    your current folder name.
+    use `>` character to auto-complete folder names

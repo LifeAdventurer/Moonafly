@@ -1,9 +1,9 @@
 Usage: save [type] [keyword] [-p] [data]
-    save DATA in database using KEYWORD
+    save DATA in the database using KEYWORD
     *DATA can be multiple lines
 
     Options:
       -p        status of the data, save as private
-                data that only you can get it by 
-                using private to replace [-p] in
-                Usage, default is public
+                data that only you can access by 
+                using 'private' to replace [-p] in
+                usage, default is public

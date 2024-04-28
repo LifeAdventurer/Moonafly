@@ -6,5 +6,5 @@ rank: rank [-L] [[name] | -S]
       -L        show the certain length ranking, it
                 should be between 4 and 10
       [name]    show certain user ranking, by using
-                rank NAME
+                `rank NAME`
       -S        show your ranking, by using `rank -p`

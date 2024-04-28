@@ -1,6 +1,6 @@
 Usage: apply [role]
-    apply for ROLE 
+    apply for a specific role
 
-    current ROLE that can be applied is:
+    available roles:
       developer     use develop mode
       guest         use terminal mode

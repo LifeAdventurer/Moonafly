@@ -1,2 +1,2 @@
 pwd: pwd
-    Print the name of the current working directory.
+    print the name of the current working directory

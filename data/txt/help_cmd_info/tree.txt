@@ -1,10 +1,7 @@
 Usage: tree [-aM]
-    Visualizing the structure under current working
-    directory as a tree.
+    visualizing the structure under current working directory as a tree
 
     Options:
-      -a, --all     show all folders, including hidden
-                    ones
+      -a, --all     show all folders, including hidden ones
       -M,
-      --Moonafly    show the structure tree of project
-                    Moonafly by using
+      --Moonafly    show the structure tree of project Moonafly

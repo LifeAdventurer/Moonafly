@@ -1,5 +1,5 @@
 Usage: stop [-R]
-    Stop 1A2B game.
+    stop 1A2B game
 
     Options:
       -R        you can restart the game by using 

@@ -1,4 +1,4 @@
 Usage: check [number]
-    return whether the NUMBER is a prime number
-    True / False
-    the NUMBER should be a positive integer
+    check whether the NUMBER is a prime number
+    returns `True` or `False`
+    note: the NUMBER should be a positive integer

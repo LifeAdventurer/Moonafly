@@ -1,5 +1,7 @@
 Usage: set "{replace string}" to "{shortcut string}"
-    replace your message in the {} to REPLACE STRING when message equals to
-    SHORTCUT STRING
-    please note that both REPLACE STRING and SHORTCUT STRING cannot contain the
+    replace your text within the curly braces with your desired phrases
+    note: do not include the curly braces
+    this command sets the replacement behavior where whenever a message matches
+    the SHORTCUT STRING, it will be replaced with teh REPLACE STRING
+    note: both REPLACE STRING and SHORTCUT STRING cannot contain the
     character `"`
