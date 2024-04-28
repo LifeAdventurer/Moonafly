@@ -1,2 +1,5 @@
 Usage: set "{replace string}" to "{shortcut string}"
-    replace your message to REPLACE STRING when message equals to SHORTCUT STRING
+    replace your message in the {} to REPLACE STRING when message equals to
+    SHORTCUT STRING
+    please note that both REPLACE STRING and SHORTCUT STRING cannot contain the
+    character `"`
