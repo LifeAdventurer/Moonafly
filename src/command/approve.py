@@ -6,15 +6,19 @@ import terminal_mode
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
 
-roles = ["developers", "guests"]
+roles = ["developer", "guest"]
 
 
 def load_pending_role_list() -> dict:
     try:
         with open('../data/json/pending_role_list.json') as file:
             pending_role_list = json.load(file)
+        for role in roles:
+            pending_role_list.setdefault(role, [])
     except FileNotFoundError:
-        pending_role_list = {"developers": [], "guests": []}
+        pending_role_list = {}
+        for role in roles:
+            pending_role_list[role] = []
         with open('../data/json/pending_role_list.json', 'w') as file:
             json.dump(pending_role_list, file)
 
