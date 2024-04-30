@@ -1,2 +1,2 @@
-Usage: add [todo_item]
-    add TODO_ITEM to todo list
+Usage: add [label] description
+    add todo item to the todo list with teh specified label and description

@@ -1,4 +1,5 @@
 import json
+import re
 import textwrap
 
 import responses
@@ -35,6 +36,11 @@ def add_todo_item(todo_item: str) -> str:
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
+
+    todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
+
+    if not todo_item_pattern.match(todo_item):
+        return terminal_mode.handle_command_error('add', 'format')
 
     todo_list[username]['uncompleted_items'].append(todo_item)
     write_todo_list(todo_list)
@@ -90,12 +96,22 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
+    todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
+
+    max_label_length = max(
+        len(todo_item_pattern.search(todo_item).group(1))
+        for todo_item in todo_list[username][task_status]
+    )
+
     user_todo_list = []
     mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
     for index, todo_item in enumerate(
         todo_list[username][task_status], start=1
     ):
-        user_todo_item = f"{str(index).rjust(mx_index_len)}. {todo_item}"
+        label_match = todo_item_pattern.search(todo_item)
+        label = label_match.group(1)
+        description = label_match.group(2)
+        user_todo_item = f"{str(index).rjust(mx_index_len)}. {label.ljust(max_label_length)} {description}"
         if len(user_todo_item) > 80:
             user_todo_item = user_todo_item[:79] + '>'
 
