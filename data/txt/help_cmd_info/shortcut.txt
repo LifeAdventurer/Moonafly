@@ -1,6 +1,6 @@
 Usage: [command]
 
 commands under ~/shortcut
- del
+ del [index]
  list
  set "{replace string}" to "{shortcut string}"
