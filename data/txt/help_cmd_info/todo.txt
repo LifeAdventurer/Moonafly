@@ -3,4 +3,5 @@ Usage: [command]
 commands under ~/todo
  add
  check
+ del [index]
  list [-c]

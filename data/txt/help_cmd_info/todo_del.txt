@@ -1,0 +1,2 @@
+Usage: del [index]
+    delete the todo item using the INDEX

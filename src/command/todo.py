@@ -90,6 +90,28 @@ def check_todo_item(todo_item_number: str) -> str:
         )
 
 
+def delete_todo_item(msg: str) -> str:
+    if not msg:
+        return terminal_mode.handle_command_error('del', 'format')
+
+    try:
+        index = int(msg) - 1
+    except ValueError:
+        return terminal_mode.handle_command_error('del', 'format')
+
+    todo_list = load_todo_list()
+    username = responses.terminal_mode_current_using_user
+    if username not in todo_list:
+        todo_list = init_todo_list_for_user(username)
+    if 0 <= index < len(todo_list[username]['uncompleted_items']):
+        del todo_list[username]['uncompleted_items'][index]
+        write_todo_list(todo_list)
+
+        return terminal_mode.handle_command_success('deleted')
+    else:
+        return terminal_mode.handle_command_error('del', 'index')
+
+
 def list_todo_items(task_status: str = 'uncompleted_items') -> str:
     todo_list = load_todo_list()
     username = responses.terminal_mode_current_using_user
@@ -144,6 +166,12 @@ def get_todo_response(msg: str) -> str:
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_check')
         return check_todo_item(msg)
+
+    elif msg.startswith('del'):
+        msg = msg[4:].strip()
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('todo_del')
+        return delete_todo_item(msg)
 
     elif msg.startswith('list'):
         msg = msg[5:].strip()
