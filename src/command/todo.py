@@ -120,10 +120,11 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
 
     todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
 
-    max_label_length = max(
-        len(todo_item_pattern.search(todo_item).group(1))
-        for todo_item in todo_list[username][task_status]
-    )
+    if todo_list[username][task_status]:
+        max_label_length = max(
+            len(todo_item_pattern.search(todo_item).group(1))
+            for todo_item in todo_list[username][task_status]
+        )
 
     user_todo_list = []
     mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
@@ -138,12 +139,11 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
             user_todo_item = user_todo_item[:79] + '>'
 
         user_todo_list.append(user_todo_item)
-    space = '\n' + ' ' * TAB_SIZE * 2
+
+    user_todo_list = ('\n' + ' ' * TAB_SIZE * 2).join(user_todo_list)
     return textwrap.dedent(
         f"""
-        ```
-        {space.join(user_todo_list)}
-        ```
+        {user_todo_list}
         ```
         {terminal_mode.current_path()}
         ```
