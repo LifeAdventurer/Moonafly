@@ -19,7 +19,7 @@ from command import (
 )
 from constants import HELP_FLAG, TAB_SIZE
 
-Moonafly_version = 'v2.16.0'
+Moonafly_version = 'v2.17.0'
 
 
 # user identity
