@@ -4,4 +4,4 @@ commands under ~/todo
  add
  check
  del [index]
- list [-c]
+ list [-c] [--sort=<type>]

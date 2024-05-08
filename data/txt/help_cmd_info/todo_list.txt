@@ -1,5 +1,9 @@
-Usage: list [-c]
+Usage: list [-c] [--sort=<type>]
     list your uncompleted todo items with number
 
     Options:
-      -c        list completed todo items with number
+      -c            list completed todo items with number
+
+      --sort=<type> sort todo items by the specified type, supported types
+                    include: [index, label]
+                    note: default is index

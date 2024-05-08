@@ -112,7 +112,11 @@ def delete_todo_item(msg: str) -> str:
         return terminal_mode.handle_command_error('del', 'index')
 
 
-def list_todo_items(task_status: str = 'uncompleted_items') -> str:
+def list_todo_items(task_status: str, sort_method: str) -> str:
+    sort_methods = ['index', 'label']
+    if sort_method not in sort_methods:
+        return terminal_mode.handle_command_error('list', 'format')
+
     todo_list = load_todo_list()
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
@@ -128,9 +132,16 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
 
     user_todo_list = []
     mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
-    for index, todo_item in enumerate(
-        todo_list[username][task_status], start=1
-    ):
+
+    sorted_todo_items = todo_list[username][task_status].copy()
+
+    if sort_method == 'label':
+        sorted_todo_items.sort(
+            key=lambda x: todo_item_pattern.match(x).group(1)
+        )
+
+    for todo_item in sorted_todo_items:
+        index = todo_list[username][task_status].index(todo_item) + 1
         label_match = todo_item_pattern.search(todo_item)
         label = label_match.group(1)
         description = label_match.group(2)
@@ -140,7 +151,8 @@ def list_todo_items(task_status: str = 'uncompleted_items') -> str:
 
         user_todo_list.append(user_todo_item)
 
-    user_todo_list = ('\n' + ' ' * TAB_SIZE * 2).join(user_todo_list)
+    space = '\n' + ' ' * TAB_SIZE * 2
+    user_todo_list = f"```{space.join(user_todo_list)}{space}```"
     return textwrap.dedent(
         f"""
         {user_todo_list}
@@ -178,7 +190,14 @@ def get_todo_response(msg: str) -> str:
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_list')
         if msg.startswith('-c'):
-            return list_todo_items('completed_items')
-        return list_todo_items()
+            msg = msg[3:].strip()
+            if msg.startswith('--sort='):
+                msg = msg[7:].strip()
+                return list_todo_items('completed_items', msg)
+            return list_todo_items('completed_items', 'index')
+        if msg.startswith('--sort='):
+            msg = msg[7:].strip()
+            return list_todo_items('uncompleted_items', msg)
+        return list_todo_items('uncompleted_items', 'index')
     else:
         return terminal_mode.command_not_found(msg)
