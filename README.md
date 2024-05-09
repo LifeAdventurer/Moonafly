@@ -1,6 +1,6 @@
 # Moonafly
 
-Moonafly uses [Poetry](https://github.com/python-poetry/poetry) for dependency management and includes pre-configured tools such as black, isort for linting.
+Moonafly uses [Poetry](https://github.com/python-poetry/poetry) for dependency management and includes pre-configured tools such as black, isort, and pre-commit for linting.
 
 ## Getting started
 
@@ -16,6 +16,14 @@ For initial setup, you will need to configure Moonafly by providing your Discord
 ### Required permissions
 
 Enable `SERVER MEMBERS INTENT` and `MESSAGE CONTENT INTENT`, which can be found under the `Bot` tab in the `Privileged Gateway Intents` section on the [Discord Developer Portal](https://discord.com/developers/applications).
+
+## Contributing
+
+Install pre-commit hooks.
+
+```bash
+pre-commit install
+```
 
 ## Documentation
 
