@@ -1,2 +1,5 @@
-Usage: add [label] description
+Usage: add [--routine] [label] description
     add todo item to the todo list with teh specified label and description
+
+    Options:
+      --routine       add the todo item as a daily routine task group

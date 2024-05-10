@@ -1,6 +1,7 @@
 import json
 import re
 import textwrap
+from datetime import datetime
 
 import responses
 import terminal_mode
@@ -26,23 +27,34 @@ def write_todo_list(todo_list):
 
 def init_todo_list_for_user(username: str) -> dict:
     todo_list = load_todo_list()
-    todo_list[username] = {'uncompleted_items': [], 'completed_items': []}
+    todo_list[username] = {
+        'uncompleted_items': [],
+        'completed_items': [],
+        'daily_routine': {},
+    }
     write_todo_list(todo_list)
     return todo_list
 
 
-def add_todo_item(todo_item: str) -> str:
+def add_todo_item(
+    todo_item: str, task_status: str = 'uncompleted_items'
+) -> str:
     todo_list = load_todo_list()
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
-    todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
+    if not task_status == 'daily_routine':
+        todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
 
-    if not todo_item_pattern.match(todo_item):
-        return terminal_mode.handle_command_error('add', 'format')
+        if not todo_item_pattern.match(todo_item):
+            return terminal_mode.handle_command_error('add', 'format')
 
-    todo_list[username]['uncompleted_items'].append(todo_item)
+        todo_list[username].setdefault(task_status, []).append(todo_item)
+    else:
+        todo_list[username].setdefault(task_status, {})[
+            todo_item
+        ] = "1970-01-01"
     write_todo_list(todo_list)
 
     return textwrap.dedent(
@@ -55,20 +67,28 @@ def add_todo_item(todo_item: str) -> str:
     )
 
 
-def check_todo_item(todo_item_number: str) -> str:
+def check_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
+    try:
+        todo_item_number = int(msg) - 1
+    except ValueError:
+        return terminal_mode.handle_command_error('check', 'format')
+
     todo_list = load_todo_list()
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
-    if todo_item_number.isdigit() and 0 <= int(todo_item_number) <= len(
-        todo_list[username]['uncompleted_items']
-    ):
-        todo_item = todo_list[username]['uncompleted_items'][
-            int(todo_item_number) - 1
-        ]
-        del todo_list[username]['uncompleted_items'][int(todo_item_number) - 1]
-        todo_list[username]['completed_items'].append(todo_item)
+    user_todo_list = todo_list[username][task_status]
+    if 0 <= todo_item_number < len(user_todo_list):
+        if task_status == 'uncompleted_items':
+            todo_item = user_todo_list[todo_item_number]
+            del user_todo_list[todo_item_number]
+            todo_list[username]['completed_items'].append(todo_item)
+        else:
+            current_date = datetime.now()
+            todo_item = list(user_todo_list.keys())[todo_item_number]
+            user_todo_list[todo_item] = current_date.strftime("%Y-%m-%d")
+
         write_todo_list(todo_list)
 
         return textwrap.dedent(
@@ -90,7 +110,7 @@ def check_todo_item(todo_item_number: str) -> str:
         )
 
 
-def delete_todo_item(msg: str) -> str:
+def delete_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
     if not msg:
         return terminal_mode.handle_command_error('del', 'format')
 
@@ -103,8 +123,8 @@ def delete_todo_item(msg: str) -> str:
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
-    if 0 <= index < len(todo_list[username]['uncompleted_items']):
-        del todo_list[username]['uncompleted_items'][index]
+    if 0 <= index < len(todo_list[username][task_status]):
+        del todo_list[username][task_status][index]
         write_todo_list(todo_list)
 
         return terminal_mode.handle_command_success('deleted')
@@ -130,8 +150,11 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
             for todo_item in todo_list[username][task_status]
         )
 
-    todo_list_len = len(todo_list[username][task_status])
-    mx_index_len = len(str(todo_list_len + 1))
+    daily_routine_length = len(todo_list[username]['daily_routine'])
+    todo_list_length = len(todo_list[username][task_status])
+    max_index_length = max(
+        len(str(daily_routine_length + 1)), len(str(todo_list_length + 1))
+    )
 
     sorted_todo_items = todo_list[username][task_status].copy()
 
@@ -140,23 +163,48 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
             key=lambda x: todo_item_pattern.match(x).group(1)
         )
 
-    user_todo_list = [f"total: {todo_list_len}", '']
+    user_daily_routine_list = [
+        f"daily routine items: {daily_routine_length}",
+        '',
+    ]
+
+    for index, (key, value) in enumerate(
+        todo_list[username]['daily_routine'].items(), start=1
+    ):
+        current_date = datetime.now()
+        last_complete_date = datetime.strptime(value, "%Y-%m-%d")
+        if (
+            last_complete_date.year,
+            last_complete_date.month,
+            last_complete_date.day,
+        ) < (current_date.year, current_date.month, current_date.day):
+            user_daily_routine_item = (
+                f"{str(index).rjust(max_index_length)}. {key}"
+            )
+            if len(user_daily_routine_item) > 80:
+                user_daily_routine_item = user_daily_routine_item[:79] + '>'
+            user_daily_routine_list.append(user_daily_routine_item)
+
+    user_todo_list = [f"todo list items: {todo_list_length}", '']
     for todo_item in sorted_todo_items:
         index = todo_list[username][task_status].index(todo_item) + 1
         label_match = todo_item_pattern.search(todo_item)
         label = label_match.group(1)
         description = label_match.group(2)
-        user_todo_item = f"{str(index).rjust(mx_index_len)}. {label.ljust(max_label_length)} {description}"
+        user_todo_item = f"{str(index).rjust(max_index_length)}. {label.ljust(max_label_length)} {description}"
         if len(user_todo_item) > 80:
             user_todo_item = user_todo_item[:79] + '>'
 
         user_todo_list.append(user_todo_item)
 
     space = '\n' + ' ' * TAB_SIZE * 2
-    user_todo_list = f"```{space.join(user_todo_list)}{space}```"
     return textwrap.dedent(
         f"""
-        {user_todo_list}
+        ```
+        {space.join(user_daily_routine_list)}
+
+        {space.join(user_todo_list)}
+        ```
         ```
         {terminal_mode.current_path()}
         ```
@@ -172,18 +220,27 @@ def get_todo_response(msg: str) -> str:
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_add')
+        if msg.startswith('--routine'):
+            msg = msg[10:].strip()
+            return add_todo_item(msg, 'daily_routine')
         return add_todo_item(msg)
 
     elif msg.startswith('check'):
         msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_check')
+        if msg.startswith('--routine'):
+            msg = msg[10:].strip()
+            return check_todo_item(msg, 'daily_routine')
         return check_todo_item(msg)
 
     elif msg.startswith('del'):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_del')
+        if msg.startswith('--routine'):
+            msg = msg[10:].strip()
+            return delete_todo_item(msg, 'daily_routine')
         return delete_todo_item(msg)
 
     elif msg.startswith('list'):

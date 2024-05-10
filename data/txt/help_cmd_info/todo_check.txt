@@ -1,2 +1,5 @@
-Usage: check [number]
-    marks the item on the todo list as completed, indicated by NUMBER
+Usage: check [--routine] [index]
+    marks the item on the todo list as completed, indicated by INDEX
+
+    Options:
+      --routine         marks the todo item in daily routine task group
