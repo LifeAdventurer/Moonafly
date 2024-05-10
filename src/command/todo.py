@@ -130,8 +130,8 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
             for todo_item in todo_list[username][task_status]
         )
 
-    user_todo_list = []
-    mx_index_len = len(str(len(todo_list[username][task_status]) + 1))
+    todo_list_len = len(todo_list[username][task_status])
+    mx_index_len = len(str(todo_list_len + 1))
 
     sorted_todo_items = todo_list[username][task_status].copy()
 
@@ -140,6 +140,7 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
             key=lambda x: todo_item_pattern.match(x).group(1)
         )
 
+    user_todo_list = [f"total: {todo_list_len}", '']
     for todo_item in sorted_todo_items:
         index = todo_list[username][task_status].index(todo_item) + 1
         label_match = todo_item_pattern.search(todo_item)
