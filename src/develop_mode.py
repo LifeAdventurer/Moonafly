@@ -78,14 +78,8 @@ def current_path() -> str:
 
 
 def command_not_found(msg: str) -> str:
-    space = ' ' * TAB_SIZE * 2
-    # unify the indentation of multiline
-    msg = '\n'.join(
-        [
-            space + line if index > 0 else line
-            for index, line in enumerate(msg.split('\n'))
-        ]
-    )
+    space = '\n' + ' ' * TAB_SIZE * 2
+    msg = space.join(msg.split('\n'))
     return textwrap.dedent(
         f"""
         ```
@@ -101,13 +95,8 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
     if error_type == 'format':
         error = 'format error'
     elif error_type == 'path':
-        space = ' ' * TAB_SIZE * 2
-        path = '\n'.join(
-            [
-                space + line if index > 0 else line
-                for index, line in enumerate(msg.split('\n'))
-            ]
-        )
+        space = '\n' + ' ' * TAB_SIZE * 2
+        path = space.join(msg.split('\n'))
         error = f"{path}: No such file or directory"
     elif error_type == 'permission':
         error = 'permission denied: requires highest authority'
@@ -191,9 +180,9 @@ async def get_response_in_develop_mode(message) -> str:
             f"""
             ```
             Moonafly {responses.Moonafly_version}
-            
+
             - normal mode
-            - terminal mode 
+            - terminal mode
             - develop mode (current)
 
              cd [dir]
