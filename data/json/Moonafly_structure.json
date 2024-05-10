@@ -59,8 +59,10 @@
             "split_message.py": {},
             "terminal_mode.py": {}
         },
+        ".editorconfig": {},
         ".gitattributes": {},
         ".gitignore": {},
+        ".pre-commit-config.yaml": {},
         "LICENSE": {},
         "main.py": {},
         "poetry.lock": {},
