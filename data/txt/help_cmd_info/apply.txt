@@ -1,5 +1,5 @@
-Usage: apply [role]
-    apply for a specific role
+Usage: apply <role>
+    apply for a specific ROLE
 
     available roles:
       developer     use develop mode

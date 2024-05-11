@@ -1,2 +1,2 @@
-Usage: [hash_algo] [string]
+Usage: <hash_algo> <string>
     return the hash value of STRING using HASH_ALGO

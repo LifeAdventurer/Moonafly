@@ -1,5 +1,5 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/author/approve
  show
- approve [role] [index]
+ approve <role> <index>

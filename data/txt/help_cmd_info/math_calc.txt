@@ -1,5 +1,4 @@
-Usage: [equation]
+Usage: <equation>
     use eval function to calculate the EQUATION
     the eval function whitelist is located at
     `/data/json/math_calc_allow_names.json`
-    this command is under ~/math/calc

@@ -1,5 +1,5 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/search/online-judge
  show
- -[number] [handle]
+ <-number> <handle>

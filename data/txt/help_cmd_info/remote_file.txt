@@ -1,9 +1,8 @@
-remote: [file] [S..E]
+remote: <file> [S..E]
     open and output the FILE after the remote command
-    
+
     must be used under remote/file
 
     Options:
-      S..E      output the FILE from line S to line E,
-                S and E should be integers, and E needs
-                to be greater or equal than S
+      S..E          output the FILE from line S to line E, S and E should be
+                    integers, and E needs to be greater or equal than S

@@ -1,4 +1,4 @@
-Usage: check [number]
+Usage: check <number>
     check whether the NUMBER is a prime number
     returns `True` or `False`
     note: the NUMBER should be a positive integer

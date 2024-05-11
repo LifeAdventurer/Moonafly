@@ -1,7 +1,7 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/todo
- add [-r | --routine] [label] description
- check [-r | --routine] [index]
- del [-r | --routine] [index]
+ add [-r | --routine] <[label]> <task>
+ check [-r | --routine] <index>
+ del [-r | --routine] <index>
  list [-c] [--sort=<type>]

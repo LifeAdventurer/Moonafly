@@ -1,6 +1,5 @@
 Usage: exit [--save]
-    exit terminal or develop mode and delete the thread if
-    you are in a thread
+    exit terminal or develop mode and delete the thread if you are in a thread
 
     Options:
       --save        exit without deleting the thread

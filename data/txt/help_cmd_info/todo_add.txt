@@ -1,5 +1,6 @@
-Usage: add [--routine] [label] description
-    add todo item to the todo list with teh specified label and description
+Usage: add [-r | --routine] <[label]> <task>
+    add todo item to the todo list with the specified LABEL and TASK
+    note: `[]` is required to wrap your LABEL
 
     Options:
       -r, --routine         add the todo item as a daily routine task group

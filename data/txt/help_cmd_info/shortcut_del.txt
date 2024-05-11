@@ -1,2 +1,2 @@
-Usage: del [index]
+Usage: del <index>
     delete the shortcut using the INDEX

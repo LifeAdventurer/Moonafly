@@ -1,4 +1,4 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/calendar
- get YYYY/MM
+ get <YYYY/MM>

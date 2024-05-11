@@ -1,4 +1,4 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/issues in develop mode and ~/search/github/issues in terminal mode
  list [repo]

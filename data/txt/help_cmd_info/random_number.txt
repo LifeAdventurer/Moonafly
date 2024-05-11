@@ -1,3 +1,2 @@
-Usage: [number]
+Usage: <number>
     random a number between 1 and NUMBER
-    this command is under ~/random/number

@@ -1,2 +1,2 @@
-Usage: get [keyword]
+Usage: get <keyword>
     get previously saved public data based on KEYWORD

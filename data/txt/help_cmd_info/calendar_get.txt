@@ -1,2 +1,2 @@
-Usage: get YYYY/MM
+Usage: get <YYYY/MM>
     load the calendar for YYYY/MM

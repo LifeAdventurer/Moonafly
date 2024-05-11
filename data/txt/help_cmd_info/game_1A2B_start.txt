@@ -1,9 +1,7 @@
 Usage: start [-L]
     start 1A2B game
     the default length is 4 and with only numbers 1~6
-    note: if you want length 4 and numbers with 1~9
-    use `start 4`
+    note: if you want length 4 and numbers with 1~9 use `start 4`
 
     Options:
-      -L        decide the length of 1A2B game, it 
-                should be between 4 and 10
+      -L        decide the length of 1A2B game, it should be between 4 and 10

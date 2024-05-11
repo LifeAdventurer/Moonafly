@@ -1,4 +1,4 @@
-cd: cd [dir]
+cd: cd <dir>
     change the working directory
 
     changes the current directory to DIR

@@ -1,2 +1,2 @@
-Usage: set [lang-a] to [lang-b]
+Usage: set <lang-a> to <lang-b>
     set the translate language to 'LANG-A to LANG-B'

@@ -1,6 +1,5 @@
-Usage: ls [-a]
-    lists folders in the current directory, sorting them
-    alphabetically
+Usage: ls [-a | --all]
+    lists folders in the current directory, sorting them alphabetically
 
     Options:
       -a, --all     lists hidden folders too

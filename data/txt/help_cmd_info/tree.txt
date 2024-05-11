@@ -1,4 +1,4 @@
-Usage: tree [-aM]
+Usage: tree [-a | --all] [-M | --Moonafly]
     visualizing the structure under current working directory as a tree
 
     Options:

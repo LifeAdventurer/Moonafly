@@ -1,4 +1,4 @@
-jump: jump [folder]
+jump: jump <folder>
     jump to FOLDER in the directory
 
     use `>` character to auto-complete folder names

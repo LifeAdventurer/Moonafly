@@ -1,4 +1,4 @@
-Usage: del [-r | --routine] [index]
+Usage: del [-r | --routine] <index>
     delete the todo item using the INDEX
 
     Options:

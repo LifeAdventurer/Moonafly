@@ -1,6 +1,6 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/shortcut
- del [index]
+ del <index>
  list
  set "{replace string}" to "{shortcut string}"

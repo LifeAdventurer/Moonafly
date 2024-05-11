@@ -1,10 +1,7 @@
-Usage: [word] [-L [count]]
-    get both the English and the Chinese definition
-    and examples of the word.
+Usage: <word> [-L [count]]
+    get both the English and the Chinese definition and examples of the word
     the default example count is 3
-    this command is under ~/dict/en-zh_TW 
 
     Options:
-      -L        Limit the examples count by using
-                `[word] LIMIT COUNT`, COUNT must 
-                be an integer
+      -L            Limit the examples count by using `[word] LIMIT COUNT`,
+                    COUNT must be an integer

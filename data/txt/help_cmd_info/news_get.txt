@@ -1,4 +1,4 @@
 Usage: get [category]
     get news from the CATEGORY on the news website
 
-    the default CATEGORY is 'world'
+    note: the default CATEGORY is 'world'

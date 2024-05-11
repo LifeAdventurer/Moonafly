@@ -1,7 +1,7 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/clipboard
- get [keyword]
- save [type] [keyword] [-p] [data]
+ get <keyword>
+ save <type> <keyword> [-p] <data>
  show
- del [keyword]
+ del <keyword>

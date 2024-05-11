@@ -1,4 +1,4 @@
-Usage: [command]
+Usage: <command>
 
 commands under ~/primes
- check [number]
+ check <number>

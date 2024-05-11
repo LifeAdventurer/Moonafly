@@ -1,4 +1,4 @@
-Usage: check [-r | --routine] [index]
+Usage: check [-r | --routine] <index>
     marks the item on the todo list as completed, indicated by INDEX
 
     Options:

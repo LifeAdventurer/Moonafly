@@ -2,6 +2,4 @@ Usage: stop [-R]
     stop 1A2B game
 
     Options:
-      -R        you can restart the game by using 
-                `stop start`
-                
+      -R        you can restart the game by using `stop start`
