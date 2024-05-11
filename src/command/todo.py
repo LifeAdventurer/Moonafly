@@ -6,7 +6,7 @@ from datetime import datetime
 import responses
 import terminal_mode
 from command import command_help
-from constants import HELP_FLAG, TAB_SIZE
+from constants import HELP_FLAG, ROUTINE_FLAGS, TAB_SIZE
 
 
 def load_todo_list() -> dict:
@@ -220,27 +220,30 @@ def get_todo_response(msg: str) -> str:
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_add')
-        if msg.startswith('--routine'):
-            msg = msg[10:].strip()
-            return add_todo_item(msg, 'daily_routine')
+        for flag in ROUTINE_FLAGS:
+            if msg.startswith(flag):
+                msg = msg[len(flag) + 1 :].strip()
+                return add_todo_item(msg, 'daily_routine')
         return add_todo_item(msg)
 
     elif msg.startswith('check'):
         msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_check')
-        if msg.startswith('--routine'):
-            msg = msg[10:].strip()
-            return check_todo_item(msg, 'daily_routine')
+        for flag in ROUTINE_FLAGS:
+            if msg.startswith(flag):
+                msg = msg[len(flag) + 1 :].strip()
+                return check_todo_item(msg, 'daily_routine')
         return check_todo_item(msg)
 
     elif msg.startswith('del'):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('todo_del')
-        if msg.startswith('--routine'):
-            msg = msg[10:].strip()
-            return delete_todo_item(msg, 'daily_routine')
+        for flag in ROUTINE_FLAGS:
+            if msg.startswith(flag):
+                msg = msg[len(flag) + 1 :].strip()
+                return delete_todo_item(msg, 'daily_routine')
         return delete_todo_item(msg)
 
     elif msg.startswith('list'):
