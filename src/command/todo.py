@@ -100,14 +100,7 @@ def check_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
             """
         )
     else:
-        return textwrap.dedent(
-            f"""
-            ```
-            the number should be between 1 and {len(todo_list[username]['uncompleted_items'])}
-            {terminal_mode.current_path()}
-            ```
-            """
-        )
+        return terminal_mode.handle_command_error('check', 'index')
 
 
 def delete_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
@@ -115,7 +108,7 @@ def delete_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
         return terminal_mode.handle_command_error('del', 'format')
 
     try:
-        index = int(msg) - 1
+        todo_item_number = int(msg) - 1
     except ValueError:
         return terminal_mode.handle_command_error('del', 'format')
 
@@ -123,8 +116,14 @@ def delete_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
     username = responses.terminal_mode_current_using_user
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
-    if 0 <= index < len(todo_list[username][task_status]):
-        del todo_list[username][task_status][index]
+    user_todo_list = todo_list[username][task_status]
+    if 0 <= todo_item_number < len(user_todo_list):
+        if task_status == 'uncompleted_items':
+            del user_todo_list[todo_item_number]
+        else:
+            key_to_delete = list(user_todo_list.keys())[todo_item_number]
+            del user_todo_list[key_to_delete]
+
         write_todo_list(todo_list)
 
         return terminal_mode.handle_command_success('deleted')
