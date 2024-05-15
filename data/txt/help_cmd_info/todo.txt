@@ -2,6 +2,6 @@ Usage: <command>
 
 commands under ~/todo
  add [-r | --routine] <[label]> <task>
- check [-r | --routine] <index>
+ check [-r | --routine] <index1>, <index2>, <index3>, ...
  del [-r | --routine] <index>
  list [-c] [--sort=<type>]

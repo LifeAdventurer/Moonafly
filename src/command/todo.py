@@ -69,7 +69,7 @@ def add_todo_item(
 
 def check_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
     try:
-        todo_item_number = int(msg) - 1
+        todo_item_numbers = [int(index) - 1 for index in msg.split(',')]
     except ValueError:
         return terminal_mode.handle_command_error('check', 'format')
 
@@ -79,28 +79,35 @@ def check_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
         todo_list = init_todo_list_for_user(username)
 
     user_todo_list = todo_list[username][task_status]
-    if 0 <= todo_item_number < len(user_todo_list):
-        if task_status == 'uncompleted_items':
-            todo_item = user_todo_list[todo_item_number]
-            del user_todo_list[todo_item_number]
-            todo_list[username]['completed_items'].append(todo_item)
-        else:
-            current_date = datetime.now()
-            todo_item = list(user_todo_list.keys())[todo_item_number]
-            user_todo_list[todo_item] = current_date.strftime("%Y-%m-%d")
+    checked_items = []
+    for todo_item_number in todo_item_numbers:
+        if 0 <= todo_item_number < len(user_todo_list):
+            if task_status == 'uncompleted_items':
+                todo_item = user_todo_list[todo_item_number]
+                todo_list[username]['completed_items'].append(todo_item)
+            else:
+                current_date = datetime.now()
+                todo_item = list(user_todo_list.keys())[todo_item_number]
+                user_todo_list[todo_item] = current_date.strftime("%Y-%m-%d")
+            checked_items.append(todo_item)
 
-        write_todo_list(todo_list)
+    for checked_item in checked_items:
+        user_todo_list.remove(checked_item)
 
-        return textwrap.dedent(
-            f"""
-            ```
-            '{todo_item}' has been checked!
-            {terminal_mode.current_path()}
-            ```
-            """
-        )
-    else:
-        return terminal_mode.handle_command_error('check', 'index')
+    write_todo_list(todo_list)
+
+    checked_items_str = ('\n' + ' ' * TAB_SIZE * 2).join(
+        [f"'{item}' has been checked" for item in checked_items]
+    )
+
+    return textwrap.dedent(
+        f"""
+        ```
+        {checked_items_str}
+        {terminal_mode.current_path()}
+        ```
+        """
+    )
 
 
 def delete_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:

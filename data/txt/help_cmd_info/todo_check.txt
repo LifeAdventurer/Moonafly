@@ -1,5 +1,6 @@
-Usage: check [-r | --routine] <index>
-    marks the item on the todo list as completed, indicated by INDEX
+Usage: check [-r | --routine] <index1>, <index2>, <index3>, ...
+    marks the items on the todo list as completed, indicated by one or more
+    comma-separated indices
 
     Options:
-      -r, --routine         marks the todo item in daily routine task group
+      -r, --routine         marks the todo items in daily routine task group
