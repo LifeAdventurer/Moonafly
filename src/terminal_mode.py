@@ -108,6 +108,8 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
         error = 'permission denied: requires highest authority'
     elif error_type == 'index':
         error = 'index out of range'
+    elif error_type == 'duplicated':
+        error = 'data duplicated'
 
     return textwrap.dedent(
         f"""

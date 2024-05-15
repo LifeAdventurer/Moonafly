@@ -44,13 +44,22 @@ def add_todo_item(
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
-    if not task_status == 'daily_routine':
-        todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
+    if task_status != 'daily_routine':
+        todo_item_pattern = re.compile('^(\[.*?\])\s*(.*)$')
+        match = todo_item_pattern.search(todo_item)
+        label = match.group(1)
+        description = match.group(2)
 
-        if not todo_item_pattern.match(todo_item):
+        if not match:
             return terminal_mode.handle_command_error('add', 'format')
 
-        todo_list[username].setdefault(task_status, []).append(todo_item)
+        formatted_todo_item = f"{label} {description}"
+        if formatted_todo_item in todo_list[username].setdefault(
+            task_status, []
+        ):
+            return terminal_mode.handle_command_error('add', 'duplicated')
+        else:
+            todo_list[username][task_status].append(formatted_todo_item)
     else:
         todo_list[username].setdefault(task_status, {})[
             todo_item
@@ -148,7 +157,7 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
     if username not in todo_list:
         todo_list = init_todo_list_for_user(username)
 
-    todo_item_pattern = re.compile(f'^(\[.*?\])\s*(.*)$')
+    todo_item_pattern = re.compile('^(\[.*?\])\s*(.*)$')
 
     if todo_list[username][task_status]:
         max_label_length = max(
@@ -194,9 +203,9 @@ def list_todo_items(task_status: str, sort_method: str) -> str:
     user_todo_list = [f"todo list items: {todo_list_length}", '']
     for todo_item in sorted_todo_items:
         index = todo_list[username][task_status].index(todo_item) + 1
-        label_match = todo_item_pattern.search(todo_item)
-        label = label_match.group(1)
-        description = label_match.group(2)
+        match = todo_item_pattern.search(todo_item)
+        label = match.group(1)
+        description = match.group(2)
         user_todo_item = f"{str(index).rjust(max_index_length)}. {label.ljust(max_label_length)} {description}"
         if len(user_todo_item) > 80:
             user_todo_item = user_todo_item[:79] + '>'
