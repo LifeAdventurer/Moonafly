@@ -1,4 +1,4 @@
 Usage: approve <role> <index>
     approve the user role apply
     ROLE should be 'developer' or 'guest'
-    use the 'show' command to view the list of usernames and their indices
+    use the 'list' command to view the list of usernames and their indices

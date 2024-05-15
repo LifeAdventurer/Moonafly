@@ -10,10 +10,10 @@ def get_hash(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('hash')
 
-    if msg.startswith('show'):
+    if msg.startswith('list'):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('hash_show')
+            return command_help.load_help_cmd_info('hash_list')
 
         hash_algorithms = ('\n' + ' ' * TAB_SIZE * 3).join(
             sorted(hashlib.algorithms_available)

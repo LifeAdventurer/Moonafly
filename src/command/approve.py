@@ -25,7 +25,7 @@ def load_pending_role_list() -> dict:
     return pending_role_list
 
 
-def show_pending_role_list() -> str:
+def list_pending_role_list() -> str:
     pending_role_list = load_pending_role_list()
 
     content = ['pending role list:', ' ']
@@ -134,21 +134,21 @@ def approve_requests(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
         return command_help.load_help_cmd_info('approve')
 
-    if msg.startswith('show'):
-        msg = msg[5:].strip()
-
-        if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('approve_show')
-
-        return show_pending_role_list()
-
-    elif msg.startswith('approve'):
+    if msg.startswith('approve'):
         msg = msg[7:].strip()
 
         if msg.startswith(HELP_FLAG):
             return command_help.load_help_cmd_info('approve_approve')
 
         return approve_pending(msg)
+
+    elif msg.startswith('list'):
+        msg = msg[5:].strip()
+
+        if msg.startswith(HELP_FLAG):
+            return command_help.load_help_cmd_info('approve_list')
+
+        return list_pending_role_list()
 
     else:
         return terminal_mode.command_not_found(msg)

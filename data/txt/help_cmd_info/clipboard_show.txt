@@ -1,2 +1,0 @@
-Usage: show
-    show keywords that are previously saved by the user

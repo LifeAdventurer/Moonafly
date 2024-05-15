@@ -1,4 +1,0 @@
-Usage: show
-    show news categories
-
-    use `get [category]` to get news from a certain CATEGORY

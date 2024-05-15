@@ -84,7 +84,7 @@ cnn_news_categories = [
 ]
 
 
-def show_news_categories() -> str:
+def list_news_categories() -> str:
     space = '\n' + ' ' * TAB_SIZE * 2
     return textwrap.dedent(
         f"""
@@ -124,12 +124,12 @@ def get_news(msg: str) -> str:
                 )
 
         return get_cnn_news(category)
-    elif msg.startswith('show'):
+    elif msg.startswith('list'):
         msg = msg[5:].strip()
 
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('news_show')
+            return command_help.load_help_cmd_info('news_list')
 
-        return show_news_categories()
+        return list_news_categories()
     else:
         return terminal_mode.command_not_found(msg)

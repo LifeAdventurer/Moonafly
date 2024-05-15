@@ -1,5 +1,5 @@
 Usage: <command>
 
 commands under ~/hash
- show
+ list
  <hash_algo> <string>

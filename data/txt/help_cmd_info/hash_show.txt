@@ -1,2 +1,0 @@
-Usage: show
-    show the list of hash algorithms alphabetically

@@ -1,0 +1,4 @@
+Usage: list
+    list news categories
+
+    use `get [category]` to get news from a certain CATEGORY

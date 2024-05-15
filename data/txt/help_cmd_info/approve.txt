@@ -1,5 +1,5 @@
 Usage: <command>
 
 commands under ~/author/approve
- show
  approve <role> <index>
+ list

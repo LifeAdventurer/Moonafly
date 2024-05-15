@@ -1,0 +1,2 @@
+Usage: list
+    list keywords that are previously saved by the user

@@ -1,0 +1,2 @@
+Usage: list
+    list usable hash algorithms alphabetically
