@@ -16,3 +16,12 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
+
+  - repo: local
+    hooks:
+      - id: update-requirements
+        name: Update requirements.txt
+        entry: python -c "import subprocess; subprocess.run('poetry export --without-hashes --format=requirements.txt', shell=True, check=True, stdout=open('requirements.txt', 'w'))"
+        language: system
+        types: [file]
+        files: ^(?:poetry\.lock|pyproject\.toml)$
