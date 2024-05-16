@@ -61,9 +61,10 @@ def add_todo_item(
         else:
             todo_list[username][task_status].append(formatted_todo_item)
     else:
-        todo_list[username].setdefault(task_status, {})[
-            todo_item
-        ] = "1970-01-01"
+        todo_list[username].setdefault(task_status, {}).setdefault(
+            todo_item, "1970-01-01"
+        )
+
     write_todo_list(todo_list)
 
     return textwrap.dedent(
