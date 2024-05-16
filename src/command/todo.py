@@ -94,12 +94,12 @@ def check_todo_item(msg: str, task_status: str = 'uncompleted_items') -> str:
         if 0 <= todo_item_number < len(user_todo_list):
             if task_status == 'uncompleted_items':
                 todo_item = user_todo_list[todo_item_number]
+                checked_items.append(todo_item)
                 todo_list[username]['completed_items'].append(todo_item)
             else:
                 current_date = datetime.now()
                 todo_item = list(user_todo_list.keys())[todo_item_number]
                 user_todo_list[todo_item] = current_date.strftime("%Y-%m-%d")
-            checked_items.append(todo_item)
 
     for checked_item in checked_items:
         user_todo_list.remove(checked_item)
