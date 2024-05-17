@@ -13,10 +13,17 @@ def get_response_in_normal_mode(message) -> str:
         return textwrap.dedent(
             f"""
             ```
-            Moonafly {responses.Moonafly_version}
-            
+            ███╗   ███╗ ██████╗  ██████╗ ███╗   ██╗ █████╗ ███████╗██╗  ██╗   ██╗
+            ████╗ ████║██╔═══██╗██╔═══██╗████╗  ██║██╔══██╗██╔════╝██║  ╚██╗ ██╔╝
+            ██╔████╔██║██║   ██║██║   ██║██╔██╗ ██║███████║█████╗  ██║   ╚████╔╝
+            ██║╚██╔╝██║██║   ██║██║   ██║██║╚██╗██║██╔══██║██╔══╝  ██║    ╚██╔╝
+            ██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██║ ╚████║██║  ██║██║     ███████╗██║
+            ╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝
+
+            {responses.Moonafly_version}
+
             - normal mode (default) (current)
-            - terminal mode 
+            - terminal mode
             - develop mode
 
             commands to switch mode

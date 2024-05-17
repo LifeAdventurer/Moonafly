@@ -389,7 +389,15 @@ async def get_response(message) -> str:
             return textwrap.dedent(
                 f"""
                 ```
-                Moonafly {Moonafly_version}
+                ███╗   ███╗ ██████╗  ██████╗ ███╗   ██╗ █████╗ ███████╗██╗  ██╗   ██╗
+                ████╗ ████║██╔═══██╗██╔═══██╗████╗  ██║██╔══██╗██╔════╝██║  ╚██╗ ██╔╝
+                ██╔████╔██║██║   ██║██║   ██║██╔██╗ ██║███████║█████╗  ██║   ╚████╔╝
+                ██║╚██╔╝██║██║   ██║██║   ██║██║╚██╗██║██╔══██║██╔══╝  ██║    ╚██╔╝
+                ██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██║ ╚████║██║  ██║██║     ███████╗██║
+                ╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝
+
+                {Moonafly_version}
+
                 {mode}
                 server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
                 {aligned_cpu_core_usages}
