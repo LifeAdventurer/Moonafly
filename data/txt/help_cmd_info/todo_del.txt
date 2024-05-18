@@ -1,5 +1,5 @@
-Usage: del [-r | --routine] <index>
-    delete the todo item using the INDEX
+Usage: del [-r | --routine] <index1>, <index2>, <index3>, ...
+    delete the todo items indicated by one or more comma-separated indices
 
     Options:
       -r, --routine         delete the todo item in the daily routine task group
