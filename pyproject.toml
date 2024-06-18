@@ -16,17 +16,28 @@ requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.4.2"
-isort = "^5.13.2"
 pre-commit = "^3.7.1"
+ruff = "^0.4.9"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.black]
+[tool.ruff]
 line-length = 80
-skip-string-normalization = true
 
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501", # line too long, handled by black
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

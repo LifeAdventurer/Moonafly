@@ -11,7 +11,7 @@ from constants import HELP_FLAG, TAB_SIZE
 def load_clipboard_data() -> dict:
     # clipboard_data
     try:
-        with open('../data/json/clipboard.json', 'r', encoding='utf-8') as file:
+        with open("../data/json/clipboard.json", encoding="utf-8") as file:
             clipboard_data = json.load(file)
     except FileNotFoundError:
         clipboard_data = {}
@@ -21,7 +21,7 @@ def load_clipboard_data() -> dict:
 
 
 def save_clipboard_data(clipboard_data):
-    with open('../data/json/clipboard.json', 'w', encoding='utf-8') as file:
+    with open("../data/json/clipboard.json", "w", encoding="utf-8") as file:
         json.dump(clipboard_data, file, indent=4)
 
 
@@ -29,10 +29,10 @@ def get_clipboard_data(keyword: str, username: str) -> str:
     clipboard_data = load_clipboard_data()
 
     if keyword in clipboard_data:
-        data_status = clipboard_data[keyword]['status']
-        data_user = clipboard_data[keyword]['user']
+        data_status = clipboard_data[keyword]["status"]
+        data_user = clipboard_data[keyword]["user"]
 
-        if data_status == 'private' and data_user != username:
+        if data_status == "private" and data_user != username:
             return textwrap.dedent(
                 f"""
                 ```
@@ -42,9 +42,9 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 """
             )
 
-        data_type = clipboard_data[keyword]['type']
+        data_type = clipboard_data[keyword]["type"]
 
-        if data_type == 'link':
+        if data_type == "link":
             return textwrap.dedent(
                 f"""
                 {clipboard_data[keyword]['data']}
@@ -53,9 +53,9 @@ def get_clipboard_data(keyword: str, username: str) -> str:
                 ```
                 """
             )
-        elif data_type == 'text':
-            content = ('\n' + ' ' * TAB_SIZE * 4).join(
-                clipboard_data[keyword]['data'].splitlines()
+        elif data_type == "text":
+            content = ("\n" + " " * TAB_SIZE * 4).join(
+                clipboard_data[keyword]["data"].splitlines()
             )
             return textwrap.dedent(
                 f"""
@@ -79,13 +79,13 @@ def get_clipboard_data(keyword: str, username: str) -> str:
         )
 
 
-data_types = ['link', 'text']
+data_types = ["link", "text"]
 
 checking_clipboard_keyword_override = False
-temp_keyword = ''
-temp_data_type = ''
-temp_data = ''
-temp_status = ''
+temp_keyword = ""
+temp_data_type = ""
+temp_data = ""
+temp_status = ""
 
 
 def save_data_to_clipboard(msg: str, username: str) -> str:
@@ -95,7 +95,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
     global temp_keyword, temp_data_type, temp_data, temp_status
 
     if checking_clipboard_keyword_override == True:
-        if msg.lower() == 'yes' or msg.lower() == 'y':
+        if msg.lower() == "yes" or msg.lower() == "y":
             checking_clipboard_keyword_override = False
 
             clipboard_data = load_clipboard_data()
@@ -112,7 +112,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             return terminal_mode.handle_command_success(
                 f"keyword: '{temp_keyword}' overrode"
             )
-        elif msg.lower() == 'no' or msg.lower() == 'n':
+        elif msg.lower() == "no" or msg.lower() == "n":
             checking_clipboard_keyword_override = False
 
             return textwrap.dedent(
@@ -136,7 +136,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 """
             )
 
-    pattern = r'^(\w+)\s+(\w+)(?:\s+(\w+))?$'
+    pattern = r"^(\w+)\s+(\w+)(?:\s+(\w+))?$"
 
     match = re.match(pattern, lines[0].strip())
 
@@ -145,11 +145,11 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
         keyword = match.group(2)
         status = match.group(3)
         lines.pop(0)
-        data = '\n'.join(lines)
+        data = "\n".join(lines)
 
         if status == None:
-            status = 'public'
-        elif status != 'private':
+            status = "public"
+        elif status != "private":
             return textwrap.dedent(
                 f"""
                 ```
@@ -160,11 +160,10 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
             )
 
         if data_type in data_types:
-
             if len(data) > 0:
                 clipboard_data = load_clipboard_data()
                 if keyword in clipboard_data:
-                    if clipboard_data[keyword]['user'] == username:
+                    if clipboard_data[keyword]["user"] == username:
                         checking_clipboard_keyword_override = True
                         temp_keyword = keyword
                         temp_data_type = data_type
@@ -199,7 +198,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
 
                 save_clipboard_data(clipboard_data)
 
-                return terminal_mode.handle_command_success('saved')
+                return terminal_mode.handle_command_success("saved")
 
             else:
                 return textwrap.dedent(
@@ -212,7 +211,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
                 )
 
         else:
-            content = ('\n' + ' ' * TAB_SIZE * 4).join(data_types)
+            content = ("\n" + " " * TAB_SIZE * 4).join(data_types)
             return textwrap.dedent(
                 f"""
                 ```
@@ -246,10 +245,10 @@ def list_user_keywords(username: str) -> str:
     keywords = []
 
     for key, value in clipboard_data.items():
-        if value['user'] == username:
+        if value["user"] == username:
             keywords.append(key)
 
-    keywords = ('\n' + ' ' * TAB_SIZE * 2).join(keywords)
+    keywords = ("\n" + " " * TAB_SIZE * 2).join(keywords)
 
     return textwrap.dedent(
         f"""
@@ -268,7 +267,7 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
 
     for key, value in clipboard_data.items():
         if key == keyword:
-            if value['user'] == username:
+            if value["user"] == username:
                 del clipboard_data[keyword]
                 save_clipboard_data(clipboard_data)
 
@@ -302,7 +301,7 @@ def delete_data_with_keyword(keyword: str, username: str) -> str:
 
 def get_clipboard_response(msg) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('clipboard')
+        return command_help.load_help_cmd_info("clipboard")
 
     global checking_clipboard_keyword_override
 
@@ -311,31 +310,31 @@ def get_clipboard_response(msg) -> str:
     if checking_clipboard_keyword_override == True:
         return save_data_to_clipboard(msg, username)
 
-    if msg.startswith('del'):
+    if msg.startswith("del"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('clipboard_del')
+            return command_help.load_help_cmd_info("clipboard_del")
 
         return delete_data_with_keyword(msg, username)
 
-    elif msg.startswith('get'):
+    elif msg.startswith("get"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('clipboard_get')
+            return command_help.load_help_cmd_info("clipboard_get")
 
         return get_clipboard_data(msg, username)
 
-    elif msg.startswith('list'):
+    elif msg.startswith("list"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('clipboard_list')
+            return command_help.load_help_cmd_info("clipboard_list")
 
         return list_user_keywords(username)
 
-    elif msg.startswith('save'):
+    elif msg.startswith("save"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('clipboard_save')
+            return command_help.load_help_cmd_info("clipboard_save")
 
         return save_data_to_clipboard(msg, username)
 

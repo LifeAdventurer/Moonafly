@@ -3,11 +3,10 @@ import textwrap
 import time
 from datetime import timedelta
 
-import psutil
-
 import bot
 import develop_mode
 import normal_mode
+import psutil
 import terminal_mode
 from command import (
     approve,
@@ -19,11 +18,11 @@ from command import (
 )
 from constants import HELP_FLAG, TAB_SIZE
 
-Moonafly_version = 'v2.17.2'
+Moonafly_version = "v2.17.2"
 
 
 # user identity
-author = ''
+author = ""
 developers = []
 special_guests = []
 
@@ -31,22 +30,22 @@ special_guests = []
 # initialed when bot started via init_files() in `bot.py`
 def load_user_identity_list():
     global author, developers, special_guests
-    with open('../data/json/user_identity.json') as file:
+    with open("../data/json/user_identity.json") as file:
         data = json.load(file)
     # author has the highest authority
     # only one author
-    author = data['author']
-    developers = data['developers']
-    special_guests = data['guests']
+    author = data["author"]
+    developers = data["developers"]
+    special_guests = data["guests"]
 
 
 def get_terminal_mode_login_record() -> dict:
     try:
-        with open('../data/json/terminal_mode_login_history.json') as file:
+        with open("../data/json/terminal_mode_login_history.json") as file:
             login_records = json.load(file)
     except FileNotFoundError:
         login_records = {"history": []}
-        with open('../data/json/terminal_mode_login_history.json', 'w') as file:
+        with open("../data/json/terminal_mode_login_history.json", "w") as file:
             json.dump(login_records, file, indent=4)
 
     return login_records
@@ -56,25 +55,25 @@ def save_terminal_mode_login_record():
     # you must get the record every time since the user might enter several times
     records = get_terminal_mode_login_record()
 
-    records['history'].append(
+    records["history"].append(
         {
-            'user': terminal_mode_current_using_user,
-            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+            "user": terminal_mode_current_using_user,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         }
     )
 
     # save the record to json file
-    with open('../data/json/terminal_mode_login_history.json', 'w') as file:
+    with open("../data/json/terminal_mode_login_history.json", "w") as file:
         json.dump(records, file, indent=4)
 
 
 def get_develop_mode_login_record() -> dict:
     try:
-        with open('../data/json/develop_mode_login_history.json') as file:
+        with open("../data/json/develop_mode_login_history.json") as file:
             login_records = json.load(file)
     except FileNotFoundError:
         login_records = {"history": []}
-        with open('../data/json/develop_mode_login_history.json', 'w') as file:
+        with open("../data/json/develop_mode_login_history.json", "w") as file:
             json.dump(login_records, file, indent=4)
 
     return login_records
@@ -84,15 +83,15 @@ def save_develop_mode_login_record():
     # you must get the record every time since the user might enter several times
     records = get_develop_mode_login_record()
 
-    records['history'].append(
+    records["history"].append(
         {
-            'user': develop_mode_current_using_user,
-            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+            "user": develop_mode_current_using_user,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         }
     )
 
     # save the record to json file
-    with open('../data/json/develop_mode_login_history.json', 'w') as file:
+    with open("../data/json/develop_mode_login_history.json", "w") as file:
         json.dump(records, file, indent=4)
 
 
@@ -114,9 +113,9 @@ async def create_thread(
 
 
 # prevent multiple user using terminal or develop mode at the same time
-terminal_mode_current_using_user = ''
-develop_mode_current_using_user = ''
-current_using_channel = ''
+terminal_mode_current_using_user = ""
+develop_mode_current_using_user = ""
+current_using_channel = ""
 start_using_timestamp = None
 
 # in which mode status
@@ -126,9 +125,9 @@ is_develop_mode = False
 
 ignore_capitalization = False
 
-enter_terminal_mode_cmd = ['-t', 'moonafly -t', 'Moonafly -t']
-enter_develop_mode_cmd = ['-d', 'moonafly -d', 'Moonafly -d']
-ignore_capitalization_option = ['--ic', '--ignore-capitalization']
+enter_terminal_mode_cmd = ["-t", "moonafly -t", "Moonafly -t"]
+enter_develop_mode_cmd = ["-d", "moonafly -d", "Moonafly -d"]
+ignore_capitalization_option = ["--ic", "--ignore-capitalization"]
 
 
 async def get_response(message) -> str:
@@ -136,8 +135,15 @@ async def get_response(message) -> str:
     msg = str(message.content).strip()
 
     global is_normal_mode, is_terminal_mode, is_develop_mode
-    global terminal_mode_current_using_user, develop_mode_current_using_user, current_using_channel, start_using_timestamp
-    global enter_terminal_mode_cmd, enter_develop_mode_cmd, ignore_capitalization
+    global \
+        terminal_mode_current_using_user, \
+        develop_mode_current_using_user, \
+        current_using_channel, \
+        start_using_timestamp
+    global \
+        enter_terminal_mode_cmd, \
+        enter_develop_mode_cmd, \
+        ignore_capitalization
 
     if is_normal_mode == True and any(
         msg.startswith(cmd) for cmd in enter_terminal_mode_cmd
@@ -154,7 +160,7 @@ async def get_response(message) -> str:
                 # Delete '-t' message
                 await message.delete()
                 # Create private thread
-                thread = await create_thread(message, 'terminal')
+                thread = await create_thread(message, "terminal")
 
             current_using_channel = str(thread)
 
@@ -166,8 +172,8 @@ async def get_response(message) -> str:
                 save_terminal_mode_login_record()
 
             # don't use append or it might cause double '~' when using recursion -t -t... command
-            terminal_mode.path_stack = ['~']
-            msg = msg[(2 if msg.startswith('-t') else 11) :].strip()
+            terminal_mode.path_stack = ["~"]
+            msg = msg[(2 if msg.startswith("-t") else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
                 if msg.startswith(cmd):
@@ -179,7 +185,7 @@ async def get_response(message) -> str:
             if (
                 not isinstance(thread, bot.discord.DMChannel)
                 and username in developers
-                and msg.startswith('--test')
+                and msg.startswith("--test")
             ):
                 msg = msg[7:].strip()
                 for developer_username in developers:
@@ -204,7 +210,7 @@ async def get_response(message) -> str:
                             f"{pending_count} user{'s are' if pending_count > 1 else ' is'} pending for the role: '{role}'"
                         )
 
-            space = '\n' + ' ' * TAB_SIZE * 5
+            space = "\n" + " " * TAB_SIZE * 5
 
             await thread.send(
                 textwrap.dedent(
@@ -242,7 +248,7 @@ async def get_response(message) -> str:
                 # Delete '-d' message
                 await message.delete()
                 # Create private thread
-                thread = await create_thread(message, 'develop')
+                thread = await create_thread(message, "develop")
 
             current_using_channel = str(thread)
 
@@ -253,8 +259,8 @@ async def get_response(message) -> str:
             if develop_mode_current_using_user != author:
                 save_develop_mode_login_record()
 
-            develop_mode.path_stack = ['~']
-            msg = msg[(2 if msg.startswith('-d') else 11) :].strip()
+            develop_mode.path_stack = ["~"]
+            msg = msg[(2 if msg.startswith("-d") else 11) :].strip()
 
             for cmd in ignore_capitalization_option:
                 if msg.startswith(cmd):
@@ -263,7 +269,7 @@ async def get_response(message) -> str:
                     break
 
             if not isinstance(thread, bot.discord.DMChannel) and msg.startswith(
-                '--test'
+                "--test"
             ):
                 msg = msg[7:].strip()
                 for developer_username in developers:
@@ -301,12 +307,12 @@ async def get_response(message) -> str:
 
     else:
         # make sure no other user can exit the terminal
-        if msg.startswith('exit') and not is_normal_mode:
+        if msg.startswith("exit") and not is_normal_mode:
             msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('exit')
+                return command_help.load_help_cmd_info("exit")
 
-            if not msg.startswith('--save') and isinstance(
+            if not msg.startswith("--save") and isinstance(
                 message.channel, bot.discord.Thread
             ):
                 await message.channel.delete()
@@ -318,42 +324,42 @@ async def get_response(message) -> str:
                 clipboard.checking_clipboard_keyword_override = False
                 game_1A2B.playing_game_1A2B = False
                 random_vocab_test.random_vocab_testing = False
-                translate.from_language = 'en'
-                translate.to_language = 'zh-tw'
+                translate.from_language = "en"
+                translate.to_language = "zh-tw"
 
                 terminal_mode.path_stack.clear()
-                terminal_mode_current_using_user = ''
+                terminal_mode_current_using_user = ""
 
             elif is_develop_mode:
                 is_develop_mode = False
                 is_normal_mode = True
 
                 develop_mode.path_stack.clear()
-                develop_mode_current_using_user = ''
+                develop_mode_current_using_user = ""
 
             # global variables that affect all modes
             ignore_capitalization = False
 
-            current_using_channel = ''
+            current_using_channel = ""
             start_using_timestamp = None
 
-            if msg.startswith('--save'):
-                return '```exited successfully without deleting thread```'
+            if msg.startswith("--save"):
+                return "```exited successfully without deleting thread```"
             elif isinstance(message.channel, bot.discord.DMChannel):
-                return '```exited successfully```'
+                return "```exited successfully```"
             else:
-                return ''
+                return ""
 
-        elif msg.startswith('status'):
+        elif msg.startswith("status"):
             msg = msg[7:].strip()
 
-            mode = ''
+            mode = ""
             if is_terminal_mode:
-                mode = 'terminal mode'
+                mode = "terminal mode"
             elif is_develop_mode:
-                mode = 'develop mode'
+                mode = "develop mode"
             else:
-                mode = 'normal mode'
+                mode = "normal mode"
 
             # battery
             battery = psutil.sensors_battery()
@@ -362,7 +368,7 @@ async def get_response(message) -> str:
 
             # cpu core usages
             aligned_cpu_core_usages = []
-            if username == author and msg.startswith('detail'):
+            if username == author and msg.startswith("detail"):
                 # cpu usage per core
                 cpu_usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
 
@@ -374,7 +380,7 @@ async def get_response(message) -> str:
 
                 for i in range(0, len(cpu_core_usages), 4):
                     aligned_cpu_core_usages.append(
-                        ''.join(
+                        "".join(
                             [
                                 core.ljust(16)
                                 for core in cpu_core_usages[i : i + 4]
@@ -382,7 +388,7 @@ async def get_response(message) -> str:
                         )
                     )
 
-            aligned_cpu_core_usages = ('\n' + ' ' * TAB_SIZE * 4).join(
+            aligned_cpu_core_usages = ("\n" + " " * TAB_SIZE * 4).join(
                 aligned_cpu_core_usages
             )
 

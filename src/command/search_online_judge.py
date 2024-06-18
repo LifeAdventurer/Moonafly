@@ -2,7 +2,6 @@ import re
 import textwrap
 
 import requests
-
 import terminal_mode
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
@@ -26,7 +25,7 @@ def show_online_judge_list() -> str:
             f"{key.ljust(20 - len(str(index)))}-{str(index)}"
         )
 
-    space = '\n' + ' ' * TAB_SIZE * 2
+    space = "\n" + " " * TAB_SIZE * 2
     return textwrap.dedent(
         f"""
         ```
@@ -79,17 +78,17 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
 
 def get_online_judge_info(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('online_judge')
+        return command_help.load_help_cmd_info("online_judge")
 
-    if msg.startswith('show'):
+    if msg.startswith("show"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('online_judge_show')
+            return command_help.load_help_cmd_info("online_judge_show")
 
         return show_online_judge_list()
 
     # -{number} {handle}
-    pattern = r'^-(\d+)\s+(\w+)$'
+    pattern = r"^-(\d+)\s+(\w+)$"
     match = re.search(pattern, msg)
 
     if match:
@@ -97,4 +96,4 @@ def get_online_judge_info(msg: str) -> str:
         handle = match.group(2)
         return get_profile_from_online_judge(number, handle)
     else:
-        return command_help.load_help_cmd_info('online_judge_handle')
+        return command_help.load_help_cmd_info("online_judge_handle")

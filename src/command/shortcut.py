@@ -10,18 +10,18 @@ from constants import HELP_FLAG, TAB_SIZE
 
 def load_user_shortcuts() -> dict:
     try:
-        with open('../data/json/user_shortcuts.json', 'r') as file:
+        with open("../data/json/user_shortcuts.json") as file:
             user_shortcuts = json.load(file)
     except FileNotFoundError:
         user_shortcuts = {}
-        with open('../data/json/user_shortcuts.json', 'w') as file:
+        with open("../data/json/user_shortcuts.json", "w") as file:
             json.dump(user_shortcuts, file, indent=4)
 
     return user_shortcuts
 
 
 def write_user_shortcuts(user_shortcuts: dict):
-    with open('../data/json/user_shortcuts.json', 'w') as file:
+    with open("../data/json/user_shortcuts.json", "w") as file:
         json.dump(user_shortcuts, file, indent=4)
 
 
@@ -39,9 +39,9 @@ def set_shortcut(msg: str) -> str:
         user_shortcuts[username][shortcut_string] = replace_string
         write_user_shortcuts(user_shortcuts)
 
-        return terminal_mode.handle_command_success('set')
+        return terminal_mode.handle_command_success("set")
     else:
-        return terminal_mode.handle_command_error('set', 'format')
+        return terminal_mode.handle_command_error("set", "format")
 
 
 def list_user_shortcuts() -> str:
@@ -53,13 +53,13 @@ def list_user_shortcuts() -> str:
     shortcuts = []
     max_key_len = len(max(user_shortcuts[username].keys(), key=len))
     for index, (key, value) in enumerate(user_shortcuts[username].items()):
-        input_str = f"\"{key}\"".ljust(max_key_len + 2)
-        command = f"\"{value}\""
+        input_str = f'"{key}"'.ljust(max_key_len + 2)
+        command = f'"{value}"'
         shortcuts.append(
             f"{str(index).rjust(shortcuts_count_strlen)} {input_str} -> {command}"
         )
 
-    space = '\n' + ' ' * TAB_SIZE * 2
+    space = "\n" + " " * TAB_SIZE * 2
     shortcuts = space.join(shortcuts)
     return textwrap.dedent(
         f"""
@@ -75,12 +75,12 @@ def list_user_shortcuts() -> str:
 
 def delete_user_shortcut(msg: str) -> str:
     if not msg:
-        return terminal_mode.handle_command_error('del', 'format')
+        return terminal_mode.handle_command_error("del", "format")
 
     try:
         index = int(msg)
     except ValueError:
-        return terminal_mode.handle_command_error('del', 'format')
+        return terminal_mode.handle_command_error("del", "format")
 
     user_shortcuts = load_user_shortcuts()
     username = responses.terminal_mode_current_using_user
@@ -90,33 +90,33 @@ def delete_user_shortcut(msg: str) -> str:
         del user_shortcuts[username][key_to_delete]
         write_user_shortcuts(user_shortcuts)
 
-        return terminal_mode.handle_command_success('deleted')
+        return terminal_mode.handle_command_success("deleted")
     else:
-        return terminal_mode.handle_command_error('del', 'index')
+        return terminal_mode.handle_command_error("del", "index")
 
 
 def get_shortcut_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('shortcut')
+        return command_help.load_help_cmd_info("shortcut")
 
-    if msg.startswith('del'):
+    if msg.startswith("del"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('shortcut_del')
+            return command_help.load_help_cmd_info("shortcut_del")
 
         return delete_user_shortcut(msg)
 
-    elif msg.startswith('list'):
+    elif msg.startswith("list"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('shortcut_list')
+            return command_help.load_help_cmd_info("shortcut_list")
 
         return list_user_shortcuts()
 
-    elif msg.startswith('set'):
+    elif msg.startswith("set"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('shortcut_set')
+            return command_help.load_help_cmd_info("shortcut_set")
 
         return set_shortcut(msg)
 

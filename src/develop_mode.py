@@ -9,35 +9,35 @@ from constants import HELP_FLAG, TAB_SIZE
 
 
 def load_develop_mode_directory_structure():
-    with open('../data/json/develop_mode_directory_structure.json') as file:
-        return json.load(file)['structure']
+    with open("../data/json/develop_mode_directory_structure.json") as file:
+        return json.load(file)["structure"]
 
 
 def load_Moonafly_structure() -> dict:
-    with open('../data/json/Moonafly_structure.json') as file:
-        return json.load(file)['structure']
+    with open("../data/json/Moonafly_structure.json") as file:
+        return json.load(file)["structure"]
 
 
 def load_user_cloak() -> dict:
     try:
-        with open('../data/json/user_cloak.json', 'r') as file:
+        with open("../data/json/user_cloak.json") as file:
             user_cloak = json.load(file)
     except FileNotFoundError:
-        user_cloak = {'terminal_mode': {}, 'develop_mode': {}}
-        with open('../data/json/user_cloak.json', 'w') as file:
+        user_cloak = {"terminal_mode": {}, "develop_mode": {}}
+        with open("../data/json/user_cloak.json", "w") as file:
             json.dump(user_cloak, file, indent=4)
     return user_cloak
 
 
 def write_user_cloak(user_cloak: dict):
-    with open('../data/json/user_cloak.json', 'w') as file:
+    with open("../data/json/user_cloak.json", "w") as file:
         json.dump(user_cloak, file, indent=4)
 
 
 def get_ls_command_output(files: list, tab_count: int) -> str:
     if len(files) == 0:
-        return ''
-    output = ''
+        return ""
+    output = ""
     max_file_length = max(len(file) for file in files)
     terminal_width = 79
     min_column_width = max_file_length + 2
@@ -52,7 +52,7 @@ def get_ls_command_output(files: list, tab_count: int) -> str:
         group_index = index % columns
         output += file.ljust(column_widths[group_index])
         if group_index == columns - 1 and index != len(files) - 1:
-            output += '\n' + ' ' * TAB_SIZE * tab_count
+            output += "\n" + " " * TAB_SIZE * tab_count
 
     return output
 
@@ -71,15 +71,15 @@ def current_path() -> str:
     # show the current using user
     path = f"{responses.develop_mode_current_using_user}@Moonafly:"
     for folder in path_stack:
-        if folder != '~':
-            path += '/'
+        if folder != "~":
+            path += "/"
         path += folder
     return path + "$"
 
 
 def command_not_found(msg: str) -> str:
-    space = '\n' + ' ' * TAB_SIZE * 2
-    msg = space.join(msg.split('\n'))
+    space = "\n" + " " * TAB_SIZE * 2
+    msg = space.join(msg.split("\n"))
     return textwrap.dedent(
         f"""
         ```
@@ -91,15 +91,15 @@ def command_not_found(msg: str) -> str:
 
 
 def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
-    error = ''
-    if error_type == 'format':
-        error = 'format error'
-    elif error_type == 'path':
-        space = '\n' + ' ' * TAB_SIZE * 2
-        path = space.join(msg.split('\n'))
+    error = ""
+    if error_type == "format":
+        error = "format error"
+    elif error_type == "path":
+        space = "\n" + " " * TAB_SIZE * 2
+        path = space.join(msg.split("\n"))
         error = f"{path}: No such file or directory"
-    elif error_type == 'permission':
-        error = 'permission denied: requires highest authority'
+    elif error_type == "permission":
+        error = "permission denied: requires highest authority"
     return textwrap.dedent(
         f"""
         ```
@@ -112,23 +112,23 @@ def handle_command_error(command: str, error_type: str, msg: str = None) -> str:
 
 def check_path_exists(command: str, path: str) -> tuple[bool, list]:
     # Skip all the '\' and split the path into a folder list
-    path = path.replace('\\', '').split('/')
+    path = path.replace("\\", "").split("/")
 
     # Create a copy of the current path stack
     temporary_path_stack = path_stack.copy()
 
     for folder in path:
-        if folder == '' or folder == '.':
+        if folder == "" or folder == ".":
             continue
 
         # move up one directory
-        elif folder == '..':
+        elif folder == "..":
             if len(temporary_path_stack) > 1:
                 temporary_path_stack.pop()
 
-            elif temporary_path_stack[0] == '~':
+            elif temporary_path_stack[0] == "~":
                 return False, handle_command_error(
-                    command, 'path', '/'.join(path)
+                    command, "path", "/".join(path)
                 )
 
         else:
@@ -137,7 +137,7 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
     current_directory = load_develop_mode_directory_structure()
 
     for folder in temporary_path_stack:
-        if folder[-1] == '>':
+        if folder[-1] == ">":
             for item in list(current_directory):
                 if item.startswith(folder[:-1]):
                     current_directory = current_directory[item]
@@ -148,23 +148,23 @@ def check_path_exists(command: str, path: str) -> tuple[bool, list]:
 
             else:
                 return False, handle_command_error(
-                    command, 'path', '/'.join(path)
+                    command, "path", "/".join(path)
                 )
 
         elif folder in list(current_directory):
-            if folder == 'author':
+            if folder == "author":
                 if (
                     responses.develop_mode_current_using_user
                     == responses.author
                 ):
                     current_directory = current_directory[folder]
                 else:
-                    return False, handle_command_error(command, 'permission')
+                    return False, handle_command_error(command, "permission")
             else:
                 current_directory = current_directory[folder]
 
         else:
-            return False, handle_command_error(command, 'path', '/'.join(path))
+            return False, handle_command_error(command, "path", "/".join(path))
 
     return True, temporary_path_stack
 
@@ -175,7 +175,7 @@ async def get_response_in_develop_mode(message) -> str:
 
     global path_stack
 
-    if msg == 'help':
+    if msg == "help":
         return textwrap.dedent(
             f"""
             ```
@@ -207,23 +207,23 @@ async def get_response_in_develop_mode(message) -> str:
             """
         )
 
-    if msg.startswith('cd'):
+    if msg.startswith("cd"):
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('cd')
+            return command_help.load_help_cmd_info("cd")
 
         path = msg
 
         # blank or ~ should go directly to ~
-        if path == '' or path == '~':
-            path_stack = ['~']
+        if path == "" or path == "~":
+            path_stack = ["~"]
             return f"```{current_path()}```"
 
         # go to the root directory
-        if path[0] == '/' and username != responses.author:
-            return handle_command_error('cd', 'permission')
+        if path[0] == "/" and username != responses.author:
+            return handle_command_error("cd", "permission")
 
-        exists, temporary_path_stack = check_path_exists('cd', path)
+        exists, temporary_path_stack = check_path_exists("cd", path)
 
         if not exists:
             return temporary_path_stack
@@ -231,36 +231,36 @@ async def get_response_in_develop_mode(message) -> str:
         path_stack = temporary_path_stack
         return f"```{current_path()}```"
 
-    elif msg.startswith('clear'):
+    elif msg.startswith("clear"):
         msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('clear')
+            return command_help.load_help_cmd_info("clear")
 
         await bot.clear_msgs(message, responses.start_using_timestamp)
         return f"```{current_path()}```"
 
-    elif msg.startswith('cloak'):
+    elif msg.startswith("cloak"):
         msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('cloak')
+            return command_help.load_help_cmd_info("cloak")
 
-        pattern = r'^([+-])[h]\s*(.*)$'
+        pattern = r"^([+-])[h]\s*(.*)$"
         match = re.match(pattern, msg)
         if match:
             operation = match.group(1)
             path = match.group(2)
 
-            exists, temporary_path_stack = check_path_exists('cloak', path)
+            exists, temporary_path_stack = check_path_exists("cloak", path)
 
             if not exists:
                 return temporary_path_stack
 
             folder_name = temporary_path_stack[-1]
             user_cloak = load_user_cloak()
-            user_develop_mode_cloak = user_cloak['develop_mode'].setdefault(
+            user_develop_mode_cloak = user_cloak["develop_mode"].setdefault(
                 username, []
             )
-            if operation == '+':
+            if operation == "+":
                 if folder_name not in user_develop_mode_cloak:
                     user_develop_mode_cloak.append(folder_name)
             else:
@@ -277,20 +277,20 @@ async def get_response_in_develop_mode(message) -> str:
                 """
             )
         else:
-            return handle_command_error('cloak', 'format')
+            return handle_command_error("cloak", "format")
 
-    elif msg.startswith('end'):
+    elif msg.startswith("end"):
         msg = msg[4:].strip()
         return maintenance.end_maintenance(msg)
 
-    elif msg.startswith('jump'):
+    elif msg.startswith("jump"):
         msg = msg[5:].strip()
         return jump.jump_to_folder(msg)
 
-    elif msg.startswith('ls'):
+    elif msg.startswith("ls"):
         msg = msg[3:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('ls')
+            return command_help.load_help_cmd_info("ls")
 
         current_directory = load_develop_mode_directory_structure()
         # and move it to the current directory
@@ -301,13 +301,13 @@ async def get_response_in_develop_mode(message) -> str:
         files_in_current_directory = sorted(list(current_directory))
         if (
             username != responses.author
-            and 'author' in files_in_current_directory
+            and "author" in files_in_current_directory
         ):
-            files_in_current_directory.remove('author')
+            files_in_current_directory.remove("author")
 
         if not msg.startswith("-a") and not msg.startswith("--all"):
             user_cloak = load_user_cloak()
-            for folder in user_cloak['develop_mode'].get(username, []):
+            for folder in user_cloak["develop_mode"].get(username, []):
                 if folder in files_in_current_directory:
                     files_in_current_directory.remove(folder)
 
@@ -320,18 +320,18 @@ async def get_response_in_develop_mode(message) -> str:
             """
         )
 
-    elif msg.startswith('pwd'):
+    elif msg.startswith("pwd"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('pwd')
+            return command_help.load_help_cmd_info("pwd")
 
         # delete the prefix 'Moonafly:' and the suffix '$'
         path = current_path()[(10 + len(username)) : -1]
         # delete the prefix no matter it is '~' or '/' path_stack still has the data
         path = path[1:]
 
-        if path_stack[0] == '~':
-            path = 'home/Moonafly' + path
+        if path_stack[0] == "~":
+            path = "home/Moonafly" + path
 
         return textwrap.dedent(
             f"""
@@ -342,17 +342,17 @@ async def get_response_in_develop_mode(message) -> str:
             """
         )
 
-    elif msg.startswith('set'):
+    elif msg.startswith("set"):
         msg = msg[4:].strip()
         return maintenance.set_maintenance(msg)
 
-    elif msg.startswith('tree'):
+    elif msg.startswith("tree"):
         msg = msg[5:].strip()
 
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('tree')
+            return command_help.load_help_cmd_info("tree")
 
-        if msg.startswith('-M') or msg.startswith('--Moonafly'):
+        if msg.startswith("-M") or msg.startswith("--Moonafly"):
             return tree.visualize_structure(load_Moonafly_structure())
 
         # copy the directory structure
@@ -366,14 +366,14 @@ async def get_response_in_develop_mode(message) -> str:
 
         return tree.visualize_structure(current_structure)
 
-    if path_stack_match(1, 'remote'):
-        if path_stack_match(2, 'file'):
+    if path_stack_match(1, "remote"):
+        if path_stack_match(2, "file"):
             if msg.startswith(HELP_FLAG):
-                return command_help.load_help_cmd_info('remote_file')
+                return command_help.load_help_cmd_info("remote_file")
 
-            return remote_file.load_remote_file(msg.strip(), 'developer')
+            return remote_file.load_remote_file(msg.strip(), "developer")
 
-    elif path_stack_match(1, 'issues'):
+    elif path_stack_match(1, "issues"):
         return issues.get_issues(msg)
 
     else:

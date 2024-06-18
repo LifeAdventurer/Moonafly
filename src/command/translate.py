@@ -1,10 +1,9 @@
 import textwrap
 
-from googletrans import LANGUAGES, Translator
-
 import terminal_mode
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
+from googletrans import LANGUAGES, Translator
 
 
 def show_languages(columns=3) -> str:
@@ -19,14 +18,14 @@ def show_languages(columns=3) -> str:
     line = []
     for index, (code, language) in enumerate(LANGUAGES.items()):
         if index % columns == 0:
-            lang_lines.append(''.join(line))
+            lang_lines.append("".join(line))
             line = []
 
         code_lang_str = f"{code}: {language}"
         line.append(code_lang_str.ljust(column_width[index % columns]))
 
-    lang_lines.append(''.join(line))
-    lang_lines = ('\n' + ' ' * TAB_SIZE * 2).join(lang_lines)
+    lang_lines.append("".join(line))
+    lang_lines = ("\n" + " " * TAB_SIZE * 2).join(lang_lines)
 
     return textwrap.dedent(
         f"""
@@ -39,15 +38,15 @@ def show_languages(columns=3) -> str:
 
 
 # default
-from_language = 'en'
-to_language = 'zh-tw'
+from_language = "en"
+to_language = "zh-tw"
 
 language_codes = []
 
 
 def set_language(msg: str):
-    parts = msg.split(' ')
-    if len(parts) != 3 or parts[1] != 'to':
+    parts = msg.split(" ")
+    if len(parts) != 3 or parts[1] != "to":
         return textwrap.dedent(
             f"""
             ```
@@ -75,36 +74,35 @@ def set_language(msg: str):
     global from_language, to_language
     from_language = parts[0]
     to_language = parts[2]
-    return terminal_mode.handle_command_success('set')
+    return terminal_mode.handle_command_success("set")
 
 
 def swap_languages():
     global from_language, to_language
     from_language, to_language = to_language, from_language
-    return terminal_mode.handle_command_success('swapped')
+    return terminal_mode.handle_command_success("swapped")
 
 
 def get_translated_text(msg: str) -> str:
-
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('translate')
+        return command_help.load_help_cmd_info("translate")
 
-    if msg.startswith('set'):
+    if msg.startswith("set"):
         msg = msg[4:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('translate_set')
+            return command_help.load_help_cmd_info("translate_set")
         return set_language(msg)
 
-    elif msg.startswith('show'):
+    elif msg.startswith("show"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('translate_show')
+            return command_help.load_help_cmd_info("translate_show")
         return show_languages()
 
-    elif msg.startswith('swap'):
+    elif msg.startswith("swap"):
         msg = msg[5:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('translate_swap')
+            return command_help.load_help_cmd_info("translate_swap")
         return swap_languages()
 
     return textwrap.dedent(

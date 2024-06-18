@@ -1,4 +1,3 @@
-import re
 import textwrap
 
 import responses
@@ -9,7 +8,7 @@ def get_response_in_normal_mode(message) -> str:
     username = str(message.author)
     msg = str(message.content).strip()
 
-    if msg == 'help':
+    if msg == "help":
         return textwrap.dedent(
             f"""
             ```
@@ -44,7 +43,7 @@ def get_response_in_normal_mode(message) -> str:
             """
         )
 
-    if msg.startswith('apply'):
+    if msg.startswith("apply"):
         msg = msg[6:].strip()
 
         return apply.apply_for_role(msg, username)

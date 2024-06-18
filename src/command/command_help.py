@@ -7,15 +7,15 @@ from constants import TAB_SIZE
 
 
 def load_help_cmd_info(command: str) -> str:
-    space = ' ' * TAB_SIZE * 2
+    space = " " * TAB_SIZE * 2
     path_to_txt = f"../data/txt/help_cmd_info/{command}.txt"
 
-    with open(path_to_txt, 'r') as file:
+    with open(path_to_txt) as file:
         lines = file.readlines()
 
     information = space.join(lines)
 
-    current_path = ''
+    current_path = ""
     if responses.is_terminal_mode == True:
         current_path = terminal_mode.current_path()
     elif responses.is_develop_mode == True:

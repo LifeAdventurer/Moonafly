@@ -1,13 +1,12 @@
 import textwrap
 
 import requests
-from bs4 import BeautifulSoup
-
 import terminal_mode
+from bs4 import BeautifulSoup
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
 
-cnn_root_url = 'https://edition.cnn.com'
+cnn_root_url = "https://edition.cnn.com"
 
 
 sending_news = False
@@ -19,34 +18,34 @@ def get_cnn_news(category: str) -> str:
     response = requests.get(f"{cnn_root_url}/{category}")
 
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text, "html.parser")
 
         container_field_links = soup.find_all(
-            'div', {'class': 'container__field-links'}
+            "div", {"class": "container__field-links"}
         )
 
         headline_list = []
         news_url_list = []
         for container_field_link in container_field_links:
-            news_urls = container_field_link.find_all('a')
+            news_urls = container_field_link.find_all("a")
 
             news_headlines = container_field_link.find_all(
-                'span', {'class': 'container__headline-text'}
+                "span", {"class": "container__headline-text"}
             )
             for headline in news_headlines:
                 headline_list.append(headline.text)
 
             for data in news_urls:
-                news_url = data.get('href')
+                news_url = data.get("href")
                 if news_url not in news_url_list:
-                    if news_url.startswith('/'):
+                    if news_url.startswith("/"):
                         news_url = cnn_root_url + news_url
 
                     news_url_list.append(news_url)
 
         sending_news = True
 
-        space = '\n' + ' ' * TAB_SIZE * 3
+        space = "\n" + " " * TAB_SIZE * 3
         return textwrap.dedent(
             f"""
             {(space).join([f"- [{headline_list[i]}](<{news_url_list[i]}>)" for i in range(min(len(headline_list), 15))])}
@@ -71,21 +70,21 @@ def get_cnn_news(category: str) -> str:
 
 
 cnn_news_categories = [
-    'us',
-    'world',
-    'politics',
-    'business',
-    'opinion',
-    'health',
-    'entertainment',
-    'style',
-    'travel',
-    'sports',
+    "us",
+    "world",
+    "politics",
+    "business",
+    "opinion",
+    "health",
+    "entertainment",
+    "style",
+    "travel",
+    "sports",
 ]
 
 
 def list_news_categories() -> str:
-    space = '\n' + ' ' * TAB_SIZE * 2
+    space = "\n" + " " * TAB_SIZE * 2
     return textwrap.dedent(
         f"""
         ```
@@ -100,15 +99,15 @@ def list_news_categories() -> str:
 
 def get_news(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('news')
+        return command_help.load_help_cmd_info("news")
 
-    if msg.startswith('get'):
+    if msg.startswith("get"):
         msg = msg[4:].strip()
 
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('news_get')
+            return command_help.load_help_cmd_info("news_get")
 
-        category = 'world'  # default
+        category = "world"  # default
 
         if len(msg) > 0:
             if msg in cnn_news_categories:
@@ -124,11 +123,11 @@ def get_news(msg: str) -> str:
                 )
 
         return get_cnn_news(category)
-    elif msg.startswith('list'):
+    elif msg.startswith("list"):
         msg = msg[5:].strip()
 
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('news_list')
+            return command_help.load_help_cmd_info("news_list")
 
         return list_news_categories()
     else:

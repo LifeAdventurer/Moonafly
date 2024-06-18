@@ -3,7 +3,6 @@ import sys
 from datetime import datetime
 
 import discord
-
 import responses
 import split_message
 
@@ -12,30 +11,30 @@ TAB_SIZE = 4
 
 
 # token should be encrypted
-token = ''
+token = ""
 
 
 # open token JSON file
 def load_token():
     global token
-    with open('../config.json') as file:
-        token = json.load(file)['token']
+    with open("../config.json") as file:
+        token = json.load(file)["token"]
 
 
 # check whether there is maintenance and the duration
 def load_maintenance() -> tuple[str, str, str]:
     try:
-        with open('../data/txt/init_files/maintenance.txt') as file:
-            in_maintenance = file.readline().strip() == 'True'
+        with open("../data/txt/init_files/maintenance.txt") as file:
+            in_maintenance = file.readline().strip() == "True"
             estimated_end_time = file.readline().strip()
             developer = file.readline().strip()
     except FileNotFoundError:
-        in_maintenance = 'False'
-        estimated_end_time = '1970-01-01 00:00:00'
-        developer = 'Moonafly'
-        with open('../data/txt/init_files/maintenance.txt', 'w') as file:
+        in_maintenance = "False"
+        estimated_end_time = "1970-01-01 00:00:00"
+        developer = "Moonafly"
+        with open("../data/txt/init_files/maintenance.txt", "w") as file:
             file.write(
-                '\n'.join([in_maintenance, estimated_end_time, developer])
+                "\n".join([in_maintenance, estimated_end_time, developer])
             )
 
     return in_maintenance, estimated_end_time, developer
@@ -85,8 +84,8 @@ async def send_message_in_private(message):
 
 
 async def clear_msgs(message, timestamp):
-    with open('../config.json', 'r') as file:
-        Moonafly_id = json.load(file)['bot_id']
+    with open("../config.json") as file:
+        Moonafly_id = json.load(file)["bot_id"]
     async for msg in message.channel.history(limit=None, after=timestamp):
         if msg.author.id in [message.author.id, Moonafly_id]:
             await msg.delete()
@@ -104,7 +103,7 @@ client = discord.Client(intents=intents)
 
 
 async def stop_Moonafly(message):
-    message.content = '```Moonafly stopped by command```'
+    message.content = "```Moonafly stopped by command```"
     await send_message_without_response(message)
     await client.close()
 
@@ -114,11 +113,11 @@ def run_Moonafly():
 
     @client.event
     async def on_ready():
-        print('Moonafly is now running!')
-        with open('../config.json', 'r') as file:
+        print("Moonafly is now running!")
+        with open("../config.json") as file:
             config_file = json.load(file)
-        config_file['bot_id'] = client.user.id
-        with open('../config.json', 'w') as file:
+        config_file["bot_id"] = client.user.id
+        with open("../config.json", "w") as file:
             json.dump(config_file, file, indent=4)
 
     @client.event
@@ -132,25 +131,25 @@ def run_Moonafly():
 
         # commands only author can trigger
         if username == responses.author:
-            if user_message == 'Moonafly --stop':
-                print('Moonafly stopped by command')
+            if user_message == "Moonafly --stop":
+                print("Moonafly stopped by command")
                 await stop_Moonafly(message)
                 return
 
-            elif user_message == 'Moonafly --restart':
-                print('Restarting Moonafly...')
-                message.content = '```Restarting Moonafly...```'
+            elif user_message == "Moonafly --restart":
+                print("Restarting Moonafly...")
+                message.content = "```Restarting Moonafly...```"
                 await send_message_without_response(message)
                 return
 
-            elif user_message == 'exit --force':
-                message.content = 'exit'
+            elif user_message == "exit --force":
+                message.content = "exit"
                 await send_message(message)
                 return
 
-            elif user_message == 'init --hard':
+            elif user_message == "init --hard":
                 init_files()
-                message.content = '```init files success```'
+                message.content = "```init files success```"
                 await send_message_without_response(message)
                 return
 
@@ -173,14 +172,13 @@ def run_Moonafly():
                 )
             )
         ):
-
             current_time = datetime.now()
             end_time = datetime.strptime(
-                estimated_end_time, '%Y-%m-%d %H:%M:%S'
+                estimated_end_time, "%Y-%m-%d %H:%M:%S"
             )
 
             seconds = int((end_time - current_time).total_seconds())
-            announce = ''
+            announce = ""
             if seconds > 0:
                 # get remaining maintenance time
                 minutes, seconds = divmod(seconds, 60)
@@ -207,7 +205,7 @@ def run_Moonafly():
                 if username == responses.author:
                     message.content = f"```{responses.terminal_mode_current_using_user} is using the terminal```"
                 else:
-                    message.content = '```someone is using the terminal```'
+                    message.content = "```someone is using the terminal```"
                 await send_message_in_private(message)
             return
 
@@ -222,12 +220,12 @@ def run_Moonafly():
                 if username == responses.author:
                     message.content = f"```{responses.develop_mode_current_using_user} is using develop mode```"
                 else:
-                    message.content = '```someone is using develop mode```'
+                    message.content = "```someone is using develop mode```"
                 await send_message_in_private(message)
             return
 
         if (
-            channel.startswith('Direct Message')
+            channel.startswith("Direct Message")
             and username != responses.author
         ):
             print(f"WARNING: {username} using bot in Direct Message\n")
@@ -252,8 +250,7 @@ def run_Moonafly():
     client.run(token, log_formatter=formatter)
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     # This is a hack method
     # We force stdout redirect to stderr because the bot manager cannot read messages from stdout
     sys.stdout = sys.stderr
