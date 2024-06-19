@@ -57,7 +57,7 @@ def set_language(msg: str):
         )
 
     if len(language_codes) == 0:
-        for code, language in LANGUAGES.items():
+        for code, _ in LANGUAGES.items():
             language_codes.append(code)
 
     for i in {0, 2}:

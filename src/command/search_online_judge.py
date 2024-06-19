@@ -49,7 +49,7 @@ def get_profile_from_online_judge(number: int, handle: str) -> str:
             """
         )
 
-    for index, (key, value) in enumerate(urls.items(), start=1):
+    for index, (_, value) in enumerate(urls.items(), start=1):
         if index == number:
             oj_url = value
             break

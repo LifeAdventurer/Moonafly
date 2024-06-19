@@ -372,7 +372,7 @@ async def get_response_in_terminal_mode(message) -> str:
                 current_directory = current_directory[folder]
 
             # sort the folders alphabetically
-            files_in_current_directory = sorted(list(current_directory))
+            files_in_current_directory = sorted(current_directory)
             if (
                 username != responses.author
                 and "author" in files_in_current_directory
