@@ -145,7 +145,7 @@ async def get_response(message) -> str:
         enter_develop_mode_cmd, \
         ignore_capitalization
 
-    if is_normal_mode == True and any(
+    if is_normal_mode and any(
         msg.startswith(cmd) for cmd in enter_terminal_mode_cmd
     ):
         if username in special_guests:
@@ -192,7 +192,7 @@ async def get_response(message) -> str:
                     developer = bot.get_user_id_by_username(
                         message, developer_username
                     )
-                    if developer != None:
+                    if developer is not None:
                         await thread.add_user(developer)
 
             if len(msg) > 0:
@@ -233,7 +233,7 @@ async def get_response(message) -> str:
                 """
             )
 
-    elif is_normal_mode == True and any(
+    elif is_normal_mode and any(
         msg.startswith(cmd) for cmd in enter_develop_mode_cmd
     ):
         if username in developers:
@@ -276,7 +276,7 @@ async def get_response(message) -> str:
                     developer = bot.get_user_id_by_username(
                         message, developer_username
                     )
-                    if developer != None:
+                    if developer is not None:
                         await thread.add_user(developer)
 
             if len(msg) > 0:
@@ -405,7 +405,7 @@ async def get_response(message) -> str:
                 {Moonafly_version}
 
                 {mode}
-                server battery percentage: {percent}% ({'' if is_charging == True else 'not '}charging)
+                server battery percentage: {percent}% ({'' if is_charging else 'not '}charging)
                 {aligned_cpu_core_usages}
                 ```
                 """

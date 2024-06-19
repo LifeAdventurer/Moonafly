@@ -10,9 +10,9 @@ from constants import HELP_FLAG, TAB_SIZE
 
 def get_issues_on_github(github_repo: str = "Lifeadventurer/Moonafly") -> str:
     current_path = ""
-    if responses.is_terminal_mode == True:
+    if responses.is_terminal_mode:
         current_path = terminal_mode.current_path()
-    elif responses.is_develop_mode == True:
+    elif responses.is_develop_mode:
         current_path = develop_mode.current_path()
 
     url = f"https://api.github.com/repos/{github_repo}/issues"
@@ -75,7 +75,7 @@ def get_issues(msg: str) -> str:
         return get_issues_on_github()
 
     else:
-        if responses.is_terminal_mode == True:
+        if responses.is_terminal_mode:
             return terminal_mode.command_not_found(msg)
-        elif responses.is_develop_mode == True:
+        elif responses.is_develop_mode:
             return develop_mode.command_not_found(msg)

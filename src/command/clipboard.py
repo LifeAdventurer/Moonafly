@@ -94,7 +94,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
     global checking_clipboard_keyword_override
     global temp_keyword, temp_data_type, temp_data, temp_status
 
-    if checking_clipboard_keyword_override == True:
+    if checking_clipboard_keyword_override:
         if msg.lower() == "yes" or msg.lower() == "y":
             checking_clipboard_keyword_override = False
 
@@ -147,7 +147,7 @@ def save_data_to_clipboard(msg: str, username: str) -> str:
         lines.pop(0)
         data = "\n".join(lines)
 
-        if status == None:
+        if status is None:
             status = "public"
         elif status != "private":
             return textwrap.dedent(
@@ -307,7 +307,7 @@ def get_clipboard_response(msg) -> str:
 
     username = responses.terminal_mode_current_using_user
 
-    if checking_clipboard_keyword_override == True:
+    if checking_clipboard_keyword_override:
         return save_data_to_clipboard(msg, username)
 
     if msg.startswith("del"):

@@ -16,9 +16,9 @@ def load_help_cmd_info(command: str) -> str:
     information = space.join(lines)
 
     current_path = ""
-    if responses.is_terminal_mode == True:
+    if responses.is_terminal_mode:
         current_path = terminal_mode.current_path()
-    elif responses.is_develop_mode == True:
+    elif responses.is_develop_mode:
         current_path = develop_mode.current_path()
     return textwrap.dedent(
         f"""

@@ -10,10 +10,10 @@ from constants import HELP_FLAG
 
 def set_maintenance(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('set')
+        return command_help.load_help_cmd_info("set")
 
     try:
-        time = datetime.strptime(msg, '%Y-%m-%d %H:%M:%S')
+        time = datetime.strptime(msg, "%Y-%m-%d %H:%M:%S")
 
         if time <= datetime.now():
             return textwrap.dedent(
@@ -25,11 +25,11 @@ def set_maintenance(msg: str) -> str:
                 """
             )
 
-        with open('../data/txt/init_files/maintenance.txt', 'w') as file:
+        with open("../data/txt/init_files/maintenance.txt", "w") as file:
             file.write(
-                'True\n'
+                "True\n"
                 + str(time)
-                + '\n'
+                + "\n"
                 + responses.develop_mode_current_using_user
             )
 
@@ -56,11 +56,11 @@ def set_maintenance(msg: str) -> str:
 
 def end_maintenance(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('end')
+        return command_help.load_help_cmd_info("end")
 
     in_maintenance = bot.load_maintenance()[0]
 
-    if in_maintenance != True:
+    if not in_maintenance:
         return textwrap.dedent(
             f"""
             ```
@@ -70,11 +70,11 @@ def end_maintenance(msg: str) -> str:
             """
         )
 
-    with open('../data/txt/init_files/maintenance.txt', 'w') as file:
+    with open("../data/txt/init_files/maintenance.txt", "w") as file:
         file.write(
-            'False\n'
-            + str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-            + '\n'
+            "False\n"
+            + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            + "\n"
             + responses.develop_mode_current_using_user
         )
 

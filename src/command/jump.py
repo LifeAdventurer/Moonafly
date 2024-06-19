@@ -18,10 +18,10 @@ def traverse(data: dict, target_folder: str, bypass: list) -> bool:
 
         path_stack.append(key)
         if key == target_folder or (
-            target_folder[-1] == '>' and key.startswith(target_folder[:-1])
+            target_folder[-1] == ">" and key.startswith(target_folder[:-1])
         ):
             return True
-        if traverse(value, target_folder, bypass) == True:
+        if traverse(value, target_folder, bypass) is True:
             return True
         path_stack.pop()
 
@@ -29,22 +29,21 @@ def traverse(data: dict, target_folder: str, bypass: list) -> bool:
 
 
 def jump_to_folder(msg: str) -> str:
-
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('jump')
+        return command_help.load_help_cmd_info("jump")
 
     global path_stack
 
-    current_path = ''
+    current_path = ""
     bypass = []
 
-    if responses.is_terminal_mode == True:
+    if responses.is_terminal_mode:
         directory = terminal_mode.load_terminal_mode_directory_structure()
 
         if responses.terminal_mode_current_using_user != responses.author:
-            bypass.append('author')
+            bypass.append("author")
 
-        if traverse(directory, msg, bypass) == True:
+        if traverse(directory, msg, bypass) is True:
             terminal_mode.path_stack = path_stack
             current_path = terminal_mode.current_path()
         else:
@@ -58,10 +57,10 @@ def jump_to_folder(msg: str) -> str:
                 """
             )
 
-    elif responses.is_develop_mode == True:
+    elif responses.is_develop_mode:
         directory = develop_mode.load_develop_mode_directory_structure()
 
-        if traverse(directory, msg, bypass) == True:
+        if traverse(directory, msg, bypass) is True:
             develop_mode.path_stack = path_stack
 
             current_path = develop_mode.current_path()

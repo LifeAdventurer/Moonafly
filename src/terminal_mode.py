@@ -235,7 +235,7 @@ def in_interaction() -> bool:
         clipboard.checking_clipboard_keyword_override,
         random_vocab_test.random_vocab_testing,
     ]
-    return any(directory_statuses) == True
+    return any(directory_statuses) is True
 
 
 async def get_response_in_terminal_mode(message) -> str:
@@ -247,7 +247,7 @@ async def get_response_in_terminal_mode(message) -> str:
     # for directory
     global path_stack
 
-    if in_interaction() == False:
+    if not in_interaction():
         if msg.startswith("help"):
             msg = msg[5:].strip()
             if msg.startswith(HELP_FLAG):
