@@ -1,6 +1,6 @@
 # Moonafly
 
-Moonafly uses [Poetry](https://github.com/python-poetry/poetry) for dependency management and includes pre-configured tools such as black, isort, and pre-commit for linting.
+Moonafly uses [Poetry](https://github.com/python-poetry/poetry) for dependency management and includes pre-configured tools such as ruff and pre-commit for linting.
 
 ## Getting started
 
