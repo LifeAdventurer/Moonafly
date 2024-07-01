@@ -13,7 +13,7 @@ def traverse(data: dict, indent: int, bypass: list) -> str:
         if key in bypass:
             continue
         #       structure indentation  folder   output indentation
-        tree += rf"{' ' * TAB_SIZE * indent}\-- {key}\n{' ' * TAB_SIZE * 2}"
+        tree += f"{' ' * TAB_SIZE * indent}\\-- {key}\n{' ' * TAB_SIZE * 2}"
         tree += traverse(value, indent + 1, bypass)
 
     return tree
