@@ -5,7 +5,7 @@ import time
 
 EXEC_PATH = ["python", "bot.py"]
 
-print('Starting Moonafly...')
+print("Starting Moonafly...")
 
 init = False
 
@@ -14,7 +14,7 @@ if not os.path.isfile("config.json"):
     init = True
     print('"config.json" not found')
     bot_token = input("Enter your Discord bot token: ")
-    with open('config.json', 'w') as f:
+    with open("config.json", "w") as f:
         json.dump({"token": bot_token}, f, indent=4)
     print('"config.json" created with the provided bot token.')
 
@@ -28,12 +28,12 @@ if not os.path.isfile("./data/json/user_identity.json"):
         "developers": [discord_username],
         "guests": [discord_username],
     }
-    with open('./data/json/user_identity.json', 'w') as f:
+    with open("./data/json/user_identity.json", "w") as f:
         json.dump(user_identity_data, f, indent=4)
     print('"user_identity.json" created with the provided Discord username.')
 
 if init:
-    print('Moonafly Initialization completed.')
+    print("Moonafly Initialization completed.")
 
 os.chdir("src")
 

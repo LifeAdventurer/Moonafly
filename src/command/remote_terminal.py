@@ -7,19 +7,19 @@ from constants import HELP_FLAG, TAB_SIZE
 
 
 def get_syntax_highlighting_language_code(terminal_output: str) -> str:
-    if all(token in terminal_output for token in ['---', '+++', '@@']):
-        return 'patch'
+    if all(token in terminal_output for token in ["---", "+++", "@@"]):
+        return "patch"
 
-    return 'markdown'
+    return "markdown"
 
 
 def get_remote_terminal_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('remote_terminal')
+        return command_help.load_help_cmd_info("remote_terminal")
 
-    if msg.startswith('\\'):
+    if msg.startswith("\\"):
         msg = msg[1:]
-    space = '\n' + ' ' * TAB_SIZE * 3
+    space = "\n" + " " * TAB_SIZE * 3
     try:
         result = subprocess.check_output(
             msg, shell=True, stderr=subprocess.STDOUT, universal_newlines=True
@@ -37,7 +37,7 @@ def get_remote_terminal_response(msg: str) -> str:
             """
         )
     except subprocess.CalledProcessError as e:
-        space += '- '
+        space += "- "
         error = space.join(e.output.splitlines())
         return textwrap.dedent(
             f"""

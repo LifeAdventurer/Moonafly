@@ -8,7 +8,7 @@ from constants import HELP_FLAG
 
 def get_random_number_response(msg: str) -> str:
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('random_number')
+        return command_help.load_help_cmd_info("random_number")
 
     if msg.isdigit():
         return textwrap.dedent(

@@ -85,12 +85,12 @@ def get_primes_response(msg: str) -> str:
         str: The formatted response based on the command and current terminal path.
     """
     if msg.startswith(HELP_FLAG):
-        return command_help.load_help_cmd_info('primes')
+        return command_help.load_help_cmd_info("primes")
 
-    if msg.startswith('check'):
+    if msg.startswith("check"):
         msg = msg[6:].strip()
         if msg.startswith(HELP_FLAG):
-            return command_help.load_help_cmd_info('primes_check')
+            return command_help.load_help_cmd_info("primes_check")
 
         return check_prime(msg)
 
