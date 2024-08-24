@@ -3,10 +3,11 @@ import textwrap
 import time
 from datetime import timedelta
 
+import psutil
+
 import bot
 import develop_mode
 import normal_mode
-import psutil
 import terminal_mode
 from command import (
     approve,

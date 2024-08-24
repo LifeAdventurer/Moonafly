@@ -1,8 +1,8 @@
 {
     "math_calc_allow_names": [
-        "sum", 
-        "min", 
-        "max", 
+        "sum",
+        "min",
+        "max",
         "abs",
         "round",
         "math",

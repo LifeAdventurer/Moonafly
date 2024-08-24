@@ -12,7 +12,7 @@ config.json
 # txt files
 maintenance.txt
 
-/dump 
+/dump
 
 *__pycache__
 

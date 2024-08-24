@@ -3,6 +3,7 @@ import sys
 from datetime import datetime
 
 import discord
+
 import responses
 import split_message
 

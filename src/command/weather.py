@@ -1,6 +1,7 @@
 import textwrap
 
 import requests
+
 import terminal_mode
 from command import command_help
 from constants import HELP_FLAG

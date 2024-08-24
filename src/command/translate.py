@@ -1,9 +1,10 @@
 import textwrap
 
+from googletrans import LANGUAGES, Translator
+
 import terminal_mode
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
-from googletrans import LANGUAGES, Translator
 
 
 def show_languages(columns=3) -> str:

@@ -1,7 +1,8 @@
 import textwrap
 
-import develop_mode
 import requests
+
+import develop_mode
 import responses
 import terminal_mode
 from command import command_help

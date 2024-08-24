@@ -1,6 +1,7 @@
 import textwrap
 
 import requests
+
 import terminal_mode
 
 

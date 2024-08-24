@@ -3,9 +3,10 @@ import re
 import textwrap
 
 import requests
+from bs4 import BeautifulSoup
+
 import responses
 import terminal_mode
-from bs4 import BeautifulSoup
 from command import command_help
 from constants import HELP_FLAG, TAB_SIZE
 
