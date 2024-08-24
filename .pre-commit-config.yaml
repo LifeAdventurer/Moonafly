@@ -1,24 +1,25 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-      - id: check-yaml
       - id: check-json
+      - id: check-toml
+      - id: check-yaml
+
+  - repo: https://github.com/python-poetry/poetry
+    rev: '1.8.3'
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
+      - id: poetry-export
+        args: ["--without-hashes", "-f", "requirements.txt", "-o", "requirements.txt"]
+      - id: poetry-install
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.9
+    rev: v0.6.1
     hooks:
       - id: ruff
         args: [ --fix ]
       - id: ruff-format
-
-  - repo: local
-    hooks:
-      - id: update-requirements
-        name: Update requirements.txt
-        entry: python -c "import subprocess; subprocess.run('poetry export --without-hashes --format=requirements.txt', shell=True, check=True, stdout=open('requirements.txt', 'w'))"
-        language: system
-        types: [file]
-        files: ^(?:poetry\.lock|pyproject\.toml)$
