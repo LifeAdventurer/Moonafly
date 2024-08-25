@@ -1,14 +1,12 @@
-name: Check Code Formatting
+name: ci
 
 on:
   push:
     branches:
       - main
-      - master
   pull_request:
     branches:
       - main
-      - master
 
 jobs:
   lint:
@@ -16,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -32,5 +30,8 @@ jobs:
         run: |
           poetry install
 
-      - name: Run Ruff
-        run: poetry run ruff check .
+      - name: Install Pre-commit Hooks
+        run: poetry run pre-commit install
+
+      - name: Run Pre-commit on all files
+        run: poetry run pre-commit run --all-files
