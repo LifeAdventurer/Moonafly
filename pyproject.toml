@@ -3,6 +3,7 @@ name = "moonafly"
 version = "2.17.2"
 description = "Moonafly isn't just a discord bot."
 authors = ["LifeAdventurer <life0adventurer@gmail.com>"]
+license = "GPL-3.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
